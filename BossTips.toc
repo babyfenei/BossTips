@@ -1,7 +1,7 @@
 ## Interface: 110002
 ## Title: Boss Tips
-## Notes: 副本提示插件
-## Author: nga_以德报德
-## Version: 1.2.1
+## Notes: 副本一句话攻略提示插件
+## Author: nga_以德报德,nga_babyfenei
+## Version: 1.1
 
 BossTips.lua

@@ -1,39 +1,44 @@
-# BossTips
+### BossTips 魔兽世界一句话攻略插件
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+首先感谢nga_以德报德大佬的插件。我只是在其插件的基础上做了修改和完善了11版本目前的BOSS及小怪数据。
+以德报德的原贴地址如下[url=https://ngabbs.com/read.php?tid=41626672]迟到的副本一句话攻略插件(含地心之战 8个新五人本数据、团本前4个boss数据)[/url]
+我修改后的插件保留原作者版权及链接信息。各位也可到原作者帖子中查看，如以德报德大佬有任何问题，此贴可以删除。
+之所以另开此贴还是想把这个插件重新完善并保持后续更新，因为在原作者帖子中跟帖很少有人会翻到后面去看。[/size]
+======
+使用方法引用原贴内容：
+[size=120%][color=crimson]使用方式：
+当你在副本里的时候，在你聊天框附近会出现一个按钮，如果你没选择boss，是禁用状态显示无攻略，
+如果你选中Boss，会出现一个框体，里面是boss攻略，点击发送就会把你选中的boss的攻略发在相应频道里[/color][/size]
+======
+[size=110%]目前在原插件中修改并添加了一下内容：
+1.添加11.0版本目前所有的5人大米及5人副本的BOSS打发及小怪打法(主要是小怪必断技能和秒杀技能)。
+2.一句话攻略框默认设置为收起状态(如果一直显示的话，个别人可能觉得会遮挡游戏界面)。
+3.因为上面设置了默认收起状态，所以添加了右键点击显示(收起、展开3个按钮位置一样)。直接以大喊形式发送攻略
+4.展开状态左键点击发送按钮为发送到团队>小队>说频道。这个是根据目前队伍人数自动判断发送频道的，如果队伍人数大于5人发送团队频道，1-5人发送队伍频道，1个人发送说频道。
+5.展开状态右键点击发送按钮为发送攻略到大喊频道
+6.所有BOSS数据第一行添加BOSS或小怪名称并在两边以{rt8}骷颅头标记分割
+7.所有需要打断等其他重点技能以{rt1}星星图标标记。
+8.个人展开状态，自动删除上面的{rt1}{rt8}等图标并将||替换为换行，方便阅读
+9.修改了攻略发送顺序问题，现在会按照tips里面的顺序挨个进行发送，不会存在顺序错误的问题。
+10.由于没有进团队测试团队发送功能，所以是否能正确进行团队频道发送还待测试。
+11.由于此版本都在打地下堡，基本没打M本和团本。所以此插件各BOSS及小怪的攻略是否正确还有待测试。
+======
+具体的效果请看下图：[/size]
 
-#### 软件架构
-软件架构说明
+[img]./mon_202410/10/7mQ91mg-79yuZcT1kScp-gj.jpg[/img]
+[img]./mon_202410/10/7mQ91mg-kfo7ZgT1kSci-gl.jpg[/img]
+[img]./mon_202410/10/7mQ91mg-9uo4ZfT1kSbz-g8.jpg[/img]
+======
+[size=110%]另外在此感谢以下几位WA作者或翻译大佬
+1.艾泽拉斯制造大佬的[url=https://bbs.nga.cn/read.php?tid=41807459&fav=:F3C48B05C]老年玩家做的大米小抄(感谢LoRexxar的教学视频分享)[/url]，小怪及部分BOSS信息参考此贴
+2.沢田岚大佬的[url=https://bbs.nga.cn/read.php?tid=41712204&fav=:FA99311C2][WA] 汉化所有大秘境BOSS面前一句话攻略WA.[/url] 部分BOSS信息参考此贴
+3.Fizzle的[url=https://wago.io/VLiBvdxoU]TWW Season 1 Dungeon Boss Strats[/url]，此WA是11.0版本所有大米副本的BOSS一句话攻略(全英文)，部分翻译并参考
+======
+另外，此插件我已提交至gitee上面，如果有需要修改添加的BOSS或者小怪信息，可以至gitee提交Issues,我进行更新。提交格式如下：
+BOSS/小怪名称-打法攻略
+例如：水鼠帮劫掠者-恶臭喷吐必须打断
+当然也可在此贴跟帖回复。
+[url=https://gitee.com/fenei/boss-tips]gitee地址[/url]
+插件下载地址如下：[/size]
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+[attach]./mon_202410/10/7mQ4f9e-79llKb.rar?filename=BossTips%2erar[/attach]

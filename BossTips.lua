@@ -6,7 +6,6 @@ addon.version = "1.2.2"
 -- 创建主框架
 local frame = CreateFrame("Frame")
 
--- 定义副本数据结构
 local BossData = {
     ["千丝之城"] = {
         -- BOSS部分
@@ -362,6 +361,37 @@ local currentInstanceBosses = {}
 local currentBoss = nil
 local manuallyHidden = false
 
+-- 自定义函数，用于输出表的详细信息
+local function dump(o)
+    if type(o) == 'table' then
+        local s = '{ '
+        for k, v in pairs(o) do
+            if type(k) ~= 'number' then k = '"' .. k .. '"' end
+            s = s .. '[' .. k .. '] = ' .. dump(v) .. ','
+        end
+        return s .. '} '
+    else
+        return tostring(o)
+    end
+end
+
+-- 确保 BossTipsDB 存在且包含必要的子表
+local function ensureDBExists()
+    if not BossTipsDB then
+        BossTipsDB = {}
+    end
+    if not BossTipsDB.TipsFramePosition then
+        BossTipsDB.TipsFramePosition = {}
+    end
+    if not BossTipsDB.TipsFrameSize then
+        BossTipsDB.TipsFrameSize = {}
+    end
+    if not BossTipsDB.ButtonPosition then
+        BossTipsDB.ButtonPosition = {}
+    end
+end
+ensureDBExists()
+
 -- 更新当前副本的 boss 集合
 local function UpdateCurrentInstanceBosses()
     wipe(currentInstanceBosses)
@@ -384,13 +414,111 @@ local function GetBossTips(target)
     return BossData[instanceName] and BossData[instanceName][target] and BossData[instanceName][target].tips or nil
 end
 
+-- 封装保存位置的函数，以 UIParent 为参考系
+local function SavePosition(frame, savedVar)
+    local point, _, relativePoint, xOffset, yOffset = frame:GetPoint(1, UIParent)
+    savedVar.point = point
+    savedVar.relativeTo = "UIParent"
+    savedVar.relativePoint = relativePoint
+    savedVar.xOffset = xOffset
+    savedVar.yOffset = yOffset
+    print("Saved Position Debug: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
+end
+
+-- 封装保存大小的函数
+local function SaveSize(frame, savedVar)
+    savedVar.width = frame:GetWidth()
+    savedVar.height = frame:GetHeight()
+    print("Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
+end
+
+-- 封装加载位置的函数
+local function LoadPosition(frame, savedVar, defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
+    -- 输出 savedVar 的内容，用于调试
+    print("SavedVar Content:", dump(savedVar))
+
+    if savedVar and type(savedVar) == "table" and savedVar.point and savedVar.relativePoint and savedVar.xOffset and savedVar.yOffset then
+        local validRelativeTo = _G[savedVar.relativeTo] or defaultRelativeTo
+        if validRelativeTo then
+            frame:SetPoint(savedVar.point, validRelativeTo, savedVar.relativePoint, savedVar.xOffset, savedVar.yOffset)
+            print("Loaded Saved Position: Point - " .. savedVar.point .. ", RelativeTo - " .. (validRelativeTo and validRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. savedVar.relativePoint .. ", XOffset - " .. savedVar.xOffset .. ", YOffset - " .. savedVar.yOffset)
+        else
+            print("Invalid relativeTo object for loading position. Using default position.")
+            frame:SetPoint(defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
+            print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
+        end
+    else
+        frame:SetPoint(defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
+        print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
+    end
+    -- 确保按钮显示
+    frame:Show()
+    -- 调试：输出按钮的大小和透明度
+    print("Button Size: Width - " .. frame:GetWidth() .. ", Height - " .. frame:GetHeight())
+    print("Button Alpha: " .. frame:GetAlpha())
+end
+
+-- 封装加载大小的函数
+local function LoadSize(frame, savedVar, defaultWidth, defaultHeight)
+    if savedVar and type(savedVar) == "table" and savedVar.width and savedVar.height then
+        frame:SetSize(savedVar.width, savedVar.height)
+        print("Loaded Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
+    else
+        frame:SetSize(defaultWidth, defaultHeight)
+        print("Loaded Default Size: Width - " .. defaultWidth .. ", Height - " .. defaultHeight)
+    end
+end
+
 -- 创建攻略窗体
 local tipsFrame = CreateFrame("Frame", "BossTipsFrame", UIParent)
-tipsFrame:SetSize(400, 300)
--- 设置窗体位置：在聊天框标签右上角，向右20像素，向上20像素
-tipsFrame:SetPoint("BOTTOMLEFT", ChatFrame1Tab, "TOPLEFT", 20, 20)
+LoadSize(tipsFrame, BossTipsDB.TipsFrameSize, 400, 300)
+LoadPosition(tipsFrame, BossTipsDB.TipsFramePosition, "BOTTOMLEFT", ChatFrame1Tab, "TOPLEFT", 20, 20)
 tipsFrame:SetFrameStrata("BACKGROUND")
 tipsFrame:Hide()
+
+-- 使攻略窗体可移动
+tipsFrame:SetMovable(true)
+tipsFrame:EnableMouse(true)
+tipsFrame:RegisterForDrag("LeftButton")
+tipsFrame:SetScript("OnDragStart", function(self)
+    self:StartMoving()
+end)
+tipsFrame:SetScript("OnDragStop", function(self)
+    self:StopMovingOrSizing()
+    SavePosition(self, BossTipsDB.TipsFramePosition)
+    print("TipsFrame Saved Position: Point - " .. self:GetPoint())
+end)
+
+-- 使攻略窗体可调整大小
+tipsFrame:SetResizable(true)
+local MIN_WIDTH = 200
+local MIN_HEIGHT = 200
+tipsFrame:SetScript("OnSizeChanged", function(self, width, height)
+    if width < MIN_WIDTH then
+        self:SetWidth(MIN_WIDTH)
+    end
+    if height < MIN_HEIGHT then
+        self:SetHeight(MIN_HEIGHT)
+    end
+end)
+
+local resizeHandle = CreateFrame("Button", nil, tipsFrame)
+resizeHandle:SetSize(16, 16)
+resizeHandle:SetPoint("BOTTOMRIGHT", -4, 4)
+resizeHandle:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+resizeHandle:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+resizeHandle:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+resizeHandle:EnableMouse(true)
+resizeHandle:RegisterForDrag("LeftButton")
+resizeHandle:SetScript("OnDragStart", function()
+    tipsFrame:StartSizing("BOTTOMRIGHT")
+end)
+resizeHandle:SetScript("OnDragStop", function()
+    tipsFrame:StopMovingOrSizing()
+    SavePosition(tipsFrame, BossTipsDB.TipsFramePosition)
+    SaveSize(tipsFrame, BossTipsDB.TipsFrameSize)
+    print("TipsFrame Resized and Position Saved")
+end)
 
 -- 创建攻略文本
 local tipsText = tipsFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -403,7 +531,6 @@ tipsText:SetJustifyV("TOP")
 local bg = tipsFrame:CreateTexture(nil, "BACKGROUND")
 bg:SetAllPoints()
 bg:SetColorTexture(0, 0, 0, 0.3)  -- 黑色背景，50%透明度
-
 
 -- 修改 SendLongMessage 函数
 local function SendLongMessage(message, chatType)
@@ -467,35 +594,61 @@ function determineChatType(message)
     end
 end
 
-
 -- 创建收起/展开按钮
 local toggleButton = CreateFrame("Button", nil, UIParent, "UIPanelButtonTemplate")
 toggleButton:SetSize(80, 40)
-toggleButton:SetPoint("BOTTOMRIGHT", ChatFrame1Tab, "BOTTOMRIGHT", 200, 20)
-toggleButton:SetText("收起")
+toggleButton:SetText("无攻略")
+toggleButton:Enable() -- 让按钮默认启用
+
+-- 延迟加载按钮位置信息
+local function LoadButtonPosition()
+    ensureDBExists()
+    LoadPosition(toggleButton, BossTipsDB.ButtonPosition, "TOPRIGHT", ChatFrame1Tab, "TOPRIGHT", 200, 20)
+
+    -- 使按钮可移动
+    toggleButton:SetMovable(true)
+    toggleButton:EnableMouse(true)
+    toggleButton:RegisterForDrag("LeftButton")
+    toggleButton:SetScript("OnDragStart", function(self)
+        self:StartMoving()
+    end)
+    toggleButton:SetScript("OnDragStop", function(self)
+        self:StopMovingOrSizing()
+        SavePosition(self, BossTipsDB.ButtonPosition)
+        -- Debug 输出按钮位置信息
+        local point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint()
+        print("ToggleButton Position: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
+    end)
+end
 
 toggleButton:SetScript("OnClick", function()
     if tipsFrame:IsShown() then
         tipsFrame:Hide()
-        toggleButton:SetText("展开")
-        toggleButton:SetPoint("BOTTOMRIGHT", ChatFrame1Tab, "BOTTOMRIGHT", 200, 20)
+        toggleButton:SetText("显示")
         manuallyHidden = true
     else
         tipsFrame:Show()
-        toggleButton:SetText("收起")
-        toggleButton:SetPoint("BOTTOMRIGHT", ChatFrame1Tab, "BOTTOMRIGHT",200, 20)
+        toggleButton:SetText("隐藏")
         manuallyHidden = false
     end
 end)
 
-
+toggleButton:SetScript("OnMouseDown", function(self, button)
+    if button == "RightButton" then
+        local target = UnitName("target")
+        local tips = GetBossTips(target)
+        if tips then
+            SendLongMessage(tips, "YELL")
+        end
+    end
+end)
 
 -- 更新框体可见性
 local function UpdateFrameVisibility()
     local target = UnitName("target")
     if IsKnownBoss(target) then
         if target ~= currentBoss then
-            manuallyHidden = true  -- 默认设置为收起状态
+            manuallyHidden = false  -- 默认设置为显示状态
             currentBoss = target
         end
 
@@ -510,33 +663,23 @@ local function UpdateFrameVisibility()
         end
 
         toggleButton:Enable()
-        toggleButton:SetText("隐藏")
-
-        -- 注册右键点击事件处理函数,右键点击显示、展开、收起按钮使用大喊直接发送
-        toggleButton:SetScript("OnMouseDown", function(self, button)
-            if button == "RightButton" then
-                local target = UnitName("target")
-                local tips = GetBossTips(target)
-                if tips then
-                    SendLongMessage(tips, "YELL")
-                end
-            end
-        end)
+        if tipsFrame:IsShown() then
+            toggleButton:SetText("隐藏")
+        else
+            toggleButton:SetText("显示")
+        end
 
         if not manuallyHidden then
             tipsFrame:Show()
-            toggleButton:SetPoint("BOTTOMRIGHT", ChatFrame1Tab, "BOTTOMRIGHT", 10, 10)
         else
             tipsFrame:Hide()
-            toggleButton:SetPoint("TOPRIGHT", ChatFrame1Tab, "TOPRIGHT", 200, 20)
-            toggleButton:SetText("显示")
         end
     else
         tipsFrame:Hide()
         currentBoss = nil
         toggleButton:SetText("无攻略")
-        toggleButton:Disable()
-        toggleButton:SetPoint("TOPRIGHT", ChatFrame1Tab, "TOPRIGHT", 200, 20)
+        -- 注释掉禁用按钮的代码，让按钮保持可用
+        -- toggleButton:Disable() 
     end
 
     toggleButton:Show() -- 始终显示按钮
@@ -544,7 +687,13 @@ end
 
 -- 主事件处理函数
 frame:SetScript("OnEvent", function(self, event, ...)
-    if event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
+    if event == "PLAYER_ENTERING_WORLD" then
+        UpdateCurrentInstanceBosses()
+        manuallyHidden = false
+        currentBoss = nil
+        C_Timer.After(1, LoadButtonPosition) -- 延迟 1 秒加载按钮位置信息
+        UpdateFrameVisibility()
+    elseif event == "ZONE_CHANGED_NEW_AREA" then
         UpdateCurrentInstanceBosses()
         manuallyHidden = false
         currentBoss = nil

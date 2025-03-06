@@ -41,19 +41,7 @@ local BossData = {
             tips = "{rt8}长者织影{rt8}||{rt1}晦幽纺纱{rt1}需要集中站位，A掉限制移动的网",
         },
     },
-    ["驭雷栖巢"] = {
-        -- BOSS部分
-        ["凯里欧斯"] = {
-            tips = "{rt8}凯里欧斯{rt8}||没什么特别需要注意的机制||就是BOSS有个技能是飞到场地中间一道射线扫射半场||被扫到昏迷8秒，注意躲避！",
-        },
-        ["雷卫戈伦"] = {
-            tips = "{rt8}雷卫戈伦{rt8}||BOSS大跳跃击||落地后产生四道往四面方向飞行的黑光柱，注意躲避。",
-        },
-        ["虚空石畸体"] = {
-            tips = "{rt8}虚空石畸体{rt8}||别站坦克背后！BOSS召唤出来的水晶速度转火打掉！",
-        },
-        -- 小怪部分
-    },
+
     ["破晨号"] = {
         -- BOSS部分
         ["代言人夏多克朗"] = {
@@ -79,19 +67,7 @@ local BossData = {
             tips = "{rt8}夜幕黑暗建筑师{rt8}||{rt1}折磨喷发{rt1}，中圈离开人群开好减伤，招引增援迅速转火，小怪刚出开非常弱",
         },
     },
-    ["圣焰隐修院"] = {
-        -- BOSS部分
-        ["戴尔克莱上尉"] = {
-            tips = "{rt8}戴尔克莱上尉{rt8}||被点名离开人群，boss的长矛会对路径上的所有人造成伤害||打断boss读条，不然会全队AOE，并且给buff小怪||BOSS找队友贴贴会带套，要打破这个套！",
-        },
-        ["布朗派克男爵"] = {
-            tips = "{rt8}布朗派克男爵{rt8}||远程不要站在近战区域||点名远程的转转锤自己看着躲。",
-        },
-        ["隐修院长穆普雷"] = {
-            tips = "{rt8}隐修院长穆普雷{rt8}||Boss会点名，地上会有一只黄圈点谁追谁||并且黄圈还会放黑水，注意要远离人群，保持移动||BOSS半血会上楼，大伙跑楼梯追上去打掉BOSS护盾打断读条即可。",
-        },
-        -- 小怪部分
-    },
+
     ["艾拉-卡拉，回响之城"] = {
         -- BOSS部分
         ["阿瓦诺克斯"] = {
@@ -152,16 +128,42 @@ local BossData = {
             tips = "{rt8}咒炉塑石者{rt8}||{rt1}爆地图腾{rt1}需要第一时间转火打掉",
         },
     },
+    ["圣焰隐修院"] = {
+        -- BOSS部分
+        ["戴尔克莱上尉"] = {
+            tips = "{rt8}戴尔克莱上尉{rt8}||被点名离开人群，boss的长矛会对路径上的所有人造成伤害||打断boss读条，不然会全队AOE，并且给buff小怪||BOSS找队友贴贴会带套，要打破这个套！||断狂啸，躲红线，掷矛很明显的红线不躲开必死。野蛮重殴",
+        },
+        ["布朗派克男爵"] = {
+            tips = "{rt8}布朗派克男爵{rt8}||断灼烧，依次、轮流开减伤踩地上火堆。||远程不要站在近战区域||点名远程的转转锤自己看着躲。",
+        },
+        ["隐修院长穆普雷"] = {
+            tips = "{rt8}隐修院长穆普雷{rt8}||Boss会点名，地上会有一只黄圈点谁追谁||并且黄圈还会放黑水，注意要远离人群，保持移动||BOSS半血会上楼，大伙跑楼梯追上去打掉BOSS护盾打断读条即可。||盲目之光时背对 Boss，躲新兵，破护盾，抽他！",
+        },
+        -- 小怪部分
+    },
+        ["驭雷栖巢"] = {
+        -- BOSS部分
+        ["凯里欧斯"] = {
+            tips = "{rt8}凯里欧斯{rt8}||点名分散，||BOSS激光转圈躲避||被扫到昏迷8秒，注意躲避！||五个人点名的分散圈注意加血注意分散，套圈必死||BOSS满能量了会转阶段，集合站位，有四根射线会顺时针或者逆时针旋转中了必死||并且所有人脚下会出圈肯定要躲开的，并且BOSS会持续AOE注意边移动边加血",
+        },
+        ["雷卫戈伦"] = {
+            tips = "{rt8}雷卫戈伦{rt8}||轮流传混沌腐蚀 Debuff，至少三人循环。||BOSS大跳跃击||落地后产生四道往四面方向飞行的黑光柱，注意躲避||BOSS还会吸人不要被吸进圈里就好了||随机点名一个人高额的DOT时间到了会传给最近的一个人，||注意一个人不能被连续传两次不然伤害会加百分之三四百会直接暴毙，要均匀的传。",
+        },
+        ["虚空石畸体"] = {
+            tips = "{rt8}虚空石畸体{rt8}||白圈炸石头，黑水靠边放，破盾后开爆发。||别站坦克背后！BOSS召唤出来的水晶速度转火打掉！",
+        },
+        -- 小怪部分
+    },
     ["燧酿酒庄"] = {
         -- BOSS部分
         ["酿造大师阿德里尔"] = {
-            tips = "{rt8}酿造大师阿德里尔{rt8}||打到半血会去柜台进入无敌状态||需要有人去场地边缘给暴怒顾客送酒安抚解除无敌。",
+            tips = "{rt8}酿造大师阿德里尔{rt8}||醉酿投打T，预示着投掷燧酿要来了，||投掷燧酿会点名两个人高额伤害的单点需要开个减||打到半血会去柜台进入无敌状态||需要有人去场地边缘给暴怒顾客送酒安抚解除无敌||平时站位尽量靠近BOSS，这个BOSS会随机点名一个大范围的头前，站的越近越容易躲开",
         },
         ["艾帕"] = {
-            tips = "{rt8}艾帕{rt8}||会召唤三只小软一直试图碰到BOSS||如果碰到会给BOSS一个非常厚的吸收盾||需要坦克拉着BOSS风筝小软||其他人尽快击杀掉小软。",
+            tips = "{rt8}艾帕{rt8}||会召唤三只小软一直试图碰到BOSS||如果碰到会给BOSS一个非常厚的吸收盾并造成大量AOE伤害。||需要坦克拉着BOSS风筝小软||其他人控制并尽快击杀掉小软。||喷涌佳酿，燃烧发酵注意开个减。",
         },
         ["本克·鸣蜂"] = {
-            tips = "{rt8}本克·鸣蜂{rt8}||蜜蜂骑手，没什么特别在意的||召唤小蜂蜜控住杀掉即可。",
+            tips = "{rt8}本克·鸣蜂{rt8}||需要有人上蜜蜂来撞桶，桶越少越好打。||召唤小蜂蜜控住杀掉即可。||震翼之风是一个一直吹你并且需要你一直加血的AOE，注意预铺||BOSS会一直召蜜蜂，注意蜜蜂刚出来没有仇恨！！！开好渐隐术，谁比T先动手就会OT猝死||蜜蜂还会随机跳人高额流血DOT注意单保。",
         },
         ["戈尔迪·底爵"] = {
             tips = "{rt8}戈尔迪·底爵{rt8}||场地上很多爆炸酒桶||BOSS点名坦克的击飞和点名非坦克的红圈都会引爆酒桶||产生四个方向爆炸波||利用这两个技能处理掉酒桶||否则BOSS后续大招AOE||会把所有剩余酒桶引爆造成全场伤害和满地火浪。",
@@ -171,20 +173,103 @@ local BossData = {
     ["暗焰裂口"] = {
         -- BOSS部分
         ["老蜡须"] = {
-            tips = "{rt8}老蜡须{rt8}||场地上很多小狗头人无仇恨追人||引到轨道上用矿车撞死||发红的轨道马上会来矿车。",
+            tips = "{rt8}老蜡须{rt8}||场地上很多小狗头人无仇恨追人||引到轨道上用矿车撞死||发红的轨道马上会来矿车。||躲Boss冲锋，被点名引小怪去铁轨让矿车撞死||不停召唤小怪的ADD战斗，小怪不需要打，靠铁轨撞就全撞死了，||BOSS会点名冲锋，冲锋路径也可以消小怪||“卑鄙诡术”是一个车必须第一时间转火打掉不然灭团。",
         },
         ["布雷炙孔"] = {
-            tips = "{rt8}布雷炙孔{rt8}||被点名放火的人去场地边缘点亮蜡烛||BOSS的大招AOE跑到之前点亮的蜡烛一侧就能躲掉！",
+            tips = "{rt8}布雷炙孔{rt8}||被点名放火的人去场地边缘点亮蜡烛||BOSS的大招AOE跑到之前点亮的蜡烛一侧就能躲掉！||被点名红圈时靠近蜡烛，点燃越多越好；Boss 吹风时站在蜡烛方向，吹灭一两个蜡烛。",
         },
         ["蜡烛之王"] = {
-            tips = "{rt8}蜡烛之王{rt8}||被BOSS点名飞刀了跑去蜡像后面档飞刀||被BOSS点名放黑圈了跑去蜡像旁边用黑圈炸掉蜡像||每轮五个蜡像尽量全部在本轮内处理完毕。",
+            tips = "{rt8}蜡烛之王{rt8}||被BOSS点名飞刀了跑去蜡像后面档飞刀||被BOSS点名放黑圈了跑去蜡像旁边用黑圈炸掉蜡像||每轮五个蜡像尽量全部在本轮内处理完毕。||飞刀点名站在蜡像后面，身上紫圈要靠近蜡像。||BOSS会点名三个紫色大圈去框住蜡像就能消除||BOSS会恐惧读条注意打团",
         },
         ["黑暗之主"] = {
-            tips = "{rt8}黑暗之主{rt8}||需要有人去场地边缘捡油给灯添燃料||BOSS点名黑圈的人要跑远几步避免黑圈炸灯||BOSS读条吹灯需要一个人把灯捡起来拿开别被吹到||BOSS读条召唤小怪可打断需要秒断。",
+            tips = "{rt8}黑暗之主{rt8}||需要有人去场地边缘捡油给灯添燃料||BOSS点名黑圈的人要跑远几步避免黑圈炸灯||BOSS读条吹灯需要一个人把灯捡起来拿开别被吹到||BOSS读条召唤小怪可打断需要秒断。||被点名紫圈时远离蜡烛，Boss 冲击波时搬走蜡烛，读条 AOE 时所有 DPS 出去搬蜡烛。",
         },
         -- 小怪部分
     },
+    ["水闸行动"] = {
+        -- BOSS部分
+        ["席尔瓦·层烁"] = {
+            tips = "{rt8}席尔瓦·层烁{rt8}||小机器人会大风车并且点人追，追到了就被旋死但是吃晕控||建筑师会射钉枪钉住人并且后续有DOT伤害注意单保||扭血者会扭曲献血超高额AOE并且附带吸奶盾(重点！！！)||先打小飞机，飞机没了Boss进易伤，开SX打本体，循环即可。",
+        },
+        ["老大娘"] = {
+            tips = "{rt8}老大娘{rt8}||注意转好无人机，先打小飞机，||音爆会沉默并且推你(站的越远越好躲开)||无人机的终极失帧需要第一时间打断，超高额AOE附带击退||飞机没了Boss进易伤，开SX打本体，循环即可。",
+        },
+        ["齐扎·迅索"] = {
+            tips = "{rt8}齐扎·迅索{rt8}||双子boss必须同时死，合理利用boss点名清理完场地的炸弹||核心就是消好炸弹，消好炸弹就白给，炸弹炸了就灭团||点名红圈框住炸弹然后驱散，驱散也有高额伤害注意血线健康或者被点名的人开好减伤再驱散。||驱散越快炸飞的越低，反之越高||BOSS点名冲锋也会撞掉路上的炸弹，但是路径高额伤害注意躲开。",
+        },
+        ["布隆特"] = {
+            tips = "{rt8}布隆特{rt8}||双子boss必须同时死，合理利用boss点名清理完场地的炸弹||核心就是消好炸弹，消好炸弹就白给，炸弹炸了就灭团||点名红圈框住炸弹然后驱散，驱散也有高额伤害注意血线健康或者被点名的人开好减伤再驱散。||驱散越快炸飞的越低，反之越高||BOSS点名冲锋也会撞掉路上的炸弹，但是路径高额伤害注意躲开。",
+        },
+        ["沼面"] = {
+            tips = "{rt8}沼面{rt8}||开打之前说好往左或者往右走||开局BOSS会把人两两连接(五个人都在不会连接T)，两个人需要同手同脚不然互相拉扯，拉扯没伤害，但是这个BOSS全是地板||记住你犯错了走错了死的不止你自己还会把和你连接的队友害死||有什么躲开什么就好了，BOSS会全程高额AOE让治疗加血||铁链相连的俩人必须一点站位，躲好地板技能猛抽Boss。",
+        },
+        ["吉泽尔·超震"] = {
+            tips = "{rt8}吉泽尔·超震{rt8}||雷霆重拳打T超级痛并且会被击飞，这个BOSS场地是可以掉下去的，注意站位||超力震击会点名两个人是非常痛的高额单点，需要我们着重单保或者自己开好个减||跃动火花会每个人一个火花追你，追到了必死，把火花引到没有电的水上会消除掉||身上带电圈不碰水（重要），电火花追人站水后面||注意队友之前会互相抢水！！！。",
+        },
+        -- 小怪部分
+    },
+    ["伤逝剧场"] = {
+        -- BOSS部分
+        ["斩首者德茜雅"] = {
+            tips = "{rt8}斩首者德茜雅{rt8}||平时站位注意贴近BOSS不然BOSS有头前站远了躲不开||BOSS点名驱散优先驱散一个另一个注意单保会和其他技能形成combo||BOSS点名五个圈不能圈套圈注意分散并且伤害很高注意团刷.",
+        },
+        ["疫毒者巴瑟兰"] = {
+            tips = "{rt8}疫毒者巴瑟兰{rt8}||平时站位注意贴近BOSS不然BOSS有头前站远了躲不开||BOSS点名驱散优先驱散一个另一个注意单保会和其他技能形成combo||BOSS点名五个圈不能圈套圈注意分散并且伤害很高注意团刷.",
+        },
+        ["受诅者赛泽尔"] = {
+            tips = "{rt8}受诅者赛泽尔{rt8}||平时站位注意贴近BOSS不然BOSS有头前站远了躲不开||BOSS点名驱散优先驱散一个另一个注意单保会和其他技能形成combo||BOSS点名五个圈不能圈套圈注意分散并且伤害很高注意团刷.",
+        },
+        ["斩血"] = {
+            tips = "{rt8}斩血{rt8}||注意不要中锁链( 变成腊肠 )并且小怪跳人非常痛高层一跳大半管并且跳的非常频繁||BOSS技能简单粗暴就是容易被小怪跳暴毙，但是小怪吃晕控注意做好晕控.",
+        },
+        ["无堕者哈夫"] = {
+            tips = "{rt8}无堕者哈夫{rt8}||战旗必须第一时间转火,层数高了战旗转不掉没位移就等死||马卓克萨斯之力超高额的AOE层数高了需要覆盖个减团减不然直接秒杀||战旗转的快随便打，转得慢大家一起死.",
+        },
+        ["库尔萨洛克"] = {
+            tips = "{rt8}库尔萨洛克{rt8}||BOSS打T的头前注意躲开||BOSS每轮会点名两个人两个高额单点注意加好血||重点是BOSS每轮会点名五个人招五个小怪，小怪碰到BOSS直接灭团，集合放小怪并且迅速转火.",
+        },
+        ["无尽女皇莫德蕾莎"] = {
+            tips = "{rt8}无尽女皇莫德蕾莎{rt8}||BOSS点名五个绿圈集合的同时保持分散，出小怪给好控断迅速转掉||50%血转阶段注意高层给高个减群减||收割之镰打T很痛需要注意，T不注意会被秒杀||有啥躲啥,比较简单的BOSS但是非常考验走位",
+        },
+        -- 小怪部分
+    },
+    ["麦卡贡行动"] = {
+        -- BOSS部分
+        ["白金拳手"] = {
+            tips = "{rt8}白金拳手{rt8}||注意不要踩雷就不可能有人猝死||很多地板中了伤害很低但是会把你击飞到雷上去||注意两个BOSS修好血一起死不然一个死了另一个会AOE每次AOE比上次多加20%伤害||十秒之后就是加200%伤害直接灭团。",
+        },
+        ["仁慈侏儒4.U.型"] = {
+            tips = "{rt8}仁慈侏儒4.U.型{rt8}||注意不要踩雷就不可能有人猝死||很多地板中了伤害很低但是会把你击飞到雷上去||注意两个BOSS修好血一起死不然一个死了另一个会AOE每次AOE比上次多加20%伤害||十秒之后就是加200%伤害直接灭团。",
+        },
+        ["狂犬K.U.-J.0."] = {
+            tips = "{rt8}狂犬K.U.-J.0.{rt8}||注意BOSS AOE的时候卡好箱子||BOSS点名T的DOT第一时间驱散T，驱散慢了T直接猝死||驱散了DOT会炸全团||BOSS点名三个红圈注意分散并且不要框住箱子不然箱子会变红然后爆炸||猎人等可站最远处假死让这个技能失效。",
+        },
+        ["首席机械师闪流"] = {
+            tips = "{rt8}首席机械师闪流{rt8}||盆栽，出了第一时间转火。||它会第一时间打距离它最近的目标。注意开好个减，治疗注意单保||其他的都是地板、齿轮、火线、大圈 ||有啥躲啥 就没人掉血,走位一不小心直接暴毙！。",
+        },
+        ["麦卡贡国王"] = {
+            tips = "{rt8}麦卡贡国王{rt8}||P1的单点会穿糖葫芦一键三连所以谁被点了不要站一条线上||P2会三连击点名也注意不要被穿糖葫芦||距离万磁臂越近伤害越高注意别被秒掉||T不在近战范围之内会直接灭团。",
+        },
 
+        -- 小怪部分
+    },
+    ["暴富矿区"] = {
+        -- BOSS部分
+        ["投币式群体打击者"] = {
+            tips = "{rt8}投币式群体打击者{rt8}||炸弹出来第一时间踢炸弹||注意把炸弹踢到BOSS脚下，每个人都要踢不然炸弹炸了直接灭团，炸弹会给BOSS易伤||T注意拉着走位不要让BOSS吸到场地上的金币不然会给BOSS增伤",
+        },
+        ["艾泽洛克"] = {
+            tips = "{rt8}老大娘{rt8}||地震回荡注意团刷||小怪会随机盯人别被追到||艾泽里特灌注会灌注一个小怪并且小怪会持续AOE注意第一时间转火||注意躲开头前。",
+        },
+        ["瑞克莎·流火"] = {
+            tips = "{rt8}齐扎·迅索{rt8}||核心就是推进器冲击去消除BOSS场地上的地板就好了||中了推进器冲击注意个减注意单保(连点三次)",
+        },
+        ["商业大亨拉兹敦克"] = {
+            tips = "{rt8}齐扎·迅索{rt8}||注意点名大圈不要套人，注意单保||注意贴着BOSS，不然BOSS的加特林机关枪躲不开，很快||着重注意BOSS的两个无人机，会以它为起始往前放地板，中了必死，无人机会到处飞(重点！！！)||50%血转阶段注意消好柱子并且出两个小怪迅速转掉一个，不然治疗压力很大",
+        },
+
+        -- 小怪部分
+    },
     ["塞兹仙林的迷雾"] = {
         -- BOSS 部分
         ["英格拉·马洛克"] = {
@@ -422,30 +507,30 @@ local function SavePosition(frame, savedVar)
     savedVar.relativePoint = relativePoint
     savedVar.xOffset = xOffset
     savedVar.yOffset = yOffset
-    print("Saved Position Debug: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
+   -- print("Saved Position Debug: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
 end
 
 -- 封装保存大小的函数
 local function SaveSize(frame, savedVar)
     savedVar.width = frame:GetWidth()
     savedVar.height = frame:GetHeight()
-    print("Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
+    --print("Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
 end
 
 -- 封装加载位置的函数
 local function LoadPosition(frame, savedVar, defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
     -- 输出 savedVar 的内容，用于调试
-    print("SavedVar Content:", dump(savedVar))
+    --print("SavedVar Content:", dump(savedVar))
 
     if savedVar and type(savedVar) == "table" and savedVar.point and savedVar.relativePoint and savedVar.xOffset and savedVar.yOffset then
         local validRelativeTo = _G[savedVar.relativeTo] or defaultRelativeTo
         if validRelativeTo then
             frame:SetPoint(savedVar.point, validRelativeTo, savedVar.relativePoint, savedVar.xOffset, savedVar.yOffset)
-            print("Loaded Saved Position: Point - " .. savedVar.point .. ", RelativeTo - " .. (validRelativeTo and validRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. savedVar.relativePoint .. ", XOffset - " .. savedVar.xOffset .. ", YOffset - " .. savedVar.yOffset)
+           -- print("Loaded Saved Position: Point - " .. savedVar.point .. ", RelativeTo - " .. (validRelativeTo and validRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. savedVar.relativePoint .. ", XOffset - " .. savedVar.xOffset .. ", YOffset - " .. savedVar.yOffset)
         else
-            print("Invalid relativeTo object for loading position. Using default position.")
+            --print("Invalid relativeTo object for loading position. Using default position.")
             frame:SetPoint(defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
-            print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
+            --print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
         end
     else
         frame:SetPoint(defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
@@ -454,18 +539,18 @@ local function LoadPosition(frame, savedVar, defaultPoint, defaultRelativeTo, de
     -- 确保按钮显示
     frame:Show()
     -- 调试：输出按钮的大小和透明度
-    print("Button Size: Width - " .. frame:GetWidth() .. ", Height - " .. frame:GetHeight())
-    print("Button Alpha: " .. frame:GetAlpha())
+    --print("Button Size: Width - " .. frame:GetWidth() .. ", Height - " .. frame:GetHeight())
+    --print("Button Alpha: " .. frame:GetAlpha())
 end
 
 -- 封装加载大小的函数
 local function LoadSize(frame, savedVar, defaultWidth, defaultHeight)
     if savedVar and type(savedVar) == "table" and savedVar.width and savedVar.height then
         frame:SetSize(savedVar.width, savedVar.height)
-        print("Loaded Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
+        --print("Loaded Saved Size: Width - " .. savedVar.width .. ", Height - " .. savedVar.height)
     else
         frame:SetSize(defaultWidth, defaultHeight)
-        print("Loaded Default Size: Width - " .. defaultWidth .. ", Height - " .. defaultHeight)
+        --print("Loaded Default Size: Width - " .. defaultWidth .. ", Height - " .. defaultHeight)
     end
 end
 
@@ -486,7 +571,7 @@ end)
 tipsFrame:SetScript("OnDragStop", function(self)
     self:StopMovingOrSizing()
     SavePosition(self, BossTipsDB.TipsFramePosition)
-    print("TipsFrame Saved Position: Point - " .. self:GetPoint())
+    --print("TipsFrame Saved Position: Point - " .. self:GetPoint())
 end)
 
 -- 使攻略窗体可调整大小
@@ -517,7 +602,7 @@ resizeHandle:SetScript("OnDragStop", function()
     tipsFrame:StopMovingOrSizing()
     SavePosition(tipsFrame, BossTipsDB.TipsFramePosition)
     SaveSize(tipsFrame, BossTipsDB.TipsFrameSize)
-    print("TipsFrame Resized and Position Saved")
+    --print("TipsFrame Resized and Position Saved")
 end)
 
 -- 创建攻略文本
@@ -617,7 +702,7 @@ local function LoadButtonPosition()
         SavePosition(self, BossTipsDB.ButtonPosition)
         -- Debug 输出按钮位置信息
         local point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint()
-        print("ToggleButton Position: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
+        --print("ToggleButton Position: Point - " .. point .. ", RelativeTo - UIParent, RelativePoint - " .. relativePoint .. ", XOffset - " .. xOffset .. ", YOffset - " .. yOffset)
     end)
 end
 

@@ -37,6 +37,9 @@
 2. 11.1大秘境小怪部分数据需要进本实测。暂时只添加BOSS攻略。
 3. 攻略为网上收集，并未到副本进行测试。部分攻略存在不能显示或者攻略错误的情况可以跟帖反馈。
 
+1.2.6版本更新：
+1. 增加11.1版本大秘境部分小怪攻略数据（暂未包含车间）
+
 具体的效果请看下图：
 [img]./mon_202410/10/7mQ91mg-79yuZcT1kScp-gj.jpg[/img]
 [img]./mon_202410/10/7mQ91mg-kfo7ZgT1kSci-gl.jpg[/img]
@@ -46,7 +49,7 @@
 1. 艾泽拉斯制造大佬的[url=https://bbs.nga.cn/read.php?tid=41807459&fav=:F3C48B05C]老年玩家做的大米小抄(感谢LoRexxar的教学视频分享)[/url]，小怪及部分BOSS信息参考此贴
 2. 沢田岚大佬的[url=https://bbs.nga.cn/read.php?tid=41712204&fav=:FA99311C2][WA] 汉化所有大秘境BOSS面前一句话攻略WA.[/url] 部分BOSS信息参考此贴
 3. Fizzle的[url=https://wago.io/VLiBvdxoU]TWW Season 1 Dungeon Boss Strats[/url]，此WA是11.0版本所有大米副本的BOSS一句话攻略(全英文)，部分翻译并参考
-
+4. B站UP主羽帆 [url=https://space.bilibili.com/141341784 [/url]的11.1视频攻略
 
 另外，此插件我已提交至gitee上面，如果有需要修改添加的BOSS或者小怪信息，可以至gitee提交Issues,我进行更新。提交格式如下：
 BOSS/小怪名称-打法攻略

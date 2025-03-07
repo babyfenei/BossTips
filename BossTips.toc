@@ -2,7 +2,7 @@
 ## Title: Boss Tips
 ## Notes: 副本一句话攻略提示插件
 ## Author: nga_以德报德,nga_babyfenei
-## Version: 1.2.5
+## Version: 1.2.6
 ## SavedVariables: BossTipsDB
 
 BossTips.lua

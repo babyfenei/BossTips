@@ -1,7 +1,7 @@
 local addonName, addon = ...
 
 -- 添加版本号
-addon.version = "1.2.6"
+addon.version = "1.2.7"
 
 -- 创建主框架
 local frame = CreateFrame("Frame")
@@ -770,6 +770,7 @@ LoadPosition(tipsFrame, BossTipsDB.TipsFramePosition, "BOTTOMLEFT", ChatFrame1Ta
 tipsFrame:SetFrameStrata("BACKGROUND")
 tipsFrame:Hide()
 
+
 -- 使攻略窗体可移动
 tipsFrame:SetMovable(true)
 tipsFrame:EnableMouse(true)
@@ -814,12 +815,29 @@ resizeHandle:SetScript("OnDragStop", function()
     --print("TipsFrame Resized and Position Saved")
 end)
 
--- 创建攻略文本
+-- 创建攻略文本（修改字体初始化）
 local tipsText = tipsFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 tipsText:SetPoint("TOPLEFT", 10, -10)
 tipsText:SetPoint("BOTTOMRIGHT", -10, 40)
 tipsText:SetJustifyH("LEFT")
 tipsText:SetJustifyV("TOP")
+tipsText:SetFont("Fonts\\FRIZQT__.TTF", BossTipsDB.FontSize or 18, "OUTLINE")  -- 使用数据库存储的字体大小
+
+-- 创建字体调整按钮
+local fontSizeButton = CreateFrame("Button", nil, tipsFrame, "UIPanelButtonTemplate")
+fontSizeButton:SetSize(100, 25)
+fontSizeButton:SetPoint("BOTTOMLEFT", 10, 10)
+fontSizeButton:SetText("字体: " .. (BossTipsDB.FontSize or 18))
+fontSizeButton:SetScript("OnMouseDown", function(self, button)
+    -- 左键增大字体，右键减小字体
+    if button == "LeftButton" then
+        BossTipsDB.FontSize = math.min((BossTipsDB.FontSize or 18) + 2, 32)
+    elseif button == "RightButton" then
+        BossTipsDB.FontSize = math.max((BossTipsDB.FontSize or 18) - 2, 12)
+    end
+    tipsText:SetFont("Fonts\\FRIZQT__.TTF", BossTipsDB.FontSize, "OUTLINE")
+    self:SetText("字体: " .. BossTipsDB.FontSize)
+end)
 
 -- 创建半透明背景
 local bg = tipsFrame:CreateTexture(nil, "BACKGROUND")

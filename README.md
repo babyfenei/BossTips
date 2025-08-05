@@ -43,6 +43,12 @@
 1.2.7版本更新
 1. 添加攻略字体大小调整功能。左键点击增大字体。右键点击减小字体。默认字体18号，调整范围12-32号
 
+1.2.8版本更新
+1. 添加11.2版本大秘境攻略数据，包括天街、宏图、生态园、赎罪大厅
+2. 目前全部根据B站"于笙Ace"的视频攻略，手动整理，部分攻略存在错误或差异，可在论坛或gitee提交回复进行修正。
+3. 由于没测试服账号，目前没生态园小怪数据。
+4. 11.2赛季轮换4个旧副本目前还是旧攻略，后期看时间情况进行更新。
+
 具体的效果请看下图：
 [img]./mon_202410/10/7mQ91mg-79yuZcT1kScp-gj.jpg[/img]
 [img]./mon_202410/10/7mQ91mg-kfo7ZgT1kSci-gl.jpg[/img]
@@ -53,11 +59,12 @@
 2. 沢田岚大佬的[url=https://bbs.nga.cn/read.php?tid=41712204&fav=:FA99311C2][WA] 汉化所有大秘境BOSS面前一句话攻略WA.[/url] 部分BOSS信息参考此贴
 3. Fizzle的[url=https://wago.io/VLiBvdxoU]TWW Season 1 Dungeon Boss Strats[/url]，此WA是11.0版本所有大米副本的BOSS一句话攻略(全英文)，部分翻译并参考
 4. B站UP主羽帆 [url=https://space.bilibili.com/141341784 [/url]的11.1视频攻略
+5. B站UP于笙Ace [url=https://space.bilibili.com/506324721]的11.2视频攻略[/url]
+
 
 另外，此插件我已提交至gitee上面，如果有需要修改添加的BOSS或者小怪信息，可以至gitee提交Issues,我进行更新。提交格式如下：
 BOSS/小怪名称-打法攻略
 例如：水鼠帮劫掠者-恶臭喷吐必须打断
 当然也可在此贴跟帖回复。
-[url=https://gitee.com/fenei/boss-tips]gitee地址[/url]
+[url=https://gitee.com/fenei/BossTips]gitee地址[/url]
 插件下载地址如下：
-翻译意思内容为英语

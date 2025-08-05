@@ -1,7 +1,7 @@
 local addonName, addon = ...
 
 -- 添加版本号
-addon.version = "1.2.7"
+addon.version = "1.2.9"
 
 -- 创建主框架
 local frame = CreateFrame("Frame")
@@ -631,7 +631,7 @@ local BossData = {
 
         -- 小怪部分
     },
-    
+
     -- 11.2赛季大秘境副本
     ["塔扎维什，帷纱集市"] = {
         -- BOSS部分

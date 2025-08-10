@@ -1,7 +1,7 @@
 local addonName, addon = ...
 
 -- 添加版本号
-addon.version = "1.2.9"
+addon.version = "1.3.0"
 
 -- 创建主框架
 local frame = CreateFrame("Frame")
@@ -733,14 +733,14 @@ local BossData = {
 
     ["奥尔达尼生态圆顶"] = {
         -- BOSS部分
-        ["哈尔吉亚斯，罪污巨像"] = {
-            tips = "{rt8}哈尔吉亚斯，罪污巨像{rt8}||[毒性反刍]交互点2名玩家脚下出黑水，需要出外场放水。||所有玩家和T严格集合，黑圈出来不要乱动，出黑水集体移动，小怪跳过来第一时间交晕A掉。||转阶段后出现2组共6只跳人虫需要交控制或集火秒杀||被吸进圈里的小怪会给BOSS回血增伤，转阶段结束后会吸入所有存活小怪。",
+        ["阿兹希卡"] = {
+            tips = "{rt8}阿兹希卡{rt8}||[毒性反刍]交互点2名玩家脚下出黑水，需要出外场放水。||所有玩家和T严格集合，黑圈出来不要乱动，出黑水集体移动，小怪跳过来第一时间交晕A掉。||转阶段后出现2组共6只跳人虫需要交控制或集火秒杀||被吸进圈里的小怪会给BOSS回血增伤，转阶段结束后会吸入所有存活小怪。",
         },
-        ["艾谢朗"] = {
-            tips = "{rt8}艾谢朗{rt8}||紫圈被点名的2玩家靠近但避免互套，矛出现后T把BOSS带到矛中间一起顺劈。||其他人迅速出圈，圈内人注意开减伤，矛出现后优先转火打矛||[迁跃打击]每次点3名包括T奶在内的随机玩家和虚影连线，一段时间后虚影向被连线玩家冲锋,所有人躲开连线||转阶段后需要使用[迁跃打击]来冲锋BOSS消BOSS的6层护盾，冲锋6次后转正常阶段||[迁跃打击]释放有先后顺序，最先被点名的人有优先站定的权利，其他人先避让，被冲后快速走开。",
+        ["阿瓦兹吉"] = {
+            tips = "{rt8}阿瓦兹吉{rt8}||紫圈被点名的2玩家靠近但避免互套，矛出现后T把BOSS带到矛中间一起顺劈。||其他人迅速出圈，圈内人注意开减伤，矛出现后优先转火打矛||[迁跃打击]每次点3名包括T奶在内的随机玩家和虚影连线，一段时间后虚影向被连线玩家冲锋,所有人躲开连线||转阶段后需要使用[迁跃打击]来冲锋BOSS消BOSS的6层护盾，冲锋6次后转正常阶段||[迁跃打击]释放有先后顺序，最先被点名的人有优先站定的权利，其他人先避让，被冲后快速走开。",
         },
-        ["高阶裁决官阿丽兹"] = {
-            tips = "{rt8}高阶裁决官阿丽兹{rt8}||射线出来后某一条射线上的随机位置会有你的灵魂，要在BOSS读条结束前必须吃到自己灵魂。||吃完灵魂玩家也要躲开射线，否则会吃到伤害。后面可以消除小怪。||[对未知的低语]需要再保持分散的同时去吃自己的魂魄。||时转阶段时BOSS到场地中央开始引导，场地将会被分成6等分。并出3个自己的魂魄||BOSS顺时针刀劈2个区域，每次必定劈对称的两块区域，且必定顺时针劈刀。||优先吃被BOSS刀劈的魂魄，此阶段最少吃2个魂魄。||所有阶段吃一个魂魄加10%治疗伤害，被劈死魂魄减30%急速并持续掉血",
+        ["撰魂师"] = {
+            tips = "{rt8}撰魂师{rt8}||射线出来后某一条射线上的随机位置会有你的灵魂，要在BOSS读条结束前必须吃到自己灵魂。||吃完灵魂玩家也要躲开射线，否则会吃到伤害。后面可以消除小怪。||[对未知的低语]需要再保持分散的同时去吃自己的魂魄。||时转阶段时BOSS到场地中央开始引导，场地将会被分成6等分。并出3个自己的魂魄||BOSS顺时针刀劈2个区域，每次必定劈对称的两块区域，且必定顺时针劈刀。||优先吃被BOSS刀劈的魂魄，此阶段最少吃2个魂魄。||所有阶段吃一个魂魄加10%治疗伤害，被劈死魂魄减30%急速并持续掉血",
         },
         -- 小怪部分
     },       
@@ -897,7 +897,7 @@ local function LoadPosition(frame, savedVar, defaultPoint, defaultRelativeTo, de
         end
     else
         frame:SetPoint(defaultPoint, defaultRelativeTo, defaultRelativePoint, defaultXOffset, defaultYOffset)
-        print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
+        -- print("Loaded Default Position: Point - " .. defaultPoint .. ", RelativeTo - " .. (defaultRelativeTo and defaultRelativeTo:GetName() or "nil") .. ", RelativePoint - " .. defaultRelativePoint .. ", XOffset - " .. defaultXOffset .. ", YOffset - " .. defaultYOffset)
     end
     -- 确保按钮显示
     frame:Show()
@@ -975,7 +975,7 @@ tipsText:SetPoint("TOPLEFT", 10, -10)
 tipsText:SetPoint("BOTTOMRIGHT", -10, 40)
 tipsText:SetJustifyH("LEFT")
 tipsText:SetJustifyV("TOP")
-tipsText:SetFont("Fonts\\FRIZQT__.TTF", BossTipsDB.FontSize or 18, "OUTLINE")  -- 使用数据库存储的字体大小
+tipsText:SetFont("GameFontNormal", BossTipsDB.FontSize or 18, "OUTLINE")  -- 使用系统自带字体
 
 -- 创建字体调整按钮
 local fontSizeButton = CreateFrame("Button", nil, tipsFrame, "UIPanelButtonTemplate")
@@ -989,7 +989,7 @@ fontSizeButton:SetScript("OnMouseDown", function(self, button)
     elseif button == "RightButton" then
         BossTipsDB.FontSize = math.max((BossTipsDB.FontSize or 18) - 2, 12)
     end
-    tipsText:SetFont("Fonts\\FRIZQT__.TTF", BossTipsDB.FontSize, "OUTLINE")
+    tipsText:SetFont("GameFontNormal", BossTipsDB.FontSize, "OUTLINE")  -- 使用系统自带字体
     self:SetText("字体: " .. BossTipsDB.FontSize)
 end)
 
@@ -1175,4 +1175,4 @@ frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 
 -- 在控制台输出版本信息
-print("|cFF00FF00BossTips|r version " .. addon.version .. " loaded.")
+print("|cFF00FF00BossTips|r version " .. addon.version .. " loaded,By Fenei.")

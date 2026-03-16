@@ -1,5 +1,5 @@
 local addonName, addon = ...
-addon.version = "1.3.0"
+addon.version = "1.3.1"
 
 -- ========== 1. 核心配置与工具函数 ==========
 local DEBUG = false

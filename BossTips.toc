@@ -1,0 +1,10 @@
+## Interface: 110005, 110007, 110100,110200,120000
+## Title: Boss Tips
+## Notes: 副本一句话攻略提示插件
+## Author: nga_以德报德,nga_babyfenei
+## Version: 1.3.1
+## SavedVariables: BossTipsGlobalDB
+
+BossData.lua
+
+BossTips.lua

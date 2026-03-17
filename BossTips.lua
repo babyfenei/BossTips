@@ -2,6 +2,18 @@ local addonName, addon = ...
 addon.version = "1.3.1"
 
 -- ========== 1.-- 核心配置与工具函数 ==========
+
+-- 复制表的辅助函数
+local function CopyTable(tbl)
+    if type(tbl) ~= "table" then
+        return tbl
+    end
+    local copy = {}
+    for k, v in pairs(tbl) do
+        copy[k] = CopyTable(v)
+    end
+    return copy
+end
 local DEBUG = false
 local function debugPrint(...)
     if not DEBUG then return end
@@ -46,7 +58,6 @@ local function ensureDBExists()
             end
         end
     end
-
 end
 ensureDBExists()
 

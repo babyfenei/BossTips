@@ -1,7 +1,7 @@
 local addonName, addon = ...
 addon.version = "1.3.1"
 
--- ========== 1. 核心配置与工具函数 ==========
+-- ========== 1.-- 核心配置与工具函数 ==========
 local DEBUG = false
 local function debugPrint(...)
     if not DEBUG then return end
@@ -32,7 +32,7 @@ local defaultConfig = {
     BossMenuPosition = nil,
     TipsFramePosition = nil,
     TipsFrameSize = { width = 500, height = 400 },
-    FontSize = 18
+    FontSize = 14
 }
 
 -- 初始化账号通用配置数据库
@@ -46,7 +46,7 @@ local function ensureDBExists()
             end
         end
     end
-    debugPrint("BossTipsGlobalDB（账号通用）初始化完成")
+
 end
 ensureDBExists()
 
@@ -83,7 +83,6 @@ end
 
 -- ========== 5. 攻略发送功能 ==========
 local function SendBossTips(bossName)
-    debugPrint("===== 发送BOSS攻略 =====")
     if not bossName or not currentInstanceName then
         print("|cFFFF0000BossTips|r: 未选中BOSS或副本信息异常")
         return
@@ -229,6 +228,10 @@ local function CreateBossMenu()
             btn:SetText(bossName)
             btn:GetFontString():SetTextColor(1, 0.8, 0)
             
+            -- 确保按钮能够响应右键点击
+            btn:EnableMouse(true)
+            btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+            
             -- 核心修改：区分左键/右键点击
             btn:SetScript("OnClick", function(self, button)
                 currentSelectedBoss = bossName
@@ -292,7 +295,6 @@ local function CreateBossMenu()
             xOffset = xOffset,
             yOffset = yOffset
         }
-        debugPrint("BOSS菜单位置已保存")
     end)
     
     local closeOnClick = CreateFrame("Frame")
@@ -522,7 +524,6 @@ local function CreateTipsFrame()
             xOffset = xOffset,
             yOffset = yOffset
         }
-        debugPrint("攻略框位置已保存")
     end)
     
     frame:SetScript("OnShow", function(self)
@@ -763,7 +764,6 @@ local function CreateMainButton()
             xOffset = xOffset,
             yOffset = yOffset
         }
-        debugPrint("主按钮位置已保存")
     end)
     
     return btn
@@ -778,7 +778,7 @@ local function UpdateCurrentInstance()
         currentInstanceName = GetRealZoneText()
     end
     
-    debugPrint("当前地图/副本:", currentInstanceName)
+
     
     if mainButton then
         mainButton:SetText(currentInstanceName or "BossTips")

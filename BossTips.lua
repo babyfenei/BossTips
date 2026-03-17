@@ -207,9 +207,40 @@ local function CreateBossMenu()
         end
         
         local bossList = BossData[currentInstanceName]
-        local btnCount = 0
-        for _ in pairs(bossList) do btnCount = btnCount + 1 end
         
+        -- 获取有序的BOSS名称列表
+        local orderedBossNames = {}
+        
+        -- 检查每个BOSS是否有order属性
+        local bossWithOrder = {}
+        local bossWithoutOrder = {}
+        
+        for bossName, bossInfo in pairs(bossList) do
+            if bossInfo.order then
+                -- 有order属性的BOSS
+                table.insert(bossWithOrder, {name = bossName, order = bossInfo.order})
+            else
+                -- 没有order属性的BOSS
+                table.insert(bossWithoutOrder, bossName)
+            end
+        end
+        
+        -- 按照order属性排序
+        table.sort(bossWithOrder, function(a, b)
+            return tonumber(a.order) < tonumber(b.order)
+        end)
+        
+        -- 先添加有order属性的BOSS
+        for _, boss in ipairs(bossWithOrder) do
+            table.insert(orderedBossNames, boss.name)
+        end
+        
+        -- 再添加没有order属性的BOSS
+        for _, bossName in ipairs(bossWithoutOrder) do
+            table.insert(orderedBossNames, bossName)
+        end
+        
+        local btnCount = #orderedBossNames
         local btnHeight = 25
         local btnSpacing = 8
         local totalBtnHeight = btnCount * (btnHeight + btnSpacing) - btnSpacing
@@ -221,7 +252,8 @@ local function CreateBossMenu()
         titleBar:SetWidth(176)
         
         local yOffset = 0
-        for bossName, bossInfo in pairs(bossList) do
+        for _, bossName in ipairs(orderedBossNames) do
+            local bossInfo = bossList[bossName]
             local btn = CreateFrame("Button", nil, buttonContainer, "UIPanelButtonTemplate")
             btn:SetSize(176, btnHeight)
             btn:SetPoint("TOPLEFT", 0, -yOffset)

@@ -111,12 +111,52 @@ local function SendBossTips(bossName)
         return
     end
     
+    -- 魔兽世界频道最大字符串长度限制（大约）
+    local MAX_CHAT_LENGTH = 240
+    
     local parts = {strsplit("||", tips)}
     local sortedParts = {}
+    
+    -- 检查是否有||分割符
+    local hasSeparator = false
     for _, part in ipairs(parts) do
         local trimmed = strtrim(part)
         if trimmed ~= "" then
             table.insert(sortedParts, trimmed)
+            hasSeparator = true
+        end
+    end
+    
+    -- 如果没有||分割符，根据长度自动分割
+    if not hasSeparator then
+        local trimmedTips = strtrim(tips)
+        if trimmedTips ~= "" then
+            sortedParts = {}
+            local currentPart = ""
+            
+            -- 按空格分割文本，构建符合长度限制的段落
+            local words = {strsplit(" ", trimmedTips)}
+            for _, word in ipairs(words) do
+                -- 检查添加当前单词后是否超过长度限制
+                if string.len(currentPart) + string.len(word) + 1 <= MAX_CHAT_LENGTH then
+                    if currentPart ~= "" then
+                        currentPart = currentPart .. " " .. word
+                    else
+                        currentPart = word
+                    end
+                else
+                    -- 超过长度限制，保存当前段落并开始新段落
+                    if currentPart ~= "" then
+                        table.insert(sortedParts, currentPart)
+                    end
+                    currentPart = word
+                end
+            end
+            
+            -- 保存最后一个段落
+            if currentPart ~= "" then
+                table.insert(sortedParts, currentPart)
+            end
         end
     end
     
@@ -125,12 +165,27 @@ local function SendBossTips(bossName)
         return
     end
     
-    local groupSize = GetNumGroupMembers()
+    -- 确保至少发送一条攻略内容
+    if #sortedParts == 1 and string.find(sortedParts[1], "{rt8}.*{rt8}") then
+        -- 如果只有BOSS名称，尝试发送整个tips
+        table.insert(sortedParts, strtrim(string.gsub(tips, "{rt8}.*{rt8}", "")))
+        -- 移除空的部分
+        local filteredParts = {}
+        for _, part in ipairs(sortedParts) do
+            if strtrim(part) ~= "" then
+                table.insert(filteredParts, part)
+            end
+        end
+        sortedParts = filteredParts
+    end
+    
+    -- 简化频道选择：在副本中使用副本频道，不在副本中使用 SAY 频道
     local chatType = "SAY"
-    if groupSize > 0 and groupSize <= 5 then
-        chatType = "PARTY"
-    elseif groupSize > 5 then
-        chatType = "RAID"
+    local inInstance = IsInInstance()
+    
+    if inInstance then
+        -- 在副本中使用副本频道
+        chatType = "INSTANCE_CHAT"
     end
     
     local index = 1

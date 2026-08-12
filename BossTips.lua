@@ -410,7 +410,7 @@ end
 
 -- ============ 4. 攻略窗（副本总览手风琴，DCS 风格） ============
 local function CreateTipsFrame()
-    local frame = CreateFrame("Frame", "BossTipsGuideFrame", UIParent, "BackdropTemplate")
+    local frame = CreateFrame("Frame", "BossTipsGuideFrame", UIParent)
     frame:SetSize(BossTipsGlobalDB.guideWindowWidth or 360, 400)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(50)
@@ -418,9 +418,6 @@ local function CreateTipsFrame()
     frame:EnableMouse(true)
     frame:SetClampedToScreen(true)
     frame:Hide()
-    if BackdropTemplateMixin and frame.ApplyBackdrop then
-        frame:ApplyBackdrop()
-    end
     frame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -639,14 +636,13 @@ end
 
 -- ============ 5. 设置窗（设置 / 攻略配置 双标签，DCS 风格） ============
 local function CreateSettingsFrame()
-    local frame = CreateFrame("Frame", "BossTipsSettingsFrame", UIParent, "BackdropTemplate")
+    local frame = CreateFrame("Frame", "BossTipsSettingsFrame", UIParent)
     frame:SetSize(420, 480)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(60)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:Hide()
-    if BackdropTemplateMixin and frame.ApplyBackdrop then frame:ApplyBackdrop() end
     frame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -800,14 +796,13 @@ end
 
 -- ============ 6. 副本选择器（按版本折叠，DCS 风格） ============
 local function CreateDungeonPicker()
-    local frame = CreateFrame("Frame", "BossTipsDungeonPicker", UIParent, "BackdropTemplate")
+    local frame = CreateFrame("Frame", "BossTipsDungeonPicker", UIParent)
     frame:SetSize(280, 420)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(55)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:Hide()
-    if BackdropTemplateMixin and frame.ApplyBackdrop then frame:ApplyBackdrop() end
     frame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -936,14 +931,13 @@ end
 
 -- ============ 7. 攻略管理器（版本开关 / 隐藏副本 / 编辑 / 导入导出） ============
 local function CreateGuideManagerFrame()
-    local frame = CreateFrame("Frame", "BossTipsGuideManager", UIParent, "BackdropTemplate")
+    local frame = CreateFrame("Frame", "BossTipsGuideManager", UIParent)
     frame:SetSize(460, 500)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(65)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:Hide()
-    if BackdropTemplateMixin and frame.ApplyBackdrop then frame:ApplyBackdrop() end
     frame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -1103,10 +1097,16 @@ local function CreateMainButton()
 end
 
 local function CreateBossMenu()
-    local menu = CreateFrame("Frame", "BossTipsSimpleMenu", UIParent, "BackdropTemplate")
+    local menu = CreateFrame("Frame", "BossTipsSimpleMenu", UIParent)
     menu:SetSize(200, 30)
     menu:SetFrameStrata("HIGH")
     menu:Hide()
+    menu:SetBackdrop({
+        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+        tile = true, tileSize = 16, edgeSize = 16,
+        insets = { left = 4, right = 4, top = 4, bottom = 4 },
+    })
     return menu
 end
 
@@ -1311,7 +1311,8 @@ local function SafeInit()
     local ok, err = pcall(InitAddon)
     if not ok then
         print("|cFFFF0000BossTips 初始化失败:|r " .. tostring(err))
-        print(debug.traceback and debug.traceback() or "")
+        local handler = geterrorhandler and geterrorhandler()
+        if handler then handler(err) end
     end
 end
 

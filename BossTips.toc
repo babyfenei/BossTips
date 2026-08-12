@@ -1,20 +1,19 @@
 ## Interface: 120005,120007,120100,120200
 ## Title: Boss Tips
-## Notes: 副本一句话攻略提示插件
+## Notes: 副本一句话攻略提示插件（Ace3 重写版）
 ## Author: nga_以德报德,nga_babyfenei
-## Version: 1.4.0
+## Version: 2.0.0
 ## SavedVariables: BossTipsGlobalDB
 
-# ============================================================================
-# 攻略数据文件（必须先于 BossTips.lua 加载，用于填充 addon.GuideData）
-#
-# 主文件 BossTips.lua 不含任何游戏版本号：版本清单、标签、排序均由各数据文件
-# 通过 addon.GuideData.versionInfo / mplusInfo 自注册，主文件运行时自动发现。
-#
-# 新增一个大版本攻略时：直接把数据写进下方已预留的空占位文件（v13.0 起），
-# 不需要修改本 .toc，也不需要修改 BossTips.lua。
-# （WoW 的 .toc 不支持通配符，故以预留槽位方式实现"新增版本零改动"。）
-# ============================================================================
+# 内置 Ace3 库 + Libs（自包含，离线可用）
+embeds.xml
+
+# 本地化 + 数据层（与 Guides 对接）
+Locales.lua
+Data.lua
+
+# 攻略数据文件（必须先于逻辑文件加载，用于填充 addon.GuideData）
+# 主文件不含任何游戏版本号：版本清单/标签/排序由各数据文件自注册。
 Guides/v1.0.lua
 Guides/v2.0.lua
 Guides/v3.0.lua
@@ -27,17 +26,17 @@ Guides/v9.0.lua
 Guides/v10.0.lua
 Guides/v11.0.lua
 Guides/v12.0.lua
-
-# 预留空槽位（当前为空文件，不注册任何副本，不会出现在设置面板中）
 Guides/v13.0.lua
 Guides/v14.0.lua
 Guides/v15.0.lua
 Guides/v16.0.lua
 Guides/v17.0.lua
 Guides/v18.0.lua
-
-# 大秘境：仅保留当前小版本赛季池（历史赛季不留存）
 Guides/MPlus/Current.lua
 
-# 核心逻辑（最后加载，使用已填充的 GuideData 构建激活攻略）
-BossTips.lua
+# 逻辑与 UI（Ace3 架构）
+Core.lua
+Window.lua
+Settings.lua
+Editor.lua
+Picker.lua

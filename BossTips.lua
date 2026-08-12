@@ -410,7 +410,7 @@ end
 
 -- ============ 4. 攻略窗（副本总览手风琴，DCS 风格） ============
 local function CreateTipsFrame()
-    local frame = CreateFrame("Frame", "BossTipsGuideFrame", UIParent)
+    local frame = CreateFrame("Frame", "BossTipsGuideFrame", UIParent, "BackdropTemplate")
     frame:SetSize(BossTipsGlobalDB.guideWindowWidth or 360, 400)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(50)
@@ -636,7 +636,7 @@ end
 
 -- ============ 5. 设置窗（设置 / 攻略配置 双标签，DCS 风格） ============
 local function CreateSettingsFrame()
-    local frame = CreateFrame("Frame", "BossTipsSettingsFrame", UIParent)
+    local frame = CreateFrame("Frame", "BossTipsSettingsFrame", UIParent, "BackdropTemplate")
     frame:SetSize(420, 480)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(60)
@@ -796,7 +796,7 @@ end
 
 -- ============ 6. 副本选择器（按版本折叠，DCS 风格） ============
 local function CreateDungeonPicker()
-    local frame = CreateFrame("Frame", "BossTipsDungeonPicker", UIParent)
+    local frame = CreateFrame("Frame", "BossTipsDungeonPicker", UIParent, "BackdropTemplate")
     frame:SetSize(280, 420)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(55)
@@ -931,7 +931,7 @@ end
 
 -- ============ 7. 攻略管理器（版本开关 / 隐藏副本 / 编辑 / 导入导出） ============
 local function CreateGuideManagerFrame()
-    local frame = CreateFrame("Frame", "BossTipsGuideManager", UIParent)
+    local frame = CreateFrame("Frame", "BossTipsGuideManager", UIParent, "BackdropTemplate")
     frame:SetSize(460, 500)
     frame:SetFrameStrata("HIGH")
     frame:SetFrameLevel(65)
@@ -1097,7 +1097,7 @@ local function CreateMainButton()
 end
 
 local function CreateBossMenu()
-    local menu = CreateFrame("Frame", "BossTipsSimpleMenu", UIParent)
+    local menu = CreateFrame("Frame", "BossTipsSimpleMenu", UIParent, "BackdropTemplate")
     menu:SetSize(200, 30)
     menu:SetFrameStrata("HIGH")
     menu:Hide()

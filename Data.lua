@@ -4,7 +4,7 @@
 -- UI 文件（Core/Window/Settings/Editor）均依赖本文件构建的 addon.ActiveGuides。
 -- ============================================================================
 local _, addon = ...
-addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, versionInfo = {}, mplusInfo = {}, meta = {} }
+addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, versionInfo = {}, mplusInfo = {}, meta = {}, raids = {} }
 addon.ActiveGuides = addon.ActiveGuides or {}
 
 -- ============ 工具 ============
@@ -34,6 +34,7 @@ local defaultConfig = {
     defaultChatChannel = "INSTANCE_CHAT",
     disabledNative = {},
     disabledMPlus = {},
+    disabledRaids = {},
     disabledCustomVersions = {},
     hiddenDungeons = {},
     guides = {},
@@ -78,6 +79,7 @@ local function ensureDBExists()
     -- 嵌套表兜底（防止旧存档里是 nil）
     if not BossTipsGlobalDB.disabledNative then BossTipsGlobalDB.disabledNative = {} end
     if not BossTipsGlobalDB.disabledMPlus then BossTipsGlobalDB.disabledMPlus = {} end
+    if not BossTipsGlobalDB.disabledRaids then BossTipsGlobalDB.disabledRaids = {} end
     if not BossTipsGlobalDB.disabledCustomVersions then BossTipsGlobalDB.disabledCustomVersions = {} end
     if not BossTipsGlobalDB.hiddenDungeons then BossTipsGlobalDB.hiddenDungeons = {} end
     if not BossTipsGlobalDB.guides then BossTipsGlobalDB.guides = {} end
@@ -152,6 +154,49 @@ end
 addon.GetNativeOrder = GetNativeOrder
 addon.GetMPlusOrder = GetMPlusOrder
 addon.GetVersionLabel = GetVersionLabel
+
+-- ============ 团本（raids 命名空间）辅助 ============
+-- 团本按版本字符串（"1.0".."12.0"）分文件，结构与 versions 平行，但独立命名空间，
+-- 避免与 5 人本原生版本号冲突；编辑器以独立「团本」选项卡呈现。
+local function GetRaidOrder()
+    local GD = addon.GuideData
+    return BuildSortedIDs(GD.raids, nil)
+end
+local function GetRaidVersionIDs()
+    return GetRaidOrder()
+end
+local function GetRaidVersionLabel(id)
+    ensureDBExists()
+    local GD = addon.GuideData
+    local i = GD.raidInfo and GD.raidInfo[id]
+    if i and i.label and i.label ~= "" then return i.label end
+    return (id and tostring(id) .. " 团本") or "团本"
+end
+local function GetRaidDungeons(verId)
+    ensureDBExists()
+    local GD = addon.GuideData
+    local dungeons = {}
+    if GD.raids and GD.raids[verId] then
+        for instName, bosses in pairs(GD.raids[verId]) do
+            dungeons[instName] = { isBuiltIn = true, source = "raid", bosses = bosses }
+        end
+    end
+    return dungeons
+end
+local function IsRaidVersionEnabled(verId)
+    ensureDBExists()
+    return not (BossTipsGlobalDB.disabledRaids and BossTipsGlobalDB.disabledRaids[verId])
+end
+local function IsBuiltInRaid(verId, instName)
+    local GD = addon.GuideData
+    return (GD.raids and GD.raids[verId] and GD.raids[verId][instName]) ~= nil
+end
+addon.GetRaidOrder = GetRaidOrder
+addon.GetRaidVersionIDs = GetRaidVersionIDs
+addon.GetRaidVersionLabel = GetRaidVersionLabel
+addon.GetRaidDungeons = GetRaidDungeons
+addon.IsRaidVersionEnabled = IsRaidVersionEnabled
+addon.IsBuiltInRaid = IsBuiltInRaid
 
 -- ============ 自定义副本/版本辅助 ============
 local function GetCustomVersionList()
@@ -271,6 +316,16 @@ local function BuildActiveGuides()
         for _, vid in ipairs(GetNativeOrder()) do
             if GD.versions[vid] and not (db.disabledNative and db.disabledNative[vid]) then
                 for instance, dungeonTbl in pairs(GD.versions[vid]) do
+                    addDungeon(instance, dungeonTbl)
+                end
+            end
+        end
+    end
+    -- 团本（独立命名空间，按版本号合并；副本名与 5 人本不冲突）
+    if GD.raids then
+        for _, vid in ipairs(GetRaidVersionIDs()) do
+            if GD.raids[vid] and not (db.disabledRaids and db.disabledRaids[vid]) then
+                for instance, dungeonTbl in pairs(GD.raids[vid]) do
                     addDungeon(instance, dungeonTbl)
                 end
             end
@@ -735,6 +790,11 @@ local function CollectAllInstances()
     end
     if GD.mplus then
         for _, t in pairs(GD.mplus) do
+            for instance in pairs(t) do set[instance] = true end
+        end
+    end
+    if GD.raids then
+        for _, t in pairs(GD.raids) do
             for instance in pairs(t) do set[instance] = true end
         end
     end

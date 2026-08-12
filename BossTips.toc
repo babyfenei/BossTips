@@ -35,6 +35,18 @@ Guides/v16.0.lua
 Guides/v17.0.lua
 Guides/v18.0.lua
 Guides/MPlus/Current.lua
+Guides/Raids/v1.0.lua
+Guides/Raids/v2.0.lua
+Guides/Raids/v3.0.lua
+Guides/Raids/v4.0.lua
+Guides/Raids/v5.0.lua
+Guides/Raids/v6.0.lua
+Guides/Raids/v7.0.lua
+Guides/Raids/v8.0.lua
+Guides/Raids/v9.0.lua
+Guides/Raids/v10.0.lua
+Guides/Raids/v11.0.lua
+Guides/Raids/v12.0.lua
 
 # 逻辑与 UI（Ace3 架构）
 Core.lua

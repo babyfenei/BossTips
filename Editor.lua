@@ -12,6 +12,9 @@ local AceGUI = LibStub("AceGUI-3.0")
 -- 所以 ParsePath 要先按 \001 取最后一级（叶子 value），再用我们的 "/" token 解析。
 local SEP = "/"
 
+-- 编辑器当前显示的标签页：地下城(dungeon) / 团本(raid)
+local editorMode = "dungeon"
+
 -- 副本类型 / 难度选项
 local DUNGEON_TYPES = {
     [""] = L["No Limit"],
@@ -36,18 +39,26 @@ local function IsCustomVersion(verId)
     return BossTipsGlobalDB.customVersions and BossTipsGlobalDB.customVersions[verId] ~= nil
 end
 
-local function IsBuiltInDungeon(verId, instName)
+local function IsBuiltInDungeon(verId, instName, isRaid)
     local GD = addon.GuideData
+    if isRaid then
+        return (GD.raids and GD.raids[verId] and GD.raids[verId][instName]) ~= nil
+    end
     return (GD.versions and GD.versions[verId] and GD.versions[verId][instName]) or
            (GD.mplus and GD.mplus[verId] and GD.mplus[verId][instName])
 end
 
-local function GetDungeonBossesForEditor(verId, instName)
+local function GetDungeonBossesForEditor(verId, instName, isRaid)
     if addon.EnsureDB then addon.EnsureDB() end
     local bosses = {}
     local GD = addon.GuideData
-    local src = (GD.versions and GD.versions[verId] and GD.versions[verId][instName]) or
-                (GD.mplus and GD.mplus[verId] and GD.mplus[verId][instName])
+    local src
+    if isRaid then
+        src = (GD.raids and GD.raids[verId] and GD.raids[verId][instName])
+    else
+        src = (GD.versions and GD.versions[verId] and GD.versions[verId][instName]) or
+              (GD.mplus and GD.mplus[verId] and GD.mplus[verId][instName])
+    end
     if src then
         for boss, entry in pairs(src) do
             bosses[boss] = { source = "builtin", order = entry.order or 999, type = entry.type or "BOSS", tips = entry.tips or "", encounterId = addon.GetBossEncounterId(instName, boss) or "" }
@@ -160,6 +171,11 @@ local function PathDungeon(verId, instName) return "V" .. SEP .. verId .. SEP ..
 local function PathNewBoss(verId, instName) return "V" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "NEW_BOSS" end
 local function PathBoss(verId, instName, bossName) return "V" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "B" .. SEP .. bossName end
 
+-- 团本路径（以 "R" 区分，避免与 5 人本 "V" 命名空间冲突）
+local function PathRaidVersion(verId) return "R" .. SEP .. verId end
+local function PathRaidDungeon(verId, instName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName end
+local function PathRaidBoss(verId, instName, bossName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "B" .. SEP .. bossName end
+
 local function GetLeafPath(group)
     if not group then return tostring(group) end
     local leaf = group
@@ -180,6 +196,19 @@ local function ParsePath(group)
     local leaf = GetLeafPath(group)
     local parts = {}
     for p in string.gmatch(leaf, "[^" .. SEP .. "]+") do table.insert(parts, p) end
+    if parts[1] == "R" then
+        -- 团本命名空间
+        local verId = parts[2]
+        local t3 = parts[3]
+        if not t3 then return "raid_version", verId, nil, nil, leaf, true end
+        if t3 == "D" then
+            local instName = parts[4]
+            local t5 = parts[5]
+            if not t5 then return "raid_dungeon", verId, instName, nil, leaf, true end
+            if t5 == "B" and parts[6] then return "raid_boss", verId, instName, parts[6], leaf, true end
+        end
+        return "unknown", nil, nil, nil, leaf, true
+    end
     if parts[1] ~= "V" then return "unknown", nil, nil, nil, leaf end
     local verId = parts[2]
     local t3 = parts[3]
@@ -201,6 +230,16 @@ local function BuildUniqueValue(leafPath)
     if nodeType == "import_export" then return "import_export" end
     if nodeType == "new_version" then return "new_version" end
     if nodeType == "unknown" then return leafPath end
+    if nodeType == "raid_version" or nodeType == "raid_dungeon" or nodeType == "raid_boss" then
+        local parts = { PathRaidVersion(verId) }
+        if instName then
+            parts[#parts + 1] = PathRaidDungeon(verId, instName)
+            if bossName then
+                parts[#parts + 1] = PathRaidBoss(verId, instName, bossName)
+            end
+        end
+        return table.concat(parts, "\001")
+    end
     local parts = { PathVersion(verId) }
     if instName then
         parts[#parts + 1] = PathDungeon(verId, instName)
@@ -241,6 +280,54 @@ local function BuildTree()
     local treeData = {}
     table.insert(treeData, { value = "import_export", text = "|cff00ccff" .. (L["Import Export Short"] or "[<=> 导入与导出]") .. "|r" })
     table.insert(treeData, { value = "new_version", text = "|cff00ff00" .. (L["New Category"] or "[+ 新建分类]") .. "|r" })
+
+    -- ============ 团本模式：仅渲染团本树 ============
+    if editorMode == "raid" then
+        local raidVerIds = addon.GetRaidVersionIDs()
+        table.sort(raidVerIds, function(a, b)
+            local na, nb = addon.ParseVersionNumber and addon.ParseVersionNumber(a), addon.ParseVersionNumber and addon.ParseVersionNumber(b)
+            if na and nb then return na > nb end
+            if na then return true end
+            if nb then return false end
+            return tostring(a) > tostring(b)
+        end)
+        for _, verId in ipairs(raidVerIds) do
+            local enabled = addon.IsRaidVersionEnabled(verId)
+            local statusStr = enabled and "" or " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r"
+            local verNode = {
+                value = PathRaidVersion(verId),
+                text = "|cffffcc00" .. addon.GetRaidVersionLabel(verId) .. "|r" .. statusStr,
+                children = {}
+            }
+            local dungeons = addon.GetRaidDungeons(verId)
+            local names = {}
+            for instName in pairs(dungeons) do names[#names + 1] = instName end
+            table.sort(names)
+            for _, instName in ipairs(names) do
+                local hidden = IsDungeonHidden(instName)
+                local hStr = hidden and " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r" or ""
+                local instNode = {
+                    value = PathRaidDungeon(verId, instName),
+                    text = instName .. hStr,
+                    children = {}
+                }
+                local bosses = GetDungeonBossesForEditor(verId, instName, true)
+                local bossList = {}
+                for boss in pairs(bosses) do bossList[#bossList + 1] = boss end
+                table.sort(bossList, function(a, b)
+                    local oa, ob = bosses[a].order or 999, bosses[b].order or 999
+                    if oa ~= ob then return oa < ob end
+                    return a < b
+                end)
+                for _, boss in ipairs(bossList) do
+                    table.insert(instNode.children, { value = PathRaidBoss(verId, instName, boss), text = boss })
+                end
+                table.insert(verNode.children, instNode)
+            end
+            table.insert(treeData, verNode)
+        end
+        return treeData
+    end
 
     -- 排序：当前赛季置顶，其余按版本号倒序
     local allVerIds = addon.GetAllVersionIDs()
@@ -367,10 +454,30 @@ function addon:CreateEditorFrame()
         if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
     end)
 
-    -- 顶部工具栏：展开/折叠所有副本
+    -- 顶部工具栏：标签页切换（地下城/团本）+ 展开/折叠
     local toolbar = AceGUI:Create("SimpleGroup")
     toolbar:SetLayout("Flow")
     toolbar:SetFullWidth(true)
+
+    local dungeonTab = AceGUI:Create("Button")
+    dungeonTab:SetText("地下城")
+    dungeonTab:SetWidth(100)
+    local raidTab = AceGUI:Create("Button")
+    raidTab:SetText("团本")
+    raidTab:SetWidth(100)
+    local function RefreshTabHighlight()
+        dungeonTab:SetText(editorMode == "dungeon" and "|cffffff00[地下城]|r" or "地下城")
+        raidTab:SetText(editorMode == "raid" and "|cffffff00[团本]|r" or "团本")
+    end
+    dungeonTab:SetCallback("OnClick", function()
+        if editorMode ~= "dungeon" then editorMode = "dungeon"; RefreshTabHighlight(); frame:RefreshTree() end
+    end)
+    raidTab:SetCallback("OnClick", function()
+        if editorMode ~= "raid" then editorMode = "raid"; RefreshTabHighlight(); frame:RefreshTree() end
+    end)
+    toolbar:AddChild(dungeonTab)
+    toolbar:AddChild(raidTab)
+
     local expandBtn = AceGUI:Create("Button")
     expandBtn:SetText("展开所有副本")
     expandBtn:SetWidth(120)
@@ -380,6 +487,7 @@ function addon:CreateEditorFrame()
     toolbar:AddChild(expandBtn)
     toolbar:AddChild(collapseBtn)
     frame:AddChild(toolbar)
+    RefreshTabHighlight()
 
     local treeGroup = AceGUI:Create("TreeGroup")
     -- TreeGroup 右侧内容区应使用 Fill，让 ScrollFrame 占满整个右侧面板
@@ -453,6 +561,7 @@ function addon:CreateEditorFrame()
         local ok, err = pcall(function()
             if addon.EnsureDB then addon.EnsureDB() end
             local nodeType, verId, instName, bossName, leaf = ParsePath(group)
+            local isRaid = (nodeType == "raid_version" or nodeType == "raid_dungeon" or nodeType == "raid_boss")
 
             -- ========== 导入导出 ==========
             if nodeType == "import_export" then
@@ -559,6 +668,65 @@ function addon:CreateEditorFrame()
                     }
                     frame:RefreshTree(PathVersion(verId))
                 end, true)
+                return
+            end
+
+            -- ========== 管理团本版本 ==========
+            if nodeType == "raid_version" then
+                AddHeading(scroll, (L["Manage Raid Version"] or "管理团本版本") .. "：" .. addon.GetRaidVersionLabel(verId))
+
+                local enabled = addon.IsRaidVersionEnabled(verId)
+                local activeCheck = AceGUI:Create("CheckBox")
+                activeCheck:SetLabel("启用此团本版本（取消勾选将隐藏其下所有团本）")
+                activeCheck:SetValue(enabled)
+                activeCheck:SetCallback("OnValueChanged", function(_, _, val)
+                    BossTipsGlobalDB.disabledRaids[verId] = (not val) and true or nil
+                    addon.RefreshGuides()
+                    frame:RefreshTree(PathRaidVersion(verId))
+                end)
+                AddFullWidth(scroll, activeCheck)
+                return
+            end
+
+            -- ========== 管理团本副本 ==========
+            if nodeType == "raid_dungeon" then
+                AddHeading(scroll, (L["Manage Raid"] or "管理团本") .. "：" .. instName)
+
+                local meta = addon.GuideData.meta and addon.GuideData.meta[instName]
+                local idEdit = AceGUI:Create("EditBox")
+                idEdit:SetLabel(L["Dungeon ID"] or "副本ID（实例ID）")
+                idEdit:SetText((meta and (meta.instanceId or meta.mapID)) and tostring(meta.instanceId or meta.mapID) or "")
+                idEdit:SetDisabled(true)
+                AddFullWidth(scroll, idEdit)
+
+                -- 自动填充 BigWigs 首领战ID
+                AddButton(scroll, L["Auto Fill BigWigs IDs"] or "自动填充 BigWigs 首领战ID", function()
+                    local bosses = GetDungeonBossesForEditor(verId, instName, true)
+                    local filled = 0
+                    for boss in pairs(bosses) do
+                        local existing = addon.GetBossEncounterId(instName, boss)
+                        if not existing then
+                            local eid = addon.GetBigWigsEncounterId(instName, boss)
+                            if eid then SaveEncounterId(instName, boss, eid); filled = filled + 1 end
+                        end
+                    end
+                    print("|cff00ff00BossTips|r 已填充 " .. filled .. " 个首领战ID")
+                    frame:RefreshTree(PathRaidDungeon(verId, instName))
+                end, true)
+
+                -- 激活/隐藏此团本
+                local activeCheck = AceGUI:Create("CheckBox")
+                activeCheck:SetLabel(L["Active Dungeon Hint"] or "激活此团本（取消勾选将在屏幕上隐藏）")
+                activeCheck:SetValue(IsDungeonActive(instName) and not IsDungeonHidden(instName))
+                activeCheck:SetCallback("OnValueChanged", function(_, _, val)
+                    if val then BossTipsGlobalDB.hiddenDungeons[instName] = nil
+                    else BossTipsGlobalDB.hiddenDungeons[instName] = true end
+                    addon.RefreshGuides()
+                    frame:RefreshTree(PathRaidDungeon(verId, instName))
+                end)
+                AddFullWidth(scroll, activeCheck)
+
+                AddLabel(scroll, "|cff888888团本首领已按 ID 库预建骨架，点击左侧首领即可编辑攻略与首领战ID（保存到 WTF 覆盖层）。|r")
                 return
             end
 
@@ -680,7 +848,10 @@ function addon:CreateEditorFrame()
             end
 
             -- 以下都需要 instName
-            local isBuiltInDungeon = IsBuiltInDungeon(verId, instName)
+            local isBuiltInDungeon = IsBuiltInDungeon(verId, instName, isRaid)
+            -- 路径别名：团本节点用 R 前缀路径刷新，地下城用 V 前缀
+            local PB = isRaid and PathRaidBoss or PathBoss
+            local PD = isRaid and PathRaidDungeon or PathDungeon
             local customDungeon = BossTipsGlobalDB.customDungeons[instName]
             local dungeonOverride = addon.GetDungeonOverride(instName)
 
@@ -727,8 +898,8 @@ function addon:CreateEditorFrame()
             end
 
             -- ========== 编辑目标 ==========
-            if nodeType == "boss" then
-                local bosses = GetDungeonBossesForEditor(verId, instName)
+            if nodeType == "boss" or nodeType == "raid_boss" then
+                local bosses = GetDungeonBossesForEditor(verId, instName, isRaid)
                 local binfo = bosses[bossName]
                 if not binfo then
                     AddLabel(scroll, "未找到 '" .. tostring(bossName) .. "' 的攻略数据。")
@@ -761,7 +932,7 @@ function addon:CreateEditorFrame()
                 delBtn:SetCallback("OnClick", function()
                     ConfirmDialog("确定删除 '" .. bossName .. "' 吗？", {
                         frame = frame,
-                        selectPath = PathDungeon(verId, instName),
+                        selectPath = PD(verId, instName),
                         func = function()
                             if customDungeon and customDungeon.bosses then
                                 customDungeon.bosses[bossName] = nil
@@ -828,7 +999,7 @@ function addon:CreateEditorFrame()
                     orderEdit:SetText(tostring(customDungeon.bosses[bossName].order or 999))
                     orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         customDungeon.bosses[bossName].order = tonumber(text) or 999
-                        frame:RefreshTree(PathBoss(verId, instName, bossName))
+                        frame:RefreshTree(PB(verId, instName, bossName))
                     end)
                     AddRow(scroll, typeDD, orderEdit)
                 else
@@ -918,7 +1089,7 @@ function addon:CreateEditorFrame()
                         end
                     end
                     print("|cff00ff00BossTips|r 已填充 " .. filled .. " 个首领战ID")
-                    frame:RefreshTree(PathDungeon(verId, instName))
+                    frame:RefreshTree(PD(verId, instName))
                 end, true)
 
                 -- 激活此副本
@@ -936,7 +1107,7 @@ function addon:CreateEditorFrame()
                         end
                     end
                     addon.RefreshGuides()
-                    frame:RefreshTree(PathDungeon(verId, instName))
+                    frame:RefreshTree(PD(verId, instName))
                 end)
                 AddFullWidth(scroll, activeCheck)
 

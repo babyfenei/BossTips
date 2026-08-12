@@ -1,0 +1,12 @@
+# 工作区/工具临时目录
+.workbuddy/
+.vscode/
+
+# 参考插件（非 BossTips 本体）
+test/
+
+# 备份与历史快照
+Guides_bak_*/
+Guides_bak_pre_transform/
+BossData.lua.backup
+*.backup

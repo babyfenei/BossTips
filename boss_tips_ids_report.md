@@ -1,0 +1,1822 @@
+# BossTips 副本/首领战 ID 提取报告
+
+生成时间：2026-08-13  |  数据源：本地 BigWigs + DBM
+
+总计：257 个实例，1520 个首领战条目
+
+
+## 按扩展分布
+
+
+### 争霸艾泽拉斯（28 实例）
+
+- 实例ID **1023** —— 3 个首领
+    - `Darkfathom` → encounterId 2099
+    - `ViqGoth` → encounterId 2100
+    - `Lockwood` → encounterId 2109
+- 实例ID **1028** —— 10 个首领
+    - `Azurethos` → encounterId 1880
+    - `HailstoneConstruct` → encounterId 1880
+    - `Jiarak` → encounterId 1880
+    - `Kraulok` → encounterId 1880
+    - `Tzane` → encounterId 1880
+    - `Yenajz` → encounterId 1880
+    - `Ulmath` → encounterId 2317
+    - `Wekemara` → encounterId 2318
+    - `Shekzara` → encounterId 2351
+    - `Vuklaz` → encounterId 2353
+- 实例ID **1031** —— 8 个首领
+    - `Ghuun` → encounterId 2122
+    - `FetidDevourer` → encounterId 2128
+    - `Vectis` → encounterId 2134
+    - `Mythrax` → encounterId 2135
+    - `Zekvhozj` → encounterId 2136
+    - `Mother` → encounterId 2141
+    - `Taloc` → encounterId 2144
+    - `Zul` → encounterId 2145
+- 实例ID **1177** —— 2 个首领
+    - `RestlessCabal` → encounterId 2269
+    - `Uunat` → encounterId 2273
+- 实例ID **1179** —— 8 个首领
+    - `BlackwaterBehemoth` → encounterId 2289
+    - `Zaqul` → encounterId 2293
+    - `AbyssalCommanderSivara` → encounterId 2298
+    - `QueenAzshara` → encounterId 2299
+    - `Orgozoa` → encounterId 2303
+    - `LadyPriscillaAshvane` → encounterId 2304
+    - `RadianceofAzshara` → encounterId 2305
+    - `TheQueensCourt` → encounterId 2311
+- 实例ID **1180** —— 12 个首领
+    - `Maut` → encounterId 2327
+    - `DarkInquisitorXanesh` → encounterId 2328
+    - `Wrathion` → encounterId 2329
+    - `RadenTheDespoiled` → encounterId 2331
+    - `TheHivemind` → encounterId 2333
+    - `TheProphetSkitra` → encounterId 2334
+    - `ShadharTheInsatiable` → encounterId 2335
+    - `Vexiona` → encounterId 2336
+    - `CarapaceofNZoth` → encounterId 2337
+    - `Drestagath` → encounterId 2343
+    - `NZothTheCorruptor` → encounterId 2344
+    - `IlgynothCorruptionReborn` → encounterId 2345
+- 实例ID **1594** —— 5 个首领
+    - `CrowdPummeler` → encounterId 2105
+    - `Azerokk` → encounterId 2106
+    - `RixxaFluxflame` → encounterId 2107
+    - `MogulRazzdunk` → encounterId 2108
+    - `UndermineTrash` → encounterId 3463
+- 实例ID **1754** —— 4 个首领
+    - `SkycapnKragg` → encounterId 2093
+    - `CounciloCaptains` → encounterId 2094
+    - `RingofBooty` → encounterId 2095
+    - `HarlanSweete` → encounterId 2096
+- 实例ID **1762** —— 4 个首领
+    - `GoldenSerpent` → encounterId 2139
+    - `CouncilofTribes` → encounterId 2140
+    - `Mchimba` → encounterId 2142
+    - `Dazar` → encounterId 2143
+- 实例ID **1763** —— 4 个首领
+    - `Alunza` → encounterId 2084
+    - `Volkaal` → encounterId 2085
+    - `Rezan` → encounterId 2086
+    - `Yazma` → encounterId 2087
+- 实例ID **1771** —— 4 个首领
+    - `TheSandQueen` → encounterId 2101
+    - `JesHowlis` → encounterId 2102
+    - `Valyri` → encounterId 2103
+    - `Korgus` → encounterId 2104
+- 实例ID **1841** —— 4 个首领
+    - `ElderLeaxa` → encounterId 2111
+    - `SporecallerZancha` → encounterId 2112
+    - `InfestedCrawg` → encounterId 2118
+    - `Unbound` → encounterId 2123
+- 实例ID **1861** —— 8 个首领
+    - `Fetid Devourer` → encounterId 2146
+    - `G'huun` → encounterId 2147
+    - `Vectis` → encounterId 2166
+    - `MOTHER` → encounterId 2167
+    - `Taloc` → encounterId 2168
+    - `Zek'voz, Herald of N'zoth` → encounterId 2169
+    - `Mythrax the Unraveler` → encounterId 2194
+    - `Zul` → encounterId 2195
+- 实例ID **1862** —— 5 个首领
+    - `HeartsbaneTriad` → encounterId 2113
+    - `SoulboundGoliath` → encounterId 2114
+    - `RaaltheGlut` → encounterId 2115
+    - `Waycrests` → encounterId 2116
+    - `GorakTul` → encounterId 2117
+- 实例ID **1864** —— 4 个首领
+    - `Agusirr` → encounterId 2130
+    - `TidesageCouncil` → encounterId 2131
+    - `Stormsong` → encounterId 2132
+    - `Volzith` → encounterId 2133
+- 实例ID **1877** —— 4 个首领
+    - `AdderisandAspix` → encounterId 2124
+    - `Merektha` → encounterId 2125
+    - `Galvazzt` → encounterId 2126
+    - `AvatarofSethraliss` → encounterId 2127
+- 实例ID **2070** —— 20 个首领
+    - `Grong` → encounterId 2263
+    - `ChampionofLight` → encounterId 2265
+    - `JadefireMasters` → encounterId 2266
+    - `ConclaveoftheChosen` → encounterId 2268
+    - `Opulence` → encounterId 2271
+    - `Rastakhan` → encounterId 2272
+    - `Mekkatorque` → encounterId 2276
+    - `StormwallBlockade` → encounterId 2280
+    - `Jaina` → encounterId 2281
+    - `Jadefire Masters Alliance` → encounterId 2323
+    - `Grong Horde` → encounterId 2325
+    - `Conclave of the Chosen` → encounterId 2330
+    - `Champion of the Light Horde` → encounterId 2333
+    - `High Tinker Mekkatorque` → encounterId 2334
+    - `King Rastakhan` → encounterId 2335
+    - `Stormwall Blockade` → encounterId 2337
+    - `Grong Alliance` → encounterId 2340
+    - `Jadefire Masters Horde` → encounterId 2341
+    - `Lady Jaina Proudmoore` → encounterId 2343
+    - `Champion of the Light Alliance` → encounterId 2344
+- 实例ID **2096** —— 2 个首领
+    - `The Restless Cabal` → encounterId 2328
+    - `Uu'nat, Harbinger of the Void` → encounterId 2332
+- 实例ID **2097** —— 8 个首领
+    - `TussleTonks` → encounterId 2257
+    - `KUJ0` → encounterId 2258
+    - `MachinistGarden` → encounterId 2259
+    - `KingMechagon` → encounterId 2260
+    - `KingGobbamak` → encounterId 2290
+    - `HK8` → encounterId 2291
+    - `Gunker` → encounterId 2292
+    - `Trixie_Naeno` → encounterId 2312
+- 实例ID **2164** —— 8 个首领
+    - `Blackwater Behemoth` → encounterId 2347
+    - `Za'qul, Herald of Ny'alotha` → encounterId 2349
+    - `Orgozoa` → encounterId 2351
+    - `Abyssal Commander Sivara` → encounterId 2352
+    - `Radiance of Azshara` → encounterId 2353
+    - `Lady Ashvane` → encounterId 2354
+    - `The Queen's Court` → encounterId 2359
+    - `Queen Azshara` → encounterId 2361
+- 实例ID **2217** —— 12 个首领
+    - `Ra-den the Despoiled` → encounterId 2364
+    - `Maut` → encounterId 2365
+    - `Carapace of N'Zoth` → encounterId 2366
+    - `Shad'har the Insatiable` → encounterId 2367
+    - `Wrathion` → encounterId 2368
+    - `The Prophet Skitra` → encounterId 2369
+    - `Vexiona` → encounterId 2370
+    - `The Hivemind` → encounterId 2372
+    - `Drest'agath` → encounterId 2373
+    - `Il'gynoth, Corruption Reborn` → encounterId 2374
+    - `N'Zoth, the Corruptor` → encounterId 2375
+    - `Dark Inquisitor Xanesh` → encounterId 2377
+- 实例ID **-942** —— 1 个首领
+    - `Warbringer Yenajz` → encounterId 2198
+- 实例ID **-896** —— 1 个首领
+    - `Hailstone Construct` → encounterId 2197
+- 实例ID **-895** —— 1 个首领
+    - `Azurethos, The Winged Typhoon` → encounterId 2199
+- 实例ID **-864** —— 1 个首领
+    - `Dunegorger Kraulok` → encounterId 2210
+- 实例ID **-863** —— 1 个首领
+    - `T'zane` → encounterId 2139
+- 实例ID **-862** —— 1 个首领
+    - `Ji'arak` → encounterId 2141
+- 实例ID **-14** —— 2 个首领
+    - `The Lion's Roar` → encounterId 2212
+    - `Doom's Howl` → encounterId 2213
+
+### 军团再临（32 实例）
+
+- 实例ID **707** —— 5 个首领
+    - `TirathonSaltheril` → encounterId 1815
+    - `Ashgolm` → encounterId 1816
+    - `Glazer` → encounterId 1817
+    - `Cordana` → encounterId 1818
+    - `Tormentorum` → encounterId 1850
+- 实例ID **716** —— 4 个首领
+    - `Parjesh` → encounterId 1810
+    - `Hatecoil` → encounterId 1811
+    - `KingDeepbeard` → encounterId 1812
+    - `WrathofAzshara` → encounterId 1814
+- 实例ID **721** —— 5 个首领
+    - `Hymdall` → encounterId 1805
+    - `Hyrja` → encounterId 1806
+    - `Fenryr` → encounterId 1807
+    - `KingSkovald` → encounterId 1808
+    - `Odyn` → encounterId 1809
+- 实例ID **726** —— 5 个首领
+    - `Corstilax` → encounterId 1825
+    - `Naltira` → encounterId 1826
+    - `Ivanyr` → encounterId 1827
+    - `GeneralXakal` → encounterId 1828
+    - `Vandros` → encounterId 1829
+- 实例ID **727** —— 3 个首领
+    - `Ymiron` → encounterId 1822
+    - `Harbaron` → encounterId 1823
+    - `Helya` → encounterId 1824
+- 实例ID **740** —— 4 个首领
+    - `AmalgamSouls` → encounterId 1832
+    - `Illysanna` → encounterId 1833
+    - `Smashspite` → encounterId 1834
+    - `Kurtalos` → encounterId 1835
+- 实例ID **762** —— 4 个首领
+    - `Glaidalis` → encounterId 1836
+    - `Oakheart` → encounterId 1837
+    - `Dresaron` → encounterId 1838
+    - `ShadeofXavius` → encounterId 1839
+- 实例ID **767** —— 4 个首领
+    - `Rokmora` → encounterId 1790
+    - `Ularogg` → encounterId 1791
+    - `Naraxas` → encounterId 1792
+    - `Dargrul` → encounterId 1793
+- 实例ID **768** —— 7 个首领
+    - `Ursok` → encounterId 1841
+    - `Nythendra` → encounterId 1853
+    - `NightmareDragons` → encounterId 1854
+    - `Xavius` → encounterId 1864
+    - `Ilgynoth` → encounterId 1873
+    - `Renferal` → encounterId 1876
+    - `Cenarius` → encounterId 1877
+- 实例ID **777** —— 8 个首领
+    - `Shivermaw` → encounterId 1845
+    - `MindflayerKaahrj` → encounterId 1846
+    - `MillificentManastorm` → encounterId 1847
+    - `Festerface` → encounterId 1848
+    - `Saelorn` → encounterId 1851
+    - `Anubesset` → encounterId 1852
+    - `PrincessThalena` → encounterId 1855
+    - `FelLordBetrug` → encounterId 1856
+- 实例ID **786** —— 10 个首领
+    - `Krosus` → encounterId 1842
+    - `Skorpyron` → encounterId 1849
+    - `Tichondrius` → encounterId 1862
+    - `Etraeus` → encounterId 1863
+    - `ChronoAnomaly` → encounterId 1865
+    - `Guldan` → encounterId 1866
+    - `Trilliax` → encounterId 1867
+    - `Aluriel` → encounterId 1871
+    - `Elisande` → encounterId 1872
+    - `Telarn` → encounterId 1886
+- 实例ID **800** —— 3 个首领
+    - `Gerdo` → encounterId 1868
+    - `Talixae` → encounterId 1869
+    - `Melandrus` → encounterId 1870
+- 实例ID **822** —— 21 个首领
+    - `Soultakers` → encounterId 1879
+    - `AnaMouz` → encounterId 1880
+    - `Apocron` → encounterId 1880
+    - `Brutallus` → encounterId 1880
+    - `Malificus` → encounterId 1880
+    - `Nithogg` → encounterId 1880
+    - `Sivash` → encounterId 1880
+    - `WitheredJim` → encounterId 1880
+    - `Sharthos` → encounterId 1888
+    - `Humongris` → encounterId 1917
+    - `Drugon` → encounterId 1949
+    - `Nazak` → encounterId 1950
+    - `Flotsam` → encounterId 1951
+    - `Calamir` → encounterId 1952
+    - `Meto` → encounterId 1952
+    - `Occularus` → encounterId 1952
+    - `Sotanathor` → encounterId 1952
+    - `Vilemus` → encounterId 1952
+    - `Levantus` → encounterId 1953
+    - `Folnuna` → encounterId 2081
+    - `Alluradel` → encounterId 2083
+- 实例ID **860** —— 10 个首领
+    - `Maiden` → encounterId 1954
+    - `OperaBeast` → encounterId 1957
+    - `OperaWestfall` → encounterId 1957
+    - `OperaWikket` → encounterId 1957
+    - `ManaDevourer` → encounterId 1959
+    - `Huntsman` → encounterId 1960
+    - `Moroes` → encounterId 1961
+    - `Curator` → encounterId 1964
+    - `Medivh` → encounterId 1965
+    - `Vizaduum` → encounterId 2017
+- 实例ID **861** —— 3 个首领
+    - `Odyn` → encounterId 1958
+    - `Guarm` → encounterId 1962
+    - `Helya` → encounterId 2008
+- 实例ID **875** —— 9 个首领
+    - `Goroth` → encounterId 2032
+    - `Harjatan` → encounterId 2036
+    - `Sasszine` → encounterId 2037
+    - `FallenAvatar` → encounterId 2038
+    - `DemonicInquisition` → encounterId 2048
+    - `SistersoftheMoon` → encounterId 2050
+    - `Kiljaeden` → encounterId 2051
+    - `MaidenofVigilance` → encounterId 2052
+    - `DesolateHost` → encounterId 2054
+- 实例ID **900** —— 4 个首领
+    - `Mephistroth` → encounterId 2039
+    - `Domatrax` → encounterId 2053
+    - `Agronox` → encounterId 2055
+    - `Thrashbite` → encounterId 2057
+- 实例ID **946** —— 11 个首领
+    - `Aggramar` → encounterId 2063
+    - `Hasabel` → encounterId 2064
+    - `Varimathras` → encounterId 2069
+    - `AntorusWarCouncil` → encounterId 2070
+    - `ShivarraCoven` → encounterId 2073
+    - `HoundsofSargeras` → encounterId 2074
+    - `Eonar` → encounterId 2075
+    - `Garothi` → encounterId 2076
+    - `Imonar` → encounterId 2082
+    - `Kingaroth` → encounterId 2088
+    - `ArgustheUnmaker` → encounterId 2092
+- 实例ID **1456** —— 1 个首领
+    - `Serpentrix` → encounterId 1813
+- 实例ID **1520** —— 7 个首领
+    - `Ursoc` → encounterId 1667
+    - `Nythendra` → encounterId 1703
+    - `Dragons of Nightmare` → encounterId 1704
+    - `Xavius` → encounterId 1726
+    - `Il'gynoth` → encounterId 1738
+    - `Elerethe Renferal` → encounterId 1744
+    - `Cenarius` → encounterId 1750
+- 实例ID **1530** —— 10 个首领
+    - `Skorpyron` → encounterId 1706
+    - `Krosus` → encounterId 1713
+    - `Chronomatic Anomaly` → encounterId 1725
+    - `Trilliax` → encounterId 1731
+    - `Star Augur Etraeus` → encounterId 1732
+    - `Gul'dan` → encounterId 1737
+    - `Grand Magistrix Elisande` → encounterId 1743
+    - `Spellblade Aluriel` → encounterId 1751
+    - `High Botanist Tel'arn` → encounterId 1761
+    - `Tichondrius` → encounterId 1762
+- 实例ID **1648** —— 3 个首领
+    - `Odyn-TrialOfValor` → encounterId 1819
+    - `Helya-TrialOfValor` → encounterId 1829
+    - `Guarm-TrialOfValor` → encounterId 1830
+- 实例ID **1676** —— 9 个首领
+    - `Harjatan the Bludger` → encounterId 1856
+    - `Mistress Sassz'ine` → encounterId 1861
+    - `Goroth` → encounterId 1862
+    - `Demonic Inquisition` → encounterId 1867
+    - `Fallen Avatar` → encounterId 1873
+    - `The Desolate Host` → encounterId 1896
+    - `Maiden of Vigilance` → encounterId 1897
+    - `Kil'jaeden` → encounterId 1898
+    - `Sisters of the Moon` → encounterId 1903
+- 实例ID **1712** —— 11 个首领
+    - `Varimathras` → encounterId 1983
+    - `Aggramar` → encounterId 1984
+    - `Portal Keeper Hasabel` → encounterId 1985
+    - `The Coven of Shivarra` → encounterId 1986
+    - `Felhounds of Sargeras` → encounterId 1987
+    - `Gorothi Worldbreaker` → encounterId 1992
+    - `Antoran High Command` → encounterId 1997
+    - `Kin'garoth` → encounterId 2004
+    - `Imonar the Soulhunter` → encounterId 2009
+    - `Eonar the Life-Binder` → encounterId 2025
+    - `Argus the Unmaker` → encounterId 2031
+- 实例ID **1753** —— 4 个首领
+    - `Zuraal` → encounterId 2065
+    - `Saprish` → encounterId 2066
+    - `ViceroyNezhar` → encounterId 2067
+    - `Lura` → encounterId 2068
+- 实例ID **1779** —— 6 个首领
+    - `Matron Folnuna` → encounterId 2010
+    - `Mistress Alluradel` → encounterId 2011
+    - `Inquisitor Meto` → encounterId 2012
+    - `Occularus` → encounterId 2013
+    - `Sothanar` → encounterId 2014
+    - `Pit Lord Vilemus` → encounterId 2015
+- 实例ID **-680** —— 1 个首领
+    - `Na'zak the Fiend` → encounterId 1783
+- 实例ID **-650** —— 2 个首领
+    - `Drugon the Frostblood` → encounterId 1789
+    - `Flotsam` → encounterId 1795
+- 实例ID **-646** —— 4 个首领
+    - `Brutallus` → encounterId 1883
+    - `Malificus` → encounterId 1884
+    - `Si'vash` → encounterId 1885
+    - `Apocron` → encounterId 1956
+- 实例ID **-641** —— 2 个首领
+    - `Shar'thos` → encounterId 1763
+    - `Humongris` → encounterId 1770
+- 实例ID **-634** —— 2 个首领
+    - `Nithogg` → encounterId 1749
+    - `The Soultakers` → encounterId 1756
+- 实例ID **-630** —— 3 个首领
+    - `Levantus` → encounterId 1769
+    - `Calamir` → encounterId 1774
+    - `Withered J'im` → encounterId 1796
+
+### 午夜（19 实例）
+
+- 实例ID **1312** —— 4 个首领
+    - `Predaxas` → encounterId 3431
+    - `Cragpine` → encounterId 3436
+    - `Luashal` → encounterId 3454
+    - `Thormbelan` → encounterId 3459
+- 实例ID **1592** —— 1 个首领
+    - `Rotmire` → encounterId 3159
+- 实例ID **2805** —— 4 个首领
+    - `Emberdawn` → encounterId 3056
+    - `DerelictDuo` → encounterId 3057
+    - `CommanderKroluk` → encounterId 3058
+    - `TheRestlessHeart` → encounterId 3059
+- 实例ID **2811** —— 4 个首领
+    - `ArcanotronCustos` → encounterId 3071
+    - `SeranelSunlash` → encounterId 3072
+    - `Gemellus` → encounterId 3073
+    - `Degentrius` → encounterId 3074
+- 实例ID **2813** —— 4 个首领
+    - `KystiaManaheart` → encounterId 3101
+    - `ZaenBladesorrow` → encounterId 3102
+    - `XathuuxtheAnnihilator` → encounterId 3103
+    - `LithielCinderfury` → encounterId 3105
+- 实例ID **2825** —— 3 个首领
+    - `TheHoardmonger` → encounterId 3207
+    - `SentinelofWinter` → encounterId 3208
+    - `Nalorakk` → encounterId 3209
+- 实例ID **2859** —— 4 个首领
+    - `LightblossomTrinity` → encounterId 3199
+    - `IkuzztheLightHunter` → encounterId 3200
+    - `LightwardenRuia` → encounterId 3201
+    - `Ziekket` → encounterId 3202
+- 实例ID **2874** —— 3 个首领
+    - `MurojinandNekraxx` → encounterId 3212
+    - `Vordaza` → encounterId 3213
+    - `Raktul` → encounterId 3214
+- 实例ID **2912** —— 11 个首领
+    - `Imperator Averzian` → encounterId 2733
+    - `Vaelgor & Ezzorak` → encounterId 2735
+    - `Fallen-King Salhadaar` → encounterId 2736
+    - `Lightblinded Vanguard` → encounterId 2737
+    - `Crown of the Cosmos` → encounterId 2738
+    - `ImperatorAverzian` → encounterId 3176
+    - `Vorasius` → encounterId 3177
+    - `Vaelgor_and_Ezzorak` → encounterId 3178
+    - `Fallen-KingShalhadaar` → encounterId 3179
+    - `LightblindedVanguard` → encounterId 3180
+    - `CrownoftheCosmos` → encounterId 3181
+- 实例ID **2913** —— 4 个首领
+    - `Belo'ren, Child of Al'ar` → encounterId 2739
+    - `Midnight Falls` → encounterId 2740
+    - `BelorenChildofAlar` → encounterId 3182
+    - `MidnightFalls` → encounterId 3183
+- 实例ID **2915** —— 3 个首领
+    - `ChiefCorewrightKasreth` → encounterId 3328
+    - `CorewardenNysarra` → encounterId 3332
+    - `Lothraxion` → encounterId 3333
+- 实例ID **2923** —— 3 个首领
+    - `TazRah` → encounterId 3285
+    - `Atroxus` → encounterId 3286
+    - `Charonus` → encounterId 3287
+- 实例ID **2939** —— 2 个首领
+    - `Chimaerus the Undreamt God` → encounterId 2795
+    - `ChimaerustheUndreamtGod` → encounterId 3306
+- 实例ID **2987** —— 1 个首领
+    - `NymrissaWavecaller` → encounterId 3379
+- 实例ID **2993** —— 3 个首领
+    - `Ravi` → encounterId 3456
+    - `TheWrithingCoil` → encounterId 3457
+    - `Zuljan` → encounterId 3458
+- 实例ID **3004** —— 15 个首领
+    - `Entombed Sentinels` → encounterId 2874
+    - `Vashnik the Malignant` → encounterId 2882
+    - `The Bargained Crown` → encounterId 2883
+    - `The Twin Fangs` → encounterId 2887
+    - `Nek'zali the Soulcoiler` → encounterId 2888
+    - `The Lost Explorers` → encounterId 2894
+    - `Ula'tek` → encounterId 2895
+    - `Sszorak` → encounterId 3420
+    - `TheTwinFangs` → encounterId 3421
+    - `TheCoiledAltar` → encounterId 3429
+    - `EntombedSentinels` → encounterId 3445
+    - `VashniktheMalignant` → encounterId 3455
+    - `NekzalitheSoulcoiler` → encounterId 3470
+    - `Ulatek` → encounterId 3492
+    - `TheLostExplorers` → encounterId 3497
+- 实例ID **-2437** —— 1 个首领
+    - `Cragpine` → encounterId 2782
+- 实例ID **-2413** —— 1 个首领
+    - `Thorm'belan` → encounterId 2829
+- 实例ID **-2395** —— 1 个首领
+    - `Lu'ashal` → encounterId 2827
+
+### 地心之战（16 实例）
+
+- 实例ID **1278** —— 4 个首领
+    - `Orta` → encounterId 2984
+    - `AggregationofHorrors` → encounterId 2988
+    - `Shurrai` → encounterId 2994
+    - `Kordac` → encounterId 2997
+- 实例ID **2648** —— 3 个首领
+    - `Kyrioss` → encounterId 2816
+    - `VoidstoneMonstrosity` → encounterId 2836
+    - `StormguardGorren` → encounterId 2861
+- 实例ID **2649** —— 3 个首领
+    - `BaronBraunpyke` → encounterId 2835
+    - `CaptainDailcry` → encounterId 2847
+    - `PrioressMurrpray` → encounterId 2848
+- 实例ID **2651** —— 4 个首领
+    - `TheCandleKing` → encounterId 2787
+    - `TheDarkness` → encounterId 2788
+    - `Blazikon` → encounterId 2826
+    - `OlWaxbeard` → encounterId 2829
+- 实例ID **2652** —— 4 个首领
+    - `EDNA` → encounterId 2854
+    - `Skarmorak` → encounterId 2880
+    - `HighSpeakerEirich` → encounterId 2883
+    - `ForgeSpeakers` → encounterId 2888
+- 实例ID **2657** —— 8 个首领
+    - `Sikran` → encounterId 2898
+    - `UlgraxtheDevourer` → encounterId 2902
+    - `TheBloodboundHorror` → encounterId 2917
+    - `Rashanan` → encounterId 2918
+    - `BloodtwisterOvinax` → encounterId 2919
+    - `NexusPrincessKyveza` → encounterId 2920
+    - `TheSilkenCourt` → encounterId 2921
+    - `QueenAnsurek` → encounterId 2922
+- 实例ID **2660** —— 3 个首领
+    - `KikataltheHarvester` → encounterId 2901
+    - `Anubzekt` → encounterId 2906
+    - `Avanoxx` → encounterId 2926
+- 实例ID **2661** —— 4 个首领
+    - `BrewMasterAldryr` → encounterId 2900
+    - `Ipa` → encounterId 2929
+    - `GoldieBaronbottom` → encounterId 2930
+    - `BenkBuzzbee` → encounterId 2931
+- 实例ID **2662** —— 3 个首领
+    - `SpeakerShadowcrown` → encounterId 2837
+    - `Anubikkaj` → encounterId 2838
+    - `Rashanan` → encounterId 2839
+- 实例ID **2669** —— 4 个首领
+    - `TheCoaglamation` → encounterId 2905
+    - `OratorKrixvizk` → encounterId 2907
+    - `FangsoftheQueen` → encounterId 2908
+    - `IzotheGrandSplicer` → encounterId 2909
+- 实例ID **2706** —— 1 个首领
+    - `TheGobfather` → encounterId 3128
+- 实例ID **2738** —— 1 个首领
+    - `Reshanor` → encounterId 3184
+- 实例ID **2769** —— 8 个首领
+    - `Vexie` → encounterId 3009
+    - `CauldronofCarnage` → encounterId 3010
+    - `RikReverb` → encounterId 3011
+    - `StixBunkjunker` → encounterId 3012
+    - `SprocketmongerLockenstock` → encounterId 3013
+    - `TheOneArmedBandit` → encounterId 3014
+    - `MugZeeHeadsofSecurity` → encounterId 3015
+    - `ChromeKingGallywix` → encounterId 3016
+- 实例ID **2773** —— 4 个首领
+    - `DemolitionDuo` → encounterId 3019
+    - `BigMomma` → encounterId 3020
+    - `Swampface` → encounterId 3053
+    - `GeezNuts` → encounterId 3054
+- 实例ID **2810** —— 8 个首领
+    - `TheSoulHunters` → encounterId 3122
+    - `PlexusSentinel` → encounterId 3129
+    - `SoulbinderNaazindhri` → encounterId 3130
+    - `Loomithar` → encounterId 3131
+    - `ForgeweaverAraz` → encounterId 3132
+    - `Fractillus` → encounterId 3133
+    - `NexusKingSalhadaar` → encounterId 3134
+    - `DimensiustheAllDevouring` → encounterId 3135
+- 实例ID **2830** —— 3 个首领
+    - `Azhiccar` → encounterId 3107
+    - `TaahbatandAwazj` → encounterId 3108
+    - `SoulScribe` → encounterId 3109
+
+### 大地的裂变（33 实例）
+
+- 实例ID **33** —— 6 个首领
+    - `Ashbury` → encounterId 1069
+    - `Silverlaine` → encounterId 1070
+    - `Springvale` → encounterId 1071
+    - `Godfrey` → encounterId 1072
+    - `Walden` → encounterId 1073
+    - `ApothecaryTrio` → encounterId 2879
+- 实例ID **269** —— 3 个首领
+    - `Aeonus` → encounterId 1919
+    - `Deja` → encounterId 1920
+    - `Temporus` → encounterId 1921
+- 实例ID **540** —— 4 个首领
+    - `Porung` → encounterId 1935
+    - `Nethekurse` → encounterId 1936
+    - `O'mrogg` → encounterId 1937
+    - `Kargath` → encounterId 1938
+- 实例ID **542** —— 3 个首领
+    - `Maker` → encounterId 1922
+    - `Keli'dan` → encounterId 1923
+    - `Broggok` → encounterId 1924
+- 实例ID **543** —— 3 个首领
+    - `Omor` → encounterId 1891
+    - `Vazruden` → encounterId 1892
+    - `Gargolmar` → encounterId 1893
+- 实例ID **545** —— 3 个首领
+    - `Thespia` → encounterId 1942
+    - `Steamrigger` → encounterId 1943
+    - `Kalithresh` → encounterId 1944
+- 实例ID **546** —— 4 个首领
+    - `Ghazan` → encounterId 1945
+    - `Hungarfen` → encounterId 1946
+    - `Muselek` → encounterId 1947
+    - `Stalker` → encounterId 1948
+- 实例ID **552** —— 4 个首领
+    - `Dalliah` → encounterId 1913
+    - `Skyriss` → encounterId 1914
+    - `Soccothrates` → encounterId 1915
+    - `Zereketh` → encounterId 1916
+- 实例ID **553** —— 5 个首领
+    - `Sarannis` → encounterId 1925
+    - `Freywinn` → encounterId 1926
+    - `Laj` → encounterId 1927
+    - `Thorngrin` → encounterId 1928
+    - `WarpSplinter` → encounterId 1929
+- 实例ID **554** —— 5 个首领
+    - `Sepethrea` → encounterId 1930
+    - `Pathaleon` → encounterId 1931
+    - `Capacitus` → encounterId 1932
+    - `Gyrokill` → encounterId 1933
+    - `Ironhand` → encounterId 1934
+- 实例ID **555** —— 4 个首领
+    - `Hellmaw` → encounterId 1908
+    - `Inciter` → encounterId 1909
+    - `Murmur` → encounterId 1910
+    - `Vorpil` → encounterId 1911
+- 实例ID **556** —— 8 个首领
+    - `Witherbark` → encounterId 1746
+    - `ArchmageSol` → encounterId 1751
+    - `Xeritac` → encounterId 1752
+    - `Yalnu` → encounterId 1756
+    - `AncientProtectors` → encounterId 1757
+    - `Ikiss` → encounterId 1902
+    - `Syth` → encounterId 1903
+    - `Anzu` → encounterId 1904
+- 实例ID **557** —— 7 个首领
+    - `Yor` → encounterId 250
+    - `Rukhmar` → encounterId 1755
+    - `Tarlna` → encounterId 1770
+    - `Kazzak` → encounterId 1801
+    - `Shaffar` → encounterId 1899
+    - `Pandemonius` → encounterId 1900
+    - `Tavarok` → encounterId 1901
+- 实例ID **558** —— 6 个首领
+    - `GrimrailEnforcers` → encounterId 1748
+    - `Nokgar` → encounterId 1749
+    - `Oshir` → encounterId 1750
+    - `Skulloc` → encounterId 1754
+    - `Maladaar` → encounterId 1889
+    - `Shirrak` → encounterId 1890
+- 实例ID **560** —— 3 个首领
+    - `Drake` → encounterId 1905
+    - `EpochHunter` → encounterId 1906
+    - `Skarloc` → encounterId 1907
+- 实例ID **585** —— 4 个首领
+    - `Kael'thas` → encounterId 1894
+    - `Delrissa` → encounterId 1895
+    - `Selin` → encounterId 1897
+    - `Vexallus` → encounterId 1898
+- 实例ID **643** —— 4 个首领
+    - `CommanderUlthok` → encounterId 1044
+    - `LadyNazjar` → encounterId 1045
+    - `ErunakStonespeaker` → encounterId 1046
+    - `Ozumat` → encounterId 1047
+- 实例ID **644** —— 7 个首领
+    - `Ammunae` → encounterId 1074
+    - `Anraphet` → encounterId 1075
+    - `EarthragerPtah` → encounterId 1076
+    - `Isiset` → encounterId 1077
+    - `Rajh` → encounterId 1078
+    - `Setesh` → encounterId 1079
+    - `TempleGuardianAnhuur` → encounterId 1080
+- 实例ID **645** —— 5 个首领
+    - `AscendantLordObsidius` → encounterId 1036
+    - `Beauty` → encounterId 1037
+    - `Corla` → encounterId 1038
+    - `KarshSteelbender` → encounterId 1039
+    - `RomoggBonecrusher` → encounterId 1040
+- 实例ID **657** —— 3 个首领
+    - `Altairus` → encounterId 1041
+    - `Asaad` → encounterId 1042
+    - `GrandVizierErtan` → encounterId 1043
+- 实例ID **669** —— 19 个首领
+    - `Omnotron Defense System` → encounterId 169
+    - `Atramedes` → encounterId 1022
+    - `Chimaeron` → encounterId 1023
+    - `Magmaw` → encounterId 1024
+    - `Maloriak` → encounterId 1025
+    - `Nefarian` → encounterId 1026
+    - `DarkIronGolemCouncil` → encounterId 1027
+    - `Zakuun` → encounterId 1777
+    - `HellfireAssault` → encounterId 1778
+    - `Gorefiend` → encounterId 1783
+    - `Velhari` → encounterId 1784
+    - `IronReaver` → encounterId 1785
+    - `Kilrogg` → encounterId 1786
+    - `Kormrok` → encounterId 1787
+    - `Iskar` → encounterId 1788
+    - `Socrethar` → encounterId 1794
+    - `Mannoroth` → encounterId 1795
+    - `Archimonde` → encounterId 1799
+    - `Xhulhorac` → encounterId 1800
+- 实例ID **670** —— 4 个首领
+    - `DrahgaShadowburner` → encounterId 1048
+    - `Erudax` → encounterId 1049
+    - `ForgemasterThrongus` → encounterId 1050
+    - `GeneralUmbriss` → encounterId 1051
+- 实例ID **671** —— 9 个首领
+    - `Halfus Wyrmbreaker` → encounterId 156
+    - `Valiona and Theralion` → encounterId 157
+    - `Ascendant Council` → encounterId 158
+    - `Cho'gall` → encounterId 167
+    - `AscendantCouncil` → encounterId 1028
+    - `Chogall` → encounterId 1029
+    - `HalfusWyrmbreaker` → encounterId 1030
+    - `ValionaTheralion` → encounterId 1032
+    - `Sinestra` → encounterId 1082
+- 实例ID **720** —— 10 个首领
+    - `Beth'tilac` → encounterId 192
+    - `Lord Rhyolith` → encounterId 193
+    - `Majordomo Staghelm` → encounterId 197
+    - `FandralStaghelm` → encounterId 1185
+    - `Bethtilac` → encounterId 1197
+    - `Baleroc` → encounterId 1200
+    - `Ragnaros` → encounterId 1203
+    - `Rhyolith` → encounterId 1204
+    - `Shannox` → encounterId 1205
+    - `Alysrazor` → encounterId 1206
+- 实例ID **725** —— 4 个首领
+    - `Corborus` → encounterId 1056
+    - `HighPriestessAzil` → encounterId 1057
+    - `Ozruk` → encounterId 1058
+    - `Slabhide` → encounterId 1059
+- 实例ID **754** —— 4 个首领
+    - `Conclave of Wind` → encounterId 154
+    - `Al'Akir` → encounterId 155
+    - `AlAkir` → encounterId 1034
+    - `Conclave` → encounterId 1035
+- 实例ID **755** —— 4 个首领
+    - `GeneralHusam` → encounterId 1052
+    - `HighProphetBarim` → encounterId 1053
+    - `Lockmaw` → encounterId 1054
+    - `Siamat` → encounterId 1055
+- 实例ID **757** —— 4 个首领
+    - `Occu'thar` → encounterId 140
+    - `Argaloth` → encounterId 1033
+    - `Occuthar` → encounterId 1250
+    - `Alizabal` → encounterId 1332
+- 实例ID **859** —— 5 个首领
+    - `Venoxis` → encounterId 1178
+    - `Mandokir` → encounterId 1179
+    - `Kilnara` → encounterId 1180
+    - `Zanzil` → encounterId 1181
+    - `Jindo` → encounterId 1182
+- 实例ID **938** —— 5 个首领
+    - `Murozond` → encounterId 1271
+    - `Baine` → encounterId 1881
+    - `Sylvanas` → encounterId 1882
+    - `Jaina` → encounterId 1883
+    - `Tyrande` → encounterId 1884
+- 实例ID **939** —— 3 个首领
+    - `Perotharn` → encounterId 1272
+    - `Azshara` → encounterId 1273
+    - `Mannoroth` → encounterId 1274
+- 实例ID **940** —— 3 个首领
+    - `Arcurion` → encounterId 1337
+    - `Benedictus` → encounterId 1339
+    - `AsiraDawnslayer` → encounterId 1340
+- 实例ID **967** —— 14 个首领
+    - `Hagara the Stormbinder` → encounterId 317
+    - `Spine of Deathwing` → encounterId 318
+    - `Warlord Zon'ozz` → encounterId 324
+    - `Yor'sahj the Unsleeping` → encounterId 325
+    - `Warmaster Blackhorn` → encounterId 332
+    - `Madness of Deathwing` → encounterId 333
+    - `SpineDeathwing` → encounterId 1291
+    - `Morchok` → encounterId 1292
+    - `Zonozz` → encounterId 1294
+    - `Yorsahj` → encounterId 1295
+    - `Hagara` → encounterId 1296
+    - `Ultraxion` → encounterId 1297
+    - `Blackhorn` → encounterId 1298
+    - `MadnessDeathwing` → encounterId 1299
+
+### 巨龙时代（18 实例）
+
+- 实例ID **1196** —— 4 个首领
+    - `Gutshot` → encounterId 2567
+    - `Treemouth` → encounterId 2568
+    - `DecatiarchWratheye` → encounterId 2569
+    - `HackclawsWarBand` → encounterId 2570
+- 实例ID **1197** —— 5 个首领
+    - `TheLostDwarves` → encounterId 2555
+    - `Bromach` → encounterId 2556
+    - `SentinelTalondras` → encounterId 2557
+    - `Emberon` → encounterId 2558
+    - `ChronoLordDeios` → encounterId 2559
+- 实例ID **1198** —— 4 个首领
+    - `BalakarKhan` → encounterId 2580
+    - `TeeraandMaruuk` → encounterId 2581
+    - `TheRagingTempest` → encounterId 2636
+    - `Granyth` → encounterId 2637
+- 实例ID **1199** —— 4 个首领
+    - `Magmatusk` → encounterId 2610
+    - `WarlordSargha` → encounterId 2611
+    - `TheScorchingForge` → encounterId 2612
+    - `Chargath` → encounterId 2613
+- 实例ID **1203** —— 4 个首领
+    - `Leymor` → encounterId 2582
+    - `TalashGreywing` → encounterId 2583
+    - `Umbrelskul` → encounterId 2584
+    - `Azureblade` → encounterId 2585
+- 实例ID **1204** —— 4 个首领
+    - `WatcherIrideus` → encounterId 2615
+    - `GulpingGoliath` → encounterId 2616
+    - `KhajintheUnyielding` → encounterId 2617
+    - `PrimalTsunami` → encounterId 2618
+- 实例ID **1209** —— 12 个首领
+    - `Ranjit` → encounterId 1698
+    - `Araknath` → encounterId 1699
+    - `Rukhran` → encounterId 1700
+    - `Viryx` → encounterId 1701
+    - `Chronikar` → encounterId 2666
+    - `ManifestedTimeways` → encounterId 2667
+    - `BlightofGalakrond` → encounterId 2668
+    - `Iridikron` → encounterId 2669
+    - `Tyr` → encounterId 2670
+    - `Morchie` → encounterId 2671
+    - `TimeLostBattlefield` → encounterId 2672
+    - `ChronoLordDeios` → encounterId 2673
+- 实例ID **2521** —— 3 个首领
+    - `KokiaBlazehoof` → encounterId 2606
+    - `MelidrussaChillworn` → encounterId 2609
+    - `Kyrakka_and_Erkhart_Stormvein` → encounterId 2623
+- 实例ID **2522** —— 8 个首领
+    - `Eranog` → encounterId 2480
+    - `Sennarth, The Cold Breath` → encounterId 2482
+    - `The Primal Council` → encounterId 2486
+    - `Kurog Grimtotem` → encounterId 2491
+    - `Broodkeeper Diurna` → encounterId 2493
+    - `Raszageth the Storm-Eater` → encounterId 2499
+    - `Terros` → encounterId 2500
+    - `Dathea, Ascended` → encounterId 2502
+- 实例ID **2526** —— 4 个首领
+    - `Vexamus` → encounterId 2562
+    - `OvergrownAncient` → encounterId 2563
+    - `Crawth` → encounterId 2564
+    - `EchoofDoragosa` → encounterId 2565
+- 实例ID **2549** —— 9 个首领
+    - `Fyrakk the Blazing` → encounterId 2519
+    - `Larodar, Keeper of the Flame` → encounterId 2553
+    - `Igira the Cruel` → encounterId 2554
+    - `Council of Dreams` → encounterId 2555
+    - `Nymue, Weaver of the Cycle` → encounterId 2556
+    - `Volcoross` → encounterId 2557
+    - `Smolderon` → encounterId 2563
+    - `Gnarlroot` → encounterId 2564
+    - `Tindral Sageswift, Seer of the Flame` → encounterId 2565
+- 实例ID **2569** —— 9 个首领
+    - `Scalecommander Sarkareth` → encounterId 2520
+    - `Kazzara, the Hellforged` → encounterId 2522
+    - `Echo of Neltharion` → encounterId 2523
+    - `Assault of the Zaqali` → encounterId 2524
+    - `Rashok, the Elder` → encounterId 2525
+    - `Magmorax` → encounterId 2527
+    - `The Amalgamation Chamber` → encounterId 2529
+    - `The Forgotten Experiments` → encounterId 2530
+    - `The Vigilant Steward, Zskarn` → encounterId 2532
+- 实例ID **-2200** —— 1 个首领
+    - `Aurostor` → encounterId 2562
+- 实例ID **-2133** —— 1 个首领
+    - `The Zaqali Elders` → encounterId 2531
+- 实例ID **-2085** —— 1 个首领
+    - `Liskanoth, The Futurebane` → encounterId 2518
+- 实例ID **-2024** —— 1 个首领
+    - `Bazual, The Dreaded Flame` → encounterId 2517
+- 实例ID **-2023** —— 1 个首领
+    - `Strunraan, The Sky's Misery` → encounterId 2515
+- 实例ID **-2022** —— 1 个首领
+    - `Basrikron, The Shale Wing` → encounterId 2506
+
+### 巫妖王之怒（23 实例）
+
+- 实例ID **271** —— 5 个首领
+    - `Taldaram` → encounterId 1966
+    - `JedogaShadowseeker` → encounterId 1967
+    - `Volazj` → encounterId 1968
+    - `Nadox` → encounterId 1969
+    - `Amanitar` → encounterId 1989
+- 实例ID **272** —— 3 个首领
+    - `Krikthir` → encounterId 1971
+    - `Hadronox` → encounterId 1972
+    - `Anubarak` → encounterId 1973
+- 实例ID **273** —— 4 个首领
+    - `Trollgore` → encounterId 1974
+    - `ProphetTharonja` → encounterId 1975
+    - `NovosTheSummoner` → encounterId 1976
+    - `Dred` → encounterId 1977
+- 实例ID **274** —— 5 个首领
+    - `Sladran` → encounterId 1978
+    - `Moorabi` → encounterId 1980
+    - `Galdarah` → encounterId 1981
+    - `BloodstoneAnnihilator` → encounterId 1983
+    - `Eck` → encounterId 1988
+- 实例ID **275** —— 4 个首领
+    - `Ionar` → encounterId 1984
+    - `Volkhan` → encounterId 1985
+    - `Loken` → encounterId 1986
+    - `Bjarngrin` → encounterId 1987
+- 实例ID **276** —— 3 个首领
+    - `LichKingEvent` → encounterId 1990
+    - `Falric` → encounterId 1992
+    - `Marwyn` → encounterId 1993
+- 实例ID **277** —— 4 个首领
+    - `Krystallus` → encounterId 1994
+    - `BrannBronzebeard` → encounterId 1995
+    - `MaidenOfGrief` → encounterId 1996
+    - `SjonnirTheIronshaper` → encounterId 1998
+- 实例ID **279** —— 4 个首领
+    - `Meathook` → encounterId 2002
+    - `ChronoLordEpoch` → encounterId 2003
+    - `SalrammTheFleshCrafter` → encounterId 2004
+    - `MalGanis` → encounterId 2005
+- 实例ID **280** —— 2 个首领
+    - `Bronjahm` → encounterId 2006
+    - `DevourerofSouls` → encounterId 2007
+- 实例ID **281** —— 4 个首领
+    - `Anomalus` → encounterId 2009
+    - `GrandMagusTelestra` → encounterId 2010
+    - `Keristrasza` → encounterId 2011
+    - `OrmorokTheTreeShaper` → encounterId 2012
+- 实例ID **282** —— 4 个首领
+    - `LeyGuardianEregos` → encounterId 2013
+    - `MageLordUrom` → encounterId 2014
+    - `VarosCloudstrider` → encounterId 2015
+    - `DrakosTheInterrogator` → encounterId 2016
+- 实例ID **283** —— 7 个首领
+    - `Cyanigosa` → encounterId 2020
+    - `Erekem` → encounterId 2658
+    - `Moragg` → encounterId 2659
+    - `Ichoron` → encounterId 2660
+    - `Xevoss` → encounterId 2661
+    - `Lavanthor` → encounterId 2662
+    - `Zuramat` → encounterId 2663
+- 实例ID **284** —— 4 个首领
+    - `Black_Knight` → encounterId 2021
+    - `Champions` → encounterId 2022
+    - `Confessor` → encounterId 2023
+    - `Eadric_the_Pure` → encounterId 2023
+- 实例ID **285** —— 3 个首领
+    - `ConstructorAndController` → encounterId 2024
+    - `IngvarThePlunderer` → encounterId 2025
+    - `Keleseth` → encounterId 2026
+- 实例ID **286** —— 4 个首领
+    - `GortokPalehoof` → encounterId 2027
+    - `Ymiron` → encounterId 2028
+    - `SkadiTheRuthless` → encounterId 2029
+    - `SvalaSorrowgrave` → encounterId 2030
+- 实例ID **603** —— 21 个首领
+    - `Algalon` → encounterId 1130
+    - `Auriaya` → encounterId 1131
+    - `FlameLeviathan` → encounterId 1132
+    - `Freya` → encounterId 1133
+    - `GeneralVezax` → encounterId 1134
+    - `Hodir` → encounterId 1135
+    - `Ignis` → encounterId 1136
+    - `Kologarn` → encounterId 1137
+    - `Mimiron` → encounterId 1138
+    - `Razorscale` → encounterId 1139
+    - `IronCouncil` → encounterId 1140
+    - `Thorim` → encounterId 1141
+    - `XT002` → encounterId 1142
+    - `YoggSaron` → encounterId 1143
+    - `Flame Leviathan` → encounterId 1637
+    - `Ignis the Furnace Master` → encounterId 1638
+    - `XT-002 Deconstructor` → encounterId 1640
+    - `The Iron Council` → encounterId 1641
+    - `General Vezax` → encounterId 1648
+    - `Yogg-Saron` → encounterId 1649
+    - `Algalon the Observer` → encounterId 1650
+- 实例ID **615** —— 4 个首领
+    - `Sartharion` → encounterId 1090
+    - `Shadron` → encounterId 1091
+    - `Tenebron` → encounterId 1092
+    - `Vesperon` → encounterId 1093
+- 实例ID **616** —— 1 个首领
+    - `Malygos` → encounterId 1094
+- 实例ID **624** —— 4 个首领
+    - `Archavon the Stone Watcher` → encounterId 1597
+    - `Emalon the Storm Watcher` → encounterId 1598
+    - `Koralon the Flame Watcher` → encounterId 1599
+    - `Toravon the Ice Watcher` → encounterId 1600
+- 实例ID **631** —— 12 个首领
+    - `Lord Marrowgar` → encounterId 1624
+    - `Lady Deathwhisper` → encounterId 1625
+    - `Icecrown Gunship Battle` → encounterId 1626
+    - `Deathbringer Saurfang` → encounterId 1628
+    - `Festergut` → encounterId 1629
+    - `Rotface` → encounterId 1630
+    - `Professor Putricide` → encounterId 1631
+    - `Blood Prince Council` → encounterId 1632
+    - `Blood-Queen Lana'thel` → encounterId 1633
+    - `Valithria Dreamwalker` → encounterId 1634
+    - `Sindragosa` → encounterId 1635
+    - `The Lich King` → encounterId 1636
+- 实例ID **649** —— 5 个首领
+    - `The Beasts of Northrend` → encounterId 1618
+    - `Lord Jaraxxus` → encounterId 1619
+    - `Faction Champions` → encounterId 1621
+    - `The Twin Val'kyr` → encounterId 1622
+    - `Anub'arak` → encounterId 1623
+- 实例ID **658** —— 3 个首领
+    - `ForgemasterGarfrost` → encounterId 1999
+    - `ScourgelordTyrannus` → encounterId 2000
+    - `Ick` → encounterId 2001
+- 实例ID **724** —— 1 个首领
+    - `Halion` → encounterId 1652
+
+### 德拉诺之王（13 实例）
+
+- 实例ID **385** —— 4 个首领
+    - `Roltall` → encounterId 1652
+    - `Crushto` → encounterId 1653
+    - `Gugrokk` → encounterId 1654
+    - `Magmolatus` → encounterId 1655
+- 实例ID **457** —— 10 个首领
+    - `Kagraz` → encounterId 1689
+    - `BlastFurnace` → encounterId 1690
+    - `Gruul` → encounterId 1691
+    - `Thogar` → encounterId 1692
+    - `HansgarAndFranzok` → encounterId 1693
+    - `Darmac` → encounterId 1694
+    - `IronMaidens` → encounterId 1695
+    - `Oregorger` → encounterId 1696
+    - `Blackhand` → encounterId 1704
+    - `Kromog` → encounterId 1713
+- 实例ID **477** —— 7 个首领
+    - `Margok` → encounterId 1705
+    - `TheButcher` → encounterId 1706
+    - `TwinOgron` → encounterId 1719
+    - `Brackenspore` → encounterId 1720
+    - `KargathBladefist` → encounterId 1721
+    - `Tectus` → encounterId 1722
+    - `Koragh` → encounterId 1723
+- 实例ID **536** —— 3 个首领
+    - `RocketAndBorka` → encounterId 1715
+    - `BlackrockAssaultCommander` → encounterId 1732
+    - `ThunderlordGeneral` → encounterId 1736
+- 实例ID **537** —— 4 个首领
+    - `SadanaBloodfury` → encounterId 1677
+    - `Bonemaw` → encounterId 1679
+    - `Nerzhul` → encounterId 1682
+    - `Nhallish` → encounterId 1688
+- 实例ID **547** —— 8 个首领
+    - `Azzakel` → encounterId 1678
+    - `Nyami` → encounterId 1685
+    - `ProtectorOfAuch` → encounterId 1686
+    - `Terongor` → encounterId 1714
+    - `Mennu` → encounterId 1939
+    - `Quagmirran` → encounterId 1940
+    - `Rokmar` → encounterId 1941
+    - `Ahune` → encounterId 3317
+- 实例ID **559** —— 5 个首领
+    - `Kyrak` → encounterId 1758
+    - `Tharbek` → encounterId 1759
+    - `Ragewing` → encounterId 1760
+    - `Gorashan` → encounterId 1761
+    - `Zaela` → encounterId 1762
+- 实例ID **1205** —— 10 个首领
+    - `Blackhand` → encounterId 959
+    - `Beastlord Darmac` → encounterId 1122
+    - `Flamebender Ka'graz` → encounterId 1123
+    - `Operator Thogar` → encounterId 1147
+    - `The Blast Furnace` → encounterId 1154
+    - `Hans'gar and Franzok` → encounterId 1155
+    - `Gruul` → encounterId 1161
+    - `Kromog` → encounterId 1162
+    - `Oregorger` → encounterId 1202
+    - `The Iron Maidens` → encounterId 1203
+- 实例ID **1228** —— 7 个首领
+    - `The Butcher` → encounterId 971
+    - `Kargath Bladefist` → encounterId 1128
+    - `Twin Ogron` → encounterId 1148
+    - `Ko'ragh` → encounterId 1153
+    - `Tectus` → encounterId 1195
+    - `Brackenspore` → encounterId 1196
+    - `Imperator Mar'gok` → encounterId 1197
+- 实例ID **1448** —— 13 个首领
+    - `Gorefiend` → encounterId 1372
+    - `Fel Lord Zakuun` → encounterId 1391
+    - `Kormrok` → encounterId 1392
+    - `Tyrant Velhari` → encounterId 1394
+    - `Mannoroth` → encounterId 1395
+    - `Kilrogg Deadeye` → encounterId 1396
+    - `Iron Reaver` → encounterId 1425
+    - `Hellfire Assault` → encounterId 1426
+    - `Socrethar the Eternal` → encounterId 1427
+    - `Hellfire High Council` → encounterId 1432
+    - `Shadow-Lord Iskar` → encounterId 1433
+    - `Archimonde` → encounterId 1438
+    - `Xhul'horac` → encounterId 1447
+- 实例ID **-543** —— 2 个首领
+    - `Tarlna the Ageless` → encounterId 1211
+    - `Drov the Ruiner` → encounterId 1291
+- 实例ID **-542** —— 1 个首领
+    - `Rukhmar` → encounterId 1262
+- 实例ID **-534** —— 1 个首领
+    - `Supreme Lord Kazzak` → encounterId 1452
+
+### 暗影国度（17 实例）
+
+- 实例ID **1182** —— 4 个首领
+    - `Blightbone` → encounterId 2387
+    - `Amarth` → encounterId 2388
+    - `SurgeonStitchflesh` → encounterId 2389
+    - `Nalthor` → encounterId 2390
+- 实例ID **1192** —— 6 个首领
+    - `Nurgash` → encounterId 2408
+    - `Oranomonos` → encounterId 2409
+    - `Mortanis` → encounterId 2410
+    - `Valinor` → encounterId 2411
+    - `Morgeth` → encounterId 2496
+    - `Antros` → encounterId 2550
+- 实例ID **2284** —— 4 个首领
+    - `Kryxis` → encounterId 2360
+    - `ExecutorTarvold` → encounterId 2361
+    - `GrandProctorBeryllia` → encounterId 2362
+    - `GeneralKaal` → encounterId 2363
+- 实例ID **2285** —— 4 个首领
+    - `Ventunax` → encounterId 2356
+    - `KinTara` → encounterId 2357
+    - `Oryphrion` → encounterId 2358
+    - `Devos` → encounterId 2359
+- 实例ID **2287** —— 4 个首领
+    - `Echelon` → encounterId 2380
+    - `LordChamberlain` → encounterId 2381
+    - `Halkias` → encounterId 2401
+    - `HighAdjudicatorAleez` → encounterId 2403
+- 实例ID **2289** —— 4 个首领
+    - `Globgrog` → encounterId 2382
+    - `DoctorIckus` → encounterId 2384
+    - `DominaVenomblade` → encounterId 2385
+    - `MargraveStradama` → encounterId 2386
+- 实例ID **2290** —— 3 个首领
+    - `Mistcaller` → encounterId 2392
+    - `Tredova` → encounterId 2393
+    - `IngraMaloch` → encounterId 2397
+- 实例ID **2291** —— 4 个首领
+    - `TheManastorms` → encounterId 2394
+    - `Hakkar` → encounterId 2395
+    - `Muehzala` → encounterId 2396
+    - `DealerXyexa` → encounterId 2400
+- 实例ID **2293** —— 5 个首领
+    - `Kultharok` → encounterId 2364
+    - `Gorechop` → encounterId 2365
+    - `XavtheUnfallen` → encounterId 2366
+    - `AffrontofChallengers` → encounterId 2391
+    - `Mordretha` → encounterId 2404
+- 实例ID **2296** —— 17 个首领
+    - `HungeringDestroyer` → encounterId 2383
+    - `Shriekwing` → encounterId 2398
+    - `Sludgefist` → encounterId 2399
+    - `Kaelthas` → encounterId 2402
+    - `ArtificerXyMox` → encounterId 2405
+    - `LadyInervaDarkvein` → encounterId 2406
+    - `SireDenathrius` → encounterId 2407
+    - `TheCouncilofBlood` → encounterId 2412
+    - `StoneborneGenerals` → encounterId 2417
+    - `Artificer Xy'mox` → encounterId 2418
+    - `Lady Inerva Darkvein` → encounterId 2420
+    - `Sun King's Salvation` → encounterId 2422
+    - `Sire Denathrius` → encounterId 2424
+    - `Stone Legion Generals` → encounterId 2425
+    - `The Council of Blood` → encounterId 2426
+    - `Hungering Destroyer` → encounterId 2428
+    - `Huntsman Altimor` → encounterId 2429
+- 实例ID **2441** —— 8 个首领
+    - `TimecapnHooktail` → encounterId 2419
+    - `MailroomMayhem` → encounterId 2424
+    - `ZophextheSentinel` → encounterId 2425
+    - `Hylbrande` → encounterId 2426
+    - `Soazmi` → encounterId 2437
+    - `MyzasOasis` → encounterId 2440
+    - `TheMenagerie` → encounterId 2441
+    - `Soleah` → encounterId 2442
+- 实例ID **2450** —— 19 个首领
+    - `KelThuzad` → encounterId 2422
+    - `TheTarragrue` → encounterId 2423
+    - `TheNine` → encounterId 2429
+    - `PainsmithRaznal` → encounterId 2430
+    - `FatescribeRohKalo` → encounterId 2431
+    - `RemnantofNerzhul` → encounterId 2432
+    - `TheEyeoftheJailer` → encounterId 2433
+    - `SoulrenderDormazain` → encounterId 2434
+    - `The Tarragrue` → encounterId 2435
+    - `GuardianoftheFirstOnes` → encounterId 2436
+    - `The Nine` → encounterId 2439
+    - `Kel'Thuzad` → encounterId 2440
+    - `Sylvanas Windrunner` → encounterId 2441
+    - `The Eye of the Jailer` → encounterId 2442
+    - `Painsmith Raznal` → encounterId 2443
+    - `Remnant of Ner'zhul` → encounterId 2444
+    - `Soulrender Dormazain` → encounterId 2445
+    - `Guardian of the First Ones` → encounterId 2446
+    - `Fatescribe Roh-Kalo` → encounterId 2447
+- 实例ID **2481** —— 21 个首领
+    - `Lords of Dread` → encounterId 2457
+    - `Vigilant Guardian` → encounterId 2458
+    - `Dausegne, the Fallen Oracle` → encounterId 2459
+    - `Prototype Pantheon` → encounterId 2460
+    - `Lihuvim, Principal Architect` → encounterId 2461
+    - `Halondrus the Reclaimer` → encounterId 2463
+    - `The Jailer` → encounterId 2464
+    - `Skolex, the Insatiable Ravener` → encounterId 2465
+    - `Anduin Wrynn` → encounterId 2469
+    - `Artificer Xy'mox v2` → encounterId 2470
+    - `VigilantGuardian` → encounterId 2512
+    - `Halondrus` → encounterId 2529
+    - `TheJailer` → encounterId 2537
+    - `Lihuvim` → encounterId 2539
+    - `Dausegne` → encounterId 2540
+    - `Skolex` → encounterId 2542
+    - `LordsofDread` → encounterId 2543
+    - `PrototypePantheon` → encounterId 2544
+    - `AnduinWrynn` → encounterId 2546
+    - `Rygelon` → encounterId 2549
+    - `ArtificerXymox` → encounterId 2553
+- 实例ID **-1565** —— 1 个首领
+    - `Oranomonos the Everbranching` → encounterId 2432
+- 实例ID **-1536** —— 1 个首领
+    - `Mortanis` → encounterId 2431
+- 实例ID **-1533** —— 1 个首领
+    - `Valinor` → encounterId 2430
+- 实例ID **-1525** —— 1 个首领
+    - `Nurgash Muckformed` → encounterId 2433
+
+### 熊猫人之谜（21 实例）
+
+- 实例ID **302** —— 3 个首领
+    - `OokOok` → encounterId 1412
+    - `Hoptallus` → encounterId 1413
+    - `YanZhu` → encounterId 1414
+- 实例ID **303** —— 4 个首领
+    - `Kiptilak` → encounterId 1397
+    - `Gadok` → encounterId 1405
+    - `Rimok` → encounterId 1406
+    - `Raigonn` → encounterId 1419
+- 实例ID **312** —— 4 个首领
+    - `GuCloudstrike` → encounterId 1303
+    - `Snowdrift` → encounterId 1304
+    - `ShaofViolence` → encounterId 1305
+    - `TaranZhu` → encounterId 1306
+- 实例ID **313** —— 4 个首领
+    - `LiuFlameheart` → encounterId 1416
+    - `LibraryEvent` → encounterId 1417
+    - `WiseMari` → encounterId 1418
+    - `ShaofDoubt` → encounterId 1439
+- 实例ID **321** —— 3 个首领
+    - `WeaponmasterXin` → encounterId 1441
+    - `TrialoftheKing` → encounterId 1442
+    - `Gekkan` → encounterId 1509
+- 实例ID **322** —— 4 个首领
+    - `Salyis` → encounterId 1563
+    - `Anger` → encounterId 1564
+    - `Nalak` → encounterId 1571
+    - `Oondasta` → encounterId 1587
+- 实例ID **324** —— 3 个首领
+    - `Pavalak` → encounterId 1447
+    - `Neronok` → encounterId 1464
+    - `Jinbak` → encounterId 1465
+- 实例ID **996** —— 7 个首领
+    - `Protectors of the Endless` → encounterId 683
+    - `Sha of Fear` → encounterId 709
+    - `Lei Shi` → encounterId 729
+    - `ProtectorsofEndless` → encounterId 1409
+    - `ShaofFear` → encounterId 1431
+    - `Tsulong` → encounterId 1505
+    - `LeiShi` → encounterId 1506
+- 实例ID **1001** —— 3 个首领
+    - `FlameweaverKoegler` → encounterId 1420
+    - `Harlan` → encounterId 1421
+    - `Braun` → encounterId 1422
+- 实例ID **1004** —— 4 个首领
+    - `ThalnosSoulrender` → encounterId 1423
+    - `Korlof` → encounterId 1424
+    - `Durand` → encounterId 1425
+    - `HeadlessHorseman` → encounterId 2725
+- 实例ID **1007** —— 5 个首领
+    - `Chillheart` → encounterId 1426
+    - `JandiceBarov` → encounterId 1427
+    - `Rattlegore` → encounterId 1428
+    - `LillianVoss` → encounterId 1429
+    - `DarkmasterGandling` → encounterId 1430
+- 实例ID **1008** —— 11 个首领
+    - `Will of the Emperor` → encounterId 677
+    - `The Stone Guard` → encounterId 679
+    - `Gara'jal the Spiritbinder` → encounterId 682
+    - `The Spirit Kings` → encounterId 687
+    - `Feng the Accursed` → encounterId 689
+    - `Feng` → encounterId 1390
+    - `StoneGuard` → encounterId 1395
+    - `WillofEmperor` → encounterId 1407
+    - `GarajalTheSpiritBinder` → encounterId 1434
+    - `SpiritKings` → encounterId 1436
+    - `Elegon` → encounterId 1500
+- 实例ID **1009** —— 11 个首领
+    - `Amber-Shaper Un'sok` → encounterId 737
+    - `Wind Lord Mel'jarak` → encounterId 741
+    - `Grand Empress Shek'zeer` → encounterId 743
+    - `Blade Lord Ta'yak` → encounterId 744
+    - `Imperial Vizier Zor'lok` → encounterId 745
+    - `Garalon` → encounterId 1463
+    - `Meljarak` → encounterId 1498
+    - `Unsok` → encounterId 1499
+    - `Shekzeer` → encounterId 1501
+    - `Tayak` → encounterId 1504
+    - `Zorlok` → encounterId 1507
+- 实例ID **1011** —— 1 个首领
+    - `Vojak` → encounterId 1502
+- 实例ID **1098** —— 22 个首领
+    - `Council of Elders` → encounterId 816
+    - `Iron Qon` → encounterId 817
+    - `Durumu the Forgotten` → encounterId 818
+    - `Dark Animus` → encounterId 824
+    - `Jin'rokh the Breaker` → encounterId 827
+    - `Ji-Kun` → encounterId 828
+    - `Twin Consorts` → encounterId 829
+    - `Ra-den` → encounterId 831
+    - `Lei Shen` → encounterId 832
+    - `IronQon` → encounterId 1559
+    - `TwinEmpyreans` → encounterId 1560
+    - `Tortos` → encounterId 1565
+    - `CouncilofElders` → encounterId 1570
+    - `Durumu` → encounterId 1572
+    - `JiKun` → encounterId 1573
+    - `Primordius` → encounterId 1574
+    - `Horridon` → encounterId 1575
+    - `DarkAnimus` → encounterId 1576
+    - `Jinrokh` → encounterId 1577
+    - `Megaera` → encounterId 1578
+    - `LeiShen` → encounterId 1579
+    - `Raden` → encounterId 1580
+- 实例ID **1136** —— 24 个首领
+    - `The Fallen Protectors` → encounterId 849
+    - `General Nazgrim` → encounterId 850
+    - `Thok the Bloodthirsty` → encounterId 851
+    - `Paragons of the Klaxxi` → encounterId 853
+    - `Kor'kron Dark Shaman` → encounterId 856
+    - `Iron Juggernaut` → encounterId 864
+    - `Siegecrafter Blackfuse` → encounterId 865
+    - `Sha of Pride` → encounterId 867
+    - `Garrosh Hellscream` → encounterId 869
+    - `Spoils of Pandaria` → encounterId 870
+    - `ParagonsOfTheKlaxxi` → encounterId 1593
+    - `SpoilsOfPandria` → encounterId 1594
+    - `Malkorok` → encounterId 1595
+    - `FallenProtectors` → encounterId 1598
+    - `ThokTheBloodthirsty` → encounterId 1599
+    - `IronJuggernaut` → encounterId 1600
+    - `SiegecrafterBlackfuse` → encounterId 1601
+    - `Immerseus` → encounterId 1602
+    - `GeneralNazgrim` → encounterId 1603
+    - `ShaofPride` → encounterId 1604
+    - `KorkronDarkShaman` → encounterId 1606
+    - `Galakras` → encounterId 1622
+    - `GarroshHellscream` → encounterId 1623
+    - `Norushen` → encounterId 1624
+- 实例ID **-554** —— 1 个首领
+    - `Ordos` → encounterId 861
+- 实例ID **-507** —— 1 个首领
+    - `Oondasta` → encounterId 826
+- 实例ID **-504** —— 1 个首领
+    - `Nalak` → encounterId 814
+- 实例ID **-379** —— 1 个首领
+    - `Sha of Anger` → encounterId 691
+- 实例ID **-376** —— 1 个首领
+    - `Salyis's Warband` → encounterId 725
+
+### 燃烧的远征（9 实例）
+
+- 实例ID **532** —— 23 个首领
+    - `Nightbane Raid` → encounterId -662
+    - `Romulo & Julianne` → encounterId -655
+    - `The Big Bad Wolf` → encounterId -655
+    - `The Crone` → encounterId -655
+    - `Attumen` → encounterId 652
+    - `Moroes` → encounterId 653
+    - `MaidenOfVirtue` → encounterId 654
+    - `BigBadWolf` → encounterId 655
+    - `Curator` → encounterId 656
+    - `TerestianIllhoof` → encounterId 657
+    - `ShadeOfAran` → encounterId 658
+    - `Netherspite` → encounterId 659
+    - `Chess` → encounterId 660
+    - `PrinceMalchezaar` → encounterId 661
+    - `Nightbane` → encounterId 662
+    - `Hyakiss the Lurker` → encounterId 1552
+    - `Attumen the Huntsman Raid` → encounterId 1553
+    - `Moroes Raid` → encounterId 1554
+    - `Maiden of Virtue Raid` → encounterId 1555
+    - `The Curator Raid` → encounterId 1557
+    - `Shade of Aran` → encounterId 1559
+    - `Terestian Illhoof` → encounterId 1560
+    - `Prince Malchezaar` → encounterId 1563
+- 实例ID **534** —— 8 个首领
+    - `RageWinterchill` → encounterId 618
+    - `Anetheron` → encounterId 619
+    - `Kazrogal` → encounterId 620
+    - `Azgalor` → encounterId 621
+    - `Archimonde` → encounterId 622
+    - `Rage Winterchill` → encounterId 1577
+    - `Kaz'rogal` → encounterId 1579
+    - `ArchimondeHyjal` → encounterId 1581
+- 实例ID **544** —— 1 个首领
+    - `Magtheridon` → encounterId 651
+- 实例ID **548** —— 12 个首领
+    - `Hydross` → encounterId 623
+    - `TheLurkerBelow` → encounterId 624
+    - `Leotheras` → encounterId 625
+    - `Fathomlord` → encounterId 626
+    - `Tidewalker` → encounterId 627
+    - `Vashj` → encounterId 628
+    - `Hydross the Unstable` → encounterId 1567
+    - `The Lurker Below` → encounterId 1568
+    - `Leotheras the Blind` → encounterId 1569
+    - `Fathom-Lord Karathress` → encounterId 1570
+    - `Morogrim Tidewalker` → encounterId 1571
+    - `Lady Vashj` → encounterId 1572
+- 实例ID **550** —— 8 个首领
+    - `Alar` → encounterId 730
+    - `VoidReaver` → encounterId 731
+    - `Solarian` → encounterId 732
+    - `KaelThas` → encounterId 733
+    - `Al'ar` → encounterId 1573
+    - `Void Reaver` → encounterId 1574
+    - `High Astromancer Solarian` → encounterId 1575
+    - `Kael'thas Sunstrider` → encounterId 1576
+- 实例ID **564** —— 17 个首领
+    - `Najentus` → encounterId 601
+    - `Supremus` → encounterId 602
+    - `ShadeOfAkama` → encounterId 603
+    - `TeronGorefiend` → encounterId 604
+    - `Bloodboil` → encounterId 605
+    - `EssenceOfSouls` → encounterId 606
+    - `Shahraz` → encounterId 607
+    - `IllidariCouncil` → encounterId 608
+    - `Illidan` → encounterId 609
+    - `High Warlord Naj'entus` → encounterId 1582
+    - `Shade of Akama` → encounterId 1584
+    - `Teron Gorefiend` → encounterId 1585
+    - `Gurtogg Bloodboil` → encounterId 1586
+    - `Reliquary of Souls` → encounterId 1587
+    - `Mother Shahraz` → encounterId 1588
+    - `The Illidari Council` → encounterId 1589
+    - `Illidan Stormrage` → encounterId 1590
+- 实例ID **565** —— 4 个首领
+    - `Maulgar` → encounterId 649
+    - `Gruul` → encounterId 650
+    - `High King Maulgar` → encounterId 1564
+    - `Gruul the Dragonkiller` → encounterId 1565
+- 实例ID **568** —— 12 个首领
+    - `Akil'zon` → encounterId 186
+    - `Nalorakk` → encounterId 187
+    - `Jan'alai` → encounterId 188
+    - `Halazzi` → encounterId 189
+    - `Hex Lord Malacrass` → encounterId 190
+    - `Zul'jin` → encounterId 191
+    - `Akilzon5` → encounterId 1189
+    - `Nalorakk5` → encounterId 1190
+    - `Janalai5` → encounterId 1191
+    - `Halazzi5` → encounterId 1192
+    - `Malacrass5` → encounterId 1193
+    - `Daakara` → encounterId 1194
+- 实例ID **580** —— 7 个首领
+    - `Kalecgos` → encounterId 724
+    - `Brutallus` → encounterId 725
+    - `Felmyst` → encounterId 726
+    - `EredarTwins` → encounterId 727
+    - `M'uru` → encounterId 728
+    - `Kil'jaeden` → encounterId 729
+    - `The Eredar Twins` → encounterId 1594
+
+### 经典旧世（28 实例）
+
+- 实例ID **34** —— 3 个首领
+    - `Hogger` → encounterId 1144
+    - `LordOverheat` → encounterId 1145
+    - `Moloch` → encounterId 1146
+- 实例ID **36** —— 13 个首领
+    - `Ripsnarl` → encounterId 1062
+    - `FoeReaper` → encounterId 1063
+    - `Glubtok` → encounterId 1064
+    - `Helix` → encounterId 1065
+    - `Vanessa` → encounterId 1081
+    - `MinerJohnson` → encounterId 1144
+    - `RhahkZor` → encounterId 2967
+    - `SneedsShredder` → encounterId 2968
+    - `Gilnid` → encounterId 2969
+    - `MrSmite` → encounterId 2970
+    - `CaptainGreenskin` → encounterId 2971
+    - `EdwinVanCleef` → encounterId 2972
+    - `Cookie` → encounterId 2986
+- 实例ID **43** —— 8 个首领
+    - `LadyAnacondra` → encounterId 585
+    - `LordCobrahn` → encounterId 586
+    - `Kresh` → encounterId 587
+    - `LordPythas` → encounterId 588
+    - `Skum` → encounterId 589
+    - `LordSerpentis` → encounterId 590
+    - `VerantheEverliving` → encounterId 591
+    - `MutanustheDevourer` → encounterId 592
+- 实例ID **47** —— 11 个首领
+    - `AgathelostheRaging` → encounterId 438
+    - `AggemThorncurse` → encounterId 438
+    - `BlindHunter` → encounterId 438
+    - `DeathSpeakerJargba` → encounterId 438
+    - `EarthcallerHalmgar` → encounterId 438
+    - `Roogug` → encounterId 438
+    - `HunterBonetusk` → encounterId 1656
+    - `OverlordRamtusk` → encounterId 1659
+    - `WarlordRamtusk` → encounterId 1659
+    - `Groyat` → encounterId 1660
+    - `CharlgaRazorflank` → encounterId 1661
+- 实例ID **48** —— 16 个首领
+    - `GhamooRa` → encounterId 1667
+    - `Domina` → encounterId 1668
+    - `Korul` → encounterId 1669
+    - `Gore` → encounterId 1670
+    - `Bathiel` → encounterId 1671
+    - `Thruk` → encounterId 1675
+    - `Guardian` → encounterId 1676
+    - `BaronAuanis` → encounterId 2694
+    - `Ghamoora` → encounterId 2697
+    - `LadySarevess` → encounterId 2699
+    - `Gelihast` → encounterId 2704
+    - `LorgusJett` → encounterId 2710
+    - `LadySerevess` → encounterId 2762
+    - `OldSerrakis` → encounterId 2765
+    - `TwilightLordKelris` → encounterId 2825
+    - `Akumai` → encounterId 2891
+- 实例ID **70** —— 8 个首领
+    - `Revelosh` → encounterId 547
+    - `TheLostDwarves` → encounterId 548
+    - `Ironaya` → encounterId 549
+    - `AncientStoneKeeper` → encounterId 551
+    - `GalgannFirehammer` → encounterId 552
+    - `Grimlok` → encounterId 553
+    - `Archaedas` → encounterId 554
+    - `ObsidianSentinel` → encounterId 1887
+- 实例ID **90** —— 6 个首领
+    - `CrowdPummeler` → encounterId 2899
+    - `Grubbis` → encounterId 2925
+    - `Electrocutioner6000` → encounterId 2927
+    - `ViscousFallout` → encounterId 2928
+    - `MechanicalMenagerie` → encounterId 2935
+    - `MekgineerThermaplugg` → encounterId 2940
+- 实例ID **109** —— 14 个首领
+    - `Dreamscythe` → encounterId 486
+    - `Weaver` → encounterId 487
+    - `JammalantheProphet` → encounterId 488
+    - `Morphaz` → encounterId 490
+    - `Hazzas` → encounterId 491
+    - `ShadeofEranikus` → encounterId 493
+    - `Atalalarion` → encounterId 2952
+    - `FesteringRotslime` → encounterId 2953
+    - `AtalaiDefenders` → encounterId 2954
+    - `DreamscytheAndWeaver` → encounterId 2955
+    - `AvatarofHakkar` → encounterId 2956
+    - `JammalanAndOgom` → encounterId 2957
+    - `MorphazAndHazzas` → encounterId 2958
+    - `ShadeOfEranikus` → encounterId 2959
+- 实例ID **129** —— 11 个首领
+    - `AmnennartheColdbringer` → encounterId 585
+    - `Glutton` → encounterId 585
+    - `MordreshFireEye` → encounterId 585
+    - `PlaguemawtheRotting` → encounterId 585
+    - `Ragglesnout` → encounterId 585
+    - `Tutenkash` → encounterId 585
+    - `Aarux` → encounterId 1662
+    - `MordressFireEye` → encounterId 1663
+    - `Mushlump` → encounterId 1664
+    - `DeathSpeakerBlackhorn` → encounterId 1665
+    - `AmnenartheColdbringer` → encounterId 1666
+- 实例ID **189** —— 6 个首领
+    - `InterrogatorVishas` → encounterId 444
+    - `HoundmasterLoksey` → encounterId 446
+    - `ArcanistDoan` → encounterId 447
+    - `Herod` → encounterId 448
+    - `HighInquisitorFairbanks` → encounterId 449
+    - `Mograine_and_Whitemane` → encounterId 450
+- 实例ID **209** —— 7 个首领
+    - `HydromancerVelrath` → encounterId 593
+    - `Gahzrilla` → encounterId 594
+    - `Antusul` → encounterId 595
+    - `ThekatheMartyr` → encounterId 596
+    - `WitchDoctorZumrah` → encounterId 597
+    - `Nekrum_Sezzziz` → encounterId 598
+    - `ChiefUkorzSandscalp` → encounterId 600
+- 实例ID **229** —— 9 个首领
+    - `HighlordOmokk` → encounterId 267
+    - `ShadowHunterVoshgajin` → encounterId 268
+    - `WarMasterVoone` → encounterId 269
+    - `MotherSmolderweb` → encounterId 270
+    - `UrokDoomhowl` → encounterId 271
+    - `QuartermasterZigris` → encounterId 272
+    - `Gizrul` → encounterId 273
+    - `Halycon` → encounterId 274
+    - `OverlordWyrmthalak` → encounterId 275
+- 实例ID **230** —— 18 个首领
+    - `Gerstahn` → encounterId 227
+    - `LordRoccor` → encounterId 228
+    - `HoundmasterGrebmar` → encounterId 229
+    - `RingofLaw` → encounterId 230
+    - `PyromancerLoregrain` → encounterId 231
+    - `LordIncendius` → encounterId 232
+    - `WardenStilgiss` → encounterId 233
+    - `FineousDarkvire` → encounterId 234
+    - `BaelGar` → encounterId 235
+    - `GeneralAngerforge` → encounterId 236
+    - `GolemLordArgelmach` → encounterId 237
+    - `HurleyBlackbreath` → encounterId 238
+    - `Phalanx` → encounterId 239
+    - `PluggerSpazzring` → encounterId 241
+    - `AmbassadorFlamelash` → encounterId 242
+    - `TheSeven` → encounterId 243
+    - `Magmus` → encounterId 244
+    - `EmperorDagranThaurissan` → encounterId 245
+- 实例ID **249** —— 1 个首领
+    - `Onyxia` → encounterId 1084
+- 实例ID **309** —— 10 个首领
+    - `Venoxis` → encounterId 784
+    - `Jeklik` → encounterId 785
+    - `Marli` → encounterId 786
+    - `Bloodlord` → encounterId 787
+    - `EdgeOfMadness` → encounterId 788
+    - `Thekal` → encounterId 789
+    - `Gahzranka` → encounterId 790
+    - `Arlokk` → encounterId 791
+    - `Jindo` → encounterId 792
+    - `Hakkar` → encounterId 793
+- 实例ID **329** —— 14 个首领
+    - `TheUnforgiven` → encounterId 472
+    - `HearthsingerForresten` → encounterId 473
+    - `TimmytheCruel` → encounterId 474
+    - `WilleyHopebreaker` → encounterId 475
+    - `CommanderMalor` → encounterId 476
+    - `InstructorGalford` → encounterId 477
+    - `Balnazzar` → encounterId 478
+    - `BaronessAnastari` → encounterId 479
+    - `Narubenkan` → encounterId 480
+    - `MalekithePallid` → encounterId 481
+    - `MagistrateBarthilas` → encounterId 482
+    - `RamsteintheGorger` → encounterId 483
+    - `LordAuriusRivendare` → encounterId 484
+    - `PostmasterMalown` → encounterId 1885
+- 实例ID **349** —— 8 个首领
+    - `Noxxion` → encounterId 422
+    - `Razorlash` → encounterId 423
+    - `LordVyletongue` → encounterId 424
+    - `CelebrastheCursed` → encounterId 425
+    - `Landslide` → encounterId 426
+    - `TinkererGizlock` → encounterId 427
+    - `Rotgrip` → encounterId 428
+    - `PrincessTheradras` → encounterId 429
+- 实例ID **389** —— 8 个首领
+    - `Oggleflint` → encounterId 1443
+    - `Adarogg` → encounterId 1443
+    - `Jergosh` → encounterId 1444
+    - `Koranthal` → encounterId 1444
+    - `Bazzalan` → encounterId 1445
+    - `Slagmaw` → encounterId 1445
+    - `Taragaman` → encounterId 1446
+    - `Gordoth` → encounterId 1446
+- 实例ID **409** —— 16 个首领
+    - `Lucifron` → encounterId 663
+    - `Magmadar` → encounterId 664
+    - `Gehennas` → encounterId 665
+    - `Garr` → encounterId 666
+    - `Shazzrah` → encounterId 667
+    - `Geddon` → encounterId 668
+    - `Sulfuron` → encounterId 669
+    - `Golemagg` → encounterId 670
+    - `Majordomo` → encounterId 671
+    - `Ragnaros` → encounterId 672
+    - `Baron Geddon` → encounterId 1524
+    - `Sulfuron Harbinger` → encounterId 1525
+    - `Golemagg the Incinerator` → encounterId 1526
+    - `Majordomo Executus` → encounterId 1527
+    - `Ragnaros Classic` → encounterId 1528
+    - `MoltenCore` → encounterId 3018
+- 实例ID **429** —— 16 个首领
+    - `Alzzin` → encounterId 346
+    - `IllyannaRavensoak` → encounterId 347
+    - `MagisterKelendris` → encounterId 348
+    - `Immolthar` → encounterId 349
+    - `TendrisWarpwood` → encounterId 350
+    - `PrinceTortheldrin` → encounterId 361
+    - `GuardMoldar` → encounterId 362
+    - `StomperKreeg` → encounterId 363
+    - `GuardFengus` → encounterId 364
+    - `GuardSlipkik` → encounterId 365
+    - `CaptainKromcrush` → encounterId 366
+    - `ChoRush` → encounterId 367
+    - `KingGordok` → encounterId 368
+    - `Hydrospawn` → encounterId 1443
+    - `Lethtendris` → encounterId 1443
+    - `ZevrimThornhoof` → encounterId 1443
+- 实例ID **469** —— 12 个首领
+    - `Razorgore` → encounterId 610
+    - `Vaelastrasz` → encounterId 611
+    - `Broodlord` → encounterId 612
+    - `Firemaw` → encounterId 613
+    - `Ebonroc` → encounterId 614
+    - `Flamegor` → encounterId 615
+    - `Chromaggus` → encounterId 616
+    - `Nefarian` → encounterId 617
+    - `Razorgore the Untamed` → encounterId 1529
+    - `Vaelastrasz the Corrupt` → encounterId 1530
+    - `Broodlord Lashlayer` → encounterId 1531
+    - `Nefarian Classic` → encounterId 1536
+- 实例ID **509** —— 10 个首领
+    - `Kurinnaxx` → encounterId 718
+    - `Rajaxx` → encounterId 719
+    - `Moam` → encounterId 720
+    - `Buru` → encounterId 721
+    - `Ayamiss` → encounterId 722
+    - `Ossirian` → encounterId 723
+    - `General Rajaxx` → encounterId 1538
+    - `Buru the Gorger` → encounterId 1540
+    - `Ayamiss the Hunter` → encounterId 1541
+    - `Ossirian the Unscarred` → encounterId 1542
+- 实例ID **531** —— 16 个首领
+    - `Skeram` → encounterId 709
+    - `ThreeBugs` → encounterId 710
+    - `Sartura` → encounterId 711
+    - `Fankriss` → encounterId 712
+    - `Viscidus` → encounterId 713
+    - `Huhuran` → encounterId 714
+    - `TwinEmps` → encounterId 715
+    - `Ouro` → encounterId 716
+    - `CThun` → encounterId 717
+    - `The Prophet Skeram` → encounterId 1543
+    - `Battleguard Sartura` → encounterId 1544
+    - `Fankriss the Unyielding` → encounterId 1545
+    - `Princess Huhuran` → encounterId 1546
+    - `Silithid Royalty` → encounterId 1547
+    - `The Twin Emperors` → encounterId 1549
+    - `C'Thun` → encounterId 1551
+- 实例ID **533** —— 22 个首领
+    - `Anub'Rekhan` → encounterId 1107
+    - `Gluth` → encounterId 1108
+    - `Gothik` → encounterId 1109
+    - `Faerlina` → encounterId 1110
+    - `Grobbulus` → encounterId 1111
+    - `Heigan` → encounterId 1112
+    - `Razuvious` → encounterId 1113
+    - `Kel'Thuzad` → encounterId 1114
+    - `Loatheb` → encounterId 1115
+    - `Maexxna` → encounterId 1116
+    - `Noth` → encounterId 1117
+    - `Patchwerk` → encounterId 1118
+    - `Sapphiron` → encounterId 1119
+    - `Thaddius` → encounterId 1120
+    - `Horsemen` → encounterId 1121
+    - `Grand Widow Faerlina` → encounterId 1602
+    - `Noth the Plaguebringer` → encounterId 1604
+    - `Heigan the Unclean` → encounterId 1605
+    - `Instructor Razuvious` → encounterId 1607
+    - `Gothik the Harvester` → encounterId 1608
+    - `The Four Horsemen` → encounterId 1609
+    - `Kel'Thuzad Naxxramas` → encounterId 1615
+- 实例ID **2784** —— 7 个首领
+    - `Grimroot` → encounterId 3023
+    - `Diathorus` → encounterId 3024
+    - `DestructorsWraith` → encounterId 3028
+    - `Zilbagob` → encounterId 3029
+    - `Pyranis` → encounterId 3030
+    - `HellscreamsPhantom` → encounterId 3031
+    - `Azgaloth` → encounterId 3080
+- 实例ID **2792** —— 8 个首领
+    - `LordRoccor` → encounterId 3042
+    - `LordIncendius` → encounterId 3043
+    - `BaelGar` → encounterId 3044
+    - `GeneralAngerforge` → encounterId 3045
+    - `GolemLordArgelmach` → encounterId 3046
+    - `AmbassadorFlamelash` → encounterId 3047
+    - `TheSeven` → encounterId 3048
+    - `EmperorDagranThaurissan` → encounterId 3049
+- 实例ID **2856** —— 8 个首领
+    - `Balnazzar` → encounterId 3185
+    - `Solistrasza` → encounterId 3186
+    - `Beatrix` → encounterId 3187
+    - `RebornCouncil` → encounterId 3188
+    - `Caldoran` → encounterId 3189
+    - `LillianVoss` → encounterId 3190
+    - `Beastmaster` → encounterId 3196
+    - `Mason` → encounterId 3197
+- 实例ID **2875** —— 7 个首领
+    - `HarbingerOfSin` → encounterId 3141
+    - `Kharon` → encounterId 3143
+    - `OperaOfMalediction` → encounterId 3144
+    - `DarkRider` → encounterId 3145
+    - `CreepingMalison` → encounterId 3146
+    - `Unkomon` → encounterId 3152
+    - `Apprentice` → encounterId 3170

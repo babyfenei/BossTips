@@ -27,6 +27,7 @@ end
 
 -- ========== 2. 全局状态与配置 ==========
 local currentInstanceName, currentSelectedBoss, manuallyHidden = nil, nil, false
+local lastAutoShownInstance = nil  -- 已自动展开过的副本，避免同副本内反复弹窗
 local tipsFrame, tipsFontString, mainButton, bossMenu, settingsFrame, dungeonPicker
 
 -- 账号通用默认配置
@@ -49,6 +50,7 @@ local defaultConfig = {
     showMobs = false,         -- 是否显示小怪攻略（默认不显示，仅显示首领）
     -- ========== 参考 DungeonCheatSheet 的新增设置 ==========
     autoExpandOnTarget = true,   -- 智能展开：选中首领/首领战开始时自动打开其攻略
+    autoOpenOnEnter = true,      -- 进入副本时自动弹出攻略窗（参考 DCS 行为）
     lockWindow = false,         -- 锁定窗口：禁止拖动/缩放攻略框与主按钮
     tipsBgStyle = "black",      -- 兼容旧设置；新窗口使用下方 RGBA
     tipsFont = "default",       -- 攻略字体：default / damage / chat
@@ -1090,270 +1092,6 @@ local function CreateTipsFrame()
     return frame
 end
 
--- ========== 7. 设置界面 ==========
-local function CreateLegacySettingsFrame()
-    local frame = CreateFrame("Frame", "BossTipsSettingsFrame", UIParent, "BackdropTemplate")
-    frame:SetSize(320, 520)
-    frame:SetFrameStrata("HIGH")
-    frame:SetFrameLevel(300)
-    frame:SetPoint("CENTER", UIParent, "CENTER")
-    frame:SetMovable(true)
-    frame:SetClampedToScreen(true)
-    frame:EnableMouse(true)
-    frame:RegisterForDrag("LeftButton")
-    frame:Hide()
-    
-    frame:SetBackdrop({
-        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-        tile = true, tileSize = 32, edgeSize = 32,
-        insets = { left = 12, right = 12, top = 12, bottom = 12 }
-    })
-    frame:SetBackdropColor(0, 0, 0, 0.9)
-    
-    local title = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    title:SetPoint("TOP", 0, -10)
-    title:SetText("BossTips 设置")
-    title:SetTextColor(1, 0.8, 0)
-    
-    local bossDirLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    bossDirLabel:SetPoint("TOPLEFT", 20, -40)
-    bossDirLabel:SetText("BOSS菜单弹出方向：")
-    
-    local bossDirDropDown = CreateFrame("Frame", "BossTipsBossDirDropDown", frame, "UIDropDownMenuTemplate")
-    bossDirDropDown:SetPoint("TOPLEFT", 180, -38)
-    UIDropDownMenu_SetWidth(bossDirDropDown, 90)
-    UIDropDownMenu_SetText(bossDirDropDown, BossTipsGlobalDB.bossMenuPopDirection or "BOTTOM")
-    
-    local function SetBossDir(self)
-        UIDropDownMenu_SetText(bossDirDropDown, self.value)
-        BossTipsGlobalDB.bossMenuPopDirection = self.value
-    end
-    
-    UIDropDownMenu_Initialize(bossDirDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "上" info.value = "TOP" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "下" info.value = "BOTTOM" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "左" info.value = "LEFT" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "右" info.value = "RIGHT" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-    end)
-    
-    local tipsDirLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    tipsDirLabel:SetPoint("TOPLEFT", 20, -80)
-    tipsDirLabel:SetText("攻略框弹出方向：")
-    
-    local tipsDirDropDown = CreateFrame("Frame", "BossTipsTipsDirDropDown", frame, "UIDropDownMenuTemplate")
-    tipsDirDropDown:SetPoint("TOPLEFT", 180, -78)
-    UIDropDownMenu_SetWidth(tipsDirDropDown, 90)
-    UIDropDownMenu_SetText(tipsDirDropDown, BossTipsGlobalDB.tipsFramePopDirection or "BOTTOM")
-    
-    local function SetTipsDir(self)
-        UIDropDownMenu_SetText(tipsDirDropDown, self.value)
-        BossTipsGlobalDB.tipsFramePopDirection = self.value
-    end
-    
-    UIDropDownMenu_Initialize(tipsDirDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "上" info.value = "TOP" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "下" info.value = "BOTTOM" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "左" info.value = "LEFT" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "右" info.value = "RIGHT" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-    end)
-    
-    local alignLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    alignLabel:SetPoint("TOPLEFT", 20, -120)
-    alignLabel:SetText("攻略框对齐方式：")
-    
-    local alignDropDown = CreateFrame("Frame", "BossTipsAlignDropDown", frame, "UIDropDownMenuTemplate")
-    alignDropDown:SetPoint("TOPLEFT", 180, -118)
-    UIDropDownMenu_SetWidth(alignDropDown, 90)
-    UIDropDownMenu_SetText(alignDropDown, BossTipsGlobalDB.tipsFrameAlign or "LEFT")
-    
-    local function SetAlign(self)
-        UIDropDownMenu_SetText(alignDropDown, self.value)
-        BossTipsGlobalDB.tipsFrameAlign = self.value
-    end
-    
-    UIDropDownMenu_Initialize(alignDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "左对齐" info.value = "LEFT" info.func = SetAlign UIDropDownMenu_AddButton(info)
-        info.text = "右对齐" info.value = "RIGHT" info.func = SetAlign UIDropDownMenu_AddButton(info)
-    end)
-    
-    local hideBtnLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    hideBtnLabel:SetPoint("TOPLEFT", 20, -160)
-    hideBtnLabel:SetText("无攻略时隐藏主按钮：")
-    
-    local hideBtnCheck = CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
-    hideBtnCheck:SetPoint("TOPLEFT", 180, -158)
-    hideBtnCheck:SetChecked(BossTipsGlobalDB.hideMainButtonWhenNoGuide or false)
-    hideBtnCheck:SetScript("OnClick", function(self)
-        BossTipsGlobalDB.hideMainButtonWhenNoGuide = self:GetChecked()
-        UpdateMainButtonVisibility()
-    end)
-    
-    -- 聊天频道选择
-    local channelLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    channelLabel:SetPoint("TOPLEFT", 20, -200)
-    channelLabel:SetText("默认发送频道：")
-    
-    local channelDropDown = CreateFrame("Frame", "BossTipsChannelDropDown", frame, "UIDropDownMenuTemplate")
-    channelDropDown:SetPoint("TOPLEFT", 180, -198)
-    UIDropDownMenu_SetWidth(channelDropDown, 110)
-    
-    -- 频道名称映射
-    local channelNames = {
-        ["INSTANCE_CHAT"] = "副本频道",
-        ["SAY"] = "说频道",
-        ["YELL"] = "大喊频道",
-        ["PARTY"] = "队伍频道",
-    }
-    UIDropDownMenu_SetText(channelDropDown, channelNames[BossTipsGlobalDB.defaultChatChannel] or "副本频道")
-    
-    local function SetChannel(self)
-        UIDropDownMenu_SetText(channelDropDown, channelNames[self.value] or self.value)
-        BossTipsGlobalDB.defaultChatChannel = self.value
-    end
-    
-    UIDropDownMenu_Initialize(channelDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "副本频道" info.value = "INSTANCE_CHAT" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "说频道" info.value = "SAY" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "大喊频道" info.value = "YELL" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "队伍频道" info.value = "PARTY" info.func = SetChannel UIDropDownMenu_AddButton(info)
-    end)
-
-    -- 智能展开
-    local autoExpandCheck = CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
-    autoExpandCheck:SetPoint("TOPLEFT", 20, -240)
-    autoExpandCheck:SetChecked(BossTipsGlobalDB.autoExpandOnTarget or false)
-    autoExpandCheck:SetScript("OnClick", function(self)
-        BossTipsGlobalDB.autoExpandOnTarget = self:GetChecked()
-    end)
-    local autoExpandLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    autoExpandLabel:SetPoint("LEFT", autoExpandCheck, "RIGHT", 8, 0)
-    autoExpandLabel:SetText("智能展开（选中首领/开战自动显示）")
-
-    -- 锁定窗口
-    local lockCheck = CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
-    lockCheck:SetPoint("TOPLEFT", 20, -280)
-    lockCheck:SetChecked(BossTipsGlobalDB.lockWindow or false)
-    lockCheck:SetScript("OnClick", function(self)
-        BossTipsGlobalDB.lockWindow = self:GetChecked()
-        ApplyWindowLock()
-    end)
-    local lockLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    lockLabel:SetPoint("LEFT", lockCheck, "RIGHT", 8, 0)
-    lockLabel:SetText("锁定窗口（禁止拖动/缩放）")
-
-    -- 小地图按钮
-    local minimapCheck = CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
-    minimapCheck:SetPoint("TOPLEFT", 20, -320)
-    minimapCheck:SetChecked(BossTipsGlobalDB.showMinimapButton or false)
-    minimapCheck:SetScript("OnClick", function(self)
-        BossTipsGlobalDB.showMinimapButton = self:GetChecked()
-        UpdateMinimapButtonVisibility()
-    end)
-    local minimapLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    minimapLabel:SetPoint("LEFT", minimapCheck, "RIGHT", 8, 0)
-    minimapLabel:SetText("显示小地图按钮")
-
-    -- 背景风格
-    local bgStyleLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    bgStyleLabel:SetPoint("TOPLEFT", 20, -360)
-    bgStyleLabel:SetText("背景风格：")
-    local bgStyleDropDown = CreateFrame("Frame", "BossTipsBgStyleDropDown", frame, "UIDropDownMenuTemplate")
-    bgStyleDropDown:SetPoint("TOPLEFT", 180, -358)
-    UIDropDownMenu_SetWidth(bgStyleDropDown, 90)
-    local styleNames = { black = "黑底", translucent = "半透明", navy = "暗蓝" }
-    UIDropDownMenu_SetText(bgStyleDropDown, styleNames[BossTipsGlobalDB.tipsBgStyle] or "黑底")
-    local function SetBgStyle(self)
-        UIDropDownMenu_SetText(bgStyleDropDown, styleNames[self.value])
-        BossTipsGlobalDB.tipsBgStyle = self.value
-        ApplyTipsAppearance()
-    end
-    UIDropDownMenu_Initialize(bgStyleDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "黑底" info.value = "black" info.func = SetBgStyle UIDropDownMenu_AddButton(info)
-        info.text = "半透明" info.value = "translucent" info.func = SetBgStyle UIDropDownMenu_AddButton(info)
-        info.text = "暗蓝" info.value = "navy" info.func = SetBgStyle UIDropDownMenu_AddButton(info)
-    end)
-
-    -- 攻略字体
-    local fontLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    fontLabel:SetPoint("TOPLEFT", 20, -400)
-    fontLabel:SetText("攻略字体：")
-    local fontDropDown = CreateFrame("Frame", "BossTipsFontDropDown", frame, "UIDropDownMenuTemplate")
-    fontDropDown:SetPoint("TOPLEFT", 180, -398)
-    UIDropDownMenu_SetWidth(fontDropDown, 110)
-    local fontNames = { default = "系统默认", damage = "伤害数字", chat = "聊天加粗" }
-    UIDropDownMenu_SetText(fontDropDown, fontNames[BossTipsGlobalDB.tipsFont] or "系统默认")
-    local function SetTipsFont(self)
-        UIDropDownMenu_SetText(fontDropDown, fontNames[self.value])
-        BossTipsGlobalDB.tipsFont = self.value
-        UpdateFontSize()
-    end
-    UIDropDownMenu_Initialize(fontDropDown, function()
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "系统默认" info.value = "default" info.func = SetTipsFont UIDropDownMenu_AddButton(info)
-        info.text = "伤害数字" info.value = "damage" info.func = SetTipsFont UIDropDownMenu_AddButton(info)
-        info.text = "聊天加粗" info.value = "chat" info.func = SetTipsFont UIDropDownMenu_AddButton(info)
-    end)
-
-    local resetBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-    resetBtn:SetSize(120, 25)
-    resetBtn:SetPoint("TOPLEFT", 20, -450)
-    resetBtn:SetText("重置所有设置")
-    resetBtn:GetFontString():SetTextColor(1, 0.8, 0)
-    resetBtn:SetScript("OnClick", function()
-        BossTipsGlobalDB = CopyTable(defaultConfig)
-        
-        mainButton:ClearAllPoints()
-        mainButton:SetPoint(
-            BossTipsGlobalDB.mainButtonPos.point,
-            UIParent,
-            BossTipsGlobalDB.mainButtonPos.relativePoint,
-            BossTipsGlobalDB.mainButtonPos.xOffset,
-            BossTipsGlobalDB.mainButtonPos.yOffset
-        )
-        
-        UIDropDownMenu_SetText(bossDirDropDown, "BOTTOM")
-        UIDropDownMenu_SetText(tipsDirDropDown, "BOTTOM")
-        UIDropDownMenu_SetText(alignDropDown, "LEFT")
-        hideBtnCheck:SetChecked(false)
-        UIDropDownMenu_SetText(channelDropDown, "副本频道")
-        autoExpandCheck:SetChecked(true)
-        lockCheck:SetChecked(false)
-        minimapCheck:SetChecked(false)
-        UIDropDownMenu_SetText(bgStyleDropDown, "黑底")
-        UIDropDownMenu_SetText(fontDropDown, "系统默认")
-
-        ApplyWindowLock()
-        ApplyTipsAppearance()
-        UpdateMinimapButtonVisibility()
-        UpdateMainButtonVisibility()
-
-        print("|cFF00FF00BossTips|r: 已重置所有设置到默认值")
-    end)
-    
-    local closeBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-    closeBtn:SetSize(100, 25)
-    closeBtn:SetPoint("BOTTOM", 0, 12)
-    closeBtn:SetText("关闭设置")
-    closeBtn:GetFontString():SetTextColor(1, 0.8, 0)
-    closeBtn:SetScript("OnClick", function()
-        frame:Hide()
-    end)
-    
-    frame:SetScript("OnDragStart", function(self)
-        self:StartMoving()
-    end)
-    frame:SetScript("OnDragStop", function(self)
-        self:StopMovingOrSizing()
-    end)
-    
-    return frame
-end
 
 -- ========== 8. DungeonCheatSheet 风格双标签设置窗口 ==========
 local function CreateSettingsFrame()
@@ -1472,7 +1210,7 @@ local function CreateSettingsFrame()
     UIDropDownMenu_Initialize(channelDrop, function()
         local info = UIDropDownMenu_CreateInfo()
         for _, value in ipairs({"SAY", "YELL", "PARTY", "RAID", "INSTANCE_CHAT"}) do
-            info.text = channelNames[value] info.value = value info.func = SetChannel UIDropDownMenu_AddButton(info)
+            info.text = channelNames[value]; info.value = value; info.func = SetChannel; UIDropDownMenu_AddButton(info)
         end
     end)
 
@@ -1492,7 +1230,7 @@ local function CreateSettingsFrame()
     UIDropDownMenu_Initialize(fontDrop, function()
         local info = UIDropDownMenu_CreateInfo()
         for _, value in ipairs({"default", "damage", "chat"}) do
-            info.text = fontNames[value] info.value = value info.func = SetFont UIDropDownMenu_AddButton(info)
+            info.text = fontNames[value]; info.value = value; info.func = SetFont; UIDropDownMenu_AddButton(info)
         end
     end)
 
@@ -1672,10 +1410,10 @@ local function CreateInterfaceOptionsPanel()
     
     UIDropDownMenu_Initialize(bossDirDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "上" info.value = "TOP" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "下" info.value = "BOTTOM" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "左" info.value = "LEFT" info.func = SetBossDir UIDropDownMenu_AddButton(info)
-        info.text = "右" info.value = "RIGHT" info.func = SetBossDir UIDropDownMenu_AddButton(info)
+        info.text = "上"; info.value = "TOP"; info.func = SetBossDir; UIDropDownMenu_AddButton(info)
+        info.text = "下"; info.value = "BOTTOM"; info.func = SetBossDir; UIDropDownMenu_AddButton(info)
+        info.text = "左"; info.value = "LEFT"; info.func = SetBossDir; UIDropDownMenu_AddButton(info)
+        info.text = "右"; info.value = "RIGHT"; info.func = SetBossDir; UIDropDownMenu_AddButton(info)
     end)
     
     -- 攻略框弹出方向
@@ -1695,10 +1433,10 @@ local function CreateInterfaceOptionsPanel()
     
     UIDropDownMenu_Initialize(tipsDirDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "上" info.value = "TOP" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "下" info.value = "BOTTOM" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "左" info.value = "LEFT" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
-        info.text = "右" info.value = "RIGHT" info.func = SetTipsDir UIDropDownMenu_AddButton(info)
+        info.text = "上"; info.value = "TOP"; info.func = SetTipsDir; UIDropDownMenu_AddButton(info)
+        info.text = "下"; info.value = "BOTTOM"; info.func = SetTipsDir; UIDropDownMenu_AddButton(info)
+        info.text = "左"; info.value = "LEFT"; info.func = SetTipsDir; UIDropDownMenu_AddButton(info)
+        info.text = "右"; info.value = "RIGHT"; info.func = SetTipsDir; UIDropDownMenu_AddButton(info)
     end)
     
     -- 攻略框对齐方式
@@ -1721,8 +1459,8 @@ local function CreateInterfaceOptionsPanel()
     
     UIDropDownMenu_Initialize(alignDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "左对齐" info.value = "LEFT" info.func = SetAlign UIDropDownMenu_AddButton(info)
-        info.text = "右对齐" info.value = "RIGHT" info.func = SetAlign UIDropDownMenu_AddButton(info)
+        info.text = "左对齐"; info.value = "LEFT"; info.func = SetAlign; UIDropDownMenu_AddButton(info)
+        info.text = "右对齐"; info.value = "RIGHT"; info.func = SetAlign; UIDropDownMenu_AddButton(info)
     end)
 
     -- ========== 功能设置区域 ==========
@@ -1780,10 +1518,10 @@ local function CreateInterfaceOptionsPanel()
     
     UIDropDownMenu_Initialize(channelDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "副本频道" info.value = "INSTANCE_CHAT" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "说频道" info.value = "SAY" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "大喊频道" info.value = "YELL" info.func = SetChannel UIDropDownMenu_AddButton(info)
-        info.text = "队伍频道" info.value = "PARTY" info.func = SetChannel UIDropDownMenu_AddButton(info)
+        info.text = "副本频道"; info.value = "INSTANCE_CHAT"; info.func = SetChannel; UIDropDownMenu_AddButton(info)
+        info.text = "说频道"; info.value = "SAY"; info.func = SetChannel; UIDropDownMenu_AddButton(info)
+        info.text = "大喊频道"; info.value = "YELL"; info.func = SetChannel; UIDropDownMenu_AddButton(info)
+        info.text = "队伍频道"; info.value = "PARTY"; info.func = SetChannel; UIDropDownMenu_AddButton(info)
     end)
 
     -- ========== 攻略框设置区域 ==========
@@ -1846,9 +1584,9 @@ local function CreateInterfaceOptionsPanel()
     end
     UIDropDownMenu_Initialize(fontDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "系统默认" info.value = "default" info.func = SetTipsFontOpts UIDropDownMenu_AddButton(info)
-        info.text = "伤害数字" info.value = "damage" info.func = SetTipsFontOpts UIDropDownMenu_AddButton(info)
-        info.text = "聊天加粗" info.value = "chat" info.func = SetTipsFontOpts UIDropDownMenu_AddButton(info)
+        info.text = "系统默认"; info.value = "default"; info.func = SetTipsFontOpts; UIDropDownMenu_AddButton(info)
+        info.text = "伤害数字"; info.value = "damage"; info.func = SetTipsFontOpts; UIDropDownMenu_AddButton(info)
+        info.text = "聊天加粗"; info.value = "chat"; info.func = SetTipsFontOpts; UIDropDownMenu_AddButton(info)
     end)
 
     -- 背景风格
@@ -1867,9 +1605,9 @@ local function CreateInterfaceOptionsPanel()
     end
     UIDropDownMenu_Initialize(bgStyleDropDown, function()
         local info = UIDropDownMenu_CreateInfo()
-        info.text = "黑底" info.value = "black" info.func = SetBgStyleOpts UIDropDownMenu_AddButton(info)
-        info.text = "半透明" info.value = "translucent" info.func = SetBgStyleOpts UIDropDownMenu_AddButton(info)
-        info.text = "暗蓝" info.value = "navy" info.func = SetBgStyleOpts UIDropDownMenu_AddButton(info)
+        info.text = "黑底"; info.value = "black"; info.func = SetBgStyleOpts; UIDropDownMenu_AddButton(info)
+        info.text = "半透明"; info.value = "translucent"; info.func = SetBgStyleOpts; UIDropDownMenu_AddButton(info)
+        info.text = "暗蓝"; info.value = "navy"; info.func = SetBgStyleOpts; UIDropDownMenu_AddButton(info)
     end)
 
     -- 智能展开
@@ -2656,8 +2394,22 @@ local function InitAddon()
         end
         C_Timer.After(1, function()
             UpdateCurrentInstance()
-            manuallyHidden = false
             currentSelectedBoss = nil
+            -- 参考 DungeonCheatSheet：进入副本自动弹出攻略窗
+            if not BossTipsGlobalDB.autoOpenOnEnter then return end
+            local inInst = IsInInstance()
+            if inInst and HasCurrentMapGuide() then
+                if currentInstanceName ~= lastAutoShownInstance then
+                    manuallyHidden = false
+                    if tipsFrame and tipsFrame.ShowInstanceGuide then
+                        tipsFrame:ShowInstanceGuide(currentInstanceName)
+                        lastAutoShownInstance = currentInstanceName
+                    end
+                end
+            else
+                lastAutoShownInstance = nil
+                if tipsFrame and not manuallyHidden then tipsFrame:Hide() end
+            end
         end)
     end)
     

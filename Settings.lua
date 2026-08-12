@@ -12,6 +12,9 @@ local function ApplyAppearanceChange()
     if addon.tipsFrame and addon.tipsFrame:IsShown() then
         addon:CheckInstance()
     end
+    if addon.UpdateMainButtonAppearance then
+        addon.UpdateMainButtonAppearance()
+    end
 end
 
 local options = {
@@ -31,21 +34,11 @@ local options = {
                     inline = true,
                     order = 1,
                     args = {
-                        open_picker = {
-                            type = "execute",
-                            name = L["Open Dungeon Picker"],
-                            width = "normal",
-                            order = 1,
-                            func = function()
-                                AceConfigDialog:Close("BossTips")
-                                if addon.dungeonPicker then addon.dungeonPicker:Show() end
-                            end,
-                        },
                         open_editor = {
                             type = "execute",
                             name = L["Open Guide Editor"],
                             width = "normal",
-                            order = 2,
+                            order = 1,
                             func = function()
                                 AceConfigDialog:Close("BossTips")
                                 addon:OpenEditor()
@@ -59,9 +52,34 @@ local options = {
                     inline = true,
                     order = 2,
                     args = {
+                        guide_window_mode = {
+                            type = "select",
+                            name = "显示方式",
+                            desc = "自动展开：进本自动弹出攻略窗。按钮模式：仅显示悬浮按钮，点击后弹窗。",
+                            values = {
+                                ["auto"] = "自动展开",
+                                ["button"] = "按钮模式",
+                            },
+                            get = function() return BossTipsGlobalDB.guideWindowMode or "auto" end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.guideWindowMode = val
+                                if addon.UpdateMainButtonVisibility then addon.UpdateMainButtonVisibility() end
+                                if val == "auto" and addon.currentInstanceName and addon.HasCurrentMapGuide and addon.HasCurrentMapGuide() then
+                                    addon.manuallyHidden = false
+                                    if addon.tipsFrame and addon.tipsFrame.ShowInstanceGuide then
+                                        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                    end
+                                elseif val == "button" and addon.tipsFrame then
+                                    addon.tipsFrame:Hide()
+                                    addon.manuallyHidden = true
+                                end
+                            end,
+                            order = 0,
+                        },
                         autoExpand = {
                             type = "toggle",
                             name = L["Enable Smart Expand"],
+                            desc = L["Smart Expand Desc"],
                             width = "full",
                             get = function() return BossTipsGlobalDB.autoExpandOnTarget end,
                             set = function(_, val) BossTipsGlobalDB.autoExpandOnTarget = val end,
@@ -71,6 +89,7 @@ local options = {
                             type = "toggle",
                             name = L["Auto Open On Enter"],
                             width = "full",
+                            hidden = function() return (BossTipsGlobalDB.guideWindowMode or "auto") ~= "auto" end,
                             get = function() return BossTipsGlobalDB.autoOpenOnEnter end,
                             set = function(_, val) BossTipsGlobalDB.autoOpenOnEnter = val end,
                             order = 2,
@@ -78,6 +97,7 @@ local options = {
                         lock_window = {
                             type = "toggle",
                             name = L["Lock Window"],
+                            desc = L["Lock Window Desc"],
                             width = "full",
                             get = function() return BossTipsGlobalDB.lockWindow end,
                             set = function(_, val)
@@ -100,9 +120,16 @@ local options = {
                         showMobs = {
                             type = "toggle",
                             name = "显示小怪条目",
+                            desc = "关闭时攻略窗口只显示首领（BOSS），不显示小怪/重点怪。",
                             width = "full",
                             get = function() return BossTipsGlobalDB.showMobs end,
-                            set = function(_, val) BossTipsGlobalDB.showMobs = val; addon.RefreshGuides() end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.showMobs = val
+                                addon.RefreshGuides()
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                end
+                            end,
                             order = 5,
                         },
                     }
@@ -116,6 +143,7 @@ local options = {
                         enable_chat_send = {
                             type = "toggle",
                             name = L["Enable sending guide to chat"],
+                            desc = L["Chat Send Desc"],
                             width = "full",
                             get = function() return BossTipsGlobalDB.enableChatSend end,
                             set = function(_, val)
@@ -138,6 +166,16 @@ local options = {
                             set = function(_, val) BossTipsGlobalDB.defaultChatChannel = val end,
                             hidden = function() return not BossTipsGlobalDB.enableChatSend end,
                             order = 2,
+                        },
+                        close_after_send = {
+                            type = "toggle",
+                            name = "发送攻略后关闭窗口",
+                            desc = "勾选后点击小喇叭发送攻略会自动隐藏攻略窗口。",
+                            width = "full",
+                            get = function() return BossTipsGlobalDB.closeWindowAfterSend end,
+                            set = function(_, val) BossTipsGlobalDB.closeWindowAfterSend = val end,
+                            hidden = function() return not BossTipsGlobalDB.enableChatSend end,
+                            order = 3,
                         },
                     }
                 },
@@ -206,6 +244,51 @@ local options = {
                             end,
                             order = 5,
                         },
+                        hide_main_button_no_guide = {
+                            type = "toggle",
+                            name = "无攻略时隐藏悬浮按钮",
+                            desc = "按钮模式下，当前区域/副本没有攻略时自动隐藏悬浮按钮。",
+                            width = "full",
+                            get = function() return BossTipsGlobalDB.hideMainButtonWhenNoGuide end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.hideMainButtonWhenNoGuide = val
+                                if addon.UpdateMainButtonVisibility then addon.UpdateMainButtonVisibility() end
+                            end,
+                            hidden = function() return (BossTipsGlobalDB.guideWindowMode or "auto") ~= "button" end,
+                            order = 6,
+                        },
+                        reset_main_button = {
+                            type = "execute",
+                            name = "重置悬浮按钮位置",
+                            width = "full",
+                            func = function()
+                                BossTipsGlobalDB.mainButtonPos = { point = "TOPLEFT", relativePoint = "TOPLEFT", xOffset = 20, yOffset = -50 }
+                                if addon.mainButton then
+                                    addon.mainButton:ClearAllPoints()
+                                    addon.mainButton:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 20, -50)
+                                end
+                            end,
+                            hidden = function() return (BossTipsGlobalDB.guideWindowMode or "auto") ~= "button" end,
+                            order = 7,
+                        },
+                        show_test_window = {
+                            type = "execute",
+                            name = L["Show Test Window"],
+                            width = "full",
+                            func = function()
+                                if addon.ShowTestWindow then addon.ShowTestWindow() end
+                            end,
+                            order = 8,
+                        },
+                        hide_test_window = {
+                            type = "execute",
+                            name = L["Hide Test Window"],
+                            width = "full",
+                            func = function()
+                                if addon.HideTestWindow then addon.HideTestWindow() end
+                            end,
+                            order = 9,
+                        },
                     }
                 },
             }
@@ -222,14 +305,14 @@ local guideOptions = {
         version_toggles = {
             type = "group",
             name = L["Version Toggles"],
-            inline = true,
+            inline = false,
             order = 1,
             args = {},
         },
         hidden_dungeons = {
             type = "group",
             name = L["Hidden Dungeons"],
-            inline = true,
+            inline = false,
             order = 2,
             args = {},
         },
@@ -254,82 +337,131 @@ local guideOptions = {
 }
 
 local function BuildGuideOptions()
-    -- 版本开关（原生 + M+）
+    if addon.EnsureDB then addon.EnsureDB() end
+    -- 版本开关（原生 + M+ + 自定义）
     local vt = guideOptions.args.version_toggles.args
     for k in pairs(vt) do vt[k] = nil end
     local order = 1
-    for _, vid in ipairs(addon.GetNativeOrder()) do
+    for _, vid in ipairs(addon.GetAllVersionIDs()) do
         local label = addon.GetVersionLabel(vid)
-        vt["nat_" .. vid] = {
+        vt["ver_" .. vid] = {
             type = "toggle",
             name = label,
             width = "full",
-            get = function() return not (BossTipsGlobalDB.disabledNative[vid]) end,
+            get = function() return addon.IsVersionEnabled(vid) end,
             set = function(_, val)
-                BossTipsGlobalDB.disabledNative[vid] = not val
+                local isNative = addon.GuideData.versions and addon.GuideData.versions[vid]
+                local isMplus = addon.GuideData.mplus and addon.GuideData.mplus[vid]
+                if isNative then BossTipsGlobalDB.disabledNative[vid] = not val end
+                if isMplus then BossTipsGlobalDB.disabledMPlus[vid] = not val end
+                if addon.IsCustomVersion(vid) then BossTipsGlobalDB.disabledCustomVersions[vid] = not val end
                 addon.RefreshGuides()
             end,
             order = order,
         }
         order = order + 1
     end
-    for _, sid in ipairs(addon.GetMPlusOrder()) do
-        local label = addon.GetVersionLabel(sid)
-        vt["mplus_" .. sid] = {
-            type = "toggle",
-            name = label .. " (M+)",
-            width = "full",
-            get = function() return not (BossTipsGlobalDB.disabledMPlus[sid]) end,
-            set = function(_, val)
-                BossTipsGlobalDB.disabledMPlus[sid] = not val
-                addon.RefreshGuides()
-            end,
-            order = order,
-        }
-        order = order + 1
-    end
-    -- 隐藏副本
+    -- 隐藏副本：按版本分组，避免 AceConfig 一次性展开 100+ 个顶层 toggle 导致递归过深
     local hd = guideOptions.args.hidden_dungeons.args
     for k in pairs(hd) do hd[k] = nil end
     order = 1
-    local instances = addon.CollectAllInstances()
-    for _, inst in ipairs(instances) do
-        hd["hide_" .. inst] = {
-            type = "toggle",
-            name = inst,
-            width = "full",
-            get = function() return not (BossTipsGlobalDB.hiddenDungeons[inst]) end,
-            set = function(_, val)
-                if val then BossTipsGlobalDB.hiddenDungeons[inst] = true
-                else BossTipsGlobalDB.hiddenDungeons[inst] = nil end
-                addon.RefreshGuides()
-            end,
-            order = order,
-        }
-        order = order + 1
+    for _, vid in ipairs(addon.GetAllVersionIDs()) do
+        local dungeons = addon.GetVersionDungeons(vid)
+        local instList = {}
+        for inst in pairs(dungeons) do instList[#instList + 1] = inst end
+        table.sort(instList)
+        if #instList > 0 then
+            local groupArgs = {}
+            for i, inst in ipairs(instList) do
+                groupArgs["hide_" .. inst] = {
+                    type = "toggle",
+                    name = inst,
+                    width = "full",
+                    get = function() return not (BossTipsGlobalDB.hiddenDungeons[inst]) end,
+                    set = function(_, val)
+                        if val then BossTipsGlobalDB.hiddenDungeons[inst] = nil
+                        else BossTipsGlobalDB.hiddenDungeons[inst] = true end
+                        addon.RefreshGuides()
+                    end,
+                    order = i,
+                }
+            end
+            hd["vergroup_" .. vid] = {
+                type = "group",
+                name = addon.GetVersionLabel(vid),
+                inline = true,
+                order = order,
+                args = groupArgs,
+            }
+            order = order + 1
+        end
     end
 end
+
+-- ============ 配置文件标签（简单版，未使用 AceDB Profile） ============
+local function ResetProfile()
+    StaticPopupDialogs["BOSSTIPS_RESET_PROFILE"] = {
+        text = "确定将当前配置文件重置为默认吗？所有自定义攻略、分类、副本开关都会丢失！",
+        button1 = YES,
+        button2 = NO,
+        OnAccept = function()
+            BossTipsGlobalDB = {}
+            if addon.EnsureDB then addon.EnsureDB() end
+            BuildGuideOptions()
+            addon.RefreshGuides()
+            if LibStub("AceConfigRegistry-3.0", true) then
+                LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
+            end
+            print("|cff00ff00BossTips|r 当前配置文件已重置为默认。")
+        end,
+        timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
+    }
+    StaticPopup_Show("BOSSTIPS_RESET_PROFILE")
+end
+
+local profileOptions = {
+    type = "group",
+    name = L["Profiles"] or "配置文件",
+    order = 3,
+    args = {
+        current_profile = {
+            type = "description",
+            name = "当前配置文件：" .. (L["Default"] or "Default") .. "\n\nBossTips 使用账号级 SavedVariables，暂不支持多角色独立配置。点击下方按钮可将当前配置恢复为默认。",
+            order = 1,
+        },
+        reset_profile = {
+            type = "execute",
+            name = L["Reset Current Profile"] or "重置当前配置文件",
+            width = "full",
+            func = ResetProfile,
+            order = 2,
+        },
+    }
+}
 
 -- ADDON_LOADED：注册选项表
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
     if arg1 == addonName then
+        if addon.EnsureDB then addon.EnsureDB() end
         BuildGuideOptions()
         options.args.guide_options_tab = guideOptions
+        options.args.profiles_tab = profileOptions
         AceConfig:RegisterOptionsTable("BossTips", options)
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)
 
--- 每次打开前刷新（数据可能在游戏内变化）
+-- 打开设置面板：不再每次重建 options，只在 ADDON_LOADED / 数据变化时重建，
+-- 避免 AceConfigDialog:Open 处理大量 inline toggle 导致 script ran too long。
 local origOpen = addon.OpenMainGUI
 function addon:OpenMainGUI()
     if InCombatLockdown() then
         print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
         return
     end
-    BuildGuideOptions()
+    if addon.EnsureDB then addon.EnsureDB() end
     if LibStub("AceConfigRegistry-3.0", true) then
         LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
     end

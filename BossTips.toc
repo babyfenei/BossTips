@@ -11,6 +11,8 @@ embeds.xml
 # 本地化 + 数据层（与 Guides 对接）
 Locales.lua
 Data.lua
+BigWigsIdDB.lua
+FallbackIdDB.lua
 
 # 攻略数据文件（必须先于逻辑文件加载，用于填充 addon.GuideData）
 # 主文件不含任何游戏版本号：版本清单/标签/排序由各数据文件自注册。
@@ -39,4 +41,3 @@ Core.lua
 Window.lua
 Settings.lua
 Editor.lua
-Picker.lua

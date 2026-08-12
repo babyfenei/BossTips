@@ -4,6 +4,11 @@
 
 # 参考插件（非 BossTips 本体）
 test/
+BigWigs/
+DBM/
+
+# 一次性工具脚本
+tag_mobs.py
 
 # 备份与历史快照
 Guides_bak_*/

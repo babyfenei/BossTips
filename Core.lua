@@ -1,6 +1,6 @@
 -- ============================================================================
 -- BossTips Core.lua —— 主逻辑（对齐 DungeonCheatSheet 架构）
--- 事件、LibDBIcon 小地图按钮、进本自动弹窗、CheckInstance 匹配、各 UI 入口。
+-- 事件、LibDBIcon 小地图按钮、进本自动弹窗/按钮模式、CheckInstance 匹配、各 UI 入口。
 -- ============================================================================
 local addonName, addon = ...
 local L = addon.L
@@ -12,7 +12,6 @@ addon.manuallyHidden = false
 addon.lastAutoShownInstance = nil
 addon.tipsFrame = nil
 addon.mainButton = nil
-addon.dungeonPicker = nil
 addon.settingsFrame = nil
 addon.editorFrame = nil
 
@@ -23,18 +22,135 @@ local function HasCurrentMapGuide()
 end
 addon.HasCurrentMapGuide = HasCurrentMapGuide
 
+local function RefreshGuides()
+    addon.BuildActiveGuides()
+    if addon.BuildGuideOptions then addon.BuildGuideOptions() end
+    if addon.UpdateMainButtonVisibility then addon.UpdateMainButtonVisibility() end
+end
+addon.RefreshGuides = RefreshGuides
+
+-- ============ 创建悬浮按钮（按钮模式） ============
+local function CreateMainButton()
+    if addon.mainButton then return addon.mainButton end
+    local btn = CreateFrame("Button", "BossTipsMainButton", UIParent, "BackdropTemplate")
+    btn:SetSize(96, 30)
+    btn:SetFrameStrata("HIGH")
+    local pos = BossTipsGlobalDB.mainButtonPos or { point = "TOPLEFT", relativePoint = "TOPLEFT", xOffset = 20, yOffset = -50 }
+    btn:SetPoint(pos.point or "TOPLEFT", UIParent, pos.relativePoint or "TOPLEFT", pos.xOffset or 20, pos.yOffset or -50)
+    btn:SetMovable(true)
+    btn:EnableMouse(true)
+
+    -- Ace3 风格边框/背景，与攻略窗体统一
+    btn:SetBackdrop({
+        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        tile = true, tileSize = 16, edgeSize = 10,
+        insets = { left = 3, right = 3, top = 3, bottom = 3 },
+    })
+    local br, bg, bb, ba = 0.12, 0.18, 0.30, 0.95
+    if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end
+    btn:SetBackdropColor(br, bg, bb, ba)
+    btn:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+
+    local fs = btn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    fs:SetPoint("CENTER", 0, 0)
+    fs:SetText("|cffffffffBossTips|r")
+    btn:SetFontString(fs)
+
+    -- 鼠标悬停高亮
+    btn:SetScript("OnEnter", function(self)
+        self:SetBackdropBorderColor(0.6, 0.8, 1.0, 1.0)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:AddLine("BossTips")
+        GameTooltip:AddLine("左键：打开/关闭当前副本攻略窗", 1, 1, 1)
+        GameTooltip:AddLine("右键：打开设置面板", 1, 1, 1)
+        GameTooltip:AddLine("拖拽：按住左键拖动按钮位置", 0.8, 0.8, 0.8)
+        GameTooltip:Show()
+    end)
+    btn:SetScript("OnLeave", function(self)
+        self:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+        GameTooltip:Hide()
+    end)
+
+    -- 左键拖拽 + 点击识别；右键打开设置
+    local dragStartX, dragStartY
+    btn:SetScript("OnMouseDown", function(self, button)
+        if button == "LeftButton" then
+            dragStartX, dragStartY = GetCursorPosition()
+            self:StartMoving()
+        end
+    end)
+    btn:SetScript("OnMouseUp", function(self, button)
+        if button == "LeftButton" then
+            self:StopMovingOrSizing()
+            local x, y = GetCursorPosition()
+            local moved = math.abs(x - (dragStartX or 0)) + math.abs(y - (dragStartY or 0))
+            -- 保存位置
+            local p, _, rp, xOfs, yOfs = self:GetPoint()
+            BossTipsGlobalDB.mainButtonPos = { point = p, relativePoint = rp, xOffset = xOfs, yOffset = yOfs }
+            -- 位移很小视为点击
+            if moved < 6 then
+                if InCombatLockdown() then
+                    print("|cffff0000BossTips|r 战斗中无法切换攻略窗。")
+                    return
+                end
+                if not addon.currentInstanceName then
+                    print("|cffff0000BossTips|r 当前不在可识别的副本中。")
+                    return
+                end
+                if not HasCurrentMapGuide() then
+                    print("|cffff0000BossTips|r 当前副本没有攻略数据。")
+                    return
+                end
+                if addon.tipsFrame:IsShown() then
+                    addon.tipsFrame:Hide()
+                    addon.manuallyHidden = true
+                else
+                    addon.manuallyHidden = false
+                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                end
+            end
+        elseif button == "RightButton" then
+            if not InCombatLockdown() then
+                addon:OpenMainGUI()
+            else
+                print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
+            end
+        end
+    end)
+
+    addon.mainButton = btn
+    return btn
+end
+addon.CreateMainButton = CreateMainButton
+
 local function UpdateMainButtonVisibility()
-    if not addon.mainButton then return end
-    local shouldHide = not HasCurrentMapGuide() and BossTipsGlobalDB.hideMainButtonWhenNoGuide
-    addon.mainButton:SetShown(not shouldHide)
+    local btn = addon.mainButton
+    if not btn then return end
+    local mode = BossTipsGlobalDB.guideWindowMode or "auto"
+    if mode ~= "button" then
+        btn:Hide()
+        return
+    end
+    -- 按钮模式下默认始终显示，方便用户点击；只有显式勾选"无攻略时隐藏"才隐藏
+    local hasGuide = HasCurrentMapGuide()
+    if BossTipsGlobalDB.hideMainButtonWhenNoGuide and not hasGuide then
+        btn:Hide()
+    else
+        btn:Show()
+    end
 end
 addon.UpdateMainButtonVisibility = UpdateMainButtonVisibility
 
-local function RefreshGuides()
-    addon.BuildActiveGuides()
-    UpdateMainButtonVisibility()
+local function UpdateMainButtonAppearance()
+    local btn = addon.mainButton
+    if not btn then return end
+    local br, bg, bb, ba = 0.12, 0.18, 0.30, 0.95
+    if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end
+    btn:SetBackdropColor(br, bg, bb, ba)
+    btn:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
 end
-addon.RefreshGuides = RefreshGuides
+addon.UpdateMainButtonAppearance = UpdateMainButtonAppearance
 
 -- ============ 选中/智能展开 ============
 local function SelectBossAndShow(bossName)
@@ -50,6 +166,7 @@ addon.SelectBossAndShow = SelectBossAndShow
 local function SmartExpandBoss(name)
     if not BossTipsGlobalDB.autoExpandOnTarget then return end
     if addon.manuallyHidden then return end
+    if BossTipsGlobalDB.guideWindowMode == "button" then return end
     if not addon.currentInstanceName then return end
     if not name or name == "" then return end
     local BossData = addon.GetBossData()
@@ -74,6 +191,7 @@ addon.SmartExpandBoss = SmartExpandBoss
 -- ============ 匹配当前副本 ============
 local function CheckInstance()
     local name, _, difficultyID, _, _, _, _, id = GetInstanceInfo()
+    local prevInstance = addon.currentInstanceName
     addon.currentInstanceName = nil
     if name and name ~= "" then
         local BossData = addon.GetBossData()
@@ -82,7 +200,6 @@ local function CheckInstance()
         end
     end
     if not addon.currentInstanceName and id then
-        -- 按 mapID 在 meta 中反查副本名
         local GD = addon.GuideData
         if GD and GD.meta then
             for instName, m in pairs(GD.meta) do
@@ -94,16 +211,17 @@ local function CheckInstance()
         end
     end
 
+    local mode = BossTipsGlobalDB.guideWindowMode or "auto"
+
     if addon.currentInstanceName and HasCurrentMapGuide() then
-        if BossTipsGlobalDB.autoOpenOnEnter and addon.tipsFrame then
+        if mode == "auto" and BossTipsGlobalDB.autoOpenOnEnter and addon.tipsFrame then
             if addon.currentInstanceName ~= addon.lastAutoShownInstance then
                 addon.manuallyHidden = false
                 addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
                 addon.lastAutoShownInstance = addon.currentInstanceName
             end
         else
-            -- 不自动弹窗，但刷新当前显示（若已打开）
-            if addon.tipsFrame:IsShown() then
+            if addon.tipsFrame and addon.tipsFrame:IsShown() then
                 addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
             end
         end
@@ -127,7 +245,10 @@ frame:RegisterEvent("ENCOUNTER_START")
 
 frame:SetScript("OnEvent", function(self, event, arg1, arg2)
     if event == "ADDON_LOADED" and arg1 == addonName then
+        if addon.EnsureDB then addon.EnsureDB() end
         addon.BuildActiveGuides()
+        CreateMainButton()
+        UpdateMainButtonVisibility()
 
         -- 小地图按钮（LibDBIcon）
         BossTipsGlobalDB.minimap = BossTipsGlobalDB.minimap or {
@@ -145,9 +266,14 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
                     if InCombatLockdown() then
                         print("|cffff0000BossTips|r 战斗中无法打开面板。")
                     elseif button == "LeftButton" then
-                        if addon.dungeonPicker then
-                            if addon.dungeonPicker:IsShown() then addon.dungeonPicker:Hide()
-                            else addon.dungeonPicker:Show() end
+                        if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                            addon.tipsFrame:Hide()
+                            addon.manuallyHidden = true
+                        elseif addon.currentInstanceName and HasCurrentMapGuide() then
+                            addon.manuallyHidden = false
+                            addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                        else
+                            addon:OpenMainGUI()
                         end
                     else
                         addon:OpenMainGUI()
@@ -155,8 +281,8 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
                 end,
                 OnTooltipShow = function(tooltip)
                     tooltip:AddLine("BossTips")
-                    tooltip:AddLine(L["Open Dungeon Picker"] or "左键：打开副本选择", 1, 1, 1)
-                    tooltip:AddLine(L["Open Guide Editor"] or "右键：打开设置", 1, 1, 1)
+                    tooltip:AddLine("左键：切换攻略窗", 1, 1, 1)
+                    tooltip:AddLine("右键：打开设置", 1, 1, 1)
                 end,
             })
             icon:Register("BossTips", BossTipsLDB, BossTipsGlobalDB.minimap)
@@ -200,7 +326,7 @@ function addon:OpenEditor()
     if addon.CreateEditorFrame then addon.CreateEditorFrame() end
 end
 
--- ============ 副本选择（供 Picker 点击） ============
+-- ============ 副本选择（供旧接口兼容） ============
 function addon:SelectInstanceAndShow(instanceName)
     if not instanceName then return end
     addon.currentInstanceName = instanceName
@@ -218,10 +344,6 @@ SlashCmdList["BOSSTIPS"] = function(msg)
     msg = msg and string.lower(strtrim(msg)) or ""
     if msg == "manage" or msg == "edit" then
         addon:OpenEditor()
-    elseif msg == "picker" or msg == "dungeons" then
-        if addon.dungeonPicker then
-            if addon.dungeonPicker:IsShown() then addon.dungeonPicker:Hide() else addon.dungeonPicker:Show() end
-        end
     elseif msg == "lock" then
         BossTipsGlobalDB.lockWindow = not BossTipsGlobalDB.lockWindow
         if addon.UpdateWindowLock then addon:UpdateWindowLock() end
@@ -229,6 +351,15 @@ SlashCmdList["BOSSTIPS"] = function(msg)
             LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
         end
         print("|cff00ff00BossTips|r " .. (BossTipsGlobalDB.lockWindow and "窗口已锁定" or "窗口已解锁"))
+    elseif msg == "button" then
+        BossTipsGlobalDB.guideWindowMode = "button"
+        BossTipsGlobalDB.mainButtonPos = { point = "TOPLEFT", relativePoint = "TOPLEFT", xOffset = 20, yOffset = -50 }
+        if addon.mainButton then
+            addon.mainButton:ClearAllPoints()
+            addon.mainButton:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 20, -50)
+        end
+        if addon.UpdateMainButtonVisibility then addon.UpdateMainButtonVisibility() end
+        print("|cff00ff00BossTips|r 已切换到按钮模式并重置悬浮按钮位置。")
     else
         addon:OpenMainGUI()
     end
@@ -238,7 +369,7 @@ end
 local function SafeInit()
     local ok, err = pcall(function()
         print("|cFF00FF00BossTips|r v" .. addon.version .. " 加载完成！")
-        print("|cFFFFFF00输入 /bts|r 查看命令帮助")
+        print("|cFFFFFF00/bts|r 设置面板  |cFFFFFF00/bts edit|r 攻略编辑器  |cFFFFFF00/bts button|r 重置悬浮按钮")
     end)
     if not ok then
         local handler = geterrorhandler and geterrorhandler()

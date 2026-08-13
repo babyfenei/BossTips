@@ -1,7 +1,7 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 8.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 8.0 团本攻略
+-- 实例 key 为国服名；首领 key 为国服名；encounterId 取自 BigWigs/DBM（原样保留）。
+-- 攻略格式：{rt8}名字{rt8}||[机制]描述||{rt1}必断/速杀：…{rt1}||坦：…治疗：…输出：…
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -11,115 +11,115 @@ addon.GuideData.meta = addon.GuideData.meta or {}
 
 -- ===================== 达萨罗之战 (instanceId 2070) =====================
 addon.GuideData.raids["8.0"]["达萨罗之战"] = {
-    ["Jadefire Masters Alliance"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Grong Horde"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Conclave of the Chosen"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Champion of the Light Horde"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["High Tinker Mekkatorque"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["King Rastakhan"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Stormwall Blockade"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Grong Alliance"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Jadefire Masters Horde"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Opulence"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Lady Jaina Proudmoore"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Champion of the Light Alliance"] = { order = 12, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["玉火大师·联盟"] = { order = 1, type = "BOSS", tips = [=[{rt8}玉火大师·联盟{rt8}||[武/法]双形态切换需换站位；[火]dot；[狂暴]计时||{rt1}必断/速杀：无；按形态换站位{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["格隆·部落"] = { order = 2, type = "BOSS", tips = [=[{rt8}格隆·部落{rt8}||[雷]点名需远离；[冲撞]；[狂暴]计时||{rt1}必断/速杀：无；[雷]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["被选者议会"] = { order = 3, type = "BOSS", tips = [=[{rt8}被选者议会{rt8}||[三神]共享血量分边；[毒/雷/火]混合||{rt1}必断/速杀：无；分边集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["圣光勇士·部落"] = { order = 4, type = "BOSS", tips = [=[{rt8}圣光勇士·部落{rt8}||[圣光]点名需打断；[盾]；[狂暴]计时||{rt1}必断/速杀：[圣光]打断；集火{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["大工匠梅卡托克"] = { order = 5, type = "BOSS", tips = [=[{rt8}大工匠梅卡托克{rt8}||[机甲]需打部件；[炸弹]点名；[狂暴]计时||{rt1}必断/速杀：无；打部件、[炸弹]放圈{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["拉斯塔哈大王"] = { order = 6, type = "BOSS", tips = [=[{rt8}拉斯塔哈大王{rt8}||[血]图腾需打；[狂暴]计时；P2[神灵]||{rt1}必断/速杀：无；打血图腾、P2应对{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["风暴墙封锁"] = { order = 7, type = "BOSS", tips = [=[{rt8}风暴墙封锁{rt8}||[双舰]需分边打；[电]全团；[狂暴]计时||{rt1}必断/速杀：无；分边集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["格隆·联盟"] = { order = 8, type = "BOSS", tips = [=[{rt8}格隆·联盟{rt8}||[雷]点名需远离；[冲撞]；[狂暴]计时||{rt1}必断/速杀：无；[雷]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["玉火大师·部落"] = { order = 9, type = "BOSS", tips = [=[{rt8}玉火大师·部落{rt8}||[武/法]双形态切换需换站位；[火]dot；[狂暴]计时||{rt1}必断/速杀：无；按形态换站位{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["奥波伦斯"] = { order = 10, type = "BOSS", tips = [=[{rt8}奥波伦斯{rt8}||[宝箱]需打；[金]dot；[狂暴]计时||{rt1}必断/速杀：无；打宝箱、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["吉安娜·普罗德摩尔"] = { order = 11, type = "BOSS", tips = [=[{rt8}吉安娜·普罗德摩尔{rt8}||[冰]全团高伤；[水]阶段需躲；P3[冻结]；[狂暴]计时||{rt1}必断/速杀：无；躲冰、P3应对{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["圣光勇士·联盟"] = { order = 12, type = "BOSS", tips = [=[{rt8}圣光勇士·联盟{rt8}||[圣光]点名需打断；[盾]；[狂暴]计时||{rt1}必断/速杀：[圣光]打断；集火{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["达萨罗之战"] = { isRaid = true, instanceId = 2070, encounterIds = {
-    ["Jadefire Masters Alliance"] = 2323,
-    ["Grong Horde"] = 2325,
-    ["Conclave of the Chosen"] = 2330,
-    ["Champion of the Light Horde"] = 2333,
-    ["High Tinker Mekkatorque"] = 2334,
-    ["King Rastakhan"] = 2335,
-    ["Stormwall Blockade"] = 2337,
-    ["Grong Alliance"] = 2340,
-    ["Jadefire Masters Horde"] = 2341,
-    ["Opulence"] = 2342,
-    ["Lady Jaina Proudmoore"] = 2343,
-    ["Champion of the Light Alliance"] = 2344,
+    ["玉火大师·联盟"] = 2323,
+    ["格隆·部落"] = 2325,
+    ["被选者议会"] = 2330,
+    ["圣光勇士·部落"] = 2333,
+    ["大工匠梅卡托克"] = 2334,
+    ["拉斯塔哈大王"] = 2335,
+    ["风暴墙封锁"] = 2337,
+    ["格隆·联盟"] = 2340,
+    ["玉火大师·部落"] = 2341,
+    ["奥波伦斯"] = 2342,
+    ["吉安娜·普罗德摩尔"] = 2343,
+    ["圣光勇士·联盟"] = 2344,
 } }
 
 -- ===================== 风暴熔炉 (instanceId 2096) =====================
 addon.GuideData.raids["8.0"]["风暴熔炉"] = {
-    ["The Restless Cabal"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Uu'nat, Harbinger of the Void"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["不宁的卡巴尔"] = { order = 1, type = "BOSS", tips = [=[{rt8}不宁的卡巴尔{rt8}||[双子]需同时击杀；[触]dot；[狂暴]计时||{rt1}必断/速杀：无；同时集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["乌纳特·虚空先驱"] = { order = 2, type = "BOSS", tips = [=[{rt8}乌纳特·虚空先驱{rt8}||[虚空]机制多；[球]；[狂暴]计时||{rt1}必断/速杀：无；按机制应对{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["风暴熔炉"] = { isRaid = true, instanceId = 2096, encounterIds = {
-    ["The Restless Cabal"] = 2328,
-    ["Uu'nat, Harbinger of the Void"] = 2332,
+    ["不宁的卡巴尔"] = 2328,
+    ["乌纳特·虚空先驱"] = 2332,
 } }
 
 -- ===================== 永恒王宫 (instanceId 2164) =====================
 addon.GuideData.raids["8.0"]["永恒王宫"] = {
-    ["Blackwater Behemoth"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Za'qul, Herald of Ny'alotha"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Orgozoa"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Abyssal Commander Sivara"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Radiance of Azshara"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Lady Ashvane"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Queen's Court"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Queen Azshara"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["黑水巨兽"] = { order = 1, type = "BOSS", tips = [=[{rt8}黑水巨兽{rt8}||[触手]需打；[水]需躲；[狂暴]计时||{rt1}必断/速杀：无；打触手、躲水{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["扎库尔·尼奥罗萨先驱"] = { order = 2, type = "BOSS", tips = [=[{rt8}扎库尔·尼奥罗萨先驱{rt8}||[梦]点名需救；[心控]；[狂暴]计时||{rt1}必断/速杀：[心控]速断救人；[梦]救{rt1}||坦：拉；输出：救人]=], tipsByDifficulty = {} },
+    ["奥戈佐亚"] = { order = 3, type = "BOSS", tips = [=[{rt8}奥戈佐亚{rt8}||[孵化]需控；[喷射]；[狂暴]计时||{rt1}必断/速杀：无；控孵化、速杀{rt1}||坦：拉；输出：控]=], tipsByDifficulty = {} },
+    ["深渊指挥官希瓦拉"] = { order = 4, type = "BOSS", tips = [=[{rt8}深渊指挥官希瓦拉{rt8}||[双形态]火/冰切换需换站位；[狂暴]计时||{rt1}必断/速杀：无；按形态换站位{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["艾萨拉之辉"] = { order = 5, type = "BOSS", tips = [=[{rt8}艾萨拉之辉{rt8}||[星]点名需远离；[雷]全团；[狂暴]计时||{rt1}必断/速杀：无；[星]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["阿什凡女士"] = { order = 6, type = "BOSS", tips = [=[{rt8}阿什凡女士{rt8}||[气泡]需打；[毒]dot；[狂暴]计时||{rt1}必断/速杀：无；打气泡、速杀{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["女王之庭"] = { order = 7, type = "BOSS", tips = [=[{rt8}女王之庭{rt8}||[双王]共享血量分边；[圣]混合；[狂暴]计时||{rt1}必断/速杀：无；分边集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["艾萨拉女王"] = { order = 8, type = "BOSS", tips = [=[{rt8}艾萨拉女王{rt8}||[多重]多机制轮换，[球]；[水]全团；P3[本体]||{rt1}必断/速杀：无；按阶段应对{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["永恒王宫"] = { isRaid = true, instanceId = 2164, encounterIds = {
-    ["Blackwater Behemoth"] = 2347,
-    ["Za'qul, Herald of Ny'alotha"] = 2349,
-    ["Orgozoa"] = 2351,
-    ["Abyssal Commander Sivara"] = 2352,
-    ["Radiance of Azshara"] = 2353,
-    ["Lady Ashvane"] = 2354,
-    ["The Queen's Court"] = 2359,
-    ["Queen Azshara"] = 2361,
+    ["黑水巨兽"] = 2347,
+    ["扎库尔·尼奥罗萨先驱"] = 2349,
+    ["奥戈佐亚"] = 2351,
+    ["深渊指挥官希瓦拉"] = 2352,
+    ["艾萨拉之辉"] = 2353,
+    ["阿什凡女士"] = 2354,
+    ["女王之庭"] = 2359,
+    ["艾萨拉女王"] = 2361,
 } }
 
 -- ===================== 尼奥罗萨，觉醒之城 (instanceId 2217) =====================
 addon.GuideData.raids["8.0"]["尼奥罗萨，觉醒之城"] = {
-    ["Ra-den the Despoiled"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Maut"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Carapace of N'Zoth"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Shad'har the Insatiable"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Wrathion"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Prophet Skitra"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vexiona"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Hivemind"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Drest'agath"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Il'gynoth, Corruption Reborn"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["N'Zoth, the Corruptor"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Dark Inquisitor Xanesh"] = { order = 12, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["被亵渎的雷登"] = { order = 1, type = "BOSS", tips = [=[{rt8}被亵渎的雷登{rt8}||[球]需拉一起；[电]全团；[狂暴]计时||{rt1}必断/速杀：无；[球]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["玛乌特"] = { order = 2, type = "BOSS", tips = [=[{rt8}玛乌特{rt8}||[能量]需打[宝]消；[狂暴]计时||{rt1}必断/速杀：无；打宝消能量{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["恩佐斯之壳"] = { order = 3, type = "BOSS", tips = [=[{rt8}恩佐斯之壳{rt8}||[甲壳]需打露头；[触手]；P2[本体]||{rt1}必断/速杀：无；打露头、转火{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["永渴的沙德哈"] = { order = 4, type = "BOSS", tips = [=[{rt8}永渴的沙德哈{rt8}||[三汁]需吃对应颜色；[狂暴]计时||{rt1}必断/速杀：无；吃对应颜色汁{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["拉希奥"] = { order = 5, type = "BOSS", tips = [=[{rt8}拉希奥{rt8}||[火]点名需分担；[狂暴]计时||{rt1}必断/速杀：无；[火]被点名分担{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["先知斯吉特拉"] = { order = 6, type = "BOSS", tips = [=[{rt8}先知斯吉特拉{rt8}||[镜像]需集火真身；[幻象]；[狂暴]计时||{rt1}必断/速杀：无；集火真身{rt1}||坦：拉；输出：集火]=], tipsByDifficulty = {} },
+    ["维克西奥娜"] = { order = 7, type = "BOSS", tips = [=[{rt8}维克西奥娜{rt8}||[暗]点名需远离；[龙]阶段；[狂暴]计时||{rt1}必断/速杀：无；[暗]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["蜂巢意识"] = { order = 8, type = "BOSS", tips = [=[{rt8}蜂巢意识{rt8}||[多脑]需打；[触手]；[狂暴]计时||{rt1}必断/速杀：无；打脑、速杀{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["德雷斯塔加斯"] = { order = 9, type = "BOSS", tips = [=[{rt8}德雷斯塔加斯{rt8}||[触手]需转火；[眼]；[狂暴]计时||{rt1}必断/速杀：无；转火触手{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["伊格诺斯·重生腐蚀"] = { order = 10, type = "BOSS", tips = [=[{rt8}伊格诺斯·重生腐蚀{rt8}||[眼球]需打掉防回血；[触手]；[狂暴]计时||{rt1}必断/速杀：无；打眼球防回血{rt1}||坦：拉；输出：转火眼球]=], tipsByDifficulty = {} },
+    ["恩佐斯·腐蚀者"] = { order = 11, type = "BOSS", tips = [=[{rt8}恩佐斯·腐蚀者{rt8}||[心智]需保；[触手]全团；P3[本体]||{rt1}必断/速杀：无；保心智、转火{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["黑暗审判官萨尼什"] = { order = 12, type = "BOSS", tips = [=[{rt8}黑暗审判官萨尼什{rt8}||[门]需进；[光]点名；[狂暴]计时||{rt1}必断/速杀：无；进门、速杀{rt1}||坦：拉；输出：进门]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["尼奥罗萨，觉醒之城"] = { isRaid = true, instanceId = 2217, encounterIds = {
-    ["Ra-den the Despoiled"] = 2364,
-    ["Maut"] = 2365,
-    ["Carapace of N'Zoth"] = 2366,
-    ["Shad'har the Insatiable"] = 2367,
-    ["Wrathion"] = 2368,
-    ["The Prophet Skitra"] = 2369,
-    ["Vexiona"] = 2370,
-    ["The Hivemind"] = 2372,
-    ["Drest'agath"] = 2373,
-    ["Il'gynoth, Corruption Reborn"] = 2374,
-    ["N'Zoth, the Corruptor"] = 2375,
-    ["Dark Inquisitor Xanesh"] = 2377,
+    ["被亵渎的雷登"] = 2364,
+    ["玛乌特"] = 2365,
+    ["恩佐斯之壳"] = 2366,
+    ["永渴的沙德哈"] = 2367,
+    ["拉希奥"] = 2368,
+    ["先知斯吉特拉"] = 2369,
+    ["维克西奥娜"] = 2370,
+    ["蜂巢意识"] = 2372,
+    ["德雷斯塔加斯"] = 2373,
+    ["伊格诺斯·重生腐蚀"] = 2374,
+    ["恩佐斯·腐蚀者"] = 2375,
+    ["黑暗审判官萨尼什"] = 2377,
 } }
 
 -- ===================== 奥迪尔 (instanceId 1861) =====================
 addon.GuideData.raids["8.0"]["奥迪尔"] = {
-    ["Fetid Devourer"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["G'huun"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vectis"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["MOTHER"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Taloc"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Zek'voz, Herald of N'zoth"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Mythrax the Unraveler"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Zul"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["腐臭吞噬者"] = { order = 1, type = "BOSS", tips = [=[{rt8}腐臭吞噬者{rt8}||[呕吐]点名需远离；[毒]dot；[狂暴]计时||{rt1}必断/速杀：无；[呕吐]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["格胡恩"] = { order = 2, type = "BOSS", tips = [=[{rt8}格胡恩{rt8}||[血]点名需分担；[触手]；P3[本体]||{rt1}必断/速杀：无；[血]被点名分担{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["维克提斯"] = { order = 3, type = "BOSS", tips = [=[{rt8}维克提斯{rt8}||[连锁]点名传染；[疾病]dot；[狂暴]计时||{rt1}必断/速杀：无；[连锁]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["母体"] = { order = 4, type = "BOSS", tips = [=[{rt8}母体{rt8}||[激光]需躲；[净化]；[狂暴]计时||{rt1}必断/速杀：无；躲激光、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["塔洛克"] = { order = 5, type = "BOSS", tips = [=[{rt8}塔洛克{rt8}||[血]阶段需打；[喷]；[狂暴]计时||{rt1}必断/速杀：无；打血、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["泽克沃兹·恩佐斯先驱"] = { order = 6, type = "BOSS", tips = [=[{rt8}泽克沃兹·恩佐斯先驱{rt8}||[虫]点名需远离；[眼]；[狂暴]计时||{rt1}必断/速杀：无；[虫]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["解构者米斯拉克斯"] = { order = 7, type = "BOSS", tips = [=[{rt8}解构者米斯拉克斯{rt8}||[护盾]需破；[雷]全团；[狂暴]计时||{rt1}必断/速杀：无；破盾、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["祖尔"] = { order = 8, type = "BOSS", tips = [=[{rt8}祖尔{rt8}||[血]图腾需打；[狂暴]计时||{rt1}必断/速杀：无；打血图腾、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["奥迪尔"] = { isRaid = true, instanceId = 1861, encounterIds = {
-    ["Fetid Devourer"] = 2146,
-    ["G'huun"] = 2147,
-    ["Vectis"] = 2166,
-    ["MOTHER"] = 2167,
-    ["Taloc"] = 2168,
-    ["Zek'voz, Herald of N'zoth"] = 2169,
-    ["Mythrax the Unraveler"] = 2194,
-    ["Zul"] = 2195,
+    ["腐臭吞噬者"] = 2146,
+    ["格胡恩"] = 2147,
+    ["维克提斯"] = 2166,
+    ["母体"] = 2167,
+    ["塔洛克"] = 2168,
+    ["泽克沃兹·恩佐斯先驱"] = 2169,
+    ["解构者米斯拉克斯"] = 2194,
+    ["祖尔"] = 2195,
 } }
 

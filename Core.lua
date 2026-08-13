@@ -89,8 +89,8 @@ local function CreateMainButton()
             -- 保存位置
             local p, _, rp, xOfs, yOfs = self:GetPoint()
             BossTipsGlobalDB.mainButtonPos = { point = p, relativePoint = rp, xOffset = xOfs, yOffset = yOfs }
-            -- 位移很小视为点击
-            if moved < 6 then
+            -- 位移很小视为点击（小幅拖动容错）
+            if moved < 10 then
                 if InCombatLockdown() then
                     print("|cffff0000BossTips|r 战斗中无法切换攻略窗。")
                     return
@@ -110,7 +110,15 @@ local function CreateMainButton()
                     addon.manuallyHidden = true
                 else
                     addon.manuallyHidden = false
-                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                    if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
+                    local ok, err = pcall(function()
+                        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                    end)
+                    if not ok then
+                        print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
+                        print("|cffff0000BossTips|r 请把上面错误复制反馈；已为你打开攻略编辑器。")
+                        addon:OpenEditor()
+                    end
                 end
             end
         elseif button == "RightButton" then
@@ -340,7 +348,13 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
                             addon.manuallyHidden = true
                         elseif addon.currentInstanceName and HasCurrentMapGuide() then
                             addon.manuallyHidden = false
-                            addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                            if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
+                            local ok, err = pcall(function()
+                                addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                            end)
+                            if not ok then
+                                print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
+                            end
                         else
                             addon:OpenMainGUI()
                         end
@@ -455,6 +469,9 @@ SlashCmdList["BOSSTIPS"] = function(msg)
         else
             print("|cffff0000BossTips|r 当前不在副本中")
         end
+    elseif msg == "resetpos" then
+        if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
+        print("|cff00ff00BossTips|r 攻略窗口位置已重置。")
     elseif msg == "exportcn" then
         addon:ExportRaidCnNames()
     elseif msg == "lock" then

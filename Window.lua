@@ -382,6 +382,13 @@ end)
 -- ============ 显示实例攻略 ============
 function addon:ShowWindow(instanceData) end  -- 占位（保持接口兼容）
 
+-- 重置攻略窗口位置到默认可见区域，用于修复窗口被拖到屏幕外导致"点了不弹"
+function addon.ResetTipsFramePos()
+    BossTipsGlobalDB.tipsFramePos = nil
+    mainWindow:ClearAllPoints()
+    mainWindow:SetPoint("RIGHT", UIParent, "RIGHT", -150, 0)
+end
+
 function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
     addon.currentInstanceName = instanceName
     mainWindow.isGuideHidden = false

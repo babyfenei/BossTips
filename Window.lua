@@ -137,9 +137,10 @@ end
 local function FormatTips(text)
     if not text or text == "" then return "" end
 
-    -- 第0步：作者简写 [技能名|spell:ID] -> 可点击法术链接 |Hspell:ID|h技能名|h
-    text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", function(name, id)
-        return "|Hspell:" .. id .. "|h" .. name .. "|h"
+    -- 第0步：作者简写 [技能名|spell:ID] -> 仅保留 [技能名] 并着色
+    --（当前正式服 FontString 不支持可点击超链接脚本，故去掉 |H...|h 转换）
+    text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", function(name)
+        return "[" .. name .. "]"
     end)
 
     -- 第1步：抽取已有超链接 |H...|h...|h，避免被后续着色/分段破坏

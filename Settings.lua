@@ -28,24 +28,6 @@ local options = {
             name = L["Settings"],
             order = 1,
             args = {
-                quick_actions = {
-                    type = "group",
-                    name = L["Quick Actions"],
-                    inline = true,
-                    order = 1,
-                    args = {
-                        open_editor = {
-                            type = "execute",
-                            name = L["Open Guide Editor"],
-                            width = "normal",
-                            order = 1,
-                            func = function()
-                                AceConfigDialog:Close("BossTips")
-                                addon:OpenEditor()
-                            end,
-                        },
-                    }
-                },
                 behavior = {
                     type = "group",
                     name = L["Behavior & Interaction"],
@@ -459,6 +441,12 @@ local origOpen = addon.OpenMainGUI
 function addon:OpenMainGUI()
     if InCombatLockdown() then
         print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
+        return
+    end
+    -- 切换：已打开则关闭
+    local openFrame = AceConfigDialog.OpenFrames and AceConfigDialog.OpenFrames["BossTips"]
+    if openFrame and openFrame.frame and openFrame.frame:IsShown() then
+        AceConfigDialog:Close("BossTips")
         return
     end
     if addon.EnsureDB then addon.EnsureDB() end

@@ -101,7 +101,6 @@ local function CreateMainButton()
                         addon.manuallyHidden = true
                     else
                         addon.manuallyHidden = false
-                        if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
                         local ok, err
                         if addon.currentInstanceName and HasCurrentMapGuide() then
                             ok, err = pcall(function()

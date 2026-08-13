@@ -282,7 +282,7 @@ local function BuildActiveGuides()
     local guides = {}
     local function addBossEntry(copy, boss, entry)
         local etype = entry.type or "BOSS"
-        if etype == "MOB" and not db.showMobs then return end
+        -- MOB 始终加入 ActiveGuides，显示/隐藏由 Window.lua 的 showMobs 开关实时控制
         local tips = entry.tips or ""
         copy[boss] = {
             order = entry.order or 999,
@@ -551,12 +551,63 @@ addon.AutoFillBigWigsIds = AutoFillBigWigsIds
 local FIELD = "\001"
 local REC = "\002"
 
+-- 纯 Lua base64（fallback），不依赖 bit/C_Base64，保证导出码为可见 ASCII
+local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+local function LuaBase64Encode(data)
+    if not data or data == "" then return "" end
+    local out = {}
+    local len = #data
+    for i = 1, len, 3 do
+        local a, b, c = data:byte(i, i + 2)
+        local n = a * 65536 + (b or 0) * 256 + (c or 0)
+        local pad = 0
+        if not b then pad = 2 elseif not c then pad = 1 end
+        local chars = 4 - pad
+        for j = 3, 0, -1 do
+            if j >= pad then
+                local idx = math.floor(n / 64 ^ j) % 64 + 1
+                out[#out + 1] = b64chars:sub(idx, idx)
+            end
+        end
+        if pad == 2 then out[#out + 1] = "==" elseif pad == 1 then out[#out + 1] = "=" end
+    end
+    return table.concat(out)
+end
+local function LuaBase64Decode(data)
+    if not data or data == "" then return "" end
+    data = data:gsub("[^" .. b64chars .. "=]", "")
+    local rev = {}
+    for i = 1, 64 do rev[b64chars:sub(i, i)] = i - 1 end
+    local out = {}
+    local len = #data
+    local pad = 0
+    if data:sub(-2) == "==" then pad = 2 elseif data:sub(-1) == "=" then pad = 1 end
+    for i = 1, len, 4 do
+        local remaining = len - i + 1
+        local groupPad = (remaining <= 4) and pad or 0
+        local v = 0
+        for j = 0, 3 do
+            local ch = data:sub(i + j, i + j)
+            local n = 0
+            if ch ~= "=" then n = rev[ch] or 0 end
+            v = v * 64 + n
+        end
+        out[#out + 1] = string.char(math.floor(v / 65536) % 256)
+        if groupPad <= 1 then out[#out + 1] = string.char(math.floor(v / 256) % 256) end
+        if groupPad == 0 then out[#out + 1] = string.char(v % 256) end
+    end
+    return table.concat(out)
+end
+
 local function B64Encode(raw)
     if not raw or raw == "" then return "" end
     if C_Base64 and C_Base64.Encode then
         local ok, res = pcall(C_Base64.Encode, raw)
         if ok and res and res ~= "" then return res end
     end
+    -- 兜底：纯 Lua base64，保证导出码为可见 ASCII，可在 EditBox 中复制
+    local ok, res = pcall(LuaBase64Encode, raw)
+    if ok and res and res ~= "" then return res end
     return raw
 end
 
@@ -566,6 +617,8 @@ local function B64Decode(b64)
         local ok, res = pcall(C_Base64.Decode, b64)
         if ok and res then return res end
     end
+    local ok, res = pcall(LuaBase64Decode, b64)
+    if ok and res then return res end
     return b64
 end
 

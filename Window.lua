@@ -63,6 +63,29 @@ local function GetTitleText(name, isExpanded, etype)
     return prefix .. " " .. color .. (name or "") .. "|r"
 end
 
+-- 当前 WoW API（正式服）中 FontString 不支持 OnHyperlinkClick 脚本；
+-- 用 pcall 探测，不支持时仅显示文本，不阻断整个窗口。
+local function TrySetHyperlinkScripts(note)
+    if not note then return false end
+    local ok = pcall(function()
+        note:SetScript("OnHyperlinkClick", function(_, link)
+            if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
+                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                GameTooltip:SetHyperlink(link)
+                GameTooltip:Show()
+            end
+        end)
+        note:SetScript("OnHyperlinkEnter", function(_, link)
+            if link and link:find("^spell:") then
+                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                GameTooltip:SetHyperlink(link)
+            end
+        end)
+        note:SetScript("OnHyperlinkLeave", function() GameTooltip:Hide() end)
+    end)
+    return ok
+end
+
 -- ============ 颜色代码规范化 ============
 -- 支持两种写法：|cffRRGGBB（标准） 与 cffRRGGBB（用户旧数据缺少前导 |）
 -- 并在每个 || 分段的末尾自动补 |r，防止颜色串污染下一行
@@ -463,22 +486,9 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
                 note:SetJustifyH("LEFT")
                 note:SetWordWrap(true)
-                -- 部分 WoW API 中 FontString:SetHyperlinksEnabled 不存在；OnHyperlinkClick 已足够
+                -- 部分 WoW API 中 FontString 不支持超链接脚本；探测后 gracefully 降级
                 if note.SetHyperlinksEnabled then note:SetHyperlinksEnabled(true) end
-                note:SetScript("OnHyperlinkClick", function(_, link)
-                    if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
-                        GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
-                        GameTooltip:SetHyperlink(link)
-                        GameTooltip:Show()
-                    end
-                end)
-                note:SetScript("OnHyperlinkEnter", function(_, link)
-                    if link and link:find("^spell:") then
-                        GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
-                        GameTooltip:SetHyperlink(link)
-                    end
-                end)
-                note:SetScript("OnHyperlinkLeave", function() GameTooltip:Hide() end)
+                TrySetHyperlinkScripts(note)
                 frame.noteText = note
 
                 targetFrames[i] = frame
@@ -566,20 +576,7 @@ function addon.ShowTestWindow()
         note:SetJustifyH("LEFT")
         note:SetWordWrap(true)
         if note.SetHyperlinksEnabled then note:SetHyperlinksEnabled(true) end
-        note:SetScript("OnHyperlinkClick", function(_, link)
-            if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
-                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
-                GameTooltip:SetHyperlink(link)
-                GameTooltip:Show()
-            end
-        end)
-        note:SetScript("OnHyperlinkEnter", function(_, link)
-            if link and link:find("^spell:") then
-                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
-                GameTooltip:SetHyperlink(link)
-            end
-        end)
-        note:SetScript("OnHyperlinkLeave", function() GameTooltip:Hide() end)
+        TrySetHyperlinkScripts(note)
         frame.noteText = note
         targetFrames[1] = frame
     end

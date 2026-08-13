@@ -9,7 +9,7 @@ addon.GuideData.versions = addon.GuideData.versions or {}
 addon.GuideData.versions["12.0"] = addon.GuideData.versions["12.0"] or {}
 -- 版本标签与排序（主文件据此动态发现版本，无需修改主文件）
 addon.GuideData.versionInfo = addon.GuideData.versionInfo or {}
-addon.GuideData.versionInfo["12.0"] = { label = "至暗之夜", order = 12 }
+addon.GuideData.versionInfo["12.0"] = { label = "12.0 至暗之夜", order = 12 }
 
 
 addon.GuideData.meta = addon.GuideData.meta or {}

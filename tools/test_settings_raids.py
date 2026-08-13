@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Verify settings-tree readiness for raid options + 12.0 label change.
+Verify settings-tree split: 5-man / raid separate trees + Current M+ pinned + 12.0 label.
 
 Imports tools.load_sim (which performs the full .toc load into _G.__BTAddon),
 then queries the addon helpers that BuildGuideOptions relies on:
-  * GetVersionLabel("12.0") == "至暗之夜"   (label fix)
-  * GetRaidVersionIDs / GetRaidDungeons    (raids exist to merge into the tree)
-  * GetVersionDungeons native only         (editor stays unpolluted)
-  * IsVersionEnabled respects disabledRaids
+  * GetVersionLabel("12.0") == "12.0 至暗之夜"
+  * GetRaidVersionLabel("12.0") == "12.0 至暗之夜"
+  * GetAllVersionIDs pins "Current" (M+) at top
+  * GetRaidVersionIDs / GetRaidDungeons exist
+  * IsDungeonVersionEnabled / IsRaidVersionEnabled are independent
+  * SendBossTips channel override (right-click -> /say)
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -23,10 +25,19 @@ def q(code):
 
 print("=== 设置树团本/标签 验证 ===")
 
-# Task 97: 12.0 label
+# 12.0 label now includes version prefix in both dungeon and raid trees
 label = q("return __BTAddon.GetVersionLabel('12.0')")
 print("GetVersionLabel('12.0') =", repr(label))
-assert label == "至暗之夜", label
+assert label == "12.0 至暗之夜", label
+
+raid_label = q("return __BTAddon.GetRaidVersionLabel('12.0')")
+print("GetRaidVersionLabel('12.0') =", repr(raid_label))
+assert raid_label == "12.0 至暗之夜", raid_label
+
+# Current M+ season pinned at top of GetAllVersionIDs
+all_ids = q("local t=__BTAddon.GetAllVersionIDs() local s={} for _,v in ipairs(t) do s[#s+1]=v end return table.concat(s, ',')")
+print("GetAllVersionIDs =", all_ids)
+assert all_ids.startswith("Current,"), all_ids
 
 # raid version ids present
 raid_ids = q("local t=__BTAddon.GetRaidVersionIDs() local s={} for _,v in ipairs(t) do s[#s+1]=v end return table.concat(s, ',')")
@@ -38,21 +49,32 @@ raid_inst = q("local t=__BTAddon.GetRaidDungeons('12.0') local s={} for k in pai
 print("GetRaidDungeons('12.0') =", raid_inst)
 assert "虚空尖塔" in raid_inst and "梦裂" in raid_inst and "进军奎尔萨拉斯" in raid_inst, raid_inst
 
-# native dungeons for 12.0 (unchanged; editor unaffected)
+# native dungeons for 12.0 (unchanged; editor stays unpolluted)
 nat_inst = q("local t=__BTAddon.GetVersionDungeons('12.0') local s={} for k in pairs(t) do s[#s+1]=k end return table.concat(s, ',')")
 print("GetVersionDungeons('12.0') [native only] =", nat_inst)
+# 5 人本树不应包含团本实例
+for ri in ("虚空尖塔", "梦裂", "进军奎尔萨拉斯"):
+    assert ri not in nat_inst, "GetVersionDungeons 不应包含团本：" + ri
 
-# IsVersionEnabled: enabled by default, disabled when disabledRaids set
-en = q("return __BTAddon.IsVersionEnabled('12.0')")
-print("IsVersionEnabled('12.0') default =", en)
-assert en == True, en
+# 5人本/团本开关相互独立
+en_d = q("return __BTAddon.IsDungeonVersionEnabled('12.0')")
+print("IsDungeonVersionEnabled('12.0') default =", en_d)
+assert en_d == True, en_d
+en_r = q("return __BTAddon.IsRaidVersionEnabled('12.0')")
+print("IsRaidVersionEnabled('12.0') default =", en_r)
+assert en_r == True, en_r
+
 q("BossTipsGlobalDB.disabledRaids['12.0']=true")
-en2 = q("return __BTAddon.IsVersionEnabled('12.0')")
-print("IsVersionEnabled('12.0') after disabledRaids=true =", en2)
-assert en2 == False, en2
+assert q("return __BTAddon.IsRaidVersionEnabled('12.0')") == False
+assert q("return __BTAddon.IsDungeonVersionEnabled('12.0')") == True, "团本开关不应影响 5 人本"
+assert q("return __BTAddon.IsVersionEnabled('12.0')") == False
 q("BossTipsGlobalDB.disabledRaids['12.0']=nil")
-en3 = q("return __BTAddon.IsVersionEnabled('12.0')")
-assert en3 == True, en3
+q("BossTipsGlobalDB.disabledNative['12.0']=true")
+assert q("return __BTAddon.IsDungeonVersionEnabled('12.0')") == False
+assert q("return __BTAddon.IsRaidVersionEnabled('12.0')") == True, "5人本开关不应影响团本"
+assert q("return __BTAddon.IsVersionEnabled('12.0')") == False
+q("BossTipsGlobalDB.disabledNative['12.0']=nil")
+assert q("return __BTAddon.IsVersionEnabled('12.0')") == True
 
 # Task 96: SendBossTips 频道覆盖（右键 -> /say）
 L.execute("""

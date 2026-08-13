@@ -9,7 +9,7 @@ addon.GuideData.mplus = addon.GuideData.mplus or {}
 addon.GuideData.mplus["Current"] = addon.GuideData.mplus["Current"] or {}
 -- 版本标签与排序（主文件据此动态发现版本，无需修改主文件）
 addon.GuideData.mplusInfo = addon.GuideData.mplusInfo or {}
-addon.GuideData.mplusInfo["Current"] = { label = "12.1 大秘境（当前赛季）", order = 1 }
+addon.GuideData.mplusInfo["Current"] = { label = "12.1 大秘境（当前赛季）", order = 1, isCurrent = true }
 
 
 addon.GuideData.meta = addon.GuideData.meta or {}

@@ -183,6 +183,9 @@ local function GetRaidVersionLabel(id)
     local GD = addon.GuideData
     local i = GD.raidInfo and GD.raidInfo[id]
     if i and i.label and i.label ~= "" then return i.label end
+    -- 若该版本号在 5 人本/M+ 中也有定义，复用其显示名（保持 12.0 至暗之夜 等一致）
+    local verLabel = GetVersionLabel(id)
+    if verLabel and verLabel ~= tostring(id) then return verLabel end
     return (id and tostring(id) .. " 团本") or "团本"
 end
 local function GetRaidDungeons(verId)
@@ -220,6 +223,12 @@ local function GetCustomVersionList()
     return list
 end
 
+local function IsCurrentMPlusSeason(verId)
+    if verId == "Current" then return true end
+    local info = addon.GuideData.mplusInfo and addon.GuideData.mplusInfo[verId]
+    return info and info.isCurrent
+end
+
 local function GetAllVersionIDs()
     ensureDBExists()
     local seen = {}
@@ -228,6 +237,11 @@ local function GetAllVersionIDs()
     for _, sid in ipairs(GetMPlusOrder()) do if not seen[sid] then seen[sid] = true; list[#list + 1] = sid end end
     for _, vid in ipairs(GetCustomVersionList()) do if not seen[vid] then seen[vid] = true; list[#list + 1] = vid end end
     table.sort(list, function(a, b)
+        -- 当前赛季大秘境始终置顶
+        local isCurrentA = IsCurrentMPlusSeason(a)
+        local isCurrentB = IsCurrentMPlusSeason(b)
+        if isCurrentA and not isCurrentB then return true end
+        if isCurrentB and not isCurrentA then return false end
         local oa = (BossTipsGlobalDB.customVersions[a] and tonumber(BossTipsGlobalDB.customVersions[a].order)) or
                    (addon.GuideData.versionInfo[a] and tonumber(addon.GuideData.versionInfo[a].order)) or
                    (addon.GuideData.mplusInfo[a] and tonumber(addon.GuideData.mplusInfo[a].order)) or
@@ -268,15 +282,22 @@ local function GetVersionDungeons(verId)
 end
 addon.GetVersionDungeons = GetVersionDungeons
 
-local function IsVersionEnabled(verId)
+local function IsDungeonVersionEnabled(verId)
     ensureDBExists()
     local db = BossTipsGlobalDB
     local GD = addon.GuideData
-    -- 多命名空间共享同一版本号（如 12.0 既有 5 人本又有团本）：任一适用命名空间被禁用即视为禁用
     if GD.versions and GD.versions[verId] and db.disabledNative[verId] then return false end
     if GD.mplus and GD.mplus[verId] and db.disabledMPlus[verId] then return false end
-    if GD.raids and GD.raids[verId] and db.disabledRaids[verId] then return false end
     if db.customVersions and db.customVersions[verId] and db.disabledCustomVersions and db.disabledCustomVersions[verId] then return false end
+    return true
+end
+addon.IsDungeonVersionEnabled = IsDungeonVersionEnabled
+
+
+local function IsVersionEnabled(verId)
+    -- 多命名空间共享同一版本号（如 12.0 既有 5 人本又有团本）：任一适用命名空间被禁用即视为禁用
+    if not IsDungeonVersionEnabled(verId) then return false end
+    if not IsRaidVersionEnabled(verId) then return false end
     return true
 end
 addon.IsVersionEnabled = IsVersionEnabled

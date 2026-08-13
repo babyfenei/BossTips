@@ -41,8 +41,8 @@ local function CreateMainButton()
     btn:SetMovable(true)
     btn:EnableMouse(true)
 
-    -- 统一 Ace3 风格边框/背景，与攻略窗体一致
-    if addon.ApplyAce3Backdrop then addon.ApplyAce3Backdrop(btn) end
+    -- 统一主题边框/背景，与攻略窗体/设置框一致
+    if addon.ApplyThemeToFrame then addon.ApplyThemeToFrame(btn) end
 
     local fs = btn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     fs:SetPoint("CENTER", 0, 0)
@@ -134,8 +134,8 @@ addon.UpdateMainButtonVisibility = UpdateMainButtonVisibility
 local function UpdateMainButtonAppearance()
     local btn = addon.mainButton
     if not btn then return end
-    if addon.ApplyAce3Backdrop then
-        addon.ApplyAce3Backdrop(btn)
+    if addon.ApplyThemeToFrame then
+        addon.ApplyThemeToFrame(btn)
     else
         local br, bg, bb, ba = 0, 0, 0, 0.82
         if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end

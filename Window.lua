@@ -24,8 +24,8 @@ mainWindow:SetScript("OnDragStop", function(self)
 end)
 mainWindow:SetResizable(true)
 mainWindow:SetResizeBounds(150, 50, 600, 800)
--- 统一 Ace3 风格背景/边框，与悬浮按钮一致
-if addon.ApplyAce3Backdrop then addon.ApplyAce3Backdrop(mainWindow) end
+-- 统一主题背景/边框，与悬浮按钮/设置框一致
+if addon.ApplyThemeToFrame then addon.ApplyThemeToFrame(mainWindow) end
 mainWindow:Hide()
 addon.tipsFrame = mainWindow
 
@@ -314,10 +314,8 @@ UpdateLayout = function()
     local currentY = -40
     local db = BossTipsGlobalDB
     local windowWidth = mainWindow:GetWidth()
-    local bgR, bgG, bgB, bgA = 0, 0, 0, 0.82
-    if addon.GetTipsBg then bgR, bgG, bgB, bgA = addon.GetTipsBg() end
-    mainWindow:SetBackdropColor(bgR, bgG, bgB, bgA)
-    mainWindow:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
+    -- 刷新主题背景/边框（ACE3/官方默认）
+    if addon.ApplyThemeToFrame then addon.ApplyThemeToFrame(mainWindow) end
     titleText:SetWidth(windowWidth - 20)
 
     if mainWindow.isGuideHidden then
@@ -479,28 +477,6 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
                 -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
                 speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-                speakerBtn:SetScript("OnClick", function(_, _, button)
-                    local tname = frame.targetData and frame.targetData.name
-                    if tname and tname ~= "" then
-                        if InCombatLockdown() then
-                            print("|cffff0000BossTips|r 战斗中无法发送消息。")
-                        else
-                            if button == "RightButton" then
-                                addon.SendBossTips(tname, "SAY")
-                            else
-                                addon.SendBossTips(tname)
-                            end
-                        end
-                    end
-                end)
-                speakerBtn:SetScript("OnEnter", function(self)
-                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                    GameTooltip:SetText("发送攻略")
-                    GameTooltip:AddLine("左键：发送到设定频道 (" .. (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT") .. ")", 1, 1, 1)
-                    GameTooltip:AddLine("右键：发送到说 (/say)", 1, 1, 1)
-                    GameTooltip:Show()
-                end)
-                speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
                 frame.speakerBtn = speakerBtn
 
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -513,6 +489,30 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
 
                 targetFrames[i] = frame
             end
+
+            -- 每次显示副本攻略都重新绑定 speakerBtn，避免之前测试窗口复用 frame 时把它改成 SendTestTipsToChat
+            frame.speakerBtn:SetScript("OnClick", function(_, button)
+                local tname = frame.targetData and frame.targetData.name
+                if tname and tname ~= "" then
+                    if InCombatLockdown() then
+                        print("|cffff0000BossTips|r 战斗中无法发送消息。")
+                    else
+                        -- button 为第二参数（"LeftButton"/"RightButton"）；左键用设定频道，右键用右键频道
+                        local ch = (button == "RightButton")
+                            and (BossTipsGlobalDB.sendChannelRight or "SAY")
+                            or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+                        addon.SendBossTips(tname, ch)
+                    end
+                end
+            end)
+            frame.speakerBtn:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("发送攻略")
+                GameTooltip:AddLine("左键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
+                GameTooltip:AddLine("右键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
+                GameTooltip:Show()
+            end)
+            frame.speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
             frame.targetData = target
             frame.inUse = true
@@ -553,23 +553,12 @@ local function SendTestTipsToChat(channelOverride)
         print("|cffff0000BossTips|r 战斗中无法发送消息。")
         return
     end
-    local chatType
-    if channelOverride then
-        chatType = channelOverride
-    else
-        chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
-        if chatType == "PARTY" then
-            local numGroup = GetNumGroupMembers() or 0
-            chatType = (numGroup > 5 and "RAID" or "PARTY")
-        end
-    end
+    local chatType = addon.ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
     local segs = { strsplit("||", TEST_TIPS) }
     for _, seg in ipairs(segs) do
         seg = strtrim(seg)
         if seg ~= "" then
-            seg = seg:gsub("%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
-            seg = seg:gsub("{rt1}(.-){rt1}", "重点 %1")
-            seg = seg:gsub("{rt%d}", "")
+            seg = addon.ColorChatTips and addon.ColorChatTips(seg) or seg
             SendChatMessage(seg, chatType)
         end
     end
@@ -611,20 +600,21 @@ function addon.ShowTestWindow()
     frame.inUse = true
     frame.isExpanded = true
     frame.titleBtn:SetScript("OnClick", function() end)
-    frame.speakerBtn:SetScript("OnClick", function(_, _, button)
+    frame.speakerBtn:SetScript("OnClick", function(_, button)
         if InCombatLockdown() then
             print("|cffff0000BossTips|r 战斗中无法发送消息。")
-        elseif button == "RightButton" then
-            SendTestTipsToChat("SAY")
         else
-            SendTestTipsToChat()
+            local ch = (button == "RightButton")
+                and (BossTipsGlobalDB.sendChannelRight or "SAY")
+                or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+            SendTestTipsToChat(ch)
         end
     end)
     frame.speakerBtn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText("发送攻略")
-        GameTooltip:AddLine("左键：发送到设定频道 (" .. (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT") .. ")", 1, 1, 1)
-        GameTooltip:AddLine("右键：发送到说 (/say)", 1, 1, 1)
+        GameTooltip:AddLine("左键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
+        GameTooltip:AddLine("右键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
         GameTooltip:Show()
     end)
     frame.speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)

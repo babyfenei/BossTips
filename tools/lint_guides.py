@@ -2,7 +2,7 @@
 """校验所有攻略文件格式一致性（lupa 加载后程序化校验）。"""
 import os, glob, lupa
 
-BASE = r"E:\World of Warcraft\_retail_\Interface\AddOns\BossTips"
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 lua = lupa.LuaRuntime(unpack_returned_tuples=True)
 g = lua.globals()
 g.addon = lua.eval("{}")

@@ -8,6 +8,14 @@ local L = addon.L
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
+local function ApplyThemeToSettingsFrame()
+    local ACD = LibStub("AceConfigDialog-3.0", true)
+    local openFrame = ACD and ACD.OpenFrames and ACD.OpenFrames["BossTips"]
+    if openFrame and openFrame.frame and addon.ApplyThemeToFrame then
+        addon.ApplyThemeToFrame(openFrame.frame)
+    end
+end
+
 local function ApplyAppearanceChange()
     if addon.tipsFrame and addon.tipsFrame:IsShown() then
         addon:CheckInstance()
@@ -15,6 +23,8 @@ local function ApplyAppearanceChange()
     if addon.UpdateMainButtonAppearance then
         addon.UpdateMainButtonAppearance()
     end
+    -- 设置框若打开，同步刷新主题
+    ApplyThemeToSettingsFrame()
 end
 
 local options = {
@@ -134,9 +144,10 @@ local options = {
                             end,
                             order = 1,
                         },
-                        chat_channel = {
+                        chat_channel_left = {
                             type = "select",
-                            name = L["Send to"],
+                            name = "左键发送频道",
+                            desc = "攻略窗体小喇叭「左键」点击时发送的频道。默认副本（INSTANCE_CHAT）。",
                             values = {
                                 ["SAY"] = "说",
                                 ["PARTY"] = "队伍",
@@ -149,6 +160,22 @@ local options = {
                             hidden = function() return not BossTipsGlobalDB.enableChatSend end,
                             order = 2,
                         },
+                        chat_channel_right = {
+                            type = "select",
+                            name = "右键发送频道",
+                            desc = "攻略窗体小喇叭「右键」点击时发送的频道。默认说（SAY）。",
+                            values = {
+                                ["SAY"] = "说",
+                                ["PARTY"] = "队伍",
+                                ["RAID"] = "团队",
+                                ["INSTANCE_CHAT"] = "副本",
+                                ["YELL"] = "大喊",
+                            },
+                            get = function() return BossTipsGlobalDB.sendChannelRight or "SAY" end,
+                            set = function(_, val) BossTipsGlobalDB.sendChannelRight = val end,
+                            hidden = function() return not BossTipsGlobalDB.enableChatSend end,
+                            order = 3,
+                        },
                         close_after_send = {
                             type = "toggle",
                             name = "发送攻略后关闭窗口",
@@ -157,7 +184,7 @@ local options = {
                             get = function() return BossTipsGlobalDB.closeWindowAfterSend end,
                             set = function(_, val) BossTipsGlobalDB.closeWindowAfterSend = val end,
                             hidden = function() return not BossTipsGlobalDB.enableChatSend end,
-                            order = 3,
+                            order = 4,
                         },
                     }
                 },
@@ -167,6 +194,22 @@ local options = {
                     inline = true,
                     order = 4,
                     args = {
+                        theme = {
+                            type = "select",
+                            name = "主题风格",
+                            desc = "选择界面整体主题。ACE3 主题与攻略窗一致（半透明暗色+用户颜色+灰色边框）；官方默认使用暴雪对话框风格。",
+                            values = {
+                                ["ace3"] = "ACE3 主题",
+                                ["default"] = "官方默认主题",
+                            },
+                            get = function() return BossTipsGlobalDB.theme or "ace3" end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.theme = val
+                                -- 同时刷新设置框、攻略窗、悬浮按钮、编辑器主题
+                                if addon.RefreshAllThemes then addon.RefreshAllThemes() end
+                            end,
+                            order = 0,
+                        },
                         font = {
                             type = "select",
                             name = L["Font"],
@@ -278,8 +321,8 @@ local options = {
     }
 }
 
--- ============ 攻略配置标签（编辑按钮 → 一键展开/折叠 → 5人本/团本 树） ============
--- 一键展开 / 一键折叠：直接操作 AceConfigDialog 树状态表（guide_options_tab 下的 TreeGroup）
+-- ============ 攻略配置标签（编辑按钮 → 5人本/团本 树） ============
+-- 保留此辅助函数供测试脚本/tools 使用，设置面板内不再提供一键展开/折叠按钮。
 local function SetGuideTreesExpanded(expand)
     local status = AceConfigDialog:GetStatusTable("BossTips", { "guide_options_tab" })
     -- 对话框未真正打开时（如仿真环境）status.groups 可能为 __index 元表提供的函数，需显式建表；
@@ -325,23 +368,6 @@ local guideOptions = {
                 AceConfigDialog:Close("BossTips")
                 addon:OpenEditor()
             end,
-        },
-        -- 一键展开 / 一键折叠（并排两个半宽按钮）
-        expand_all = {
-            type = "execute",
-            name = "一键展开",
-            desc = "展开下方「5人本」「团本」的全部版本选择器。",
-            width = "half",
-            order = 2,
-            func = function() SetGuideTreesExpanded(true) end,
-        },
-        collapse_all = {
-            type = "execute",
-            name = "一键折叠",
-            desc = "折叠下方「5人本」「团本」的全部版本选择器。",
-            width = "half",
-            order = 3,
-            func = function() SetGuideTreesExpanded(false) end,
         },
         -- 5人本 / 团本 树（单击节点即可展开/折叠）
         dungeon_tree = {
@@ -537,4 +563,6 @@ function addon:OpenMainGUI()
         LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
     end
     AceConfigDialog:Open("BossTips")
+    -- 打开后立即套用当前主题（ACE3/官方默认），让设置框与攻略窗风格一致
+    ApplyThemeToSettingsFrame()
 end

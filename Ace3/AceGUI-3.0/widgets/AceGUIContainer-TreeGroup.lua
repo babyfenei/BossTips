@@ -180,6 +180,15 @@ end
 
 local function Button_OnClick(frame)
 	local self = frame.obj
+	local treeline = frame.treeline
+	-- BossTips 设置树：顶层有子节点的节点（5人本/团本）单击直接展开/折叠，不走选中逻辑
+	if self:GetUserData("appName") == "BossTips" and treeline and treeline.children and treeline.level == 1 then
+		local status = (self.status or self.localstatus).groups
+		status[frame.uniquevalue] = not status[frame.uniquevalue]
+		self:RefreshTree()
+		AceGUI:ClearFocus()
+		return
+	end
 	self:Fire("OnClick", frame.uniquevalue, frame.selected)
 	if not frame.selected then
 		self:SetSelected(frame.uniquevalue)

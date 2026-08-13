@@ -32,6 +32,7 @@ local defaultConfig = {
     TipsFrameSize = { width = 500, height = 400 },
     FontSize = 14,
     defaultChatChannel = "INSTANCE_CHAT",
+    sendChannelRight = "SAY",
     disabledNative = {},
     disabledMPlus = {},
     disabledRaids = {},
@@ -40,6 +41,9 @@ local defaultConfig = {
     guides = {},
     customVersions = {},
     customDungeons = {},
+    customRaidVersions = {},
+    customRaids = {},
+    disabledCustomRaidVersions = {},
     encounterOverrides = {},
     dungeonOverrides = {},
     showMobs = false,
@@ -48,6 +52,7 @@ local defaultConfig = {
     autoOpenOnEnter = true,
     guideWindowMode = "button", -- "auto" 进本自动展开；"button" 仅点击悬浮按钮（默认按钮模式）
     lockWindow = false,
+    theme = "ace3",             -- "ace3" 半透明暗色自定义边框；"default" 暴雪对话框风格
     tipsBgStyle = "black",
     tipsFont = "default",
     tipsBgR = 0.05,
@@ -85,6 +90,9 @@ local function ensureDBExists()
     if not BossTipsGlobalDB.guides then BossTipsGlobalDB.guides = {} end
     if not BossTipsGlobalDB.customVersions then BossTipsGlobalDB.customVersions = {} end
     if not BossTipsGlobalDB.customDungeons then BossTipsGlobalDB.customDungeons = {} end
+    if not BossTipsGlobalDB.customRaidVersions then BossTipsGlobalDB.customRaidVersions = {} end
+    if not BossTipsGlobalDB.customRaids then BossTipsGlobalDB.customRaids = {} end
+    if not BossTipsGlobalDB.disabledCustomRaidVersions then BossTipsGlobalDB.disabledCustomRaidVersions = {} end
     if not BossTipsGlobalDB.encounterOverrides then BossTipsGlobalDB.encounterOverrides = {} end
     if not BossTipsGlobalDB.dungeonOverrides then BossTipsGlobalDB.dungeonOverrides = {} end
 end
@@ -104,19 +112,45 @@ local function GetTipsBg()
     local s = BG_STYLES[BossTipsGlobalDB.tipsBgStyle] or BG_STYLES.black
     return s[1], s[2], s[3], s[4]
 end
--- 统一 Ace3 风格边框/背景：tooltip 底图 + 灰色边框，攻略窗与悬浮按钮共用
-local function ApplyAce3Backdrop(frame)
+-- 统一主题边框/背景：根据 theme 应用 ACE3（半透明暗色+用户颜色）或官方默认（暴雪对话框）
+local function ApplyThemeToFrame(frame)
     if not frame then return end
-    frame:SetBackdrop({
-        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        tile = true, tileSize = 16, edgeSize = 12,
-        insets = { left = 4, right = 4, top = 4, bottom = 4 },
-    })
-    local r, g, b, a = GetTipsBg()
-    frame:SetBackdropColor(r, g, b, a)
-    frame:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
+    local theme = BossTipsGlobalDB.theme or "ace3"
+    if theme == "default" then
+        frame:SetBackdrop({
+            bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+            edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+            tile = true, tileSize = 32, edgeSize = 32,
+            insets = { left = 8, right = 8, top = 8, bottom = 8 },
+        })
+        frame:SetBackdropColor(1, 1, 1, 1)
+        frame:SetBackdropBorderColor(1, 1, 1, 1)
+    else
+        -- ACE3 主题：无边框/弱边框现代风格（与官方默认的厚重暴雪对话框形成明显区别）
+        frame:SetBackdrop({
+            bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+            edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+            tile = true, tileSize = 1, edgeSize = 1,
+            insets = { left = 1, right = 1, top = 1, bottom = 1 },
+        })
+        local r, g, b, a = GetTipsBg()
+        frame:SetBackdropColor(r, g, b, a)
+        frame:SetBackdropBorderColor(0.15, 0.15, 0.15, 0.30)
+    end
 end
+addon.ApplyThemeToFrame = ApplyThemeToFrame
+-- 保持旧别名兼容（Window.lua/Core.lua 仍有调用）
+addon.ApplyAce3Backdrop = ApplyThemeToFrame
+
+local function RefreshAllThemes()
+    if addon.tipsFrame then ApplyThemeToFrame(addon.tipsFrame) end
+    if addon.mainButton then ApplyThemeToFrame(addon.mainButton) end
+    local ACD = LibStub("AceConfigDialog-3.0", true)
+    local openFrame = ACD and ACD.OpenFrames and ACD.OpenFrames["BossTips"]
+    if openFrame and openFrame.frame then ApplyThemeToFrame(openFrame.frame) end
+    if addon.editorFrame and addon.editorFrame.frame then ApplyThemeToFrame(addon.editorFrame.frame) end
+end
+addon.RefreshAllThemes = RefreshAllThemes
 local FONT_PATHS = {
     default = (GameFontNormal and GameFontNormal:GetFont()) or STANDARD_TEXT_FONT,
     damage = DAMAGE_TEXT_FONT,
@@ -176,10 +210,18 @@ local function GetRaidOrder()
     return BuildSortedIDs(GD.raids, nil)
 end
 local function GetRaidVersionIDs()
-    return GetRaidOrder()
+    local list = GetRaidOrder()
+    for verId in pairs(BossTipsGlobalDB.customRaidVersions or {}) do
+        local found = false
+        for _, v in ipairs(list) do if v == verId then found = true; break end end
+        if not found then table.insert(list, verId) end
+    end
+    return list
 end
 local function GetRaidVersionLabel(id)
     ensureDBExists()
+    local custom = BossTipsGlobalDB.customRaidVersions and BossTipsGlobalDB.customRaidVersions[id]
+    if custom and custom.label and custom.label ~= "" then return custom.label end
     local GD = addon.GuideData
     local i = GD.raidInfo and GD.raidInfo[id]
     if i and i.label and i.label ~= "" then return i.label end
@@ -197,11 +239,19 @@ local function GetRaidDungeons(verId)
             dungeons[instName] = { isBuiltIn = true, source = "raid", bosses = bosses }
         end
     end
+    for instName, d in pairs(BossTipsGlobalDB.customRaids or {}) do
+        if d.versionId == verId then
+            dungeons[instName] = { isBuiltIn = false, source = "custom", data = d }
+        end
+    end
     return dungeons
 end
 local function IsRaidVersionEnabled(verId)
     ensureDBExists()
-    return not (BossTipsGlobalDB.disabledRaids and BossTipsGlobalDB.disabledRaids[verId])
+    local db = BossTipsGlobalDB
+    if db.disabledRaids and db.disabledRaids[verId] then return false end
+    if db.customRaidVersions and db.customRaidVersions[verId] and db.disabledCustomRaidVersions and db.disabledCustomRaidVersions[verId] then return false end
+    return true
 end
 local function IsBuiltInRaid(verId, instName)
     local GD = addon.GuideData
@@ -371,6 +421,19 @@ local function BuildActiveGuides()
                 for instance, dungeonTbl in pairs(GD.raids[vid]) do
                     addDungeon(instance, dungeonTbl)
                 end
+            end
+        end
+    end
+    -- 自定义团本
+    for instance, d in pairs(db.customRaids or {}) do
+        if d.isActive ~= false and not (db.hiddenDungeons and db.hiddenDungeons[instance])
+           and not (db.disabledCustomRaidVersions and db.disabledCustomRaidVersions[d.versionId]) then
+            if not guides[instance] then
+                local copy = {}
+                for boss, b in pairs(d.bosses or {}) do
+                    addBossEntry(copy, boss, b)
+                end
+                guides[instance] = copy
             end
         end
     end
@@ -693,6 +756,8 @@ local CONFIG_KEYS = {
     { key = "showMobs", t = "bool" },
     { key = "enableChatSend", t = "bool" },
     { key = "defaultChatChannel", t = "string" },
+    { key = "sendChannelRight", t = "string" },
+    { key = "theme", t = "string" },
     { key = "lockWindow", t = "bool" },
     { key = "guideWindowWidth", t = "number" },
     { key = "showMinimapButton", t = "bool" },
@@ -803,6 +868,16 @@ local function EncodeGuides()
         end
         parts[#parts + 1] = "CUSTOM_DUNGEON" .. FIELD .. inst .. FIELD .. (d.versionId or "") .. FIELD .. (d.id or "") .. FIELD .. (d.mapID or "") .. FIELD .. (d.dungeonType or "") .. FIELD .. (d.difficulty or "") .. FIELD .. (d.isActive ~= false and "1" or "0") .. FIELD .. table.concat(bossParts, REC)
     end
+    for verId, v in pairs(db.customRaidVersions or {}) do
+        parts[#parts + 1] = "CUSTOM_RAID_VERSION" .. FIELD .. verId .. FIELD .. (v.label or verId) .. FIELD .. tostring(tonumber(v.order) or 999)
+    end
+    for inst, d in pairs(db.customRaids or {}) do
+        local bossParts = {}
+        for boss, b in pairs(d.bosses or {}) do
+            bossParts[#bossParts + 1] = (b.order or 999) .. KV .. (b.type or "BOSS") .. KV .. (b.tips or "") .. KV .. (b.encounterId or "") .. KV .. boss
+        end
+        parts[#parts + 1] = "CUSTOM_RAID" .. FIELD .. inst .. FIELD .. (d.versionId or "") .. FIELD .. (d.id or "") .. FIELD .. (d.mapID or "") .. FIELD .. (d.dungeonType or "") .. FIELD .. (d.difficulty or "") .. FIELD .. (d.isActive ~= false and "1" or "0") .. FIELD .. table.concat(bossParts, REC)
+    end
 
     -- 插件配置（UI/行为设置）：始终尝试导出，保证分享码可完整迁移观感设置
     local configStr = EncodeConfig()
@@ -839,10 +914,13 @@ local function DecodeGuides(b64)
             disabledNative = {},
             disabledMPlus = {},
             disabledCustomVersions = {},
+            disabledCustomRaidVersions = {},
             hiddenDungeons = {},
             guides = {},
             customVersions = {},
             customDungeons = {},
+            customRaidVersions = {},
+            customRaids = {},
             encounterOverrides = {},
             dungeonOverrides = {},
         }
@@ -916,6 +994,36 @@ local function DecodeGuides(b64)
                         end
                     end
                     result.customDungeons[inst] = d
+                elseif tag == "CUSTOM_RAID_VERSION" and fields[2] then
+                    result.customRaidVersions[fields[2]] = { label = fields[3] or fields[2], order = tonumber(fields[4]) or 999 }
+                elseif tag == "CUSTOM_RAID" and fields[2] and fields[3] then
+                    local inst = fields[2]
+                    local d = {
+                        versionId = fields[3],
+                        id = fields[4] or "",
+                        mapID = fields[5] or "",
+                        dungeonType = fields[6] or "",
+                        difficulty = fields[7] or "",
+                        isActive = fields[8] ~= "0",
+                        bosses = {},
+                    }
+                    local bossStr = fields[9] or ""
+                    if bossStr and bossStr ~= "" then
+                        local bossRecords = { strsplit(REC, bossStr) }
+                        for _, br in ipairs(bossRecords) do
+                            if br and br ~= "" then
+                                local bfields = { strsplit(KV, br) }
+                                local bossName = bfields[5] or "Boss"
+                                d.bosses[bossName] = {
+                                    order = tonumber(bfields[1]) or 999,
+                                    type = bfields[2] or "BOSS",
+                                    tips = bfields[3] or "",
+                                    encounterId = bfields[4] or "",
+                                }
+                            end
+                        end
+                    end
+                    result.customRaids[inst] = d
                 elseif tag == "CONFIG" then
                     -- 配置项以 KV(\003) 分隔的 key\003value 子串存放，外层仍按 FIELD(\001) 切分
                     result.config = result.config or {}
@@ -957,6 +1065,10 @@ local function MergeImportedGuides(decoded)
         db.disabledCustomVersions[verId] = true
         count = count + 1
     end
+    for verId in pairs(decoded.disabledCustomRaidVersions or {}) do
+        db.disabledCustomRaidVersions[verId] = true
+        count = count + 1
+    end
     for inst in pairs(decoded.hiddenDungeons or {}) do
         db.hiddenDungeons[inst] = true
         count = count + 1
@@ -974,6 +1086,14 @@ local function MergeImportedGuides(decoded)
     end
     for inst, d in pairs(decoded.customDungeons or {}) do
         db.customDungeons[inst] = CopyTable(d)
+        count = count + 1
+    end
+    for verId, v in pairs(decoded.customRaidVersions or {}) do
+        db.customRaidVersions[verId] = CopyTable(v)
+        count = count + 1
+    end
+    for inst, d in pairs(decoded.customRaids or {}) do
+        db.customRaids[inst] = CopyTable(d)
         count = count + 1
     end
     for inst, bosses in pairs(decoded.encounterOverrides or {}) do
@@ -1056,6 +1176,52 @@ local function CollectAllInstances()
 end
 addon.CollectAllInstances = CollectAllInstances
 
+-- ============ 聊天发送频道解析 & 技能着色 ============
+-- PARTY 在 5 人以上自动转为 RAID（与游戏内行为一致）
+local function ResolveSendChannel(raw)
+    if not raw or raw == "" then return "INSTANCE_CHAT" end
+    if raw == "PARTY" then
+        local numGroup = GetNumGroupMembers() or 0
+        return (numGroup > 5 and "RAID" or "PARTY")
+    end
+    return raw
+end
+addon.ResolveSendChannel = ResolveSendChannel
+
+-- 频道中文名（用于提示/显示）
+local CHANNEL_LABEL = { SAY = "说", PARTY = "队伍", RAID = "团队", INSTANCE_CHAT = "副本", YELL = "大喊", CHANNEL = "频道" }
+local function ChannelLabel(ch)
+    return CHANNEL_LABEL[ch] or (ch or "INSTANCE_CHAT")
+end
+addon.ChannelLabel = ChannelLabel
+
+-- 聊天发送文本预处理：保留法术链接，其余转为纯文本标记，剥除 rt 表情，不再使用 |c...|r 颜色代码。
+local function ColorChatTips(text)
+    if not text or text == "" then return "" end
+
+    -- 技能简写 [名称|spell:id] -> 可点击法术链接（保留可点击）
+    text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
+
+    -- {rt8} 首领名 -> 【首领名】；{rt1} 重点块 -> 【重点】...；其余 rt 表情剥除
+    text = string.gsub(text, "{rt8}(.-){rt8}", "【%1】")
+    text = string.gsub(text, "{rt1}(.-){rt1}", "【重点】%1")
+    text = string.gsub(text, "{rt%d}", "")
+    text = string.gsub(text, "%[rt%d%]", "")
+    -- 自由文本「打断X」-> [断-X]
+    text = string.gsub(text, "打断([^%s%[%]|，。；：,;!！?？]+)", "[断-%1]")
+    -- [技能名] 按类型加前缀
+    text = string.gsub(text, "%[([^%]]+)%]", function(skill)
+        if skill:find("打断") or skill:find("必断") or skill:find("^断") or skill:find("^速断") then
+            return "[断-" .. skill .. "]"
+        elseif skill:find("速杀") or skill:find("重点") or skill:find("关注") or skill:find("集火") or skill:find("优先") then
+            return "[重-" .. skill .. "]"
+        end
+        return "[技-" .. skill .. "]"
+    end)
+    return text
+end
+addon.ColorChatTips = ColorChatTips
+
 -- ============ 攻略发送（按 || 分割，约 240 字/条发送） ============
 local function SendBossTips(bossName, channelOverride)
     if not bossName or not addon.currentInstanceName then
@@ -1068,11 +1234,8 @@ local function SendBossTips(bossName, channelOverride)
         return
     end
     local tips = BossData[addon.currentInstanceName][bossName].tips
-    -- 聊天发送前预处理：技能简写转可点击法术链接、{rt1}高亮块加★、剥除其余 rt 表情
-    tips = string.gsub(tips, "%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
-    tips = string.gsub(tips, "{rt1}(.-){rt1}", "重点 %1")
-    tips = string.gsub(tips, "{rt%d}", "")
-    tips = string.gsub(tips, "%[rt%d%]", "")
+    -- 聊天发送前预处理：保留法术链接，其余转为文本标记，剥除 rt 表情
+    tips = ColorChatTips(tips)
     if not tips then
         print("|cFFFF0000BossTips|r: 无", bossName, "的攻略信息")
         return
@@ -1114,16 +1277,7 @@ local function SendBossTips(bossName, channelOverride)
         end
         sortedParts = filtered
     end
-    local chatType
-    if channelOverride then
-        chatType = channelOverride
-    else
-        chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
-        if chatType == "PARTY" then
-            local numGroup = GetNumGroupMembers() or 0
-            chatType = (numGroup > 5 and "RAID" or "PARTY")
-        end
-    end
+    local chatType = ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
     local index = 1
     local delay = 0.5
     local function sendNext()
@@ -1144,4 +1298,5 @@ end
 addon.SendBossTips = SendBossTips
 addon.GetTipsBg = GetTipsBg
 addon.GetTipsFontPath = GetTipsFontPath
-addon.ApplyAce3Backdrop = ApplyAce3Backdrop
+addon.ApplyThemeToFrame = ApplyThemeToFrame
+addon.ApplyAce3Backdrop = ApplyThemeToFrame  -- 旧别名保持兼容

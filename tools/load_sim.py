@@ -6,7 +6,7 @@
 import os, re, sys
 import lupa
 
-ADDON = r"E:\World of Warcraft\_retail_\Interface\AddOns\BossTips"
+ADDON = r"F:\game\World of Warcraft\_retail_\Interface\AddOns\BossTips"
 TOC = os.path.join(ADDON, "BossTips.toc")
 
 lua = lupa.LuaRuntime(unpack_returned_tuples=True)

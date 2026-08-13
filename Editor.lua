@@ -50,6 +50,10 @@ local function IsCustomVersion(verId)
     return BossTipsGlobalDB.customVersions and BossTipsGlobalDB.customVersions[verId] ~= nil
 end
 
+local function IsCustomRaidVersion(verId)
+    return BossTipsGlobalDB.customRaidVersions and BossTipsGlobalDB.customRaidVersions[verId] ~= nil
+end
+
 local function IsBuiltInDungeon(verId, instName, isRaid)
     local GD = addon.GuideData
     if isRaid then
@@ -76,6 +80,9 @@ local function GetDungeonBossesForEditor(verId, instName, isRaid)
         end
     end
     local custom = BossTipsGlobalDB.customDungeons[instName]
+    if isRaid then
+        custom = BossTipsGlobalDB.customRaids[instName]
+    end
     if custom and custom.bosses then
         for boss, b in pairs(custom.bosses) do
             bosses[boss] = { source = "custom", order = b.order or 999, type = b.type or "BOSS", tips = b.tips or "", encounterId = b.encounterId or "" }
@@ -106,6 +113,8 @@ end
 local function IsDungeonActive(instName)
     local custom = BossTipsGlobalDB.customDungeons[instName]
     if custom then return custom.isActive ~= false end
+    local raidCustom = BossTipsGlobalDB.customRaids[instName]
+    if raidCustom then return raidCustom.isActive ~= false end
     return not IsDungeonHidden(instName)
 end
 
@@ -184,7 +193,10 @@ local function PathBoss(verId, instName, bossName) return "V" .. SEP .. verId ..
 
 -- 团本路径（以 "R" 区分，避免与 5 人本 "V" 命名空间冲突）
 local function PathRaidVersion(verId) return "R" .. SEP .. verId end
+local function PathNewRaidVersion() return "new_raid_version" end
+local function PathNewRaidDungeon(verId) return "R" .. SEP .. verId .. SEP .. "NEW_DUNGEON" end
 local function PathRaidDungeon(verId, instName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName end
+local function PathNewRaidBoss(verId, instName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "NEW_BOSS" end
 local function PathRaidBoss(verId, instName, bossName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "B" .. SEP .. bossName end
 
 local function GetLeafPath(group)
@@ -202,6 +214,7 @@ end
 local function ParsePath(group)
     if group == "import_export" then return "import_export", nil, nil, nil, GetLeafPath(group) end
     if group == "new_version" then return "new_version", nil, nil, nil, GetLeafPath(group) end
+    if group == "new_raid_version" then return "new_raid_version", nil, nil, nil, GetLeafPath(group) end
     if not group then return "unknown", nil, nil, nil, GetLeafPath(group) end
     -- AceGUI TreeGroup 传回的是 "父\001子\001叶子value"，先取最后一级
     local leaf = GetLeafPath(group)
@@ -212,10 +225,12 @@ local function ParsePath(group)
         local verId = parts[2]
         local t3 = parts[3]
         if not t3 then return "raid_version", verId, nil, nil, leaf, true end
+        if t3 == "NEW_DUNGEON" then return "new_raid_dungeon", verId, nil, nil, leaf, true end
         if t3 == "D" then
             local instName = parts[4]
             local t5 = parts[5]
             if not t5 then return "raid_dungeon", verId, instName, nil, leaf, true end
+            if t5 == "NEW_BOSS" then return "new_raid_boss", verId, instName, nil, leaf, true end
             if t5 == "B" and parts[6] then return "raid_boss", verId, instName, parts[6], leaf, true end
         end
         return "unknown", nil, nil, nil, leaf, true
@@ -240,6 +255,9 @@ local function BuildUniqueValue(leafPath)
     local nodeType, verId, instName, bossName = ParsePath(leafPath)
     if nodeType == "import_export" then return "import_export" end
     if nodeType == "new_version" then return "new_version" end
+    if nodeType == "new_raid_version" then return "new_raid_version" end
+    if nodeType == "new_raid_dungeon" then return PathNewRaidDungeon(verId) end
+    if nodeType == "new_raid_boss" then return PathNewRaidBoss(verId, instName) end
     if nodeType == "unknown" then return leafPath end
     if nodeType == "raid_version" or nodeType == "raid_dungeon" or nodeType == "raid_boss" then
         local parts = { PathRaidVersion(verId) }
@@ -290,7 +308,11 @@ local function BuildTree()
     if addon.EnsureDB then addon.EnsureDB() end
     local treeData = {}
     table.insert(treeData, { value = "import_export", text = "|cff00ccff" .. (L["Import Export Short"] or "[<=> 导入与导出]") .. "|r" })
-    table.insert(treeData, { value = "new_version", text = "|cff00ff00" .. (L["New Category"] or "[+ 新建分类]") .. "|r" })
+    if editorMode == "raid" then
+        table.insert(treeData, { value = "new_raid_version", text = "|cff00ff00" .. (L["New Raid Category"] or "[+ 新建团本分类]") .. "|r" })
+    else
+        table.insert(treeData, { value = "new_version", text = "|cff00ff00" .. (L["New Category"] or "[+ 新建分类]") .. "|r" })
+    end
 
     -- ============ 团本模式：仅渲染团本树 ============
     if editorMode == "raid" then
@@ -310,6 +332,7 @@ local function BuildTree()
                 text = "|cffffcc00" .. addon.GetRaidVersionLabel(verId) .. "|r" .. statusStr,
                 children = {}
             }
+            table.insert(verNode.children, { value = PathNewRaidDungeon(verId), text = "|cff00ff00" .. (L["New Raid"] or "[+ 新建团本副本]") .. "|r" })
             local dungeons = addon.GetRaidDungeons(verId)
             local names = {}
             for instName in pairs(dungeons) do names[#names + 1] = instName end
@@ -322,6 +345,7 @@ local function BuildTree()
                     text = instName .. hStr,
                     children = {}
                 }
+                table.insert(instNode.children, { value = PathNewRaidBoss(verId, instName), text = "|cff00ff00" .. (L["New Target"] or "[+ 在此副本中新增目标]") .. "|r" })
                 local bosses = GetDungeonBossesForEditor(verId, instName, true)
                 local bossList = {}
                 for boss in pairs(bosses) do bossList[#bossList + 1] = boss end
@@ -506,14 +530,44 @@ function addon:CreateEditorFrame()
     end)
     toolbar:AddChild(dungeonTab)
     toolbar:AddChild(raidTab)
-
+    -- 一键展开 / 一键折叠（作用于当前树）
     local expandBtn = AceGUI:Create("Button")
     expandBtn:SetText("一键展开")
-    expandBtn:SetWidth(120)
+    expandBtn:SetWidth(100)
+    expandBtn:SetCallback("OnClick", function()
+        local status = treeGroup.status or treeGroup.localstatus
+        status.groups = status.groups or {}
+        local function walk(list, prefix)
+            for _, node in ipairs(list) do
+                if node.children and #node.children > 0 then
+                    local uv = prefix and (prefix .. "\001" .. node.value) or node.value
+                    status.groups[uv] = true
+                    walk(node.children, uv)
+                end
+            end
+        end
+        walk(BuildTree(), nil)
+        treeGroup:RefreshTree()
+    end)
+    toolbar:AddChild(expandBtn)
     local collapseBtn = AceGUI:Create("Button")
     collapseBtn:SetText("一键折叠")
-    collapseBtn:SetWidth(120)
-    toolbar:AddChild(expandBtn)
+    collapseBtn:SetWidth(100)
+    collapseBtn:SetCallback("OnClick", function()
+        local status = treeGroup.status or treeGroup.localstatus
+        status.groups = status.groups or {}
+        local function walk(list, prefix)
+            for _, node in ipairs(list) do
+                if node.children and #node.children > 0 then
+                    local uv = prefix and (prefix .. "\001" .. node.value) or node.value
+                    status.groups[uv] = nil
+                    walk(node.children, uv)
+                end
+            end
+        end
+        walk(BuildTree(), nil)
+        treeGroup:RefreshTree()
+    end)
     toolbar:AddChild(collapseBtn)
     frame:AddChild(toolbar)
     RefreshTabHighlight()
@@ -527,28 +581,6 @@ function addon:CreateEditorFrame()
     treeGroup:SetTree(BuildTree())
     frame:AddChild(treeGroup)
     frame.treeGroup = treeGroup
-
-    local function CollectGroupValues(treeData, prefix, result)
-        for _, node in ipairs(treeData or {}) do
-            local uv = (prefix and prefix ~= "") and (prefix .. "\001" .. node.value) or node.value
-            if node.children and #node.children > 0 then
-                result[uv] = true
-                CollectGroupValues(node.children, uv, result)
-            end
-        end
-    end
-    expandBtn:SetCallback("OnClick", function()
-        local status = treeGroup.status or treeGroup.localstatus
-        status.groups = status.groups or {}
-        for k in pairs(status.groups) do status.groups[k] = nil end
-        CollectGroupValues(treeGroup.tree, "", status.groups)
-        treeGroup:RefreshTree()
-    end)
-    collapseBtn:SetCallback("OnClick", function()
-        local status = treeGroup.status or treeGroup.localstatus
-        status.groups = {}
-        treeGroup:RefreshTree()
-    end)
 
     function frame:RefreshTree(selectedPath)
         treeGroup:SetTree(BuildTree())
@@ -571,15 +603,13 @@ function addon:CreateEditorFrame()
         end
     end
 
-    -- 点击版本/副本/团本版本/团本副本 整行即可展开或折叠，无需点右侧 + 号
+    -- 单击版本/副本/团本节点整行即展开或折叠（无需点右侧 + 号，也无需双击）。
+    -- value 是 \001 拼接的 uniquevalue（即 status.groups 的键），直接取反即可，
+    -- 不能用 ParsePath（它按 / 解析 leaf，对 \001 拼接的整路径会返回 unknown）。
     treeGroup:SetCallback("OnClick", function(_, _, value)
-        local nodeType = ParsePath(value)
-        local isParent = (nodeType == "version" or nodeType == "dungeon"
-                         or nodeType == "raid_version" or nodeType == "raid_dungeon")
-        if not isParent then return end
         local status = treeGroup.status or treeGroup.localstatus
         status.groups = status.groups or {}
-        status.groups[value] = not status.groups[value]
+        status.groups[value] = not (status.groups[value] or false)
         treeGroup:RefreshTree()
     end)
 
@@ -712,6 +742,32 @@ function addon:CreateEditorFrame()
                 return
             end
 
+            -- ========== 新建团本分类 ==========
+            if nodeType == "new_raid_version" then
+                AddHeading(scroll, L["New Raid Category"] or "新建团本分类")
+                local nameEdit = AceGUI:Create("EditBox")
+                nameEdit:SetLabel(L["Category Name"] or "分类名称")
+                AddFullWidth(scroll, nameEdit)
+                AddButton(scroll, L["Save Category"] or "保存并添加分类", function()
+                    local label = strtrim(nameEdit:GetText() or "")
+                    if label == "" then
+                        print("|cffff0000BossTips|r 请输入分类名称！")
+                        return
+                    end
+                    local base = label:gsub("[^%w%u%l%d]", "")
+                    if base == "" then base = "RaidCustom" end
+                    local verId = base
+                    local n = 1
+                    while IsBuiltInVersion(verId) or IsCustomVersion(verId) or IsCustomRaidVersion(verId) do
+                        verId = base .. n
+                        n = n + 1
+                    end
+                    BossTipsGlobalDB.customRaidVersions[verId] = { label = label, order = 999 }
+                    frame:RefreshTree(PathRaidVersion(verId))
+                end, true)
+                return
+            end
+
             -- ========== 管理团本版本 ==========
             if nodeType == "raid_version" then
                 AddHeading(scroll, (L["Manage Raid Version"] or "管理团本版本") .. "：" .. addon.GetRaidVersionLabel(verId))
@@ -721,11 +777,46 @@ function addon:CreateEditorFrame()
                 activeCheck:SetLabel("启用此团本版本（取消勾选将隐藏其下所有团本）")
                 activeCheck:SetValue(enabled)
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
-                    BossTipsGlobalDB.disabledRaids[verId] = (not val) and true or nil
+                    if IsCustomRaidVersion(verId) then
+                        BossTipsGlobalDB.disabledCustomRaidVersions[verId] = (not val) and true or nil
+                    else
+                        BossTipsGlobalDB.disabledRaids[verId] = (not val) and true or nil
+                    end
                     addon.RefreshGuides()
                     frame:RefreshTree(PathRaidVersion(verId))
                 end)
                 AddFullWidth(scroll, activeCheck)
+                if IsCustomRaidVersion(verId) then
+                    local labelEdit = AceGUI:Create("EditBox")
+                    labelEdit:SetLabel(L["Category Name"] or "分类名称")
+                    labelEdit:SetText(BossTipsGlobalDB.customRaidVersions[verId].label or verId)
+                    labelEdit:SetCallback("OnEnterPressed", function(_, _, text)
+                        BossTipsGlobalDB.customRaidVersions[verId].label = strtrim(text)
+                        frame:RefreshTree(PathRaidVersion(verId))
+                    end)
+                    local orderEdit = AceGUI:Create("EditBox")
+                    orderEdit:SetLabel(L["Category Order"] or "排序权重")
+                    orderEdit:SetText(tostring(BossTipsGlobalDB.customRaidVersions[verId].order or 999))
+                    orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
+                        BossTipsGlobalDB.customRaidVersions[verId].order = tonumber(text) or 999
+                        frame:RefreshTree(PathRaidVersion(verId))
+                    end)
+                    AddRow(scroll, labelEdit, orderEdit)
+                    AddButton(scroll, L["Delete Category"] or "删除此分类及其所有内容", function()
+                        ConfirmDialog("确定删除自定义团本分类 '" .. addon.GetRaidVersionLabel(verId) .. "' 及其所有团本吗？", {
+                            frame = frame,
+                            selectPath = "new_raid_version",
+                            func = function()
+                                for inst, d in pairs(BossTipsGlobalDB.customRaids or {}) do
+                                    if d.versionId == verId then BossTipsGlobalDB.customRaids[inst] = nil end
+                                end
+                                BossTipsGlobalDB.customRaidVersions[verId] = nil
+                                BossTipsGlobalDB.disabledCustomRaidVersions[verId] = nil
+                                addon.RefreshGuides()
+                            end,
+                        })
+                    end, true)
+                end
                 return
             end
 
@@ -736,8 +827,17 @@ function addon:CreateEditorFrame()
                 local meta = addon.GuideData.meta and addon.GuideData.meta[instName]
                 local idEdit = AceGUI:Create("EditBox")
                 idEdit:SetLabel(L["Dungeon ID"] or "副本ID（实例ID）")
-                idEdit:SetText((meta and (meta.instanceId or meta.mapID)) and tostring(meta.instanceId or meta.mapID) or "")
-                idEdit:SetDisabled(true)
+                if customRaid then
+                    idEdit:SetText(customRaid.id or "")
+                    idEdit:SetDisabled(false)
+                    idEdit:SetCallback("OnEnterPressed", function(_, _, text)
+                        customRaid.id = strtrim(text)
+                        frame:RefreshTree(PathRaidDungeon(verId, instName))
+                    end)
+                else
+                    idEdit:SetText((meta and (meta.instanceId or meta.mapID)) and tostring(meta.instanceId or meta.mapID) or "")
+                    idEdit:SetDisabled(true)
+                end
                 AddFullWidth(scroll, idEdit)
 
                 -- 自动填充 BigWigs 首领战ID
@@ -760,14 +860,55 @@ function addon:CreateEditorFrame()
                 activeCheck:SetLabel(L["Active Dungeon Hint"] or "激活此团本（取消勾选将在屏幕上隐藏）")
                 activeCheck:SetValue(IsDungeonActive(instName) and not IsDungeonHidden(instName))
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
-                    if val then BossTipsGlobalDB.hiddenDungeons[instName] = nil
-                    else BossTipsGlobalDB.hiddenDungeons[instName] = true end
+                    if customRaid then
+                        customRaid.isActive = val
+                    else
+                        if val then BossTipsGlobalDB.hiddenDungeons[instName] = nil
+                        else BossTipsGlobalDB.hiddenDungeons[instName] = true end
+                    end
                     addon.RefreshGuides()
                     frame:RefreshTree(PathRaidDungeon(verId, instName))
                 end)
                 AddFullWidth(scroll, activeCheck)
 
-                AddLabel(scroll, "|cff888888团本首领已按 ID 库预建骨架，点击左侧首领即可编辑攻略与首领战ID（保存到 WTF 覆盖层）。|r")
+                -- 移动到分类（仅自定义团本）
+                if customRaid then
+                    local moveDD = AceGUI:Create("Dropdown")
+                    moveDD:SetLabel(L["Move To Category"] or "移动到分类")
+                    local catList = {}
+                    for _, vid in ipairs(addon.GetRaidVersionIDs()) do
+                        catList[vid] = addon.GetRaidVersionLabel(vid)
+                    end
+                    moveDD:SetList(catList)
+                    moveDD:SetValue(verId)
+                    moveDD:SetCallback("OnValueChanged", function(_, _, newVerId)
+                        if newVerId and newVerId ~= verId and customRaid then
+                            customRaid.versionId = newVerId
+                            addon.RefreshGuides()
+                            frame:RefreshTree(PathRaidDungeon(newVerId, instName))
+                        end
+                    end)
+                    AddFullWidth(scroll, moveDD)
+
+                    AddButton(scroll, L["Add Target In Dungeon"] or "+ 在此副本中新增目标", function()
+                        frame:RefreshTree(PathNewRaidBoss(verId, instName))
+                    end, true)
+
+                    AddButton(scroll, L["Delete Dungeon"] or "删除此副本及其所有内容", function()
+                        ConfirmDialog("确定删除自定义团本 '" .. instName .. "' 吗？内置团本不会被删除。", {
+                            frame = frame,
+                            selectPath = PathRaidVersion(verId),
+                            func = function()
+                                BossTipsGlobalDB.customRaids[instName] = nil
+                                BossTipsGlobalDB.guides[instName] = nil
+                                BossTipsGlobalDB.hiddenDungeons[instName] = nil
+                                addon.RefreshGuides()
+                            end,
+                        })
+                    end, true)
+                else
+                    AddLabel(scroll, "|cff888888团本首领已按 ID 库预建骨架，点击左侧首领即可编辑攻略与首领战ID（保存到 WTF 覆盖层）。|r")
+                end
                 return
             end
 
@@ -888,13 +1029,57 @@ function addon:CreateEditorFrame()
                 return
             end
 
+            -- 新建团本副本
+            if nodeType == "new_raid_dungeon" then
+                AddHeading(scroll, L["New Raid"] or "新建团本副本")
+                local nameEdit = AceGUI:Create("EditBox")
+                nameEdit:SetLabel(L["Dungeon Name"] or "副本名称（需与 GetInstanceInfo() 一致才能自动匹配）")
+                local idEdit = AceGUI:Create("EditBox")
+                idEdit:SetLabel(L["Dungeon ID"] or "副本ID（可选）")
+                AddRow(scroll, nameEdit, idEdit)
+                local typeDD = AceGUI:Create("Dropdown")
+                typeDD:SetLabel(L["Dungeon Type"] or "副本类型")
+                typeDD:SetList(DUNGEON_TYPES)
+                typeDD:SetValue("")
+                local diffDD = AceGUI:Create("Dropdown")
+                diffDD:SetLabel(L["Difficulty"] or "难度")
+                diffDD:SetList(DIFFICULTIES)
+                diffDD:SetValue("")
+                AddRow(scroll, typeDD, diffDD)
+                AddButton(scroll, L["Save Dungeon"] or "保存并添加副本", function()
+                    local nm = strtrim(nameEdit:GetText() or "")
+                    if nm == "" then
+                        print("|cffff0000BossTips|r 请输入副本名称！")
+                        return
+                    end
+                    if BossTipsGlobalDB.customRaids[nm] or BossTipsGlobalDB.customDungeons[nm] or IsBuiltInDungeon(verId, nm, true) then
+                        print("|cffff0000BossTips|r 副本名称已存在（或与内置副本重名）！")
+                        return
+                    end
+                    BossTipsGlobalDB.customRaids[nm] = {
+                        versionId = verId,
+                        id = strtrim(idEdit:GetText() or ""),
+                        mapID = "",
+                        dungeonType = typeDD:GetValue() or "",
+                        difficulty = diffDD:GetValue() or "",
+                        isActive = true,
+                        bosses = {},
+                    }
+                    frame:RefreshTree(PathRaidDungeon(verId, nm))
+                    addon.RefreshGuides()
+                end, true)
+                return
+            end
+
             -- 以下都需要 instName
             local isBuiltInDungeon = IsBuiltInDungeon(verId, instName, isRaid)
             -- 路径别名：团本节点用 R 前缀路径刷新，地下城用 V 前缀
             local PB = isRaid and PathRaidBoss or PathBoss
             local PD = isRaid and PathRaidDungeon or PathDungeon
             local customDungeon = BossTipsGlobalDB.customDungeons[instName]
+            local customRaid = BossTipsGlobalDB.customRaids[instName]
             local dungeonOverride = addon.GetDungeonOverride(instName)
+            local customBosses = (customDungeon and customDungeon.bosses) or (customRaid and customRaid.bosses)
 
             -- ========== 新建目标 ==========
             if nodeType == "new_boss" then
@@ -938,6 +1123,35 @@ function addon:CreateEditorFrame()
                 return
             end
 
+            -- 新建团本目标
+            if nodeType == "new_raid_boss" then
+                AddHeading(scroll, L["New Target Title"] or "新建目标")
+                local nameEdit = AceGUI:Create("EditBox")
+                nameEdit:SetLabel(L["Target Name"] or "目标名称")
+                AddFullWidth(scroll, nameEdit)
+                local typeDD = AceGUI:Create("Dropdown")
+                typeDD:SetLabel("类型")
+                typeDD:SetList({ ["BOSS"] = "首领", ["MOB"] = "小怪" })
+                typeDD:SetValue("BOSS")
+                AddFullWidth(scroll, typeDD)
+                AddButton(scroll, L["Save Target"] or "保存并添加目标", function()
+                    local nm = strtrim(nameEdit:GetText() or "")
+                    if nm == "" then
+                        print("|cffff0000BossTips|r 请输入目标名称！")
+                        return
+                    end
+                    if not customRaid then
+                        print("|cffff0000BossTips|r 自定义团本数据异常")
+                        return
+                    end
+                    local defaultTips = "{rt8}" .. nm .. "{rt8}||在此输入攻略"
+                    customRaid.bosses[nm] = { order = 999, type = typeDD:GetValue() or "BOSS", tips = defaultTips, encounterId = "" }
+                    addon.RefreshGuides()
+                    frame:RefreshTree(PathRaidBoss(verId, instName, nm))
+                end, true)
+                return
+            end
+
             -- ========== 编辑目标 ==========
             if nodeType == "boss" or nodeType == "raid_boss" then
                 local bosses = GetDungeonBossesForEditor(verId, instName, isRaid)
@@ -975,8 +1189,8 @@ function addon:CreateEditorFrame()
                         frame = frame,
                         selectPath = PD(verId, instName),
                         func = function()
-                            if customDungeon and customDungeon.bosses then
-                                customDungeon.bosses[bossName] = nil
+                            if customBosses then
+                                customBosses[bossName] = nil
                             end
                             if BossTipsGlobalDB.guides[instName] then
                                 BossTipsGlobalDB.guides[instName][bossName] = nil
@@ -1001,8 +1215,8 @@ function addon:CreateEditorFrame()
                     local eid = strtrim(text)
                     if isBuiltInDungeon then
                         SaveEncounterId(instName, bossName, eid)
-                    elseif customDungeon and customDungeon.bosses and customDungeon.bosses[bossName] then
-                        customDungeon.bosses[bossName].encounterId = eid
+                    elseif customBosses and customBosses[bossName] then
+                        customBosses[bossName].encounterId = eid
                     end
                 end)
                 encRow:AddChild(encounterEdit)
@@ -1015,8 +1229,8 @@ function addon:CreateEditorFrame()
                         encounterEdit:SetText(eid)
                         if isBuiltInDungeon then
                             SaveEncounterId(instName, bossName, eid)
-                        elseif customDungeon and customDungeon.bosses and customDungeon.bosses[bossName] then
-                            customDungeon.bosses[bossName].encounterId = eid
+                        elseif customBosses and customBosses[bossName] then
+                            customBosses[bossName].encounterId = eid
                         end
                         print("|cff00ff00BossTips|r 已填充首领战ID：" .. eid)
                     else
@@ -1034,12 +1248,12 @@ function addon:CreateEditorFrame()
                 typeDD:SetValue(currentType)
                 typeDD:SetCallback("OnValueChanged", function(_, _, v) SaveBossType(instName, bossName, v) end)
 
-                if not isBuiltInDungeon and customDungeon and customDungeon.bosses and customDungeon.bosses[bossName] then
+                if not isBuiltInDungeon and customBosses and customBosses[bossName] then
                     local orderEdit = AceGUI:Create("EditBox")
                     orderEdit:SetLabel(L["Category Order"] or "排序权重")
-                    orderEdit:SetText(tostring(customDungeon.bosses[bossName].order or 999))
+                    orderEdit:SetText(tostring(customBosses[bossName].order or 999))
                     orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
-                        customDungeon.bosses[bossName].order = tonumber(text) or 999
+                        customBosses[bossName].order = tonumber(text) or 999
                         frame:RefreshTree(PB(verId, instName, bossName))
                     end)
                     AddRow(scroll, typeDD, orderEdit)

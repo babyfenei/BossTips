@@ -96,11 +96,13 @@ local function CreateMainButton()
                     return
                 end
                 if not addon.currentInstanceName then
-                    print("|cffff0000BossTips|r 当前不在可识别的副本中。")
+                    print("|cffff0000BossTips|r 当前不在可识别的副本中，已打开攻略编辑器供浏览。")
+                    addon:OpenEditor()
                     return
                 end
                 if not HasCurrentMapGuide() then
-                    print("|cffff0000BossTips|r 当前副本没有攻略数据。")
+                    print("|cffff0000BossTips|r 当前副本没有攻略数据，已打开攻略编辑器供浏览。")
+                    addon:OpenEditor()
                     return
                 end
                 if addon.tipsFrame:IsShown() then
@@ -128,18 +130,8 @@ addon.CreateMainButton = CreateMainButton
 local function UpdateMainButtonVisibility()
     local btn = addon.mainButton
     if not btn then return end
-    local mode = BossTipsGlobalDB.guideWindowMode or "auto"
-    if mode ~= "button" then
-        btn:Hide()
-        return
-    end
-    -- 按钮模式下默认始终显示，方便用户点击；只有显式勾选"无攻略时隐藏"才隐藏
-    local hasGuide = HasCurrentMapGuide()
-    if BossTipsGlobalDB.hideMainButtonWhenNoGuide and not hasGuide then
-        btn:Hide()
-    else
-        btn:Show()
-    end
+    -- 始终显示悬浮按钮，保证玩家始终有可见入口（auto 模式下进本自动弹窗依旧生效）
+    btn:Show()
 end
 addon.UpdateMainButtonVisibility = UpdateMainButtonVisibility
 

@@ -4,6 +4,7 @@
 -- 交互：单展开 / 折叠透明度 / 锁定 / 缩放 / 底部隐藏-展开 / 小喇叭发聊天
 -- ============================================================================
 local addonName, addon = ...
+local L = addon.L
 
 local mainWindow = CreateFrame("Frame", "BossTipsGuideFrame", UIParent, "BackdropTemplate")
 mainWindow:SetSize(BossTipsGlobalDB.guideWindowWidth or 360, 400)

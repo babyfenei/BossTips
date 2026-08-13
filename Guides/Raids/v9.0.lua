@@ -1,7 +1,7 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 9.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 9.0 团本攻略
+-- 实例 key 为国服名；首领 key 为国服名；encounterId 取自 BigWigs/DBM（原样保留）。
+-- 攻略格式：{rt8}名字{rt8}||[机制]描述||{rt1}必断/速杀：…{rt1}||坦：…治疗：…输出：…
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -11,81 +11,81 @@ addon.GuideData.meta = addon.GuideData.meta or {}
 
 -- ===================== 纳斯利亚堡 (instanceId 2296) =====================
 addon.GuideData.raids["9.0"]["纳斯利亚堡"] = {
-    ["Shriekwing"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Sludgefist"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Artificer Xy'mox"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Lady Inerva Darkvein"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Sun King's Salvation"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Sire Denathrius"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Stone Legion Generals"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Council of Blood"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Hungering Destroyer"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Huntsman Altimor"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["尖啸翼"] = { order = 1, type = "BOSS", tips = [=[{rt8}尖啸翼{rt8}||[音波]需看地面躲；[点名]；[狂暴]计时||{rt1}必断/速杀：无；躲音波圈{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["泥拳"] = { order = 2, type = "BOSS", tips = [=[{rt8}泥拳{rt8}||[砸]点名需远离；[破墙]；[狂暴]计时||{rt1}必断/速杀：无；[砸]被点名远离、躲墙{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["工匠佐莫克斯"] = { order = 3, type = "BOSS", tips = [=[{rt8}工匠佐莫克斯{rt8}||[传送]需拉一起；[宝]点名；[狂暴]计时||{rt1}必断/速杀：无；[宝]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["伊涅瓦·暗脉女士"] = { order = 4, type = "BOSS", tips = [=[{rt8}伊涅瓦·暗脉女士{rt8}||[球]需打；[吸]dot；[狂暴]计时||{rt1}必断/速杀：无；打球、速杀{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["太阳王救赎"] = { order = 5, type = "BOSS", tips = [=[{rt8}太阳王救赎{rt8}||[救]需保[凯尔萨斯]血量；[火]阶段；[狂暴]计时||{rt1}必断/速杀：无；保血、打敌{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["德纳修斯大帝"] = { order = 6, type = "BOSS", tips = [=[{rt8}德纳修斯大帝{rt8}||[镜]需躲；[收割]点名；P3[本体]；[狂暴]计时||{rt1}必断/速杀：无；躲镜、P3应对{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["石卫军将领"] = { order = 7, type = "BOSS", tips = [=[{rt8}石卫军将领{rt8}||[双将]共享血量分边；[石]；[狂暴]计时||{rt1}必断/速杀：无；分边集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["血誓议会"] = { order = 8, type = "BOSS", tips = [=[{rt8}血誓议会{rt8}||[三吸血鬼]需打断对应；[舞]机制；[狂暴]计时||{rt1}必断/速杀：按机制打断；逐个{rt1}||坦：拉；输出：集火]=], tipsByDifficulty = {} },
+    ["饥渴毁灭者"] = { order = 9, type = "BOSS", tips = [=[{rt8}饥渴毁灭者{rt8}||[球]点名需拉一起；[爆炸]；[狂暴]计时||{rt1}必断/速杀：无；[球]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["狩猎者阿尔提莫"] = { order = 10, type = "BOSS", tips = [=[{rt8}狩猎者阿尔提莫{rt8}||[狗]需分拉；[点名]；[狂暴]计时||{rt1}必断/速杀：无；分拉狗{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["纳斯利亚堡"] = { isRaid = true, instanceId = 2296, encounterIds = {
-    ["Shriekwing"] = 2393,
-    ["Sludgefist"] = 2394,
-    ["Artificer Xy'mox"] = 2418,
-    ["Lady Inerva Darkvein"] = 2420,
-    ["Sun King's Salvation"] = 2422,
-    ["Sire Denathrius"] = 2424,
-    ["Stone Legion Generals"] = 2425,
-    ["The Council of Blood"] = 2426,
-    ["Hungering Destroyer"] = 2428,
-    ["Huntsman Altimor"] = 2429,
+    ["尖啸翼"] = 2393,
+    ["泥拳"] = 2394,
+    ["工匠佐莫克斯"] = 2418,
+    ["伊涅瓦·暗脉女士"] = 2420,
+    ["太阳王救赎"] = 2422,
+    ["德纳修斯大帝"] = 2424,
+    ["石卫军将领"] = 2425,
+    ["血誓议会"] = 2426,
+    ["饥渴毁灭者"] = 2428,
+    ["狩猎者阿尔提莫"] = 2429,
 } }
 
 -- ===================== 统御圣所 (instanceId 2450) =====================
 addon.GuideData.raids["9.0"]["统御圣所"] = {
-    ["The Tarragrue"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Nine"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Kel'Thuzad"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Sylvanas Windrunner"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Eye of the Jailer"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Painsmith Raznal"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Remnant of Ner'zhul"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Soulrender Dormazain"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Guardian of the First Ones"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Fatescribe Roh-Kalo"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["塔拉格鲁"] = { order = 1, type = "BOSS", tips = [=[{rt8}塔拉格鲁{rt8}||[门]需按顺序开；[冲]；[狂暴]计时||{rt1}必断/速杀：无；按门顺序、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["九人议会"] = { order = 2, type = "BOSS", tips = [=[{rt8}九人议会{rt8}||[九]需集火单只；[幻象]；[狂暴]计时||{rt1}必断/速杀：无；集火单只{rt1}||坦：拉；输出：集火]=], tipsByDifficulty = {} },
+    ["克尔苏加德"] = { order = 3, type = "BOSS", tips = [=[{rt8}克尔苏加德{rt8}||[冰箱]需进；[魂]点名；[狂暴]计时||{rt1}必断/速杀：无；进冰箱、[魂]救{rt1}||坦：拉；输出：进门]=], tipsByDifficulty = {} },
+    ["希尔瓦娜斯·风行者"] = { order = 4, type = "BOSS", tips = [=[{rt8}希尔瓦娜斯·风行者{rt8}||[链]点名需拉；[箭]；P2[风]；[狂暴]计时||{rt1}必断/速杀：无；[链]被点名拉、P2应对{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["典狱长之眼"] = { order = 5, type = "BOSS", tips = [=[{rt8}典狱长之眼{rt8}||[眼]点名需远离；[链]；[狂暴]计时||{rt1}必断/速杀：无；[眼]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["痛苦工匠拉兹纳尔"] = { order = 6, type = "BOSS", tips = [=[{rt8}痛苦工匠拉兹纳尔{rt8}||[铁]需看地面躲；[钉]点名；[狂暴]计时||{rt1}必断/速杀：无；看地面躲铁、[钉]远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["耐奥祖残魂"] = { order = 7, type = "BOSS", tips = [=[{rt8}耐奥祖残魂{rt8}||[球]需拉；[霜]全团；[狂暴]计时||{rt1}必断/速杀：无；[球]被点名拉{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["裂魂者多玛赞"] = { order = 8, type = "BOSS", tips = [=[{rt8}裂魂者多玛赞{rt8}||[链]需拉一起；[魂]；[狂暴]计时||{rt1}必断/速杀：无；[链]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["初诞者卫士"] = { order = 9, type = "BOSS", tips = [=[{rt8}初诞者卫士{rt8}||[盾]需破；[激光]；[狂暴]计时||{rt1}必断/速杀：无；破盾、躲激光{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["命运抄写者罗-卡洛"] = { order = 10, type = "BOSS", tips = [=[{rt8}命运抄写者罗-卡洛{rt8}||[符]需对应站位；[星]点名；[狂暴]计时||{rt1}必断/速杀：无；按符站位、[星]远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["统御圣所"] = { isRaid = true, instanceId = 2450, encounterIds = {
-    ["The Tarragrue"] = 2435,
-    ["The Nine"] = 2439,
-    ["Kel'Thuzad"] = 2440,
-    ["Sylvanas Windrunner"] = 2441,
-    ["The Eye of the Jailer"] = 2442,
-    ["Painsmith Raznal"] = 2443,
-    ["Remnant of Ner'zhul"] = 2444,
-    ["Soulrender Dormazain"] = 2445,
-    ["Guardian of the First Ones"] = 2446,
-    ["Fatescribe Roh-Kalo"] = 2447,
+    ["塔拉格鲁"] = 2435,
+    ["九人议会"] = 2439,
+    ["克尔苏加德"] = 2440,
+    ["希尔瓦娜斯·风行者"] = 2441,
+    ["典狱长之眼"] = 2442,
+    ["痛苦工匠拉兹纳尔"] = 2443,
+    ["耐奥祖残魂"] = 2444,
+    ["裂魂者多玛赞"] = 2445,
+    ["初诞者卫士"] = 2446,
+    ["命运抄写者罗-卡洛"] = 2447,
 } }
 
 -- ===================== 初诞者圣墓 (instanceId 2481) =====================
 addon.GuideData.raids["9.0"]["初诞者圣墓"] = {
-    ["Lords of Dread"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vigilant Guardian"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Dausegne, the Fallen Oracle"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Prototype Pantheon"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Lihuvim, Principal Architect"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Halondrus the Reclaimer"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Jailer"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Skolex, the Insatiable Ravener"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Rygelon"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Anduin Wrynn"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Artificer Xy'mox v2"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["恐惧领主"] = { order = 1, type = "BOSS", tips = [=[{rt8}恐惧领主{rt8}||[双]需集火单只；[幻象]；[狂暴]计时||{rt1}必断/速杀：无；集火单只{rt1}||坦：拉；输出：集火]=], tipsByDifficulty = {} },
+    ["守夜卫士"] = { order = 2, type = "BOSS", tips = [=[{rt8}守夜卫士{rt8}||[炮]需打；[电]全团；[狂暴]计时||{rt1}必断/速杀：无；打炮、躲电{rt1}||坦：拉；输出：操炮]=], tipsByDifficulty = {} },
+    ["堕落先知道塞格涅"] = { order = 3, type = "BOSS", tips = [=[{rt8}堕落先知道塞格涅{rt8}||[球]点名需远离；[圣]全团；[狂暴]计时||{rt1}必断/速杀：无；[球]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["万神殿原型"] = { order = 4, type = "BOSS", tips = [=[{rt8}万神殿原型{rt8}||[四神]需集火单只；[混合]；[狂暴]计时||{rt1}必断/速杀：无；集火单只{rt1}||坦：拉；输出：集火]=], tipsByDifficulty = {} },
+    ["首席建筑师利胡维姆"] = { order = 5, type = "BOSS", tips = [=[{rt8}首席建筑师利胡维姆{rt8}||[构造]需打断；[块]点名；[狂暴]计时||{rt1}必断/速杀：按构造打断；集火{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["回收者哈拉顿"] = { order = 6, type = "BOSS", tips = [=[{rt8}回收者哈拉顿{rt8}||[钻地]需打露头；[激光]；[狂暴]计时||{rt1}必断/速杀：无；打露头、躲激光{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["典狱长"] = { order = 7, type = "BOSS", tips = [=[{rt8}典狱长{rt8}||[多重]多机制轮换，[链]；[霜]全团；P3[本体]||{rt1}必断/速杀：无；按阶段应对{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["贪食吞噬者斯科莱克斯"] = { order = 8, type = "BOSS", tips = [=[{rt8}贪食吞噬者斯科莱克斯{rt8}||[钻地]需打露头；[刺]；[狂暴]计时||{rt1}必断/速杀：无；打露头、速杀{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["莱盖隆"] = { order = 9, type = "BOSS", tips = [=[{rt8}莱盖隆{rt8}||[星]点名需远离；[坍缩]；[狂暴]计时||{rt1}必断/速杀：无；[星]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["安度因·乌瑞恩"] = { order = 10, type = "BOSS", tips = [=[{rt8}安度因·乌瑞恩{rt8}||[宝]需打；[心控]点名；P2[光明]；[狂暴]计时||{rt1}必断/速杀：[心控]速断救人；打宝{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["工匠佐莫克斯·再临"] = { order = 11, type = "BOSS", tips = [=[{rt8}工匠佐莫克斯·再临{rt8}||[传送]需拉一起；[宝]点名；[狂暴]计时||{rt1}必断/速杀：无；[宝]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["初诞者圣墓"] = { isRaid = true, instanceId = 2481, encounterIds = {
-    ["Lords of Dread"] = 2457,
-    ["Vigilant Guardian"] = 2458,
-    ["Dausegne, the Fallen Oracle"] = 2459,
-    ["Prototype Pantheon"] = 2460,
-    ["Lihuvim, Principal Architect"] = 2461,
-    ["Halondrus the Reclaimer"] = 2463,
-    ["The Jailer"] = 2464,
-    ["Skolex, the Insatiable Ravener"] = 2465,
-    ["Rygelon"] = 2467,
-    ["Anduin Wrynn"] = 2469,
-    ["Artificer Xy'mox v2"] = 2470,
+    ["恐惧领主"] = 2457,
+    ["守夜卫士"] = 2458,
+    ["堕落先知道塞格涅"] = 2459,
+    ["万神殿原型"] = 2460,
+    ["首席建筑师利胡维姆"] = 2461,
+    ["回收者哈拉顿"] = 2463,
+    ["典狱长"] = 2464,
+    ["贪食吞噬者斯科莱克斯"] = 2465,
+    ["莱盖隆"] = 2467,
+    ["安度因·乌瑞恩"] = 2469,
+    ["工匠佐莫克斯·再临"] = 2470,
 } }
 

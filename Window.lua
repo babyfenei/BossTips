@@ -159,23 +159,26 @@ local function FormatTips(text)
     text = string.gsub(text, "|", " ")
 
     -- 第4步：{rt1}...{rt1} 视为「重点关注/打断」高亮块
+    -- 注意：不使用 ★ / ◆ 等装饰符号，这些字形在 WoW 中文字体中缺失会显示为方块（乱码）。
+    -- 改用纯文字标签「重点」，保证任何客户端都正常显示。
     text = string.gsub(text, "{rt1}(.-){rt1}", function(inner)
-        return "|cffffcc00★ " .. inner .. "|r"
+        return "|cffffcc00重点 " .. inner .. "|r"
     end)
 
     -- 第5步：删除其余 {rtN} / [rtN] 表情标记
     text = string.gsub(text, "{rt%d}", "")
     text = string.gsub(text, "%[rt%d%]", "")
 
-    -- 第6步：[技能名] -> 着色
+    -- 第6步：自由文本中的「打断」标红
+    -- 注意：仅匹配字面「打断」二字（本身是完整的多字节序列，gsub 整体捕获，字节安全）。
+    -- 不使用 ([^%a])(断) 这类单字节捕获符去匹配中文「断」——Lua 5.1 正则按字节匹配，
+    -- 单字节捕获会把「必」「连」等多字节汉字拆坏，导致下游汉字字节错位、显示成方块/乱码。
+    -- 其余「必断/速断」等带括号的技能已由第7步 ColorSkill 着色。
+    text = string.gsub(text, "打断([^%s%[%]|，。；：,;!！?？]+)", "|cffff3333打断%1|r")
+
+    -- 第7步：[技能名] -> 着色（在自由文本 断 着色之后，避免重复匹配）
     text = string.gsub(text, "%[([^%]]+)%]", function(skill)
         return ColorSkill(skill)
-    end)
-
-    -- 第7步：自由文本中的 打断xxx / 断xxx 标红
-    text = string.gsub(text, "(打断)([^%s，。；：,;!！?？]+)", "|cffff3333%1%2|r")
-    text = string.gsub(text, "([^%a])(断)([^%s，。；：,;!！?？]+)", function(pre, a, b)
-        return pre .. "|cffff3333" .. a .. b .. "|r"
     end)
 
     -- 第8步：还原 || 换行与超链接
@@ -552,7 +555,7 @@ local function SendTestTipsToChat()
         seg = strtrim(seg)
         if seg ~= "" then
             seg = seg:gsub("%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
-            seg = seg:gsub("{rt1}(.-){rt1}", "★ %1")
+            seg = seg:gsub("{rt1}(.-){rt1}", "重点 %1")
             seg = seg:gsub("{rt%d}", "")
             SendChatMessage(seg, chatType)
         end

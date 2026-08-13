@@ -571,6 +571,18 @@ function addon:CreateEditorFrame()
         end
     end
 
+    -- 点击版本/副本/团本版本/团本副本 整行即可展开或折叠，无需点右侧 + 号
+    treeGroup:SetCallback("OnClick", function(_, _, value)
+        local nodeType = ParsePath(value)
+        local isParent = (nodeType == "version" or nodeType == "dungeon"
+                         or nodeType == "raid_version" or nodeType == "raid_dungeon")
+        if not isParent then return end
+        local status = treeGroup.status or treeGroup.localstatus
+        status.groups = status.groups or {}
+        status.groups[value] = not status.groups[value]
+        treeGroup:RefreshTree()
+    end)
+
     treeGroup:SetCallback("OnGroupSelected", function(widget, event, group)
         widget:ReleaseChildren()
         local scroll = AceGUI:Create("ScrollFrame")

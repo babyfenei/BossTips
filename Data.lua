@@ -46,7 +46,7 @@ local defaultConfig = {
     -- 参考 DungeonCheatSheet 的行为设置
     autoExpandOnTarget = true,
     autoOpenOnEnter = true,
-    guideWindowMode = "auto", -- "auto" 进本自动展开；"button" 仅点击悬浮按钮
+    guideWindowMode = "button", -- "auto" 进本自动展开；"button" 仅点击悬浮按钮（默认按钮模式）
     lockWindow = false,
     tipsBgStyle = "black",
     tipsFont = "default",
@@ -550,6 +550,7 @@ addon.AutoFillBigWigsIds = AutoFillBigWigsIds
 -- ============ 导入/导出（结构化格式 BT2，兼容旧版 guides-only 分享码） ============
 local FIELD = "\001"
 local REC = "\002"
+local KV = "\003"  -- 键值对分隔：配置项 / 自定义副本 boss 内部使用，与 FIELD/REC 区分，避免层级冲突
 
 -- 纯 Lua base64（fallback），不依赖 bit/C_Base64，保证导出码为可见 ASCII
 local b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -647,7 +648,63 @@ local function EncodeGuidesOnly()
     return B64Encode(table.concat(parts, REC))
 end
 
--- 新版：导出全部用户自定义数据（WTF 覆盖层、自定义分类/副本、开关状态）。
+-- 需要随分享码迁移的插件配置（UI/行为设置）。enabledRaids 等开关单独用标签导出。
+local CONFIG_KEYS = {
+    { key = "FontSize", t = "number" },
+    { key = "guideWindowMode", t = "string" },
+    { key = "tipsFont", t = "string" },
+    { key = "collapsedAlpha", t = "number" },
+    { key = "singleExpand", t = "bool" },
+    { key = "showMobs", t = "bool" },
+    { key = "enableChatSend", t = "bool" },
+    { key = "defaultChatChannel", t = "string" },
+    { key = "lockWindow", t = "bool" },
+    { key = "guideWindowWidth", t = "number" },
+    { key = "showMinimapButton", t = "bool" },
+    { key = "minimapAngle", t = "number" },
+    { key = "autoExpandOnTarget", t = "bool" },
+    { key = "autoOpenOnEnter", t = "bool" },
+    { key = "closeWindowAfterSend", t = "bool" },
+    { key = "hideMainButtonWhenNoGuide", t = "bool" },
+    { key = "tipsBgR", t = "number" },
+    { key = "tipsBgG", t = "number" },
+    { key = "tipsBgB", t = "number" },
+    { key = "tipsBgA", t = "number" },
+    { key = "bossMenuPopDirection", t = "string" },
+    { key = "tipsFramePopDirection", t = "string" },
+    { key = "tipsFrameAlign", t = "string" },
+}
+local function ConfigValueToStr(v, t)
+    if t == "bool" then return v and "1" or "0" end
+    return tostring(v)
+end
+local function ConfigStrToValue(s, t)
+    if t == "bool" then return s == "1" end
+    if t == "number" then return tonumber(s) end
+    return s
+end
+local function EncodeConfig()
+    local db = BossTipsGlobalDB
+    local parts = {}
+    for _, ck in ipairs(CONFIG_KEYS) do
+        if db[ck.key] ~= nil then
+            parts[#parts + 1] = ck.key .. KV .. ConfigValueToStr(db[ck.key], ck.t)
+        end
+    end
+    if db.mainButtonPos then
+        parts[#parts + 1] = "mainButtonPos.point" .. KV .. tostring(db.mainButtonPos.point or "")
+        parts[#parts + 1] = "mainButtonPos.relativePoint" .. KV .. tostring(db.mainButtonPos.relativePoint or "")
+        parts[#parts + 1] = "mainButtonPos.xOffset" .. KV .. tostring(db.mainButtonPos.xOffset or 0)
+        parts[#parts + 1] = "mainButtonPos.yOffset" .. KV .. tostring(db.mainButtonPos.yOffset or 0)
+    end
+    if db.minimap then
+        parts[#parts + 1] = "minimap.hide" .. KV .. (db.minimap.hide and "1" or "0")
+    end
+    if #parts == 0 then return nil end
+    return table.concat(parts, FIELD)
+end
+
+-- 新版：导出全部用户自定义数据（WTF 覆盖层、自定义分类/副本、开关状态、插件配置）。
 -- 不再导出内置攻略，避免分享码过大且与插件自带数据重复。
 local function EncodeGuides()
     ensureDBExists()
@@ -705,10 +762,16 @@ local function EncodeGuides()
     for inst, d in pairs(db.customDungeons or {}) do
         local bossParts = {}
         for boss, b in pairs(d.bosses or {}) do
-            bossParts[#bossParts + 1] = (b.order or 999) .. FIELD .. (b.type or "BOSS") .. FIELD .. (b.tips or "") .. FIELD .. (b.encounterId or "") .. FIELD .. boss
+            -- boss 内部字段用 KV(\003) 分隔，boss 之间用 REC(\002) 分隔；
+            -- 这样外层按 FIELD(\001) 拆分整条记录时，bossStr 仍是一个完整字段，不会被拆散。
+            bossParts[#bossParts + 1] = (b.order or 999) .. KV .. (b.type or "BOSS") .. KV .. (b.tips or "") .. KV .. (b.encounterId or "") .. KV .. boss
         end
         parts[#parts + 1] = "CUSTOM_DUNGEON" .. FIELD .. inst .. FIELD .. (d.versionId or "") .. FIELD .. (d.id or "") .. FIELD .. (d.mapID or "") .. FIELD .. (d.dungeonType or "") .. FIELD .. (d.difficulty or "") .. FIELD .. (d.isActive ~= false and "1" or "0") .. FIELD .. table.concat(bossParts, REC)
     end
+
+    -- 插件配置（UI/行为设置）：始终尝试导出，保证分享码可完整迁移观感设置
+    local configStr = EncodeConfig()
+    if configStr then parts[#parts + 1] = "CONFIG" .. FIELD .. configStr end
 
     if #parts <= 1 then return "" end
     return B64Encode(table.concat(parts, REC))
@@ -806,7 +869,7 @@ local function DecodeGuides(b64)
                         local bossRecords = { strsplit(REC, bossStr) }
                         for _, br in ipairs(bossRecords) do
                             if br and br ~= "" then
-                                local bfields = { strsplit(FIELD, br) }
+                                local bfields = { strsplit(KV, br) }
                                 local bossName = bfields[5] or "Boss"
                                 d.bosses[bossName] = {
                                     order = tonumber(bfields[1]) or 999,
@@ -818,6 +881,19 @@ local function DecodeGuides(b64)
                         end
                     end
                     result.customDungeons[inst] = d
+                elseif tag == "CONFIG" then
+                    -- 配置项以 KV(\003) 分隔的 key\003value 子串存放，外层仍按 FIELD(\001) 切分
+                    result.config = result.config or {}
+                    for i = 2, #fields do
+                        if fields[i] and fields[i] ~= "" then
+                            local kvp = { strsplit(KV, fields[i]) }
+                            local ck = kvp[1]
+                            local cv = kvp[2]
+                            if ck and cv ~= nil then
+                                result.config[ck] = cv
+                            end
+                        end
+                    end
                 end
             end
         end
@@ -876,6 +952,40 @@ local function MergeImportedGuides(decoded)
         db.dungeonOverrides[inst] = CopyTable(d)
         count = count + 1
     end
+
+    -- 应用插件配置（UI/行为设置），按 CONFIG_KEYS 类型还原
+    if type(decoded.config) == "table" then
+        for _, ck in ipairs(CONFIG_KEYS) do
+            local sval = decoded.config[ck.key]
+            if sval ~= nil then
+                local v
+                if ck.t == "bool" then
+                    v = (sval == "1")
+                elseif ck.t == "number" then
+                    v = tonumber(sval) or 0
+                else
+                    v = sval
+                end
+                db[ck.key] = v
+                count = count + 1
+            end
+        end
+        local mbp = decoded.config["mainButtonPos.point"]
+        if mbp ~= nil then
+            db.mainButtonPos = db.mainButtonPos or {}
+            db.mainButtonPos.point = decoded.config["mainButtonPos.point"] or ""
+            db.mainButtonPos.relativePoint = decoded.config["mainButtonPos.relativePoint"] or ""
+            db.mainButtonPos.xOffset = tonumber(decoded.config["mainButtonPos.xOffset"] or 0) or 0
+            db.mainButtonPos.yOffset = tonumber(decoded.config["mainButtonPos.yOffset"] or 0) or 0
+            count = count + 1
+        end
+        local mh = decoded.config["minimap.hide"]
+        if mh ~= nil then
+            db.minimap = db.minimap or {}
+            db.minimap.hide = (mh == "1")
+            count = count + 1
+        end
+    end
     return count
 end
 
@@ -925,7 +1035,7 @@ local function SendBossTips(bossName)
     local tips = BossData[addon.currentInstanceName][bossName].tips
     -- 聊天发送前预处理：技能简写转可点击法术链接、{rt1}高亮块加★、剥除其余 rt 表情
     tips = string.gsub(tips, "%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
-    tips = string.gsub(tips, "{rt1}(.-){rt1}", "★ %1")
+    tips = string.gsub(tips, "{rt1}(.-){rt1}", "重点 %1")
     tips = string.gsub(tips, "{rt%d}", "")
     tips = string.gsub(tips, "%[rt%d%]", "")
     if not tips then

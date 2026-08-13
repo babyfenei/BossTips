@@ -1,7 +1,8 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 12.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 12.0 团本攻略（午夜 S1：虚空尖塔 / 梦裂 / 进军奎尔萨拉斯）
+-- 首领 key 为国服权威翻译（来源：17173 / Wowhead 中文速查表）；encounterId 取自 BigWigs/DBM，准确。
+-- 格式：{rt8}名字{rt8}||关键机制||{rt1}必断/速杀：X{rt1}||坦/治疗/DPS 职责
+-- 资料来源：Wowhead 团本速查表 / 17173 中文译名 / Blizzard 官方首领说明（机制以官方翻译为准，数值随版本变动）。
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -9,61 +10,38 @@ addon.GuideData.raids = addon.GuideData.raids or {}
 addon.GuideData.raids["12.0"] = addon.GuideData.raids["12.0"] or {}
 addon.GuideData.meta = addon.GuideData.meta or {}
 
--- ===================== 毒渊 (instanceId 3004) =====================
-addon.GuideData.raids["12.0"]["毒渊"] = {
-    ["Sszorak"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Entombed Sentinels"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vashnik the Malignant"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Bargained Crown"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Twin Fangs"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Nek'zali the Soulcoiler"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Lost Explorers"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Ula'tek"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-}
-addon.GuideData.meta["毒渊"] = { isRaid = true, instanceId = 3004, encounterIds = {
-    ["Sszorak"] = 2871,
-    ["Entombed Sentinels"] = 2874,
-    ["Vashnik the Malignant"] = 2882,
-    ["The Bargained Crown"] = 2883,
-    ["The Twin Fangs"] = 2887,
-    ["Nek'zali the Soulcoiler"] = 2888,
-    ["The Lost Explorers"] = 2894,
-    ["Ula'tek"] = 2895,
-} }
-
 -- ===================== 虚空尖塔 (instanceId 2912) =====================
 addon.GuideData.raids["12.0"]["虚空尖塔"] = {
-    ["Imperator Averzian"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vorasius"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Vaelgor & Ezzorak"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Fallen-King Salhadaar"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Lightblinded Vanguard"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Crown of the Cosmos"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["帝王阿维吉安"] = { order = 1, type = "BOSS", tips = "{rt8}帝王阿维吉安{rt8}||3x3九宫格占格机制：在网格上落子占据格子，若让Boss占出横向/纵向/斜向相邻3格触发[暗影崩塌]全团秒杀；需提前分配9个格子站位，避免被Boss连成3格||{rt1}必断/速杀：无硬断；转阶段[湮灭脉冲]集合交减伤{rt1}||坦：主坦接仇，[湮灭脉冲]全员集合减伤。治疗：网格分散站位别扎堆，[崩塌]AOE团刷。输出：按指挥占格、打掉被点名的格子投影、别让Boss连成3格", tipsByDifficulty = {} },
+    ["沃拉修斯"] = { order = 2, type = "BOSS", tips = "{rt8}沃拉修斯{rt8}||巨型不动捕食者：[粉碎狂热]在坦克脚下生成[水晶墙]；全员躲墙后规避[虚空吐息]致命光束（破坏视线）||{rt1}必断/速杀：小软[脓疱爬行者]死亡爆炸会摧毁墙——需在吐息过后再击杀，时机错乱会灭团{rt1}||坦：被点[粉碎狂热]把墙造在团队与Boss之间，吐息时全员躲墙后。治疗：墙后刷血，[原始咆哮]渐增全团伤交减伤。输出：控小软击杀时机、[原始咆哮]软狂暴下尽快击杀", tipsByDifficulty = {} },
+    ["陨落之王萨尔哈达尔"] = { order = 3, type = "BOSS", tips = "{rt8}陨落之王萨尔哈达尔{rt8}||[宇宙瓦解]全团高伤阶段需压DPS同时躲宇宙碎片；[浓缩虚空]球飘向Boss，击杀施加[银河瘴气]全团dot——需错开数秒击杀避免叠加致命||{rt1}必断/速杀：[深渊虚空塑形者]读条高优先，必须轮换打断否则给Boss上buff/给团上debuff{rt1}||坦：主坦接仇。治疗：[银河瘴气]dot叠层时团刷，错开击杀球。输出：错开打球、轮换打断塑形者、[宇宙瓦解]阶段压本体", tipsByDifficulty = {} },
+    ["瓦埃戈尔与埃佐拉克"] = { order = 4, type = "BOSS", tips = "{rt8}瓦埃戈尔与埃佐拉克{rt8}||双龙共享命运：血量需保持10%内一致，差距过大激怒；[暮光联结]增伤；轮流接[阴郁宝珠]缩小[阴郁之地]地面，失败地面被毒区吞没||{rt1}必断/速杀：无硬断；[午夜烈焰]阶段双龙起飞免疫，躲进友方NPC的[光辉屏障]存活{rt1}||坦：两坦分拉双龙，保持血量同步。治疗：[阴郁之地]扩张区团刷、[午夜烈焰]屏障内减伤。输出：均分伤害保同步、轮流接宝珠、起飞阶段进屏障", tipsByDifficulty = {} },
+    ["光盲先锋"] = { order = 5, type = "BOSS", tips = "{rt8}光盲先锋{rt8}||三圣骑士议会(Senn/Bellamy/Lightblood)：开场嗜血；各自独立能量条大招不同步，需动态应对重叠；旋转光环互相buff，坦需拉开40码防不可杀||{rt1}必断/速杀：团队开嗜血时两boss给自己套[腐蚀神圣护盾]，需牧师群体驱散/类似移除否则爆发白费{rt1}||坦：分拉开40码消除buff光环。治疗：错峰大招团刷、[奉献]永久腐蚀圣火区别站。输出：开场嗜血爆发、驱散护盾、躲[奉献]火区", tipsByDifficulty = {} },
+    ["宇宙之冠"] = { order = 6, type = "BOSS", tips = "{rt8}宇宙之冠{rt8}||最终boss(奥蕾莉亚·风行者/夏月之冠)：[不灭哨兵]小怪需坦在远离团队处，靠近叠加[回响黑暗]；[银击之箭]点名需将箭指向远离团队；[重力崩塌]最终burn阶段虚空拉人+重力偏移||{rt1}必断/速杀：无硬断(PTR未测，速查表待补)；[重力崩塌]全团减伤覆盖{rt1}||坦：小怪拉远离团队。治疗：[回响黑暗]叠层团刷、[银击之箭]指向减伤。输出：清小怪、[银击之箭]点名把箭甩向场外、burn阶段交大招", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["虚空尖塔"] = { isRaid = true, instanceId = 2912, encounterIds = {
-    ["Imperator Averzian"] = 2733,
-    ["Vorasius"] = 2734,
-    ["Vaelgor & Ezzorak"] = 2735,
-    ["Fallen-King Salhadaar"] = 2736,
-    ["Lightblinded Vanguard"] = 2737,
-    ["Crown of the Cosmos"] = 2738,
+    ["帝王阿维吉安"] = 2733,
+    ["沃拉修斯"] = 3177,
+    ["陨落之王萨尔哈达尔"] = 2736,
+    ["瓦埃戈尔与埃佐拉克"] = 2735,
+    ["光盲先锋"] = 2737,
+    ["宇宙之冠"] = 2738,
 } }
 
 -- ===================== 梦裂 (instanceId 2939) =====================
 addon.GuideData.raids["12.0"]["梦裂"] = {
-    ["Chimaerus the Undreamt God"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["未梦之神奇美洛斯"] = { order = 1, type = "BOSS", tips = "{rt8}未梦之神奇美洛斯{rt8}||双界分裂：每人有对应双生，坐标相近触发致命脉冲，需错位走位；[吞噬]需破盾打掉add否则Boss叠永久增伤||{rt1}必断/速杀：阶段一[饥渴难耐]拉人进裂隙剥[裂隙裹尸布]护盾、出add[巨型恐惧/惊骇精华/蜂拥暗影]；躲[尘埃精华]池(自然伤+减速){rt1}||坦：主坦接仇。治疗：[裂隙易伤]管理、add压力团刷。输出：阶段一破盾打add、阶段二[升空]boss飞天99%减伤时[贪婪俯冲]击退+地面加剧，无重置持续压add", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["梦裂"] = { isRaid = true, instanceId = 2939, encounterIds = {
-    ["Chimaerus the Undreamt God"] = 2795,
+    ["未梦之神奇美洛斯"] = 2795,
 } }
 
 -- ===================== 进军奎尔萨拉斯 (instanceId 2913) =====================
 addon.GuideData.raids["12.0"]["进军奎尔萨拉斯"] = {
-    ["Belo'ren, Child of Al'ar"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Midnight Falls"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["贝洛伦"] = { order = 1, type = "BOSS", tips = "{rt8}贝洛伦{rt8}||虚空凤凰：[极性转换]光/虚交替阶段，获[羽翼]适配元素减伤；[彩光吸取]金(光)/紫(虚)球墙光束需匹配当前极性，错配致命；[重生循环]死亡变[贝洛伦之卵]需摧毁或存活重生||{rt1}必断/速杀：无硬断；极性错配(光球碰虚体)秒杀{rt1}||坦：主坦接仇。治疗：变换阶段团刷、[重生]蛋阶段减伤。输出：按极性吃对应色球/墙、转阶段压本体、蛋阶段速破", tipsByDifficulty = {} },
+    ["午夜陨落"] = { order = 2, type = "BOSS", tips = "{rt8}午夜陨落(L'ura){rt8}||黑暗纳鲁腐化太阳井：[区域压缩]阶段二平台持续缩小逼团；[渐增狂暴]终阶段永久增伤硬狂暴；光/虚安全区分裂、按色光束吸取、收缩虚空 encroachment、burn重叠混乱||{rt1}必断/速杀：无硬断(赛季终战，机制多为未知)；掉落万能套装代币{rt1}||坦：主坦接仇。治疗：终阶段[渐增狂暴]全团伤交大树/减伤。输出：最大化DPS效率压硬狂暴、按色处理光束、收缩期保持机动", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["进军奎尔萨拉斯"] = { isRaid = true, instanceId = 2913, encounterIds = {
-    ["Belo'ren, Child of Al'ar"] = 2739,
-    ["Midnight Falls"] = 2740,
+    ["贝洛伦"] = 2739,
+    ["午夜陨落"] = 2740,
 } }
-

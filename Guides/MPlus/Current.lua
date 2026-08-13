@@ -14,14 +14,15 @@ addon.GuideData.mplusInfo["Current"] = { label = "12.1 大秘境（当前赛季�
 
 addon.GuideData.meta = addon.GuideData.meta or {}
 -- 副本编号（Blizzard DB2：Map.db2 / JournalInstance.db2 / MapChallengeMode.db2）
-addon.GuideData.meta["毒牙祭坛"] = { mapID = 2993, journalID = 1322, challengeID = 588 }
-addon.GuideData.meta["诸王之眠"] = { mapID = 1762, journalID = 1041, challengeID = 249 }
-addon.GuideData.meta["塞塔里斯神庙"] = { mapID = 1877, journalID = 1030, challengeID = 250 }
-addon.GuideData.meta["红玉新生法池"] = { mapID = 2521, journalID = 1202, challengeID = 399 }
-addon.GuideData.meta["密谋小径"] = { mapID = 2813, journalID = 1304, challengeID = 587 }
-addon.GuideData.meta["纳洛拉克的洞穴"] = { mapID = 2825, journalID = 1311, challengeID = 586 }
-addon.GuideData.meta["夺目谷"] = { mapID = 2859, journalID = 1309, challengeID = 584 }
-addon.GuideData.meta["虚空之痕竞技场"] = { mapID = 2923, journalID = 1313, challengeID = 585 }
+-- instanceId = GetInstanceInfo() 实例ID（智能展开/战ID反查用，须与 BigWigsIdDB 键一致）
+addon.GuideData.meta["毒牙祭坛"] = { instanceId = 2993, mapID = 2993, journalID = 1322, challengeID = 588 }
+addon.GuideData.meta["诸王之眠"] = { instanceId = 1762, mapID = 1762, journalID = 1041, challengeID = 249 }
+addon.GuideData.meta["塞塔里斯神庙"] = { instanceId = 1864, mapID = 1877, journalID = 1030, challengeID = 250 }
+addon.GuideData.meta["红玉新生法池"] = { instanceId = 2521, mapID = 2521, journalID = 1202, challengeID = 399 }
+addon.GuideData.meta["密谋小径"] = { instanceId = 2813, mapID = 2813, journalID = 1304, challengeID = 587 }
+addon.GuideData.meta["纳洛拉克的洞穴"] = { instanceId = 2825, mapID = 2825, journalID = 1311, challengeID = 586 }
+addon.GuideData.meta["夺目谷"] = { instanceId = 2859, mapID = 2859, journalID = 1309, challengeID = 584 }
+addon.GuideData.meta["虚空之痕竞技场"] = { instanceId = 2923, mapID = 2923, journalID = 1313, challengeID = 585 }
 
 
 addon.GuideData.mplus["Current"]["毒牙祭坛"] = {

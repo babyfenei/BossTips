@@ -15,6 +15,17 @@ local SEP = "/"
 -- 编辑器当前显示的标签页：地下城(dungeon) / 团本(raid)
 local editorMode = "dungeon"
 
+-- 当前正在编辑的难度（"all"=通用攻略；否则编辑该难度专属文本）
+local editDiff = "all"
+local DIFF_EDIT_OPTIONS = {
+    ["all"] = "通用（所有难度）",
+    ["lfr"] = "随机",
+    ["normal"] = "普通",
+    ["heroic"] = "英雄",
+    ["mythic"] = "史诗",
+    ["mythicplus"] = "史诗+",
+}
+
 -- 副本类型 / 难度选项
 local DUNGEON_TYPES = {
     [""] = L["No Limit"],
@@ -393,10 +404,21 @@ local function SaveBossTips(instName, bossName, text)
     BossTipsGlobalDB.guides = BossTipsGlobalDB.guides or {}
     BossTipsGlobalDB.guides[instName] = BossTipsGlobalDB.guides[instName] or {}
     local rg = BossTipsGlobalDB.guides[instName][bossName]
-    if type(rg) == "table" then
-        rg.tips = text
+    if editDiff == "all" then
+        if type(rg) == "table" then
+            rg.tips = text
+        else
+            BossTipsGlobalDB.guides[instName][bossName] = text
+        end
     else
-        BossTipsGlobalDB.guides[instName][bossName] = text
+        -- 编辑特定难度：确保该条目标为 table 并写入 tipsByDifficulty
+        if type(rg) ~= "table" then
+            local base = (type(rg) == "string" and rg) or ""
+            rg = { tips = base, type = "BOSS", tipsByDifficulty = {} }
+            BossTipsGlobalDB.guides[instName][bossName] = rg
+        end
+        rg.tipsByDifficulty = rg.tipsByDifficulty or {}
+        rg.tipsByDifficulty[editDiff] = text
     end
     addon.RefreshGuides()
 end
@@ -419,13 +441,20 @@ local function GetRawGuide(instName, bossName)
     local rg = BossTipsGlobalDB.guides[instName] and BossTipsGlobalDB.guides[instName][bossName]
     local curTips = ""
     local currentType = (entry and entry.type) or "BOSS"
-    if type(rg) == "table" then
+    -- WTF 覆盖层的难度专属文本优先
+    if editDiff ~= "all" and type(rg) == "table" and rg.tipsByDifficulty and rg.tipsByDifficulty[editDiff] and rg.tipsByDifficulty[editDiff] ~= "" then
+        curTips = rg.tipsByDifficulty[editDiff]
+    elseif type(rg) == "table" then
         curTips = rg.tips or ""
         currentType = rg.type or currentType
     elseif rg then
         curTips = rg
-    elseif entry and entry.tips then
-        curTips = entry.tips
+    elseif entry then
+        if editDiff ~= "all" and type(entry.tipsByDifficulty) == "table" and entry.tipsByDifficulty[editDiff] and entry.tipsByDifficulty[editDiff] ~= "" then
+            curTips = entry.tipsByDifficulty[editDiff]
+        else
+            curTips = entry.tips or ""
+        end
     end
     return curTips, currentType
 end
@@ -1006,9 +1035,21 @@ function addon:CreateEditorFrame()
                     AddFullWidth(scroll, typeDD)
                 end
 
+                -- 编辑难度选择（团本/地下城均可为不同难度写不同攻略）
+                local diffDD = AceGUI:Create("Dropdown")
+                diffDD:SetLabel("编辑难度（可为不同难度写不同攻略）")
+                diffDD:SetList(DIFF_EDIT_OPTIONS)
+                diffDD:SetValue(editDiff)
+                diffDD:SetCallback("OnValueChanged", function(_, _, v)
+                    editDiff = v
+                    frame:RefreshTree(PB(verId, instName, bossName))
+                end)
+                AddFullWidth(scroll, diffDD)
+
                 -- 文本笔记
+                local diffLabel = DIFF_EDIT_OPTIONS[editDiff] or "通用"
                 local noteEdit = AceGUI:Create("MultiLineEditBox")
-                noteEdit:SetLabel(L["Note"] or "文本笔记（输入后自动保存）")
+                noteEdit:SetLabel("文本笔记（当前：|cff00ccff" .. diffLabel .. "|r，输入后自动保存）")
                 noteEdit:SetText(curTips)
                 noteEdit:SetNumLines(18)
                 noteEdit:DisableButton(true)

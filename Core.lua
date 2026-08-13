@@ -10,6 +10,7 @@ addon.currentInstanceName = nil
 addon.currentSelectedBoss = nil
 addon.manuallyHidden = false
 addon.lastAutoShownInstance = nil
+addon.debugMatch = false
 addon.tipsFrame = nil
 addon.mainButton = nil
 addon.settingsFrame = nil
@@ -206,26 +207,85 @@ end
 addon.SmartExpandByEncounterId = SmartExpandByEncounterId
 
 -- ============ 匹配当前副本 ============
+-- 归一化：去空格/连接符/引号后小写，用于兜底匹配
+local function NormName(s)
+    if type(s) ~= "string" then return "" end
+    return (s:gsub("[%s%-–—·'’\"“”]", ""):lower())
+end
+addon.NormName = NormName
+
+-- GetInstanceInfo() 的 difficultyID -> 我们的难度键
+local DIFF_ID_MAP = {
+    [1] = "normal",   -- 5人普通
+    [2] = "heroic",   -- 5人英雄
+    [23] = "mythic",  -- 5人史诗
+    [24] = "mythicplus", -- 史诗+
+    [3] = "normal", [4] = "normal", [14] = "normal", -- 团本普通
+    [5] = "heroic", [6] = "heroic", [15] = "heroic", -- 团本英雄
+    [7] = "lfr",      -- 随机
+    [8] = "mythic", [16] = "mythic", -- 团本史诗
+}
+local function DiffIDToKey(diffId)
+    return DIFF_ID_MAP[diffId]
+end
+addon.DiffIDToKey = DiffIDToKey
+
 local function CheckInstance()
     local name, _, difficultyID, _, _, _, _, id = GetInstanceInfo()
     local prevInstance = addon.currentInstanceName
     addon.currentInstanceName = nil
-    if name and name ~= "" then
-        local BossData = addon.GetBossData()
-        if BossData and BossData[name] then
-            addon.currentInstanceName = name
-        end
+    local BossData = addon.GetBossData()
+    local GD = addon.GuideData
+
+    -- 1) 精确名匹配
+    if name and name ~= "" and BossData and BossData[name] then
+        addon.currentInstanceName = name
     end
-    if not addon.currentInstanceName and id then
-        local GD = addon.GuideData
-        if GD and GD.meta then
-            for instName, m in pairs(GD.meta) do
-                if m.mapID == id and addon.GetBossData()[instName] then
+    -- 2) 归一化/别名匹配（缓解 key 与 GetInstanceInfo 不完全一致）
+    if not addon.currentInstanceName and name and name ~= "" and GD and GD.meta then
+        local nk = NormName(name)
+        for instName, m in pairs(GD.meta) do
+            if BossData and BossData[instName] then
+                if NormName(instName) == nk then
                     addon.currentInstanceName = instName
                     break
                 end
+                if m.aliases then
+                    for _, a in ipairs(m.aliases) do
+                        if NormName(a) == nk then
+                            addon.currentInstanceName = instName
+                            break
+                        end
+                    end
+                end
+                if addon.currentInstanceName then break end
             end
         end
+    end
+    -- 3) instanceId / mapID 兜底（团本 meta.instanceId 可靠）
+    if not addon.currentInstanceName and id then
+        if GD and GD.meta then
+            for instName, m in pairs(GD.meta) do
+                if BossData and BossData[instName] then
+                    local mid = m.instanceId or m.mapID
+                    if mid and tonumber(mid) == tonumber(id) then
+                        addon.currentInstanceName = instName
+                        break
+                    end
+                end
+            end
+        end
+    end
+    if addon.debugMatch then
+        print(("|cff00ccffBossTips|r 副本 [%s] instanceId=%s 难度=%s → %s"):format(
+            tostring(name), tostring(id), tostring(difficultyID),
+            addon.currentInstanceName or "|cffff0000未匹配|r"))
+    end
+
+    -- 按副本难度自动切换攻略窗难度（随机/普通/英雄/史诗/史诗+）
+    if addon.currentInstanceName and addon.tipsFrame then
+        local diffKey = addon.DiffIDToKey and addon.DiffIDToKey(difficultyID)
+        if diffKey then addon.tipsFrame.difficulty = diffKey end
     end
 
     local mode = BossTipsGlobalDB.guideWindowMode or "auto"
@@ -393,6 +453,16 @@ SlashCmdList["BOSSTIPS"] = function(msg)
     msg = msg and string.lower(strtrim(msg)) or ""
     if msg == "manage" or msg == "edit" then
         addon:OpenEditor()
+    elseif msg == "debug" then
+        addon.debugMatch = not addon.debugMatch
+        print("|cff00ff00BossTips|r 副本匹配调试 " .. (addon.debugMatch and "已开启" or "已关闭") .. "（进本/切图时打印 GetInstanceInfo 与匹配结果）")
+    elseif msg == "inst" then
+        local n, t, dID, dName, maxP, dyn, isDyn, i = GetInstanceInfo()
+        if i then
+            print("|cff00ccffBossTips|r 当前副本：[" .. tostring(n) .. "] instanceId=" .. tostring(i) .. " 难度=" .. tostring(dName))
+        else
+            print("|cffff0000BossTips|r 当前不在副本中")
+        end
     elseif msg == "exportcn" then
         addon:ExportRaidCnNames()
     elseif msg == "lock" then

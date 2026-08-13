@@ -274,6 +274,7 @@ addon.IsCustomVersion = IsCustomVersion
 
 -- ============ 合并当前应显示的攻略表（按副本名索引） ============
 -- 优先级：WTF 自定义 guides > 自定义副本 customDungeons > 大秘境 Current > 大版本原生
+local DIFF_KEYS = { "lfr", "normal", "heroic", "mythic", "mythicplus" }
 local function BuildActiveGuides()
     ensureDBExists()
     local GD = addon.GuideData or { versions = {}, mplus = {} }
@@ -282,14 +283,21 @@ local function BuildActiveGuides()
     local function addBossEntry(copy, boss, entry)
         local etype = entry.type or "BOSS"
         if etype == "MOB" and not db.showMobs then return end
+        local tips = entry.tips or ""
         copy[boss] = {
             order = entry.order or 999,
             type = etype,
-            tips = entry.tips or "",
+            tips = tips,
         }
+        -- 难度攻略：有则保留，缺的档位用通用 tips 兜底，保证难度按钮始终有内容
+        local td = {}
         if type(entry.tipsByDifficulty) == "table" then
-            copy[boss].tipsByDifficulty = CopyTable(entry.tipsByDifficulty)
+            for k, v in pairs(entry.tipsByDifficulty) do td[k] = v end
         end
+        for _, dk in ipairs(DIFF_KEYS) do
+            if not td[dk] or td[dk] == "" then td[dk] = tips end
+        end
+        copy[boss].tipsByDifficulty = td
     end
     local function addDungeon(instance, dungeonTbl)
         if db.hiddenDungeons and db.hiddenDungeons[instance] then return end
@@ -351,19 +359,28 @@ local function BuildActiveGuides()
                 if not guides[instance] then guides[instance] = {} end
                 for boss, tips in pairs(bosses) do
                     local etype, tipText = "BOSS", tips
+                    local wtfDiff
                     if type(tips) == "table" then
                         tipText = tips.tips or ""
                         etype = tips.type or "BOSS"
+                        if type(tips.tipsByDifficulty) == "table" then wtfDiff = tips.tipsByDifficulty end
                     end
                     if etype == "MOB" and not db.showMobs then
                         guides[instance][boss] = nil
                     else
                         if not guides[instance][boss] then
-                            guides[instance][boss] = { order = 999, type = etype, tips = tipText }
+                            guides[instance][boss] = { order = 999, type = etype, tips = tipText, tipsByDifficulty = {} }
+                            for _, dk in ipairs(DIFF_KEYS) do guides[instance][boss].tipsByDifficulty[dk] = tipText end
                         else
                             guides[instance][boss].tips = tipText
                             if type(tips) == "table" and tips.type then
                                 guides[instance][boss].type = etype
+                            end
+                            if wtfDiff then
+                                guides[instance][boss].tipsByDifficulty = guides[instance][boss].tipsByDifficulty or {}
+                                for dk, dv in pairs(wtfDiff) do
+                                    if dv ~= nil and dv ~= "" then guides[instance][boss].tipsByDifficulty[dk] = dv end
+                                end
                             end
                         end
                     end
@@ -594,8 +611,21 @@ local function EncodeGuides()
     for instance, bosses in pairs(db.guides or {}) do
         for boss, tips in pairs(bosses) do
             local tipText, etype = tips, "BOSS"
-            if type(tips) == "table" then tipText = tips.tips or ""; etype = tips.type or "BOSS" end
-            parts[#parts + 1] = "GUIDE" .. FIELD .. instance .. FIELD .. boss .. FIELD .. (tipText or "") .. FIELD .. etype
+            local diffParts = {}
+            if type(tips) == "table" then
+                tipText = tips.tips or ""
+                etype = tips.type or "BOSS"
+                if type(tips.tipsByDifficulty) == "table" then
+                    for dk, dv in pairs(tips.tipsByDifficulty) do
+                        if dv and dv ~= "" then diffParts[#diffParts + 1] = dk .. FIELD .. dv end
+                    end
+                end
+            end
+            local rec = "GUIDE" .. FIELD .. instance .. FIELD .. boss .. FIELD .. (tipText or "") .. FIELD .. etype
+            if #diffParts > 0 then
+                rec = rec .. FIELD .. tostring(#diffParts) .. FIELD .. table.concat(diffParts, FIELD)
+            end
+            parts[#parts + 1] = rec
         end
     end
 
@@ -673,7 +703,21 @@ local function DecodeGuides(b64)
                 elseif tag == "GUIDE" and fields[2] and fields[3] and fields[4] then
                     result.guides[fields[2]] = result.guides[fields[2]] or {}
                     local etype = fields[5] or "BOSS"
-                    result.guides[fields[2]][fields[3]] = (etype == "MOB") and { tips = fields[4], type = "MOB" } or fields[4]
+                    local entry = (etype == "MOB") and { tips = fields[4], type = "MOB" } or fields[4]
+                    -- 难度专属文本：GUIDE|inst|boss|tips|etype|[n]|dk|dv|...
+                    local n = tonumber(fields[6])
+                    if n and n > 0 then
+                        if type(entry) ~= "table" then entry = { tips = fields[4], type = etype, tipsByDifficulty = {} } end
+                        entry.tipsByDifficulty = entry.tipsByDifficulty or {}
+                        local i = 7
+                        for _ = 1, n do
+                            local dk = fields[i]
+                            local dv = fields[i + 1]
+                            if dk and dv then entry.tipsByDifficulty[dk] = dv end
+                            i = i + 2
+                        end
+                    end
+                    result.guides[fields[2]][fields[3]] = entry
                 elseif tag == "CUSTOM_VERSION" and fields[2] then
                     result.customVersions[fields[2]] = { label = fields[3] or fields[2], order = tonumber(fields[4]) or 999 }
                 elseif tag == "ENCOUNTER_OVERRIDE" and fields[2] and fields[3] and fields[4] then

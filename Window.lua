@@ -120,7 +120,7 @@ local function FormatTips(text)
 
     -- 第1步：抽取已有超链接 |H...|h...|h，避免被后续着色/分段破坏
     local links = {}
-    text = string.gsub("(|H[^|]*|h.-|h)", function(h)
+    text = string.gsub(text, "(|H[^|]*|h.-|h)", function(h)
         links[#links + 1] = h
         return "\001" .. #links .. "\001"
     end)
@@ -507,6 +507,31 @@ end
 
 -- ============ 测试窗口 ============
 local testInstanceName = "测试窗口"
+-- 测试文本：包含所有角色共有的通用技能（炉石 spell:6948），验证可点击技能链接
+local TEST_TIPS = "{rt8}示例目标{rt8}||这是测试窗口的示例攻略文本。||[炉石|spell:6948]：所有角色共有的通用技能，点击/悬停可查看技能说明。||必断示例：[打断] 技能会标红；速杀示例：[集火] 技能会标金。||拖动标题栏可移动窗口，右下角可缩放；点小喇叭把本攻略发到聊天。"
+local function SendTestTipsToChat()
+    if InCombatLockdown() then
+        print("|cffff0000BossTips|r 战斗中无法发送消息。")
+        return
+    end
+    local chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
+    if chatType == "PARTY" then
+        local numGroup = GetNumGroupMembers() or 0
+        chatType = (numGroup > 5 and "RAID" or "PARTY")
+    end
+    local segs = { strsplit("||", TEST_TIPS) }
+    for _, seg in ipairs(segs) do
+        seg = strtrim(seg)
+        if seg ~= "" then
+            seg = seg:gsub("%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
+            seg = seg:gsub("{rt1}(.-){rt1}", "★ %1")
+            seg = seg:gsub("{rt%d}", "")
+            SendChatMessage(seg, chatType)
+        end
+    end
+    print("|cFF00FF00BossTips|r 已发送测试攻略到 " .. chatType)
+end
+
 function addon.ShowTestWindow()
     mainWindow.isGuideHidden = false
     titleText:SetText(L["Show Test Window"] or "测试窗口")
@@ -531,13 +556,29 @@ function addon.ShowTestWindow()
         local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         note:SetJustifyH("LEFT")
         note:SetWordWrap(true)
+        note:SetHyperlinksEnabled(true)
+        note:SetScript("OnHyperlinkClick", function(_, link)
+            if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
+                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                GameTooltip:SetHyperlink(link)
+                GameTooltip:Show()
+            end
+        end)
+        note:SetScript("OnHyperlinkEnter", function(_, link)
+            if link and link:find("^spell:") then
+                GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                GameTooltip:SetHyperlink(link)
+            end
+        end)
+        note:SetScript("OnHyperlinkLeave", function() GameTooltip:Hide() end)
         frame.noteText = note
         targetFrames[1] = frame
     end
-    frame.targetData = { name = "示例目标", type = "BOSS", tips = "{rt8}示例目标{rt8}||这是测试窗口的示例攻略文本。||拖动标题栏可移动窗口，右下角可缩放。" }
+    frame.targetData = { name = "示例目标", type = "BOSS", tips = TEST_TIPS }
     frame.inUse = true
     frame.isExpanded = true
     frame.titleBtn:SetScript("OnClick", function() end)
+    frame.speakerBtn:SetScript("OnClick", SendTestTipsToChat)
     mainWindow:Show()
     UpdateLayout()
     UpdateLockVisual()

@@ -47,6 +47,7 @@ Guides/Raids/v9.0.lua
 Guides/Raids/v10.0.lua
 Guides/Raids/v11.0.lua
 Guides/Raids/v12.0.lua
+Guides/Raids/v12.1.lua
 
 # 逻辑与 UI（Ace3 架构）
 Core.lua

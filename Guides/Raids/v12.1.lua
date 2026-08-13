@@ -22,7 +22,7 @@ addon.GuideData.raids["12.1"]["毒渊"] = {
     ["盘蛇祭坛"] = { order = 7, type = "BOSS", tips = "{rt8}盘蛇祭坛{rt8}||祖尔jan被玛拉卡斯附身完成仪式：三阶段+间歇burn，第三阶段合并前两阶段空间+蓝量吃紧；含[扭动之蛇]蛇中蛇需剥开||{rt1}必断/速杀：无硬断；阶段三空间紧张听指挥{rt1}||坦：主坦接仇(祖尔jan)。治疗：阶段三团刷+蓝量管理。输出：剥[扭动之蛇]、间歇burn交大招、阶段三保机动", tipsByDifficulty = {} },
     ["乌拉特克"] = { order = 8, type = "BOSS", tips = "{rt8}乌拉特克{rt8}||蛇神最终boss(PTR未测)：蛋、毒潮、[暴露之心]阶段、竞技场崩塌；模型震撼||{rt1}必断/速杀：无硬断(未测试，机制待补){rt1}||坦：主坦接仇。治疗：毒潮/崩塌团刷交减伤。输出：压本体、[暴露之心]阶段集火、崩塌期保站位", tipsByDifficulty = {} },
 }
-addon.GuideData.meta["毒渊"] = { isRaid = true, instanceId = 3004, encounterIds = {
+addon.GuideData.meta["毒渊"] = { isRaid = true, instanceId = 3004, aliases = { "烈毒之渊", "The Venomous Abyss" }, encounterIds = {
     ["缚魂者内克扎利"] = 2888,
     ["墓藏哨兵"] = 2874,
     ["迷失的探索者"] = 2894,

@@ -19,7 +19,7 @@ addon.GuideData.raids["12.0"]["虚空尖塔"] = {
     ["光盲先锋"] = { order = 5, type = "BOSS", tips = "{rt8}光盲先锋{rt8}||三圣骑士议会(Senn/Bellamy/Lightblood)：开场嗜血；各自独立能量条大招不同步，需动态应对重叠；旋转光环互相buff，坦需拉开40码防不可杀||{rt1}必断/速杀：团队开嗜血时两boss给自己套[腐蚀神圣护盾]，需牧师群体驱散/类似移除否则爆发白费{rt1}||坦：分拉开40码消除buff光环。治疗：错峰大招团刷、[奉献]永久腐蚀圣火区别站。输出：开场嗜血爆发、驱散护盾、躲[奉献]火区", tipsByDifficulty = {} },
     ["宇宙之冠"] = { order = 6, type = "BOSS", tips = "{rt8}宇宙之冠{rt8}||最终boss(奥蕾莉亚·风行者/夏月之冠)：[不灭哨兵]小怪需坦在远离团队处，靠近叠加[回响黑暗]；[银击之箭]点名需将箭指向远离团队；[重力崩塌]最终burn阶段虚空拉人+重力偏移||{rt1}必断/速杀：无硬断(PTR未测，速查表待补)；[重力崩塌]全团减伤覆盖{rt1}||坦：小怪拉远离团队。治疗：[回响黑暗]叠层团刷、[银击之箭]指向减伤。输出：清小怪、[银击之箭]点名把箭甩向场外、burn阶段交大招", tipsByDifficulty = {} },
 }
-addon.GuideData.meta["虚空尖塔"] = { isRaid = true, instanceId = 2912, encounterIds = {
+addon.GuideData.meta["虚空尖塔"] = { isRaid = true, instanceId = 2912, aliases = { "虚影尖塔" }, encounterIds = {
     ["帝王阿维吉安"] = 2733,
     ["沃拉修斯"] = 3177,
     ["陨落之王萨尔哈达尔"] = 2736,
@@ -32,7 +32,7 @@ addon.GuideData.meta["虚空尖塔"] = { isRaid = true, instanceId = 2912, encou
 addon.GuideData.raids["12.0"]["梦裂"] = {
     ["未梦之神奇美洛斯"] = { order = 1, type = "BOSS", tips = "{rt8}未梦之神奇美洛斯{rt8}||双界分裂：每人有对应双生，坐标相近触发致命脉冲，需错位走位；[吞噬]需破盾打掉add否则Boss叠永久增伤||{rt1}必断/速杀：阶段一[饥渴难耐]拉人进裂隙剥[裂隙裹尸布]护盾、出add[巨型恐惧/惊骇精华/蜂拥暗影]；躲[尘埃精华]池(自然伤+减速){rt1}||坦：主坦接仇。治疗：[裂隙易伤]管理、add压力团刷。输出：阶段一破盾打add、阶段二[升空]boss飞天99%减伤时[贪婪俯冲]击退+地面加剧，无重置持续压add", tipsByDifficulty = {} },
 }
-addon.GuideData.meta["梦裂"] = { isRaid = true, instanceId = 2939, encounterIds = {
+addon.GuideData.meta["梦裂"] = { isRaid = true, instanceId = 2939, aliases = { "梦境裂隙" }, encounterIds = {
     ["未梦之神奇美洛斯"] = 2795,
 } }
 

@@ -1,7 +1,7 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 10.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 10.0 团本攻略
+-- 实例 key 为国服名；首领 key 为国服名；encounterId 取自 BigWigs/DBM（原样保留）。
+-- 攻略格式：{rt8}名字{rt8}||[机制]描述||{rt1}必断/速杀：…{rt1}||坦：…治疗：…输出：…
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -11,71 +11,71 @@ addon.GuideData.meta = addon.GuideData.meta or {}
 
 -- ===================== 亚贝鲁斯，焰影熔炉 (instanceId 2569) =====================
 addon.GuideData.raids["10.0"]["亚贝鲁斯，焰影熔炉"] = {
-    ["Scalecommander Sarkareth"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Kazzara, the Hellforged"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Echo of Neltharion"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Assault of the Zaqali"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Rashok, the Elder"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Magmorax"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Amalgamation Chamber"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Forgotten Experiments"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Vigilant Steward, Zskarn"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["鳞长萨卡雷斯"] = { order = 1, type = "BOSS", tips = [=[{rt8}鳞长萨卡雷斯{rt8}||[虚空]点名需远离；[召唤]阶段；[狂暴]计时||{rt1}必断/速杀：无；[虚空]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["地狱熔铸卡扎拉"] = { order = 2, type = "BOSS", tips = [=[{rt8}地狱熔铸卡扎拉{rt8}||[火]全团高伤；[冲]；[狂暴]计时||{rt1}必断/速杀：无；躲火、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["耐萨里奥回响"] = { order = 3, type = "BOSS", tips = [=[{rt8}耐萨里奥回响{rt8}||[崩裂]点名需远离；[熔岩]全团；P3[本体]；[狂暴]计时||{rt1}必断/速杀：无；[崩裂]被点名远离{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["扎卡利突袭"] = { order = 4, type = "BOSS", tips = [=[{rt8}扎卡利突袭{rt8}||[多波]小怪+载具；[火]；[狂暴]计时||{rt1}必断/速杀：清小怪、载具推进{rt1}||坦：拉；输出：清小怪]=], tipsByDifficulty = {} },
+    ["长者拉肖克"] = { order = 5, type = "BOSS", tips = [=[{rt8}长者拉肖克{rt8}||[能量]满需打断；[重击]坦；[狂暴]计时||{rt1}必断/速杀：能量满前打断；集火{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["玛格莫拉克"] = { order = 6, type = "BOSS", tips = [=[{rt8}玛格莫拉克{rt8}||[链]需拉一起；[喷]；[狂暴]计时||{rt1}必断/速杀：无；[链]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["融合密室"] = { order = 7, type = "BOSS", tips = [=[{rt8}融合密室{rt8}||[双怪]需同时击杀；[毒/火]混合；[狂暴]计时||{rt1}必断/速杀：无；同时集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["被遗忘的实验"] = { order = 8, type = "BOSS", tips = [=[{rt8}被遗忘的实验{rt8}||[双形态]切换需应对；[毒]dot；[狂暴]计时||{rt1}必断/速杀：无；按形态应对{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["警戒管家兹斯卡尔恩"] = { order = 9, type = "BOSS", tips = [=[{rt8}警戒管家兹斯卡尔恩{rt8}||[陷阱]需处理；[火]；[狂暴]计时||{rt1}必断/速杀：无；处理陷阱、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["亚贝鲁斯，焰影熔炉"] = { isRaid = true, instanceId = 2569, encounterIds = {
-    ["Scalecommander Sarkareth"] = 2520,
-    ["Kazzara, the Hellforged"] = 2522,
-    ["Echo of Neltharion"] = 2523,
-    ["Assault of the Zaqali"] = 2524,
-    ["Rashok, the Elder"] = 2525,
-    ["Magmorax"] = 2527,
-    ["The Amalgamation Chamber"] = 2529,
-    ["The Forgotten Experiments"] = 2530,
-    ["The Vigilant Steward, Zskarn"] = 2532,
+    ["鳞长萨卡雷斯"] = 2520,
+    ["地狱熔铸卡扎拉"] = 2522,
+    ["耐萨里奥回响"] = 2523,
+    ["扎卡利突袭"] = 2524,
+    ["长者拉肖克"] = 2525,
+    ["玛格莫拉克"] = 2527,
+    ["融合密室"] = 2529,
+    ["被遗忘的实验"] = 2530,
+    ["警戒管家兹斯卡尔恩"] = 2532,
 } }
 
 -- ===================== 阿梅达希尔，梦境之愿 (instanceId 2549) =====================
 addon.GuideData.raids["10.0"]["阿梅达希尔，梦境之愿"] = {
-    ["Fyrakk the Blazing"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Larodar, Keeper of the Flame"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Igira the Cruel"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Council of Dreams"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Nymue, Weaver of the Cycle"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Volcoross"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Smolderon"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Gnarlroot"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Tindral Sageswift, Seer of the Flame"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["炽燃菲拉克斯"] = { order = 1, type = "BOSS", tips = [=[{rt8}炽燃菲拉克斯{rt8}||[火]全团高伤；[飞行]阶段；[狂暴]计时||{rt1}必断/速杀：无；躲火、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["火焰守护者拉罗达尔"] = { order = 2, type = "BOSS", tips = [=[{rt8}火焰守护者拉罗达尔{rt8}||[火]需控；[树]阶段；[狂暴]计时||{rt1}必断/速杀：无；控火、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["残酷的伊吉拉"] = { order = 3, type = "BOSS", tips = [=[{rt8}残酷的伊吉拉{rt8}||[箭]点名需远离；[盾]；[狂暴]计时||{rt1}必断/速杀：无；[箭]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["梦境议会"] = { order = 4, type = "BOSS", tips = [=[{rt8}梦境议会{rt8}||[三梦]共享血量分边；[混合]；[狂暴]计时||{rt1}必断/速杀：无；分边集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["轮回编织者尼缪"] = { order = 5, type = "BOSS", tips = [=[{rt8}轮回编织者尼缪{rt8}||[环]需对应站位；[点名]；[狂暴]计时||{rt1}必断/速杀：无；按环站位{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["沃尔科罗斯"] = { order = 6, type = "BOSS", tips = [=[{rt8}沃尔科罗斯{rt8}||[链]需拉一起；[火]全团；[狂暴]计时||{rt1}必断/速杀：无；[链]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["斯莫德隆"] = { order = 7, type = "BOSS", tips = [=[{rt8}斯莫德隆{rt8}||[熔岩]需躲；[冲]；[狂暴]计时||{rt1}必断/速杀：无；躲熔岩{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["纠结根须"] = { order = 8, type = "BOSS", tips = [=[{rt8}纠结根须{rt8}||[根]点名需远离；[毒]dot；[狂暴]计时||{rt1}必断/速杀：无；[根]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["火焰先知廷德拉尔"] = { order = 9, type = "BOSS", tips = [=[{rt8}火焰先知廷德拉尔{rt8}||[星]点名需远离；[风]；[狂暴]计时||{rt1}必断/速杀：无；[星]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["阿梅达希尔，梦境之愿"] = { isRaid = true, instanceId = 2549, encounterIds = {
-    ["Fyrakk the Blazing"] = 2519,
-    ["Larodar, Keeper of the Flame"] = 2553,
-    ["Igira the Cruel"] = 2554,
-    ["Council of Dreams"] = 2555,
-    ["Nymue, Weaver of the Cycle"] = 2556,
-    ["Volcoross"] = 2557,
-    ["Smolderon"] = 2563,
-    ["Gnarlroot"] = 2564,
-    ["Tindral Sageswift, Seer of the Flame"] = 2565,
+    ["炽燃菲拉克斯"] = 2519,
+    ["火焰守护者拉罗达尔"] = 2553,
+    ["残酷的伊吉拉"] = 2554,
+    ["梦境议会"] = 2555,
+    ["轮回编织者尼缪"] = 2556,
+    ["沃尔科罗斯"] = 2557,
+    ["斯莫德隆"] = 2563,
+    ["纠结根须"] = 2564,
+    ["火焰先知廷德拉尔"] = 2565,
 } }
 
 -- ===================== 化身巨龙牢窟 (instanceId 2522) =====================
 addon.GuideData.raids["10.0"]["化身巨龙牢窟"] = {
-    ["Eranog"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Sennarth, The Cold Breath"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["The Primal Council"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Kurog Grimtotem"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Broodkeeper Diurna"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Raszageth the Storm-Eater"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Terros"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Dathea, Ascended"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["埃拉诺格"] = { order = 1, type = "BOSS", tips = [=[{rt8}埃拉诺格{rt8}||[环节]需拉一起；[火]全团；[狂暴]计时||{rt1}必断/速杀：无；[环节]被点名拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["寒息森纳丝"] = { order = 2, type = "BOSS", tips = [=[{rt8}寒息森纳丝{rt8}||[冰]点名需远离；[网]；[狂暴]计时||{rt1}必断/速杀：无；[冰]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["原始议会"] = { order = 3, type = "BOSS", tips = [=[{rt8}原始议会{rt8}||[四元素]需集火单只；[混合]；[狂暴]计时||{rt1}必断/速杀：无；集火单只{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["库罗格·恐图腾"] = { order = 4, type = "BOSS", tips = [=[{rt8}库罗格·恐图腾{rt8}||[图腾]需打；[土]阶段；[狂暴]计时||{rt1}必断/速杀：无；打图腾、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["孵雏者迪乌娜"] = { order = 5, type = "BOSS", tips = [=[{rt8}孵雏者迪乌娜{rt8}||[蛋]需保；[龙]阶段；[狂暴]计时||{rt1}必断/速杀：无；保蛋、速杀{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["噬雷者拉兹加斯"] = { order = 6, type = "BOSS", tips = [=[{rt8}噬雷者拉兹加斯{rt8}||[雷]全团高伤；[链]点名；[狂暴]计时||{rt1}必断/速杀：无；躲雷、[链]拉一起{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["泰罗斯"] = { order = 7, type = "BOSS", tips = [=[{rt8}泰罗斯{rt8}||[石]需打露头；[震]；[狂暴]计时||{rt1}必断/速杀：无；打露头、速杀{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["飞升的达西娅"] = { order = 8, type = "BOSS", tips = [=[{rt8}飞升的达西娅{rt8}||[风]点名需远离；[升]阶段；[狂暴]计时||{rt1}必断/速杀：无；[风]被点名远离{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["化身巨龙牢窟"] = { isRaid = true, instanceId = 2522, encounterIds = {
-    ["Eranog"] = 2480,
-    ["Sennarth, The Cold Breath"] = 2482,
-    ["The Primal Council"] = 2486,
-    ["Kurog Grimtotem"] = 2491,
-    ["Broodkeeper Diurna"] = 2493,
-    ["Raszageth the Storm-Eater"] = 2499,
-    ["Terros"] = 2500,
-    ["Dathea, Ascended"] = 2502,
+    ["埃拉诺格"] = 2480,
+    ["寒息森纳丝"] = 2482,
+    ["原始议会"] = 2486,
+    ["库罗格·恐图腾"] = 2491,
+    ["孵雏者迪乌娜"] = 2493,
+    ["噬雷者拉兹加斯"] = 2499,
+    ["泰罗斯"] = 2500,
+    ["飞升的达西娅"] = 2502,
 } }
 

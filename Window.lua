@@ -477,6 +477,8 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
                 speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
+                -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
+                speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
                 speakerBtn:SetScript("OnClick", function(_, _, button)
                     local tname = frame.targetData and frame.targetData.name
                     if tname and tname ~= "" then
@@ -594,6 +596,8 @@ function addon.ShowTestWindow()
         speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
         speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
         speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
+        -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
+        speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
         frame.speakerBtn = speakerBtn
         local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         note:SetJustifyH("LEFT")

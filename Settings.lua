@@ -278,42 +278,85 @@ local options = {
     }
 }
 
--- ============ 攻略配置标签（动态构建版本开关 / 隐藏副本） ============
+-- ============ 攻略配置标签（编辑按钮 → 一键展开/折叠 → 5人本/团本 树） ============
+-- 一键展开 / 一键折叠：直接操作 AceConfigDialog 树状态表（guide_options_tab 下的 TreeGroup）
+local function SetGuideTreesExpanded(expand)
+    local status = AceConfigDialog:GetStatusTable("BossTips", { "guide_options_tab" })
+    -- 对话框未真正打开时（如仿真环境）status.groups 可能为 __index 元表提供的函数，需显式建表；
+    -- 已打开时（游戏内）它本就是 TreeGroup 使用的真实表，保留既有展开状态。
+    local g = status.groups
+    if type(g) ~= "table" then g = {}; status.groups = g end
+    if expand then
+        g["dungeon_tree"] = true
+        g["raid_tree"] = true
+        for _, vid in ipairs(addon.GetAllVersionIDs()) do
+            g["dungeon_tree\001ver_" .. vid] = true
+        end
+        for _, vid in ipairs(addon.GetRaidVersionIDs()) do
+            g["raid_tree\001ver_" .. vid] = true
+        end
+    else
+        g["dungeon_tree"] = nil
+        g["raid_tree"] = nil
+        for k in pairs(g) do
+            if k:match("^dungeon_tree\001") or k:match("^raid_tree\001") then
+                g[k] = nil
+            end
+        end
+    end
+    AceConfig:NotifyChange("BossTips")
+end
+addon.SetGuideTreesExpanded = SetGuideTreesExpanded
+
 local guideOptions = {
     type = "group",
     name = L["Guide Options"],
     order = 2,
     childGroups = "tree",
     args = {
+        -- 最上方：编辑攻略按钮（直接显示在面板顶部，非树节点）
+        open_editor = {
+            type = "execute",
+            name = L["Open Guide Editor"] or "编辑攻略",
+            desc = "打开攻略编辑器，增删改任意副本/首领的攻略文本。",
+            width = "full",
+            order = 1,
+            func = function()
+                AceConfigDialog:Close("BossTips")
+                addon:OpenEditor()
+            end,
+        },
+        -- 一键展开 / 一键折叠（并排两个半宽按钮）
+        expand_all = {
+            type = "execute",
+            name = "一键展开",
+            desc = "展开下方「5人本」「团本」的全部版本选择器。",
+            width = "half",
+            order = 2,
+            func = function() SetGuideTreesExpanded(true) end,
+        },
+        collapse_all = {
+            type = "execute",
+            name = "一键折叠",
+            desc = "折叠下方「5人本」「团本」的全部版本选择器。",
+            width = "half",
+            order = 3,
+            func = function() SetGuideTreesExpanded(false) end,
+        },
+        -- 5人本 / 团本 树（单击节点即可展开/折叠）
         dungeon_tree = {
             type = "group",
             name = "5人本",
-            order = 1,
+            order = 4,
             childGroups = "tree",
             args = {},
         },
         raid_tree = {
             type = "group",
             name = "团本",
-            order = 2,
+            order = 5,
             childGroups = "tree",
             args = {},
-        },
-        edit_guides = {
-            type = "group",
-            name = L["Edit Guides"] or "编辑攻略",
-            order = 3,
-            args = {
-                open_editor = {
-                    type = "execute",
-                    name = L["Open Guide Editor"],
-                    width = "full",
-                    func = function()
-                        AceConfigDialog:Close("BossTips")
-                        addon:OpenEditor()
-                    end,
-                },
-            },
         },
     }
 }

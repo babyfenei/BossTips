@@ -98,4 +98,20 @@ print("SendBossTips(...) default chatType =", captured2)
 default_ch = L.execute("return BossTipsGlobalDB.defaultChatChannel or 'INSTANCE_CHAT'")
 assert captured2 == default_ch, captured2
 
+# 一键展开/折叠：直接操作 guide_options_tab 树状态表
+# sim 下未真正打开对话框，AceConfigDialog.frame 为 nil；stub 以避免 NotifyChange 崩溃
+L.execute("local ACD=LibStub('AceConfigDialog-3.0'); if not ACD.frame then ACD.frame={apps={}} end")
+L.execute("__BTAddon.SetGuideTreesExpanded(true)")
+expanded = q("local ACD=LibStub('AceConfigDialog-3.0'); local s=ACD:GetStatusTable('BossTips',{'guide_options_tab'}); local t={}; for k,v in pairs(s.groups) do if v then t[#t+1]=k end end; return table.concat(t,'|')")
+print("expanded keys =", expanded)
+assert "dungeon_tree" in expanded, expanded
+assert "raid_tree" in expanded, expanded
+assert "dungeon_tree\001ver_Current" in expanded, "应展开当前赛季 M+ 节点: " + expanded
+
+L.execute("__BTAddon.SetGuideTreesExpanded(false)")
+collapsed = q("local ACD=LibStub('AceConfigDialog-3.0'); local s=ACD:GetStatusTable('BossTips',{'guide_options_tab'}); local t={}; for k,v in pairs(s.groups) do if v then t[#t+1]=k end end; return table.concat(t,'|')")
+print("collapsed keys =", collapsed)
+assert "dungeon_tree" not in collapsed, collapsed
+assert "raid_tree" not in collapsed, collapsed
+
 print("SETTINGS RAIDS OK")

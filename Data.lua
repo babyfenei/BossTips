@@ -104,6 +104,19 @@ local function GetTipsBg()
     local s = BG_STYLES[BossTipsGlobalDB.tipsBgStyle] or BG_STYLES.black
     return s[1], s[2], s[3], s[4]
 end
+-- 统一 Ace3 风格边框/背景：tooltip 底图 + 灰色边框，攻略窗与悬浮按钮共用
+local function ApplyAce3Backdrop(frame)
+    if not frame then return end
+    frame:SetBackdrop({
+        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        tile = true, tileSize = 16, edgeSize = 12,
+        insets = { left = 4, right = 4, top = 4, bottom = 4 },
+    })
+    local r, g, b, a = GetTipsBg()
+    frame:SetBackdropColor(r, g, b, a)
+    frame:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
+end
 local FONT_PATHS = {
     default = (GameFontNormal and GameFontNormal:GetFont()) or STANDARD_TEXT_FONT,
     damage = DAMAGE_TEXT_FONT,
@@ -1104,3 +1117,4 @@ end
 addon.SendBossTips = SendBossTips
 addon.GetTipsBg = GetTipsBg
 addon.GetTipsFontPath = GetTipsFontPath
+addon.ApplyAce3Backdrop = ApplyAce3Backdrop

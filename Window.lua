@@ -24,15 +24,8 @@ mainWindow:SetScript("OnDragStop", function(self)
 end)
 mainWindow:SetResizable(true)
 mainWindow:SetResizeBounds(150, 50, 600, 800)
-mainWindow:SetBackdrop({
-    bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-    tile = true, tileSize = 16, edgeSize = 12,
-    insets = { left = 4, right = 4, top = 4, bottom = 4 },
-})
--- 与悬浮按钮统一的主题色（深蓝底+亮蓝边）
-mainWindow:SetBackdropColor(0.12, 0.18, 0.30, 0.95)
-mainWindow:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+-- 统一 Ace3 风格背景/边框，与悬浮按钮一致
+if addon.ApplyAce3Backdrop then addon.ApplyAce3Backdrop(mainWindow) end
 mainWindow:Hide()
 addon.tipsFrame = mainWindow
 
@@ -42,7 +35,7 @@ mainWindow.difficulty = "normal"                 -- 当前显示难度（normal/
 
 local titleText = mainWindow:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 titleText:SetPoint("TOP", 0, -10)
-titleText:SetTextColor(0.9, 0.95, 1.0)
+titleText:SetTextColor(1.0, 1.0, 1.0)
 
 local targetFrames = {}
 local UpdateLayout
@@ -324,6 +317,7 @@ UpdateLayout = function()
     local bgR, bgG, bgB, bgA = 0, 0, 0, 0.82
     if addon.GetTipsBg then bgR, bgG, bgB, bgA = addon.GetTipsBg() end
     mainWindow:SetBackdropColor(bgR, bgG, bgB, bgA)
+    mainWindow:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
     titleText:SetWidth(windowWidth - 20)
 
     if mainWindow.isGuideHidden then

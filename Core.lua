@@ -41,26 +41,17 @@ local function CreateMainButton()
     btn:SetMovable(true)
     btn:EnableMouse(true)
 
-    -- Ace3 风格边框/背景，与攻略窗体统一
-    btn:SetBackdrop({
-        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        tile = true, tileSize = 16, edgeSize = 10,
-        insets = { left = 3, right = 3, top = 3, bottom = 3 },
-    })
-    local br, bg, bb, ba = 0.12, 0.18, 0.30, 0.95
-    if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end
-    btn:SetBackdropColor(br, bg, bb, ba)
-    btn:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+    -- 统一 Ace3 风格边框/背景，与攻略窗体一致
+    if addon.ApplyAce3Backdrop then addon.ApplyAce3Backdrop(btn) end
 
     local fs = btn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     fs:SetPoint("CENTER", 0, 0)
     fs:SetText("|cffffffffBossTips|r")
     btn:SetFontString(fs)
 
-    -- 鼠标悬停高亮
+    -- 鼠标悬停高亮（Ace3 中性灰边框）
     btn:SetScript("OnEnter", function(self)
-        self:SetBackdropBorderColor(0.6, 0.8, 1.0, 1.0)
+        self:SetBackdropBorderColor(0.7, 0.7, 0.7, 1.0)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:AddLine("BossTips")
         GameTooltip:AddLine("左键：打开/关闭攻略框体（非副本时显示测试窗口）", 1, 1, 1)
@@ -69,7 +60,7 @@ local function CreateMainButton()
         GameTooltip:Show()
     end)
     btn:SetScript("OnLeave", function(self)
-        self:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+        self:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
         GameTooltip:Hide()
     end)
 
@@ -143,10 +134,14 @@ addon.UpdateMainButtonVisibility = UpdateMainButtonVisibility
 local function UpdateMainButtonAppearance()
     local btn = addon.mainButton
     if not btn then return end
-    local br, bg, bb, ba = 0.12, 0.18, 0.30, 0.95
-    if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end
-    btn:SetBackdropColor(br, bg, bb, ba)
-    btn:SetBackdropBorderColor(0.35, 0.55, 0.90, 1.0)
+    if addon.ApplyAce3Backdrop then
+        addon.ApplyAce3Backdrop(btn)
+    else
+        local br, bg, bb, ba = 0, 0, 0, 0.82
+        if addon.GetTipsBg then br, bg, bb, ba = addon.GetTipsBg() end
+        btn:SetBackdropColor(br, bg, bb, ba)
+        btn:SetBackdropBorderColor(0.4, 0.4, 0.4, 1.0)
+    end
 end
 addon.UpdateMainButtonAppearance = UpdateMainButtonAppearance
 

@@ -286,7 +286,7 @@ local guideOptions = {
     args = {
         version_tree = {
             type = "group",
-            name = L["Version & Dungeon Toggles"] or "版本与副本开关",
+            name = L["Version & Dungeon Toggles"],
             order = 1,
             childGroups = "tree",
             args = {},
@@ -313,7 +313,7 @@ local guideOptions = {
 
 local function BuildGuideOptions()
     if addon.EnsureDB then addon.EnsureDB() end
-    -- 折叠树：大版本/小版本（同一棵树中的可折叠节点）→ 副本名称（可折叠分组）
+    -- 折叠树：大版本/小版本（同一棵树中的可折叠节点）→ 副本名称（平铺复选框）
     local vt = guideOptions.args.version_tree.args
     for k in pairs(vt) do vt[k] = nil end
     local order = 1
@@ -323,7 +323,8 @@ local function BuildGuideOptions()
         -- 版本级开关：启用/隐藏整个版本
         verArgs["enable"] = {
             type = "toggle",
-            name = L["Enable this version"] or "启用此版本（取消勾选将隐藏该版本下所有副本）",
+            name = L["Enable this version"],
+            desc = "取消勾选将隐藏该版本下所有副本",
             width = "full",
             get = function() return addon.IsVersionEnabled(vid) end,
             set = function(_, val)
@@ -336,7 +337,7 @@ local function BuildGuideOptions()
             end,
             order = 1,
         }
-        -- 副本级：每个副本一个可折叠分组，内含“隐藏此副本”
+        -- 副本级：平铺复选框，勾选=显示，取消勾选=隐藏
         local dungeons = addon.GetVersionDungeons(vid)
         local instList = {}
         for inst in pairs(dungeons) do instList[#instList + 1] = inst end
@@ -344,23 +345,16 @@ local function BuildGuideOptions()
         local dorder = 2
         for _, inst in ipairs(instList) do
             verArgs["dung_" .. inst] = {
-                type = "group",
+                type = "toggle",
                 name = inst,
-                inline = true,
+                width = "full",
+                get = function() return not (BossTipsGlobalDB.hiddenDungeons[inst]) end,
+                set = function(_, val)
+                    if val then BossTipsGlobalDB.hiddenDungeons[inst] = nil
+                    else BossTipsGlobalDB.hiddenDungeons[inst] = true end
+                    addon.RefreshGuides()
+                end,
                 order = dorder,
-                args = {
-                    hide = {
-                        type = "toggle",
-                        name = L["Hide this dungeon"] or "隐藏此副本（在攻略窗口中不显示）",
-                        width = "full",
-                        get = function() return not (BossTipsGlobalDB.hiddenDungeons[inst]) end,
-                        set = function(_, val)
-                            if val then BossTipsGlobalDB.hiddenDungeons[inst] = nil
-                            else BossTipsGlobalDB.hiddenDungeons[inst] = true end
-                            addon.RefreshGuides()
-                        end,
-                    },
-                },
             }
             dorder = dorder + 1
         end

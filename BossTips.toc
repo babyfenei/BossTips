@@ -16,24 +16,24 @@ FallbackIdDB.lua
 
 # 攻略数据文件（必须先于逻辑文件加载，用于填充 addon.GuideData）
 # 主文件不含任何游戏版本号：版本清单/标签/排序由各数据文件自注册。
-Guides/v1.0.lua
-Guides/v2.0.lua
-Guides/v3.0.lua
-Guides/v4.0.lua
-Guides/v5.0.lua
-Guides/v6.0.lua
-Guides/v7.0.lua
-Guides/v8.0.lua
-Guides/v9.0.lua
-Guides/v10.0.lua
-Guides/v11.0.lua
-Guides/v12.0.lua
-Guides/v13.0.lua
-Guides/v14.0.lua
-Guides/v15.0.lua
-Guides/v16.0.lua
-Guides/v17.0.lua
-Guides/v18.0.lua
+Guides/Dungeons/v1.0.lua
+Guides/Dungeons/v2.0.lua
+Guides/Dungeons/v3.0.lua
+Guides/Dungeons/v4.0.lua
+Guides/Dungeons/v5.0.lua
+Guides/Dungeons/v6.0.lua
+Guides/Dungeons/v7.0.lua
+Guides/Dungeons/v8.0.lua
+Guides/Dungeons/v9.0.lua
+Guides/Dungeons/v10.0.lua
+Guides/Dungeons/v11.0.lua
+Guides/Dungeons/v12.0.lua
+Guides/Dungeons/v13.0.lua
+Guides/Dungeons/v14.0.lua
+Guides/Dungeons/v15.0.lua
+Guides/Dungeons/v16.0.lua
+Guides/Dungeons/v17.0.lua
+Guides/Dungeons/v18.0.lua
 Guides/MPlus/Current.lua
 Guides/Raids/v1.0.lua
 Guides/Raids/v2.0.lua

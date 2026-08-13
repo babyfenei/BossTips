@@ -477,16 +477,28 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
                 speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
-                speakerBtn:SetScript("OnClick", function()
+                speakerBtn:SetScript("OnClick", function(_, _, button)
                     local tname = frame.targetData and frame.targetData.name
                     if tname and tname ~= "" then
                         if InCombatLockdown() then
                             print("|cffff0000BossTips|r 战斗中无法发送消息。")
                         else
-                            addon.SendBossTips(tname)
+                            if button == "RightButton" then
+                                addon.SendBossTips(tname, "SAY")
+                            else
+                                addon.SendBossTips(tname)
+                            end
                         end
                     end
                 end)
+                speakerBtn:SetScript("OnEnter", function(self)
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                    GameTooltip:SetText("发送攻略")
+                    GameTooltip:AddLine("左键：发送到设定频道 (" .. (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT") .. ")", 1, 1, 1)
+                    GameTooltip:AddLine("右键：发送到说 (/say)", 1, 1, 1)
+                    GameTooltip:Show()
+                end)
+                speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
                 frame.speakerBtn = speakerBtn
 
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -534,15 +546,20 @@ end
 local testInstanceName = "测试窗口"
 -- 测试文本：包含所有角色共有的通用技能（炉石 spell:6948），验证可点击技能链接
 local TEST_TIPS = "{rt8}示例目标{rt8}||这是测试窗口的示例攻略文本。||[炉石|spell:6948]：所有角色共有的通用技能，点击/悬停可查看技能说明。||必断示例：[打断] 技能会标红；速杀示例：[集火] 技能会标金。||拖动标题栏可移动窗口，右下角可缩放；点小喇叭把本攻略发到聊天。"
-local function SendTestTipsToChat()
+local function SendTestTipsToChat(channelOverride)
     if InCombatLockdown() then
         print("|cffff0000BossTips|r 战斗中无法发送消息。")
         return
     end
-    local chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
-    if chatType == "PARTY" then
-        local numGroup = GetNumGroupMembers() or 0
-        chatType = (numGroup > 5 and "RAID" or "PARTY")
+    local chatType
+    if channelOverride then
+        chatType = channelOverride
+    else
+        chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
+        if chatType == "PARTY" then
+            local numGroup = GetNumGroupMembers() or 0
+            chatType = (numGroup > 5 and "RAID" or "PARTY")
+        end
     end
     local segs = { strsplit("||", TEST_TIPS) }
     for _, seg in ipairs(segs) do
@@ -590,7 +607,23 @@ function addon.ShowTestWindow()
     frame.inUse = true
     frame.isExpanded = true
     frame.titleBtn:SetScript("OnClick", function() end)
-    frame.speakerBtn:SetScript("OnClick", SendTestTipsToChat)
+    frame.speakerBtn:SetScript("OnClick", function(_, _, button)
+        if InCombatLockdown() then
+            print("|cffff0000BossTips|r 战斗中无法发送消息。")
+        elseif button == "RightButton" then
+            SendTestTipsToChat("SAY")
+        else
+            SendTestTipsToChat()
+        end
+    end)
+    frame.speakerBtn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("发送攻略")
+        GameTooltip:AddLine("左键：发送到设定频道 (" .. (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT") .. ")", 1, 1, 1)
+        GameTooltip:AddLine("右键：发送到说 (/say)", 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    frame.speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
     mainWindow:Show()
     UpdateLayout()
     UpdateLockVisual()

@@ -271,12 +271,13 @@ addon.GetVersionDungeons = GetVersionDungeons
 local function IsVersionEnabled(verId)
     ensureDBExists()
     local db = BossTipsGlobalDB
-    local isNative = addon.GuideData.versions and addon.GuideData.versions[verId]
-    local isMplus = addon.GuideData.mplus and addon.GuideData.mplus[verId]
-    if isNative then return not (db.disabledNative[verId]) end
-    if isMplus then return not (db.disabledMPlus[verId]) end
-    -- 自定义版本
-    return not (db.disabledCustomVersions and db.disabledCustomVersions[verId])
+    local GD = addon.GuideData
+    -- 多命名空间共享同一版本号（如 12.0 既有 5 人本又有团本）：任一适用命名空间被禁用即视为禁用
+    if GD.versions and GD.versions[verId] and db.disabledNative[verId] then return false end
+    if GD.mplus and GD.mplus[verId] and db.disabledMPlus[verId] then return false end
+    if GD.raids and GD.raids[verId] and db.disabledRaids[verId] then return false end
+    if db.customVersions and db.customVersions[verId] and db.disabledCustomVersions and db.disabledCustomVersions[verId] then return false end
+    return true
 end
 addon.IsVersionEnabled = IsVersionEnabled
 
@@ -1035,7 +1036,7 @@ end
 addon.CollectAllInstances = CollectAllInstances
 
 -- ============ 攻略发送（按 || 分割，约 240 字/条发送） ============
-local function SendBossTips(bossName)
+local function SendBossTips(bossName, channelOverride)
     if not bossName or not addon.currentInstanceName then
         print("|cFFFF0000BossTips|r: 未选中BOSS或副本信息异常")
         return
@@ -1092,10 +1093,15 @@ local function SendBossTips(bossName)
         end
         sortedParts = filtered
     end
-    local chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
-    if chatType == "PARTY" then
-        local numGroup = GetNumGroupMembers() or 0
-        chatType = (numGroup > 5 and "RAID" or "PARTY")
+    local chatType
+    if channelOverride then
+        chatType = channelOverride
+    else
+        chatType = BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"
+        if chatType == "PARTY" then
+            local numGroup = GetNumGroupMembers() or 0
+            chatType = (numGroup > 5 and "RAID" or "PARTY")
+        end
     end
     local index = 1
     local delay = 0.5

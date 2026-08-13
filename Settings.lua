@@ -313,34 +313,48 @@ local guideOptions = {
 
 local function BuildGuideOptions()
     if addon.EnsureDB then addon.EnsureDB() end
-    -- 折叠树：大版本/小版本（同一棵树中的可折叠节点）→ 副本名称（平铺复选框）
+    -- 折叠树：版本节点（原生/M+/自定义 + 团本共享同一版本号）→ 副本名称（平铺复选框，含 5 人本与团本）
     local vt = guideOptions.args.version_tree.args
     for k in pairs(vt) do vt[k] = nil end
-    local order = 1
-    for _, vid in ipairs(addon.GetAllVersionIDs()) do
+    local function buildVersionNode(vid, order)
         local label = addon.GetVersionLabel(vid)
+        if label == tostring(vid) then label = addon.GetRaidVersionLabel(vid) end
         local verArgs = {}
-        -- 版本级开关：启用/隐藏整个版本
+        -- 版本级开关：启用/隐藏整个版本（同时作用于该版本号下的 5 人本与团本命名空间）
         verArgs["enable"] = {
             type = "toggle",
             name = L["Enable this version"],
-            desc = "取消勾选将隐藏该版本下所有副本",
+            desc = "取消勾选将隐藏该版本下所有副本（含团本）",
             width = "full",
             get = function() return addon.IsVersionEnabled(vid) end,
             set = function(_, val)
-                local isNative = addon.GuideData.versions and addon.GuideData.versions[vid]
-                local isMplus = addon.GuideData.mplus and addon.GuideData.mplus[vid]
-                if isNative then BossTipsGlobalDB.disabledNative[vid] = not val end
-                if isMplus then BossTipsGlobalDB.disabledMPlus[vid] = not val end
-                if addon.IsCustomVersion(vid) then BossTipsGlobalDB.disabledCustomVersions[vid] = not val end
+                local GD = addon.GuideData
+                if GD.versions and GD.versions[vid] then BossTipsGlobalDB.disabledNative[vid] = not val end
+                if GD.mplus and GD.mplus[vid] then BossTipsGlobalDB.disabledMPlus[vid] = not val end
+                if GD.raids and GD.raids[vid] then BossTipsGlobalDB.disabledRaids[vid] = not val end
+                if BossTipsGlobalDB.customVersions and BossTipsGlobalDB.customVersions[vid] then
+                    BossTipsGlobalDB.disabledCustomVersions[vid] = not val
+                end
                 addon.RefreshGuides()
             end,
             order = 1,
         }
-        -- 副本级：平铺复选框，勾选=显示，取消勾选=隐藏
-        local dungeons = addon.GetVersionDungeons(vid)
+        -- 分割线：区分「版本级开关」与「副本级复选框」
+        verArgs["divider"] = {
+            type = "header",
+            name = "",
+            order = 1.5,
+            cmdHidden = true,
+        }
+        -- 副本级：平铺复选框（5 人本 + 团本，按版本号合并显示），勾选=显示，取消勾选=隐藏
+        local dungeons = addon.GetVersionDungeons(vid) or {}
         local instList = {}
         for inst in pairs(dungeons) do instList[#instList + 1] = inst end
+        -- 合并同版本号下的团本实例（如 12.0 的 5 人本与团本同节点展示）
+        local raids = addon.GetRaidDungeons(vid) or {}
+        for inst in pairs(raids) do
+            if not dungeons[inst] then instList[#instList + 1] = inst end
+        end
         table.sort(instList)
         local dorder = 2
         for _, inst in ipairs(instList) do
@@ -364,7 +378,21 @@ local function BuildGuideOptions()
             order = order,
             args = verArgs,
         }
+    end
+    local seen = {}
+    local order = 1
+    for _, vid in ipairs(addon.GetAllVersionIDs()) do
+        seen[vid] = true
+        buildVersionNode(vid, order)
         order = order + 1
+    end
+    -- 补充仅团本、无对应 5 人本版本的版本号（如未来团本独占版本）
+    for _, vid in ipairs(addon.GetRaidVersionIDs()) do
+        if not seen[vid] then
+            seen[vid] = true
+            buildVersionNode(vid, order)
+            order = order + 1
+        end
     end
 end
 

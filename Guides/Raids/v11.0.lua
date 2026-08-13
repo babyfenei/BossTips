@@ -1,7 +1,8 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 11.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 11.0 团本攻略（尼鲁巴宫殿 / 玛纳符文熔炉 / 解放安德麦）
+-- 首领 key 为国服权威翻译；encounterId 取自 BigWigs/DBM，准确。
+-- 格式：{rt8}名字{rt8}||关键机制||{rt1}必断/速杀：X{rt1}||坦/治疗/DPS 职责
+-- 资料来源：NGA 国服团本手册 / 地下城手册（机制以官方翻译为准，数值可能随版本变动）。
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -11,67 +12,66 @@ addon.GuideData.meta = addon.GuideData.meta or {}
 
 -- ===================== 尼鲁巴宫殿 (instanceId 2657) =====================
 addon.GuideData.raids["11.0"]["尼鲁巴宫殿"] = {
-    ["Sikran"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["UlgraxtheDevourer"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["TheBloodboundHorror"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Rashanan"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["BloodtwisterOvinax"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["NexusPrincessKyveza"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["TheSilkenCourt"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["QueenAnsurek"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["噬灭者乌格拉克斯"] = { order = 1, type = "BOSS", tips = "{rt8}噬灭者乌格拉克斯{rt8}||[能量]阶段战：P1躲脚下[蛛网]白圈、清[蛛网]、被[拉人]点名去分担后远离；P2无敌[冲锋]4次召唤小虫，远离直线，击杀小虫捡[肉块]投喂Boss回P1||{rt1}必断/速杀：无硬断；P1[剧毒鞭击]全团AOE交减伤，转阶段[饥饿之嚎]大团缺口{rt1}||坦：P1[碾压震慑波]头前扇形不对人群、中技能换嘲；P2躲冲锋拉小虫A掉。治疗：P1 AOE交减伤、[拉人]分担分两组；转阶段[饥饿之嚎]开大招。输出：先让T接仇再打(否则OT劈死半团)；P2躲冲锋A小怪喂肉", tipsByDifficulty = {} },
+    ["苏雷吉队长席克兰"] = { order = 2, type = "BOSS", tips = "{rt8}苏雷吉队长席克兰{rt8}||[相位之刃]头前路径伤害+留[宇宙之影]（正方形分散8码站位）；[诛灭]点3人直线摧毁影子开个人减伤；[粉碎横扫]满能量转阶段击退+摧毁所有影子；[箭雨]地板先躲箭雨再处理刀||{rt1}必断/速杀：无硬断；影子>2个治疗难刷，[诛灭]多灭影子{rt1}||坦：A坦吃前两刀[暴露]、B坦吃第三刀[相位贯突]（受贯突+500%伤）。治疗：盯[宇宙之影]/[宇宙残渣]dot、影子爆炸。输出：正方形分散站位、消除影子、[粉碎横扫]combo开减伤", tipsByDifficulty = {} },
+    ["血缚恐魔"] = { order = 3, type = "BOSS", tips = "{rt8}血缚恐魔{rt8}||固定时间轴；大团分[1/2进场]两组，1进场压力更大（转阶段回来[转阶段AOE]+[治疗吸收盾]+[分散圈]+[吐息]连环）。每轮2次[吐息]2次[毒雨]若干[分散圈]||{rt1}必断/速杀：内场add读条顺劈/打断{rt1}||坦：位置把控、内场快速清add。治疗：内场+吸收盾combo缺口、跑全图大圈回来大量缺口。输出：内场快速清add、外场分散圈躲好", tipsByDifficulty = {} },
+    ["拉夏南"] = { order = 4, type = "BOSS", tips = "{rt8}拉夏南{rt8}||多平台行进战，P1→P2→P1换场地；[喷射丝线]点名白圈出人群拉断分别AOE（别放行进路）；[侵蚀喷涌]dot；[酸液翻腾]；[蛛网之掠]；换场地[分担]前HPS缺口大||{rt1}必断/速杀：无硬断；[酸蚀喷发]/[腐蚀之霰]躲开{rt1}||坦：压力极大覆盖减伤。治疗：[白圈]+[侵蚀喷涌]dot缺口、换场地分担前奶满。输出：跑动中别停手、[蛛网]点名出人群拉断", tipsByDifficulty = {} },
+    ["虫巢扭曲者欧维纳克斯"] = { order = 5, type = "BOSS", tips = "{rt8}虫巢扭曲者欧维纳克斯{rt8}||[试验性剂量]使附近卵孵化放恐魔；[灌输]增加暗影伤害+治疗吸收；[猩红溢流]充满房间使卵孵化；[不稳定的网]驱散时自然伤害+定身；[恶毒之咬]巨蛛伤害递增||{rt1}必断/速杀：中虫读条优先切掉；小虫[感染]用群控阻止繁殖{rt1}||坦：[不稳定的混合物]到期按缺失生命对团造成伤害、换坦dot转平台消。治疗：盯坦克[混合物]、开罐子~160s固定AOE交大树。输出：大蜘蛛平砍、中虫站身边A完、小虫群拉群晕；开罐/开卵顺序听指挥", tipsByDifficulty = {} },
+    ["节点女亲王凯维扎"] = { order = 6, type = "BOSS", tips = "{rt8}节点女亲王凯维扎{rt8}||六边形场地标光柱；[奇袭]/[暮光屠戮]点名5人（只标远程）8秒后暗影伤害+[女王之灾]（可保护免疫）；[虚空裂隙]6裂隙全团86w/s 6秒；[收割]斩杀<10%血；[虚空溃灭]坦承伤增加||{rt1}必断/速杀：幻影[虚空球]爆炸躲开；[节点匕首]读条带Boss到无影子角落消强化影子{rt1}||坦：[深凿重创]使[虚空溃灭]增伤、覆盖减伤。治疗：[女王之灾]点刷+[裂隙]集合团刷+转阶段分散走位团刷。输出：被点名去光柱放分身、[对冲消除法]消影子、P2[喑星之夜]内环旋转AOE左右平移躲地板块", tipsByDifficulty = {} },
+    ["流丝之庭"] = { order = 7, type = "BOSS", tips = "{rt8}流丝之庭{rt8}||双目标[阿努巴拉什]+[纺束者塔卡兹基]共享血量；[妄念印记]/[愠怒印记]红蓝分组互撞秒杀、吃球拾微粒（第三层秒杀）；[束缚之网]连线掉血；[甲虫]咬人200w监视438749||{rt1}必断/速杀：[针刺虫群]驱散触发刺痛爆发转移；[虚空箭]坦预警打断{rt1}||坦：[穿刺喷发]头前扎起保护解、[虚空箭]减伤。治疗：[剧毒之雨]P1独有叠加、[熵能弹幕]团伤+易伤。输出：P1走位吃双色球、[蛛网炸弹]躲开、[掘进喷发]撞墙微团aoe", tipsByDifficulty = {} },
+    ["安苏雷克女王"] = { order = 8, type = "BOSS", tips = "{rt8}安苏雷克女王{rt8}||P1：[反应毒素]8码击退、[反应泡沫]触碰爆发、[毒液新星]扩张环（触泡沫→[反应蒸汽]全团叠加）、[丝织之墓]定身摧毁留[抓取之丝]、[酸蚀]||{rt1}必断/速杀：P1.5[吞噬]12码内灭团技远离；[掠食]护盾期[强征]拉人开减伤{rt1}||坦：P1[液化]+[盛宴]高伤覆盖大减伤。治疗：[刺激气息]每3秒团伤、[酸蚀箭]dot、[掠食之丝]附近伤害。输出：P2[酸液炸弹]躲8码、穿[熵能导能器]干扰排放、[丝织之刃]减速躲开", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["尼鲁巴宫殿"] = { isRaid = true, instanceId = 2657, encounterIds = {
-    ["Sikran"] = 2898,
-    ["UlgraxtheDevourer"] = 2902,
-    ["TheBloodboundHorror"] = 2917,
-    ["Rashanan"] = 2918,
-    ["BloodtwisterOvinax"] = 2919,
-    ["NexusPrincessKyveza"] = 2920,
-    ["TheSilkenCourt"] = 2921,
-    ["QueenAnsurek"] = 2922,
+    ["噬灭者乌格拉克斯"] = 2902,
+    ["苏雷吉队长席克兰"] = 2898,
+    ["血缚恐魔"] = 2917,
+    ["拉夏南"] = 2918,
+    ["虫巢扭曲者欧维纳克斯"] = 2919,
+    ["节点女亲王凯维扎"] = 2920,
+    ["流丝之庭"] = 2921,
+    ["安苏雷克女王"] = 2922,
 } }
 
 -- ===================== 玛纳符文熔炉 (instanceId 2810) =====================
 addon.GuideData.raids["11.0"]["玛纳符文熔炉"] = {
-    ["TheSoulHunters"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["PlexusSentinel"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["SoulbinderNaazindhri"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Loomithar"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["ForgeweaverAraz"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["Fractillus"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["NexusKingSalhadaar"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["DimensiustheAllDevouring"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["集能哨兵"] = { order = 1, type = "BOSS", tips = "{rt8}集能哨兵{rt8}||多阶段场地推进战；[炸弹]底角放、[二连分担]坦克单吃+分摊；P2[过墙]披风/额外技能||{rt1}必断/速杀：无硬断；[虚无爆炸]点全团确定位置分散{rt1}||坦：必穿裹布，底角放炸弹，二连分担。治疗：左右墙边中段放炸弹，二连分担；P2点额外技能过墙集合刷血。输出：底角放炸弹，二连分担；P2过墙集合破盾", tipsByDifficulty = {} },
+    ["卢米萨尔"] = { order = 2, type = "BOSS", tips = "{rt8}卢米萨尔{rt8}||[破盾]顺时针；[连线]集中拉断；[分组分担][震慑波]||{rt1}必断/速杀：无硬断；[豁口]出圈{rt1}||坦：P1顺时针破盾；P2分组分担震慑波。治疗：P1豁口出圈、连线集中拉断；P2分组分担击退Aoe加血。输出：P1打豁口、连线集中拉断；P2分组分担", tipsByDifficulty = {} },
+    ["缚魂者娜欣达利"] = { order = 3, type = "BOSS", tips = "{rt8}缚魂者娜欣达利{rt8}||[罐子]带Boss找罐子拉小怪一起A；[五星放球]射线破罐子；[集体击退]走位||{rt1}必断/速杀：无硬断；小怪拉一起A{rt1}||坦：带Boss找罐子拉小怪一起A。治疗：五星出去放球、射线破罐子、集体击退走位。输出：五星出去放球、射线破罐子、小怪拉一起A、集体击退走位", tipsByDifficulty = {} },
+    ["熔炉编织者阿拉兹"] = { order = 4, type = "BOSS", tips = "{rt8}熔炉编织者阿拉兹{rt8}||[坦克炸弹]开减伤单吃；[侍从]挡射线看层数换T；[顶墙rush]||{rt1}必断/速杀：无硬断；[点名小怪]找Boss沉默出人群{rt1}||坦：P1坦克炸弹开减伤单吃；P2侍从挡射线看层数换T；P3顶墙rush。治疗：P1点名小怪找Boss沉默出人群；P2分组打柱子；P3顶墙控小怪rush。输出：P1点名小怪找Boss沉默出人群转火大怪；P2分组打柱子；P3顶墙控小怪rush", tipsByDifficulty = {} },
+    ["狩魂猎手"] = { order = 5, type = "BOSS", tips = "{rt8}狩魂猎手{rt8}||[破裂][眼棱]放完换T，眼棱T吃魂；[冲锋]路径5人分担；[精华人]吸水；[大喷][射线][大跳]三阶段||{rt1}必断/速杀：无硬断；[幽魂炸弹]躲{rt1}||坦：破裂眼棱放完换T、眼棱T吃魂、1大招分区挡球2大招躲射线3大招追大跳躲大喷。治疗：拉长冲锋线路路径5人分担、刷精华人5层驱散。输出：拉长冲锋线路、精华人吸水、挡球躲射线追大跳躲大喷同时击杀", tipsByDifficulty = {} },
+    ["弗兰克提鲁斯"] = { order = 6, type = "BOSS", tips = "{rt8}弗兰克提鲁斯{rt8}||[最左道]一次猛击一换T；[放墙][破墙]减伤；[结晶震荡波][粉碎抽打]分散||{rt1}必断/速杀：无硬断；[粉碎抽打]分散站位{rt1}||坦：最左道一次猛击一换T。治疗：看位置放墙破墙、破墙减伤。输出：看位置放墙破墙、破墙减伤", tipsByDifficulty = {} },
+    ["节点亲王萨哈达尔"] = { order = 7, type = "BOSS", tips = "{rt8}节点亲王萨哈达尔{rt8}||[四连击]全体分担+单吃震慑波；[吐息]冲外；[上台泰坦]脚下聚怪A；[紫色粉色点名]分组对称放榴莲躲地刺；[射线]瞄准榴莲射爆||{rt1}必断/速杀：无硬断；[处斩]出人群分散{rt1}||坦：P1四连击全体分担单吃震慑波；P2吐息冲外上台泰坦脚下聚怪A；P3紫色粉色点名分组对称放榴莲躲地刺。治疗：P1四连击全体分担减伤；P2场边放圈躲射线；P3紫粉点名分组对称放榴莲躲地刺射线瞄准榴莲射爆减伤加血。输出：P1四连击全体分担减伤；P2场边放圈躲射线上台打泰坦留爆发嗜血打龙；P3紫粉点名分组对称放榴莲躲地刺射线瞄准榴莲射爆", tipsByDifficulty = {} },
+    ["诸界吞噬者迪门修斯"] = { order = 8, type = "BOSS", tips = "{rt8}诸界吞噬者迪门修斯{rt8}||[左右分边上台]中场放炸弹全屏吸力集合；[驭龙术]吃台子下精华15层前换嘲；[破墙]躲冲击波吹风；[黑球]躲吸力[法环]贴1追2远3||{rt1}必断/速杀：无硬断；[暗物质][破碎空间]躲{rt1}||坦：P1左右分边上台中场放炸弹全屏吸力集合；P2驭龙术吃台子下精华15层前换嘲破墙躲冲击波吹风；P3黑球躲吸力法环贴1追2远3。治疗：左右分边吸大炸弹全屏吸力集合。输出：顶墙控小怪rush、黑球躲吸力", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["玛纳符文熔炉"] = { isRaid = true, instanceId = 2810, encounterIds = {
-    ["TheSoulHunters"] = 3122,
-    ["PlexusSentinel"] = 3129,
-    ["SoulbinderNaazindhri"] = 3130,
-    ["Loomithar"] = 3131,
-    ["ForgeweaverAraz"] = 3132,
-    ["Fractillus"] = 3133,
-    ["NexusKingSalhadaar"] = 3134,
-    ["DimensiustheAllDevouring"] = 3135,
+    ["集能哨兵"] = 3122,
+    ["卢米萨尔"] = 3129,
+    ["缚魂者娜欣达利"] = 3130,
+    ["熔炉编织者阿拉兹"] = 3131,
+    ["狩魂猎手"] = 3132,
+    ["弗兰克提鲁斯"] = 3133,
+    ["节点亲王萨哈达尔"] = 3134,
+    ["诸界吞噬者迪门修斯"] = 3135,
 } }
 
 -- ===================== 解放安德麦 (instanceId 2769) =====================
 addon.GuideData.raids["11.0"]["解放安德麦"] = {
-    ["Vexie"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["CauldronofCarnage"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["RikReverb"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["StixBunkjunker"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["SprocketmongerLockenstock"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["TheOneArmedBandit"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["MugZeeHeadsofSecurity"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["ChromeKingGallywix"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["维克茜和磨轮"] = { order = 1, type = "BOSS", tips = "{rt8}维克茜和磨轮{rt8}||P1[召唤摩托]每次3辆躲冲锋路径打掉；[史诗]打掉摩托掉2小圈需接圈喂摩托(每人喂2圈)才可撞Boss；[喷油]点名2人放水沿场边贴边放，浮油使摩托撞不到Boss需爆燃纵火消除||{rt1}必断/速杀：摩托读条打断；[喷油]点名出人群沿边放水{rt1}||坦：[坦爆重击]1层换坦、出水把boss拉出水。治疗：接圈喂摩托、[喷油]dot刷血。输出：打掉摩托、接圈喂摩托、[喷油]沿边放水", tipsByDifficulty = {} },
+    ["血腥大熔炉"] = { order = 2, type = "BOSS", tips = "{rt8}血腥大熔炉{rt8}||双子战；恐龙[喷发重踏]+猩猩[闪电重拳]覆盖减伤；转阶段互换Boss||{rt1}必断/速杀：无硬断；转阶段记得互换boss{rt1}||坦：恐龙喷发重踏/猩猩闪电重拳覆盖减伤，转阶段互换。治疗：双子分摊。输出：转火节奏、转阶段互换", tipsByDifficulty = {} },
+    ["里克·混响"] = { order = 3, type = "BOSS", tips = "{rt8}里克·混响{rt8}||[耳鸣]5层左右换坦；出[增幅器]把boss拉开||{rt1}必断/速杀：无硬断；[增幅器]出后把boss拉开{rt1}||坦：[耳鸣]5层换坦、出增幅器拉开。治疗：耳鸣dot刷血。输出：增幅器处理、boss拉开避免叠加", tipsByDifficulty = {} },
+    ["斯提克斯·堆渣"] = { order = 4, type = "BOSS", tips = "{rt8}斯提克斯·堆渣{rt8}||读条[电磁分拣]时换坦(嘲早了球点另一个T)；[熔毁]覆盖减伤；滚球优先滚炸弹其次滚boss不能滚到螃蟹||{rt1}必断/速杀：[电磁分拣]读条打断/换坦；滚球优先炸弹{rt1}||坦：读条电磁分拣换坦、[熔毁]减伤。治疗：熔毁dot。输出：滚球优先炸弹、转火", tipsByDifficulty = {} },
+    ["链齿狂人洛肯斯多"] = { order = 5, type = "BOSS", tips = "{rt8}链齿狂人洛肯斯多{rt8}||[纵火派对包]点出后换坦；读条时换坦会导致点另一个T；[重力停滞]高层数+派对包炸时覆盖减伤；个别波次放爆炸+吸人+射线同出小心被吸到射线||{rt1}必断/速杀：无硬断；派对包炸覆盖减伤{rt1}||坦：[纵火派对包]点出换坦、[重力停滞]减伤。治疗：派对包炸+重力停滞团伤。输出：换场顺序左上-左下/右上-左上，爆炸+吸人+射线同出小心", tipsByDifficulty = {} },
+    ["独臂盗匪"] = { order = 6, type = "BOSS", tips = "{rt8}独臂盗匪{rt8}||[重棒登场]覆盖减伤并换坦；[水]贴边场放，放好全程不点塔消水||{rt1}必断/速杀：无硬断；水贴边放{rt1}||坦：[重棒登场]减伤换坦。治疗：水dot刷血。输出：放水贴边、打boss", tipsByDifficulty = {} },
+    ["穆格·兹伊安保头子"] = { order = 7, type = "BOSS", tips = "{rt8}穆格·兹伊安保头子{rt8}||土半场：放[土牢]-打T换坦-土牢救完带boss中场；电半场：刮两小怪-分摊后带中场-挡线换坦；P2带增伤平砍极高覆盖减伤||{rt1}必断/速杀：小怪处理；挡[双厄射击]线{rt1}||坦：一坦吃[熔火真金指虎]绕场跑消层、一坦挡[双厄射击]（挡完有线dot）。治疗：土牢救援、分摊。输出：土牢救援、小怪、挡线", tipsByDifficulty = {} },
+    ["铬武大王加里维克斯"] = { order = 8, type = "BOSS", tips = "{rt8}铬武大王加里维克斯{rt8}||P1[裂破弹药筒]换坦，偶数次喷完出[炸弹圈]+2哑弹(坦克点掉，哑弹爆快没点掉灭团)；高层[技巧射击]减伤留给它；P2不换坦固定一T抗；P3[超大更猛炸弹轰击]换坦||{rt1}必断/速杀：[毁灭一切]可中断；哑弹坦克点掉；P2换场爆炸出2哑弹不抗boss的T去点{rt1}||坦：P1裂破弹药筒换坦、点哑弹先接boss的T先点；P3打压自尊覆盖减伤。治疗：炸药dot、哑弹爆炸。输出：哑弹点掉、躲弹药筒", tipsByDifficulty = {} },
 }
 addon.GuideData.meta["解放安德麦"] = { isRaid = true, instanceId = 2769, encounterIds = {
-    ["Vexie"] = 3009,
-    ["CauldronofCarnage"] = 3010,
-    ["RikReverb"] = 3011,
-    ["StixBunkjunker"] = 3012,
-    ["SprocketmongerLockenstock"] = 3013,
-    ["TheOneArmedBandit"] = 3014,
-    ["MugZeeHeadsofSecurity"] = 3015,
-    ["ChromeKingGallywix"] = 3016,
+    ["维克茜和磨轮"] = 3009,
+    ["血腥大熔炉"] = 3010,
+    ["里克·混响"] = 3011,
+    ["斯提克斯·堆渣"] = 3012,
+    ["链齿狂人洛肯斯多"] = 3013,
+    ["独臂盗匪"] = 3014,
+    ["穆格·兹伊安保头子"] = 3015,
+    ["铬武大王加里维克斯"] = 3016,
 } }
-

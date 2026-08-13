@@ -188,6 +188,23 @@ local function SmartExpandBoss(name)
 end
 addon.SmartExpandBoss = SmartExpandBoss
 
+-- ============ 按 encounterId 智能展开（团本可靠命中，无需依赖国服名匹配） ============
+local function SmartExpandByEncounterId(encId)
+    if not BossTipsGlobalDB.autoExpandOnTarget then return end
+    if addon.manuallyHidden then return end
+    if not addon.currentInstanceName then return end
+    encId = tostring(encId)
+    local GD = addon.GuideData
+    local meta = GD and GD.meta and GD.meta[addon.currentInstanceName]
+    if not meta or not meta.encounterIds then return end
+    local match
+    for boss, eid in pairs(meta.encounterIds) do
+        if tostring(eid) == encId then match = boss; break end
+    end
+    if match then SelectBossAndShow(match) end
+end
+addon.SmartExpandByEncounterId = SmartExpandByEncounterId
+
 -- ============ 匹配当前副本 ============
 local function CheckInstance()
     local name, _, difficultyID, _, _, _, _, id = GetInstanceInfo()
@@ -300,9 +317,11 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
             if targetName then SmartExpandBoss(targetName) end
         end
     elseif event == "ENCOUNTER_START" then
+        local encounterId = arg1
         local encounterName = arg2
-        if BossTipsGlobalDB.autoExpandOnTarget and encounterName then
-            SmartExpandBoss(encounterName)
+        if BossTipsGlobalDB.autoExpandOnTarget then
+            if encounterName then SmartExpandBoss(encounterName) end
+            if encounterId then addon.SmartExpandByEncounterId(encounterId) end
         end
     end
 end)
@@ -338,12 +357,44 @@ function addon:SelectInstanceAndShow(instanceName)
     UpdateMainButtonVisibility()
 end
 
+-- ============ 导出团本首领国服名（供离线翻译回填） ============
+-- 在国服客户端内运行：遍历所有团本首领，用 EJ_GetEncounterInfo(encId) 取权威中文名，
+-- 打印可回传的 [encId] = "国服名" 块。把 CN_EXPORT_START/END 之间的内容贴回对话即可让助手批量替换。
+function addon:ExportRaidCnNames()
+    local GD = addon.GuideData
+    if not GD or not GD.raids then
+        print("|cFFFF0000BossTips|r 无团本数据")
+        return
+    end
+    local lines, count = {}, 0
+    for _, ver in pairs(GD.raids) do
+        for inst, bosses in pairs(ver) do
+            for boss, entry in pairs(bosses) do
+                local eid = addon.GetBossEncounterId and addon.GetBossEncounterId(inst, boss)
+                if eid then
+                    local ej = (EJ_GetEncounterInfo and pcall(EJ_GetEncounterInfo, tonumber(eid)) and EJ_GetEncounterInfo(tonumber(eid))) or ""
+                    if ej and ej ~= "" then
+                        table.insert(lines, string.format('    [%s] = "%s",  -- %s @ %s', eid, ej, boss, inst))
+                        count = count + 1
+                    end
+                end
+            end
+        end
+    end
+    print("|cFF00FF00BossTips|r 导出国服名 " .. count .. " 条，复制 CN_EXPORT_START ~ END 之间内容回传：")
+    print("CN_EXPORT_START")
+    for _, l in ipairs(lines) do print(l) end
+    print("CN_EXPORT_END")
+end
+
 -- ============ 斜杠命令 ============
 SLASH_BOSSTIPS1 = "/bts"
 SlashCmdList["BOSSTIPS"] = function(msg)
     msg = msg and string.lower(strtrim(msg)) or ""
     if msg == "manage" or msg == "edit" then
         addon:OpenEditor()
+    elseif msg == "exportcn" then
+        addon:ExportRaidCnNames()
     elseif msg == "lock" then
         BossTipsGlobalDB.lockWindow = not BossTipsGlobalDB.lockWindow
         if addon.UpdateWindowLock then addon:UpdateWindowLock() end

@@ -818,6 +818,11 @@ local function SendBossTips(bossName)
         return
     end
     local tips = BossData[addon.currentInstanceName][bossName].tips
+    -- 聊天发送前预处理：技能简写转可点击法术链接、{rt1}高亮块加★、剥除其余 rt 表情
+    tips = string.gsub(tips, "%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
+    tips = string.gsub(tips, "{rt1}(.-){rt1}", "★ %1")
+    tips = string.gsub(tips, "{rt%d}", "")
+    tips = string.gsub(tips, "%[rt%d%]", "")
     if not tips then
         print("|cFFFF0000BossTips|r: 无", bossName, "的攻略信息")
         return

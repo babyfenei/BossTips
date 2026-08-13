@@ -101,8 +101,11 @@ end
 -- ============ 攻略文本格式化（删除 rt 表情，技能/必断着色） ============
 -- 已移除 RT_COLORS：用户要求攻略框体不再显示 {rtN} 表情，仅保留技能着色
 local function ColorSkill(skill)
-    if skill:find("打断") or skill:find("必断") or skill:find("^断") then
+    if skill:find("打断") or skill:find("必断") or skill:find("^断") or skill:find("^速断") then
         return "|cffff3333[" .. skill .. "]|r"
+    end
+    if skill:find("速杀") or skill:find("重点") or skill:find("关注") or skill:find("集火") or skill:find("优先") then
+        return "|cffffcc00[" .. skill .. "]|r"
     end
     return "|cff33ff33[" .. skill .. "]|r"
 end
@@ -110,22 +113,39 @@ end
 local function FormatTips(text)
     if not text or text == "" then return "" end
 
-    -- 第一步：删除所有 {rtN} / [rtN] 表情标记（用户要求攻略框体不再显示表情）
+    -- 第0步：作者简写 [技能名|spell:ID] -> 可点击法术链接 |Hspell:ID|h技能名|h
+    text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", function(name, id)
+        return "|Hspell:" .. id .. "|h" .. name .. "|h"
+    end)
+
+    -- 第1步：抽取已有超链接 |H...|h...|h，避免被后续着色/分段破坏
+    local links = {}
+    text = string.gsub("(|H[^|]*|h.-|h)", function(h)
+        links[#links + 1] = h
+        return "\001" .. #links .. "\001"
+    end)
+
+    -- 第2步：{rt1}...{rt1} 视为「重点关注/打断」高亮块（保留语义，不显示图标）
+    text = string.gsub(text, "{rt1}(.-){rt1}", function(inner)
+        return "|cffffcc00★ " .. inner .. "|r"
+    end)
+
+    -- 第3步：删除其余 {rtN} / [rtN] 表情标记（用户要求框体不再显示图标）
     text = string.gsub(text, "{rt%d}", "")
     text = string.gsub(text, "%[rt%d%]", "")
 
-    -- 第二步：[技能名] -> 绿色；含打断/必断 -> 红色
+    -- 第4步：[技能名] -> 着色（打断/必断红、速杀/重点金、其余绿）
     text = string.gsub(text, "%[([^%]]+)%]", function(skill)
         return ColorSkill(skill)
     end)
 
-    -- 第三步："打断技能名" 或 "断技能名" -> 红色
+    -- 第5步：自由文本中的 打断xxx / 断xxx 标红
     text = string.gsub(text, "(打断)([^%s，。；：,;!！?？]+)", "|cffff3333%1%2|r")
     text = string.gsub(text, "([^%a])(断)([^%s，。；：,;!！?？]+)", function(pre, a, b)
         return pre .. "|cffff3333" .. a .. b .. "|r"
     end)
 
-    -- 第四步：按 || 分段，并规范化颜色代码
+    -- 第6步：按 || 分段，并规范化颜色代码
     local segments = { strsplit("||", text) }
     local out = {}
     for _, seg in ipairs(segments) do
@@ -135,7 +155,13 @@ local function FormatTips(text)
             table.insert(out, seg)
         end
     end
-    return table.concat(out, "\n")
+    local result = table.concat(out, "\n")
+
+    -- 第7步：还原超链接
+    result = string.gsub(result, "\001(%d+)\001", function(n)
+        return links[tonumber(n)] or ""
+    end)
+    return result
 end
 addon.FormatTips = FormatTips
 
@@ -429,6 +455,21 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
                 note:SetJustifyH("LEFT")
                 note:SetWordWrap(true)
+                note:SetHyperlinksEnabled(true)
+                note:SetScript("OnHyperlinkClick", function(_, link)
+                    if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
+                        GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                        GameTooltip:SetHyperlink(link)
+                        GameTooltip:Show()
+                    end
+                end)
+                note:SetScript("OnHyperlinkEnter", function(_, link)
+                    if link and link:find("^spell:") then
+                        GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
+                        GameTooltip:SetHyperlink(link)
+                    end
+                end)
+                note:SetScript("OnHyperlinkLeave", function() GameTooltip:Hide() end)
                 frame.noteText = note
 
                 targetFrames[i] = frame

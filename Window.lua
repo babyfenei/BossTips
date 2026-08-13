@@ -138,40 +138,54 @@ local function FormatTips(text)
     if not text or text == "" then return "" end
 
     -- 第0步：作者简写 [技能名|spell:ID] -> 仅保留 [技能名] 并着色
-    --（当前正式服 FontString 不支持可点击超链接脚本，故去掉 |H...|h 转换）
     text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", function(name)
         return "[" .. name .. "]"
     end)
 
-    -- 第1步：抽取已有超链接 |H...|h...|h，避免被后续着色/分段破坏
+    -- 第1步：抽取已有超链接 |H...|h...|h，避免被后续替换单 | 破坏
     local links = {}
     text = string.gsub(text, "(|H[^|]*|h.-|h)", function(h)
         links[#links + 1] = h
         return "\001" .. #links .. "\001"
     end)
 
-    -- 第2步：{rt1}...{rt1} 视为「重点关注/打断」高亮块（保留语义，不显示图标）
+    -- 第2步：BOSS 名（{rt8}...{rt8}）独占一行；后面紧跟的 | 视为换行
+    text = string.gsub(text, "^{rt8}(.-){rt8}|", "%1\n")
+    text = string.gsub(text, "^{rt8}(.-){rt8}", "%1\n")
+
+    -- 第3步：|| 显式换行；其余单 | 视为段落内分隔，替换为空格
+    --（| 在 FontString 中是转义字符，必须处理，否则会导致显示异常）
+    text = string.gsub(text, "||", "\002")
+    text = string.gsub(text, "|", " ")
+
+    -- 第4步：{rt1}...{rt1} 视为「重点关注/打断」高亮块
     text = string.gsub(text, "{rt1}(.-){rt1}", function(inner)
         return "|cffffcc00★ " .. inner .. "|r"
     end)
 
-    -- 第3步：删除其余 {rtN} / [rtN] 表情标记（用户要求框体不再显示图标）
+    -- 第5步：删除其余 {rtN} / [rtN] 表情标记
     text = string.gsub(text, "{rt%d}", "")
     text = string.gsub(text, "%[rt%d%]", "")
 
-    -- 第4步：[技能名] -> 着色（打断/必断红、速杀/重点金、其余绿）
+    -- 第6步：[技能名] -> 着色
     text = string.gsub(text, "%[([^%]]+)%]", function(skill)
         return ColorSkill(skill)
     end)
 
-    -- 第5步：自由文本中的 打断xxx / 断xxx 标红
+    -- 第7步：自由文本中的 打断xxx / 断xxx 标红
     text = string.gsub(text, "(打断)([^%s，。；：,;!！?？]+)", "|cffff3333%1%2|r")
     text = string.gsub(text, "([^%a])(断)([^%s，。；：,;!！?？]+)", function(pre, a, b)
         return pre .. "|cffff3333" .. a .. b .. "|r"
     end)
 
-    -- 第6步：按 || 分段，并规范化颜色代码
-    local segments = { strsplit("||", text) }
+    -- 第8步：还原 || 换行与超链接
+    text = string.gsub(text, "\002", "\n")
+    text = string.gsub(text, "\001(%d+)\001", function(n)
+        return links[tonumber(n)] or ""
+    end)
+
+    -- 第9步：按 \n 分段，trim，规范化颜色
+    local segments = { strsplit("\n", text) }
     local out = {}
     for _, seg in ipairs(segments) do
         seg = strtrim(seg)
@@ -180,13 +194,7 @@ local function FormatTips(text)
             table.insert(out, seg)
         end
     end
-    local result = table.concat(out, "\n")
-
-    -- 第7步：还原超链接
-    result = string.gsub(result, "\001(%d+)\001", function(n)
-        return links[tonumber(n)] or ""
-    end)
-    return result
+    return table.concat(out, "\n")
 end
 addon.FormatTips = FormatTips
 

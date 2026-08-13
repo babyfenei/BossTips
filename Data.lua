@@ -601,25 +601,33 @@ end
 
 local function B64Encode(raw)
     if not raw or raw == "" then return "" end
-    if C_Base64 and C_Base64.Encode then
-        local ok, res = pcall(C_Base64.Encode, raw)
-        if ok and res and res ~= "" then return res end
-    end
-    -- 兜底：纯 Lua base64，保证导出码为可见 ASCII，可在 EditBox 中复制
+    -- 统一使用纯 Lua base64，避免不同客户端 C_Base64 实现不一致导致导入失败
     local ok, res = pcall(LuaBase64Encode, raw)
     if ok and res and res ~= "" then return res end
+    -- 极端 fallback
+    if C_Base64 and C_Base64.Encode then
+        local ok2, res2 = pcall(C_Base64.Encode, raw)
+        if ok2 and res2 and res2 ~= "" then return res2 end
+    end
     return raw
 end
 
 local function B64Decode(b64)
     if not b64 or b64 == "" then return "" end
-    if C_Base64 and C_Base64.Decode then
-        local ok, res = pcall(C_Base64.Decode, b64)
-        if ok and res then return res end
-    end
+    local candidates = {}
+    -- 优先尝试 Lua fallback（与新导出保持一致）
     local ok, res = pcall(LuaBase64Decode, b64)
-    if ok and res then return res end
-    return b64
+    if ok and res then table.insert(candidates, res) end
+    -- 兼容旧版 C_Base64 导出的码
+    if C_Base64 and C_Base64.Decode then
+        local ok2, res2 = pcall(C_Base64.Decode, b64)
+        if ok2 and res2 then table.insert(candidates, res2) end
+    end
+    -- 选择看起来像有效数据的结果
+    for _, raw in ipairs(candidates) do
+        if raw:sub(1, 3) == "BT2" or raw:find("\001") then return raw end
+    end
+    return candidates[1] or b64
 end
 
 -- 旧版：仅导出 guides（兼容已有的纯 guides 分享码）

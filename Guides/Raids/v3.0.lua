@@ -1,7 +1,7 @@
 -- ============================================================================
--- BossTips Raid Guide Data —— 版本 3.0 团本骨架（自动生成，攻略正文待补）
--- 说明：实例 key 为国服名；首领 key 暂用英文/文件名（第7项国服翻译核对后替换）。
---       encounterId 取自 BigWigs/DBM，准确；智能展开按 encId 反查 CN 命中。
+-- BossTips Raid Guide Data —— 版本 3.0 团本攻略
+-- 实例 key 为国服名；首领 key 为国服名；encounterId 取自 BigWigs/DBM（原样保留）。
+-- 攻略格式：{rt8}名字{rt8}||[机制]描述||{rt1}必断/速杀：…{rt1}||坦：…治疗：…输出：…
 -- ============================================================================
 local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {} }
@@ -11,18 +11,18 @@ addon.GuideData.meta = addon.GuideData.meta or {}
 
 -- ===================== 冰冠堡垒 (instanceId 631) =====================
 addon.GuideData.raids["3.0"]["冰冠堡垒"] = {
-    ["玛洛加尔领主"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["亡语者女士"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["冰冠冰川炮舰战"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["死亡使者萨鲁法尔"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["烂肠"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["腐面"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["普崔塞德教授"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["鲜血王子议会"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["鲜血女王兰娜瑟尔"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["踏梦者瓦莉瑟瑞娅"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["辛达苟萨"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["巫妖王"] = { order = 12, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["玛洛加尔领主"] = { order = 1, type = "BOSS", tips = [=[{rt8}玛洛加尔领主{rt8}||[寒冰]全团周期高伤；[骨刺]点名需集火打断；[狂暴]计时||{rt1}必断/速杀：无；[骨刺]被点名集火打掉{rt1}||坦：拉住；输出：转火骨刺]=], tipsByDifficulty = {} },
+    ["亡语者女士"] = { order = 2, type = "BOSS", tips = [=[{rt8}亡语者女士{rt8}||[召唤亡魂]分阶段召唤需清；[暗影]dot||{rt1}必断/速杀：无；清召唤亡魂{rt1}||坦：拉住；输出：清add]=], tipsByDifficulty = {} },
+    ["冰冠冰川炮舰战"] = { order = 3, type = "BOSS", tips = [=[{rt8}冰冠冰川炮舰战{rt8}||[炮舰]两船对轰，需打炮/投弹轰对面；[冰]落点||{rt1}必断/速杀：无；打炮击对面船{rt1}||坦：无；输出：操炮]=], tipsByDifficulty = {} },
+    ["死亡使者萨鲁法尔"] = { order = 4, type = "BOSS", tips = [=[{rt8}死亡使者萨鲁法尔{rt8}||[血兽]点名追治疗需坦接；[符文]死亡留下需踩；[狂暴]计时||{rt1}必断/速杀：无；[血兽]坦接、踩符文{rt1}||坦：接血兽；输出：踩符文]=], tipsByDifficulty = {} },
+    ["烂肠"] = { order = 5, type = "BOSS", tips = [=[{rt8}烂肠{rt8}||[毒气]周期全团需吃[蘑菇]减伤；[疾病]叠层||{rt1}必断/速杀：无；吃蘑菇减毒{rt1}||坦：拉住；治疗：团刷]=], tipsByDifficulty = {} },
+    ["腐面"] = { order = 6, type = "BOSS", tips = [=[{rt8}腐面{rt8}||[疫病]点名炸弹需远离引爆；[小软]刷新需控||{rt1}必断/速杀：无；[疫病]被点名远离人群{rt1}||坦：拉住；输出：控小软]=], tipsByDifficulty = {} },
+    ["普崔塞德教授"] = { order = 7, type = "BOSS", tips = [=[{rt8}普崔塞德教授{rt8}||[实验]多阶段，[毒]与[突变]切换；[酸雨]放置||{rt1}必断/速杀：无；按实验阶段应对{rt1}||坦：拉住；输出：转火]=], tipsByDifficulty = {} },
+    ["鲜血王子议会"] = { order = 8, type = "BOSS", tips = [=[{rt8}鲜血王子议会{rt8}||[三王子]共享血量分边集火；[暗/火/奥]混合；[吸血]回血||{rt1}必断/速杀：无；分边集火单只{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["鲜血女王兰娜瑟尔"] = { order = 9, type = "BOSS", tips = [=[{rt8}鲜血女王兰娜瑟尔{rt8}||[咬]点名传染需链传递；[血镜]镜像；[暗影]dot||{rt1}必断/速杀：无；[咬]按顺序链传递{rt1}||坦：拉住；治疗：解毒]=], tipsByDifficulty = {} },
+    ["踏梦者瓦莉瑟瑞娅"] = { order = 10, type = "BOSS", tips = [=[{rt8}踏梦者瓦莉瑟瑞娅{rt8}||[梦境]本体不可攻击，需进梦境打[梦魇]portal 救；[火]全团||{rt1}必断/速杀：无；进梦境清怪救本体{rt1}||坦：拉；输出：进梦境]=], tipsByDifficulty = {} },
+    ["辛达苟萨"] = { order = 11, type = "BOSS", tips = [=[{rt8}辛达苟萨{rt8}||[冰墓]点名冻结需远离；[狂风]吹风减员；[狂暴]计时||{rt1}必断/速杀：无；[冰墓]被点名跑开{rt1}||坦：拉住；输出：速杀]=], tipsByDifficulty = {} },
+    ["巫妖王"] = { order = 12, type = "BOSS", tips = [=[{rt8}巫妖王{rt8}||[污染]点名放圈扩散；[灵魂]收割需躲；[寄生]dot；P3[霜]全团；P5[无敌]阶段||{rt1}必断/速杀：无；[污染]被点名放圈、躲收割{rt1}||坦：拉住；治疗：团刷]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["冰冠堡垒"] = { isRaid = true, instanceId = 631, encounterIds = {
     ["玛洛加尔领主"] = 1624,
@@ -41,11 +41,11 @@ addon.GuideData.meta["冰冠堡垒"] = { isRaid = true, instanceId = 631, encoun
 
 -- ===================== 十字军的试炼 (instanceId 649) =====================
 addon.GuideData.raids["3.0"]["十字军的试炼"] = {
-    ["诺森德猛兽"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["加拉克苏斯大王"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["部落的冠军"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["瓦格里双子"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["阿努巴拉克"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["诺森德猛兽"] = { order = 1, type = "BOSS", tips = [=[{rt8}诺森德猛兽{rt8}||[三兽]依次登场，[毒]与[火]混合；[打断]关键||{rt1}必断/速杀：按机制打断；依次击杀{rt1}||坦：轮换；输出：转火]=], tipsByDifficulty = {} },
+    ["加拉克苏斯大王"] = { order = 2, type = "BOSS", tips = [=[{rt8}加拉克苏斯大王{rt8}||[传送门]需进传送门打断施法；[地狱火]落点||{rt1}必断/速杀：进传送门打断；躲地狱火{rt1}||坦：拉住；输出：进门]=], tipsByDifficulty = {} },
+    ["部落的冠军"] = { order = 3, type = "BOSS", tips = [=[{rt8}部落的冠军{rt8}||[多职业]五个敌方职业各有技能，需控场逐个；[心控]||{rt1}必断/速杀：控/打断关键；逐个击破{rt1}||坦：分坦；输出：控]=], tipsByDifficulty = {} },
+    ["瓦格里双子"] = { order = 4, type = "BOSS", tips = [=[{rt8}瓦格里双子{rt8}||[光暗]需同色站位，异色受伤；[护盾]||{rt1}必断/速杀：无；同色站位集火{rt1}||坦：分坦]=], tipsByDifficulty = {} },
+    ["阿努巴拉克"] = { order = 5, type = "BOSS", tips = [=[{rt8}阿努巴拉克{rt8}||[钻地]周期钻地，需打[寒冰]块迫使出土；[刺]点名||{rt1}必断/速杀：无；打冰块迫出土{rt1}||坦：拉住；输出：打冰]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["十字军的试炼"] = { isRaid = true, instanceId = 649, encounterIds = {
     ["诺森德猛兽"] = 1618,
@@ -57,21 +57,21 @@ addon.GuideData.meta["十字军的试炼"] = { isRaid = true, instanceId = 649, 
 
 -- ===================== 纳克萨玛斯 (instanceId 533) =====================
 addon.GuideData.raids["3.0"]["纳克萨玛斯"] = {
-    ["阿努布雷坎"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["黑女巫法琳娜"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["迈克斯纳"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["药剂师诺斯"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["肮脏的希尔盖"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["洛欧塞布"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["教官拉苏维奥斯"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["收割者戈提克"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["天启四骑士"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["帕奇维克"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["格罗布鲁斯"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["格拉斯"] = { order = 12, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["塔迪乌斯"] = { order = 13, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["萨菲隆"] = { order = 14, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["克尔苏加德"] = { order = 15, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["阿努布雷坎"] = { order = 1, type = "BOSS", tips = [=[{rt8}阿努布雷坎{rt8}||[虫群]点名追人需跑；[地穴卫士]坦接||{rt1}必断/速杀：无；被[虫群]绕圈跑{rt1}||坦：接卫士；输出：清虫]=], tipsByDifficulty = {} },
+    ["黑女巫法琳娜"] = { order = 2, type = "BOSS", tips = [=[{rt8}黑女巫法琳娜{rt8}||[狂暴]叠层需持续断[鞭挞]抑制||{rt1}必断/速杀：[鞭挞]必断防狂暴{rt1}||坦：拉住；输出：安排断]=], tipsByDifficulty = {} },
+    ["迈克斯纳"] = { order = 3, type = "BOSS", tips = [=[{rt8}迈克斯纳{rt8}||[网]定身；[毒]dot；[小蜘蛛]刷新||{rt1}必断/速杀：无；被网等救{rt1}||坦：拉；输出：清蜘蛛]=], tipsByDifficulty = {} },
+    ["药剂师诺斯"] = { order = 4, type = "BOSS", tips = [=[{rt8}药剂师诺斯{rt8}||[传送]换位；[冰霜]周期全团||{rt1}必断/速杀：无；传送后找位{rt1}||坦：拉；治疗：团刷冰]=], tipsByDifficulty = {} },
+    ["肮脏的希尔盖"] = { order = 5, type = "BOSS", tips = [=[{rt8}肮脏的希尔盖{rt8}||[跳舞]走位机，踩死圈即死需跟节奏||{rt1}必断/速杀：无；按安全圈走位{rt1}||坦：拉；输出：走位中输出]=], tipsByDifficulty = {} },
+    ["洛欧塞布"] = { order = 6, type = "BOSS", tips = [=[{rt8}洛欧塞布{rt8}||[孢子]云内回血；[治疗抑制]周期禁治疗||{rt1}必断/速杀：无；孢子期刷血{rt1}||坦：拉；治疗：孢子期爆发]=], tipsByDifficulty = {} },
+    ["教官拉苏维奥斯"] = { order = 7, type = "BOSS", tips = [=[{rt8}教官拉苏维奥斯{rt8}||[学员]控制小怪对其释放[命令]打断本体||{rt1}必断/速杀：无；控小怪用命令断本体{rt1}||坦：本体由学员控；输出：控小怪]=], tipsByDifficulty = {} },
+    ["收割者戈提克"] = { order = 8, type = "BOSS", tips = [=[{rt8}收割者戈提克{rt8}||[两侧门]活侧/死侧按节奏换边||{rt1}必断/速杀：无；按指示换边{rt1}||坦：分坦；输出：换边]=], tipsByDifficulty = {} },
+    ["天启四骑士"] = { order = 9, type = "BOSS", tips = [=[{rt8}天启四骑士{rt8}||[印记]叠层换坦，4坦分散；共享仇恨||{rt1}必断/速杀：无；印记换坦{rt1}||坦：4坦分散换坦；治疗：分边]=], tipsByDifficulty = {} },
+    ["帕奇维克"] = { order = 10, type = "BOSS", tips = [=[{rt8}帕奇维克{rt8}||[狂暴]肉搏战高额普攻；限时||{rt1}必断/速杀：无；坦硬抗{rt1}||坦：主坦硬抗；治疗：预读]=], tipsByDifficulty = {} },
+    ["格罗布鲁斯"] = { order = 11, type = "BOSS", tips = [=[{rt8}格罗布鲁斯{rt8}||[毒云]放置后扩散需移动放||{rt1}必断/速杀：无；移动放毒{rt1}||坦：拉移动；输出：跟着移]=], tipsByDifficulty = {} },
+    ["格拉斯"] = { order = 12, type = "BOSS", tips = [=[{rt8}格拉斯{rt8}||[吃尸]吞小怪回血需控；[狂暴]计时||{rt1}必断/速杀：控/杀小怪防回血{rt1}||坦：拉；输出：控小怪]=], tipsByDifficulty = {} },
+    ["塔迪乌斯"] = { order = 13, type = "BOSS", tips = [=[{rt8}塔迪乌斯{rt8}||[极性]正负电荷，同极受伤异极回血需换边||{rt1}必断/速杀：无；按极性换边{rt1}||坦：按极性；输出：换边]=], tipsByDifficulty = {} },
+    ["萨菲隆"] = { order = 14, type = "BOSS", tips = [=[{rt8}萨菲隆{rt8}||[冰墓]冻结点名远离；[深呼吸]扫射躲侧||{rt1}必断/速杀：无；冰墓跑开深呼吸躲侧{rt1}||坦：拉；输出：躲机制]=], tipsByDifficulty = {} },
+    ["克尔苏加德"] = { order = 15, type = "BOSS", tips = [=[{rt8}克尔苏加德{rt8}||P1[小怪]；P2[寒冰]护盾；P3[心控]点名需断救||{rt1}必断/速杀：P3[心控]速断救人{rt1}||坦：拉；输出：P1清小怪P3救人]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["纳克萨玛斯"] = { isRaid = true, instanceId = 533, encounterIds = {
     ["阿努布雷坎"] = 1601,
@@ -93,7 +93,7 @@ addon.GuideData.meta["纳克萨玛斯"] = { isRaid = true, instanceId = 533, enc
 
 -- ===================== 红玉圣殿 (instanceId 724) =====================
 addon.GuideData.raids["3.0"]["红玉圣殿"] = {
-    ["海里昂"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["海里昂"] = { order = 1, type = "BOSS", tips = [=[{rt8}海里昂{rt8}||[双空间]现实/梦境，需进传送门打分身；[火]全团；[狂暴]计时||{rt1}必断/速杀：无；进传送门集火分身{rt1}||坦：拉；输出：进门]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["红玉圣殿"] = { isRaid = true, instanceId = 724, encounterIds = {
     ["海里昂"] = 1652,
@@ -101,20 +101,20 @@ addon.GuideData.meta["红玉圣殿"] = { isRaid = true, instanceId = 724, encoun
 
 -- ===================== 奥杜尔 (instanceId 603) =====================
 addon.GuideData.raids["3.0"]["奥杜尔"] = {
-    ["烈焰巨兽"] = { order = 1, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["掌炉者伊格尼斯"] = { order = 2, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["锋鳞"] = { order = 3, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["XT-002拆解者"] = { order = 4, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["钢铁议会"] = { order = 5, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["科隆加恩"] = { order = 6, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["欧尔莉亚"] = { order = 7, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["霍迪尔"] = { order = 8, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["托里姆"] = { order = 9, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["弗蕾亚"] = { order = 10, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["米米尔隆"] = { order = 11, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["维扎克斯将军"] = { order = 12, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["尤格-萨隆"] = { order = 13, type = "BOSS", tips = "", tipsByDifficulty = {} },
-    ["观察者奥尔加隆"] = { order = 14, type = "BOSS", tips = "", tipsByDifficulty = {} },
+    ["烈焰巨兽"] = { order = 1, type = "BOSS", tips = [=[{rt8}烈焰巨兽{rt8}||[载具]需开攻城车载具打；[火]落点||{rt1}必断/速杀：无；载具集火{rt1}||坦：无；输出：载具]=], tipsByDifficulty = {} },
+    ["掌炉者伊格尼斯"] = { order = 2, type = "BOSS", tips = [=[{rt8}掌炉者伊格尼斯{rt8}||[铁球]需用水浇灭成[冰]让坦拉；[火]||{rt1}必断/速杀：无；浇水成冰控{rt1}||坦：拉冰；输出：浇]=], tipsByDifficulty = {} },
+    ["锋鳞"] = { order = 3, type = "BOSS", tips = [=[{rt8}锋鳞{rt8}||[炮]需打场内炮击龙；[火]俯冲||{rt1}必断/速杀：无；打炮击龙{rt1}||坦：拉；输出：操炮]=], tipsByDifficulty = {} },
+    ["XT-002拆解者"] = { order = 4, type = "BOSS", tips = [=[{rt8}XT-002拆解者{rt8}||[心]周期暴露需集火；[炸弹]点名放圈；[狂暴]计时||{rt1}必断/速杀：无；[炸弹]放圈、集火心{rt1}||坦：拉；输出：转火心]=], tipsByDifficulty = {} },
+    ["钢铁议会"] = { order = 5, type = "BOSS", tips = [=[{rt8}钢铁议会{rt8}||[三矮人]共享血量，需按指定顺序集火；[电]||{rt1}必断/速杀：无；按序集火{rt1}||坦：分坦；输出：集火]=], tipsByDifficulty = {} },
+    ["科隆加恩"] = { order = 6, type = "BOSS", tips = [=[{rt8}科隆加恩{rt8}||[手臂]分离需打掉；[碎石]落点||{rt1}必断/速杀：无；打掉手臂{rt1}||坦：拉；输出：转火手臂]=], tipsByDifficulty = {} },
+    ["欧尔莉亚"] = { order = 7, type = "BOSS", tips = [=[{rt8}欧尔莉亚{rt8}||[哨兵]召唤需清；[光]点名||{rt1}必断/速杀：无；清哨兵{rt1}||坦：拉；输出：清add]=], tipsByDifficulty = {} },
+    ["霍迪尔"] = { order = 8, type = "BOSS", tips = [=[{rt8}霍迪尔{rt8}||[冰环]周期需破冰救；[火]增益站位；[狂暴]计时||{rt1}必断/速杀：无；破冰环、吃火站{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["托里姆"] = { order = 9, type = "BOSS", tips = [=[{rt8}托里姆{rt8}||[两侧]跑通道触发；[闪电]全团；[狂暴]计时||{rt1}必断/速杀：无；跑通道、躲闪电{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["弗蕾亚"] = { order = 10, type = "BOSS", tips = [=[{rt8}弗蕾亚{rt8}||[三长老]需先清三长老再打本体；[自然]dot||{rt1}必断/速杀：无；清三长老{rt1}||坦：拉；输出：清长老]=], tipsByDifficulty = {} },
+    ["米米尔隆"] = { order = 11, type = "BOSS", tips = [=[{rt8}米米尔隆{rt8}||[三阶段]机器人/火山/头部，[炸弹]点名；[狂暴]计时||{rt1}必断/速杀：无；[炸弹]放圈{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["维扎克斯将军"] = { order = 12, type = "BOSS", tips = [=[{rt8}维扎克斯将军{rt8}||[黑水]点名圈高伤；[暗]；[狂暴]计时||{rt1}必断/速杀：无；[黑水]被点名分散{rt1}||坦：拉；输出：速杀]=], tipsByDifficulty = {} },
+    ["尤格-萨隆"] = { order = 13, type = "BOSS", tips = [=[{rt8}尤格-萨隆{rt8}||[心智]进梦境保san值；[触手]需打；P3[本体]；[狂暴]计时||{rt1}必断/速杀：无；进梦境打触手{rt1}||坦：拉；输出：转火]=], tipsByDifficulty = {} },
+    ["观察者奥尔加隆"] = { order = 14, type = "BOSS", tips = [=[{rt8}观察者奥尔加隆{rt8}||[宇宙]全团周期高伤；[星]点名；[狂暴]极短计时||{rt1}必断/速杀：无；[星]被点名远离{rt1}||坦：拉；治疗：团刷；输出：速杀]=], tipsByDifficulty = {} },
 }
 addon.GuideData.meta["奥杜尔"] = { isRaid = true, instanceId = 603, encounterIds = {
     ["烈焰巨兽"] = 1637,

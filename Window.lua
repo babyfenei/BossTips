@@ -463,7 +463,8 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
                 note:SetJustifyH("LEFT")
                 note:SetWordWrap(true)
-                note:SetHyperlinksEnabled(true)
+                -- 部分 WoW API 中 FontString:SetHyperlinksEnabled 不存在；OnHyperlinkClick 已足够
+                if note.SetHyperlinksEnabled then note:SetHyperlinksEnabled(true) end
                 note:SetScript("OnHyperlinkClick", function(_, link)
                     if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
                         GameTooltip:SetOwner(note, "ANCHOR_CURSOR")
@@ -564,7 +565,7 @@ function addon.ShowTestWindow()
         local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         note:SetJustifyH("LEFT")
         note:SetWordWrap(true)
-        note:SetHyperlinksEnabled(true)
+        if note.SetHyperlinksEnabled then note:SetHyperlinksEnabled(true) end
         note:SetScript("OnHyperlinkClick", function(_, link)
             if link and link:find("^spell:") and not IsModifiedClick("CHATLINK") then
                 GameTooltip:SetOwner(note, "ANCHOR_CURSOR")

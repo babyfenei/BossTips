@@ -63,8 +63,8 @@ local function CreateMainButton()
         self:SetBackdropBorderColor(0.6, 0.8, 1.0, 1.0)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:AddLine("BossTips")
-        GameTooltip:AddLine("左键：打开/关闭当前副本攻略窗", 1, 1, 1)
-        GameTooltip:AddLine("右键：打开设置面板", 1, 1, 1)
+        GameTooltip:AddLine("左键：打开/关闭攻略框体（非副本时显示测试窗口）", 1, 1, 1)
+        GameTooltip:AddLine("右键：打开/关闭设置面板", 1, 1, 1)
         GameTooltip:AddLine("拖拽：按住左键拖动按钮位置", 0.8, 0.8, 0.8)
         GameTooltip:Show()
     end)
@@ -89,45 +89,43 @@ local function CreateMainButton()
             -- 保存位置
             local p, _, rp, xOfs, yOfs = self:GetPoint()
             BossTipsGlobalDB.mainButtonPos = { point = p, relativePoint = rp, xOffset = xOfs, yOffset = yOfs }
-            -- 位移很小视为点击（小幅拖动容错）
-            if moved < 10 then
-                if InCombatLockdown() then
-                    print("|cffff0000BossTips|r 战斗中无法切换攻略窗。")
-                    return
-                end
-                if not addon.currentInstanceName then
-                    print("|cffff0000BossTips|r 当前不在可识别的副本中，已打开攻略编辑器供浏览。")
-                    addon:OpenEditor()
-                    return
-                end
-                if not HasCurrentMapGuide() then
-                    print("|cffff0000BossTips|r 当前副本没有攻略数据，已打开攻略编辑器供浏览。")
-                    addon:OpenEditor()
-                    return
-                end
-                if addon.tipsFrame:IsShown() then
-                    addon.tipsFrame:Hide()
-                    addon.manuallyHidden = true
-                else
-                    addon.manuallyHidden = false
-                    if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
-                    local ok, err = pcall(function()
-                        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
-                    end)
-                    if not ok then
-                        print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
-                        print("|cffff0000BossTips|r 请把上面错误复制反馈；已为你打开攻略编辑器。")
-                        addon:OpenEditor()
+                -- 位移很小视为点击（小幅拖动容错）
+                if moved < 10 then
+                    if InCombatLockdown() then
+                        print("|cffff0000BossTips|r 战斗中无法切换攻略窗。")
+                        return
+                    end
+                    -- 左键：始终切换攻略框体（非副本时显示测试窗口）
+                    if addon.tipsFrame:IsShown() then
+                        addon.tipsFrame:Hide()
+                        addon.manuallyHidden = true
+                    else
+                        addon.manuallyHidden = false
+                        if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
+                        local ok, err
+                        if addon.currentInstanceName and HasCurrentMapGuide() then
+                            ok, err = pcall(function()
+                                addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                            end)
+                        else
+                            ok, err = pcall(function()
+                                addon.ShowTestWindow()
+                            end)
+                        end
+                        if not ok then
+                            print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
+                            print("|cffff0000BossTips|r 请把上面错误复制反馈；已为你打开攻略编辑器。")
+                            addon:OpenEditor()
+                        end
                     end
                 end
+            elseif button == "RightButton" then
+                if not InCombatLockdown() then
+                    addon:OpenMainGUI()
+                else
+                    print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
+                end
             end
-        elseif button == "RightButton" then
-            if not InCombatLockdown() then
-                addon:OpenMainGUI()
-            else
-                print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
-            end
-        end
     end)
 
     addon.mainButton = btn

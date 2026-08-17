@@ -35,7 +35,9 @@ local function CreateMainButton()
     if addon.mainButton then return addon.mainButton end
     local btn = CreateFrame("Button", "BossTipsMainButton", UIParent, "BackdropTemplate")
     btn:SetSize(96, 30)
-    btn:SetFrameStrata("HIGH")
+    -- 层级置于系统 UI 之下：LOW 在 BACKGROUND 之上、MEDIUM/HIGH 系统框体之下，
+    -- 避免悬浮按钮遮挡系统面板/菜单/下拉框。
+    btn:SetFrameStrata("LOW")
     local pos = BossTipsGlobalDB.mainButtonPos or { point = "TOPLEFT", relativePoint = "TOPLEFT", xOffset = 20, yOffset = -50 }
     btn:SetPoint(pos.point or "TOPLEFT", UIParent, pos.relativePoint or "TOPLEFT", pos.xOffset or 20, pos.yOffset or -50)
     btn:SetMovable(true)

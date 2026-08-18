@@ -2,7 +2,7 @@
 ## Title: Boss Tips
 ## Notes: 副本一句话攻略提示插件（Ace3 重写版）
 ## Author: nga_以德报德,nga_babyfenei
-## Version: 2.0.0
+## Version: 1.4.3
 ## SavedVariables: BossTipsGlobalDB
 
 # 内置 Ace3 库 + Libs（自包含，离线可用）

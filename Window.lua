@@ -31,7 +31,7 @@ addon.tipsFrame = mainWindow
 
 -- 当前窗口的临时状态（不写入 SavedVariables）
 mainWindow.showMobs = BossTipsGlobalDB.showMobs  -- 当前窗口是否显示小怪
-mainWindow.difficulty = "normal"                 -- 当前显示难度（normal/heroic/mythic/mythicplus/lfr）
+mainWindow.difficulty = "mythicplus"             -- 当前显示难度（默认 M+；五人本进本自动 M+，团本自动普通）
 
 local titleText = mainWindow:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 titleText:SetPoint("TOP", 0, -10)
@@ -278,15 +278,59 @@ end)
 -- ============ 难度选择按钮（循环切换） ============
 local DIFFICULTY_ORDER = { "lfr", "normal", "heroic", "mythic", "mythicplus" }
 local DIFFICULTY_LABELS = { lfr = "随机", normal = "普通", heroic = "英雄", mythic = "史诗", mythicplus = "史诗+" }
+-- 团本没有 M+ 模式（M+ 仅大秘境），团本难度循环不含 mythicplus
+local function IsCurrentRaid()
+    local name = addon.currentInstanceName
+    local meta = addon.GuideData and addon.GuideData.meta and name and addon.GuideData.meta[name]
+    return meta and meta.isRaid or false
+end
+local function GetDiffOrder()
+    -- 仅返回设置中“启用显示”的难度；团本不含史诗+
+    return addon.GetEnabledDiffOrder(IsCurrentRaid())
+end
+
+-- 获取当前窗口应循环的难度列表：取「实例中至少有一个 BOSS 有攻略」的难度 与 「设置中启用」的交集。
+local function GetWindowCycleDiffs()
+    local instance = addon.currentInstanceName
+    if not instance then return GetDiffOrder() end
+    local BossData = addon.GetBossData()
+    local inst = BossData and BossData[instance]
+    if not inst then return GetDiffOrder() end
+
+    local isRaid = IsCurrentRaid()
+    local availMap = {}
+    for boss, entry in pairs(inst) do
+        local diffs = addon.GetBossAvailableDifficulties(instance, boss, isRaid)
+        for _, d in ipairs(diffs) do availMap[d] = true end
+    end
+
+    local order = GetDiffOrder()
+    local out = {}
+    for _, k in ipairs(order) do
+        if availMap[k] then out[#out + 1] = k end
+    end
+    if #out == 0 then
+        -- 当前实例没有任何难度有攻略时回退到启用列表，避免按钮空白
+        return order
+    end
+    return out
+end
+
+-- 难度按钮标签：不再显示「通用」（通用攻略已并入随机/普通等真实难度）
+local function GetDiffButtonLabel(diffKey)
+    return DIFFICULTY_LABELS[diffKey] or "普通"
+end
+
 local diffBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
 diffBtn:SetSize(80, 24)
 diffBtn:SetScript("OnClick", function()
-    local cur = mainWindow.difficulty or "normal"
+    local order = GetWindowCycleDiffs()
+    local cur = mainWindow.difficulty
+    if not cur or not tContains(order, cur) then cur = order[1] or "normal" end
     local idx = 1
-    for i, v in ipairs(DIFFICULTY_ORDER) do if v == cur then idx = i; break end end
-    local nextIdx = (idx % #DIFFICULTY_ORDER) + 1
-    mainWindow.difficulty = DIFFICULTY_ORDER[nextIdx]
-    diffBtn:SetText("难度: " .. DIFFICULTY_LABELS[mainWindow.difficulty])
+    for i, v in ipairs(order) do if v == cur then idx = i; break end end
+    mainWindow.difficulty = order[(idx % #order) + 1]
+    diffBtn:SetText("难度: " .. GetDiffButtonLabel(mainWindow.difficulty))
     if addon.currentInstanceName then
         addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
     end
@@ -388,7 +432,7 @@ UpdateLayout = function()
         mobBtn:SetPoint("TOP", mainWindow, "TOP", 45, currentY)
         mobBtn:Show()
 
-        diffBtn:SetText("难度: " .. (DIFFICULTY_LABELS[mainWindow.difficulty] or "普通"))
+        diffBtn:SetText("难度: " .. GetDiffButtonLabel(mainWindow.difficulty))
         diffBtn:ClearAllPoints()
         diffBtn:SetPoint("TOPRIGHT", mainWindow, "TOPRIGHT", -10, -10)
         diffBtn:Show()
@@ -409,11 +453,15 @@ end)
 -- ============ 显示实例攻略 ============
 function addon:ShowWindow(instanceData) end  -- 占位（保持接口兼容）
 
--- 重置攻略窗口位置到默认可见区域，用于修复窗口被拖到屏幕外导致"点了不弹"
+-- 重置攻略窗口位置：默认位于主按钮正下方并左对齐
 function addon.ResetTipsFramePos()
     BossTipsGlobalDB.tipsFramePos = nil
     mainWindow:ClearAllPoints()
-    mainWindow:SetPoint("RIGHT", UIParent, "RIGHT", -150, 0)
+    if addon.mainButton then
+        mainWindow:SetPoint("TOPLEFT", addon.mainButton, "BOTTOMLEFT", 0, -5)
+    else
+        mainWindow:SetPoint("RIGHT", UIParent, "RIGHT", -150, 0)
+    end
 end
 
 function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
@@ -429,6 +477,9 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
             BossTipsGlobalDB.tipsFramePos.x or -150,
             BossTipsGlobalDB.tipsFramePos.y or 0
         )
+    elseif addon.mainButton then
+        mainWindow:ClearAllPoints()
+        mainWindow:SetPoint("TOPLEFT", addon.mainButton, "BOTTOMLEFT", 0, -5)
     end
     titleText:SetText(instanceName)
 
@@ -438,23 +489,49 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
     local BossData = addon.GetBossData()
     local instance = BossData and BossData[instanceName]
     if instance then
-        -- 按 order 排序 boss 列表；根据当前窗口难度选择对应攻略；过滤小怪
-        local diff = mainWindow.difficulty or "normal"
-        local sorted = {}
+        -- 按 order 排序 boss 列表（保留 entry，便于后面按难度取 tips）
+        local isRaid = IsCurrentRaid()
+        local sortedBosses = {}
         for boss, entry in pairs(instance) do
             local etype = entry.type or "BOSS"
             if etype ~= "MOB" or mainWindow.showMobs then
-                local tips = entry.tips
-                if type(entry.tipsByDifficulty) == "table" and entry.tipsByDifficulty[diff] then
-                    tips = entry.tipsByDifficulty[diff]
-                end
-                sorted[#sorted + 1] = { name = boss, tips = tips, order = entry.order or 999, type = etype }
+                sortedBosses[#sortedBosses + 1] = { name = boss, entry = entry, order = entry.order or 999, type = etype }
             end
         end
-        table.sort(sorted, function(a, b)
+        table.sort(sortedBosses, function(a, b)
             if a.order ~= b.order then return a.order < b.order end
             return a.name < b.name
         end)
+
+        -- 确定上下文 BOSS（选中或第一个），用于难度标签判断
+        local contextBoss = nil
+        if selectedBoss then
+            for _, t in ipairs(sortedBosses) do
+                if t.name == selectedBoss then contextBoss = t; break end
+            end
+        end
+        if not contextBoss then contextBoss = sortedBosses[1] end
+        mainWindow.contextBossName = contextBoss and contextBoss.name or nil
+
+        -- 计算当前实例可用的难度（至少一个 BOSS 有攻略 且 设置中启用）
+        local availDiffs = GetWindowCycleDiffs()
+        mainWindow.availableDifficulties = availDiffs
+
+        -- 若当前难度不在可用列表中，回退到第一个可用难度
+        local diff = mainWindow.difficulty
+        if not diff or not tContains(availDiffs, diff) then
+            diff = availDiffs[1] or addon.GetFirstEnabledDifficulty(isRaid)
+            mainWindow.difficulty = diff
+        end
+        if isRaid and diff == "mythicplus" then diff = "normal" end
+
+        -- 按当前难度取出每个 BOSS 的 tips（MOB 仍用外层 tips）
+        local sorted = {}
+        for _, t in ipairs(sortedBosses) do
+            local entry = t.entry
+            local tips = addon.GetTipsForDifficulty(entry, diff)
+            sorted[#sorted + 1] = { name = t.name, tips = tips, order = t.order, type = t.type }
+        end
         -- 隐藏多余的旧 frame
         for j = #sorted + 1, #targetFrames do targetFrames[j].inUse = false end
         for i, target in ipairs(sorted) do

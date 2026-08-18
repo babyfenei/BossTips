@@ -8,6 +8,38 @@ local L = addon.L
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
+-- ============ 难度显示开关 ============
+-- 设置面板可勾选要展示的难度；未勾选的难度不会出现在攻略窗难度切换列表，
+-- 也不会作为进本自动切换的默认难度。数据与筛选逻辑见 Core.lua：addon.IsDifficultyEnabled 等。
+local DIFF_TOGGLE_LABELS = {
+    lfr = "随机（LFR）",
+    normal = "普通",
+    heroic = "英雄",
+    mythic = "史诗",
+    mythicplus = "史诗+（大秘境）",
+}
+local function MakeDiffToggle(key)
+    return {
+        type = "toggle",
+        name = DIFF_TOGGLE_LABELS[key] or key,
+        desc = "取消勾选后，该难度不会出现在攻略窗的难度切换列表中，也不会作为进本后的默认显示难度。",
+        width = "full",
+        get = function()
+            local ed = BossTipsGlobalDB.enabledDifficulties
+            return ed == nil or ed[key] ~= false  -- 缺省（未设置）= 启用
+        end,
+        set = function(_, val)
+            if not BossTipsGlobalDB.enabledDifficulties then BossTipsGlobalDB.enabledDifficulties = {} end
+            BossTipsGlobalDB.enabledDifficulties[key] = val
+            -- 刷新攻略窗：若当前显示难度被关闭，会在 ShowInstanceGuide 中自动回退到首个启用难度
+            if addon.RefreshGuides then addon.RefreshGuides() end
+            if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+            end
+        end,
+    }
+end
+
 local function ApplyThemeToSettingsFrame()
     local ACD = LibStub("AceConfigDialog-3.0", true)
     local openFrame = ACD and ACD.OpenFrames and ACD.OpenFrames["BossTips"]
@@ -125,6 +157,20 @@ local options = {
                             order = 5,
                         },
                     }
+                },
+                difficulty_visibility = {
+                    type = "group",
+                    name = "难度显示",
+                    desc = "勾选要在攻略窗中展示的难度；未勾选的难度不会出现在难度切换列表，也不会作为进本后的默认难度。",
+                    inline = true,
+                    order = 2.5,
+                    args = {
+                        diff_lfr = MakeDiffToggle("lfr"),
+                        diff_normal = MakeDiffToggle("normal"),
+                        diff_heroic = MakeDiffToggle("heroic"),
+                        diff_mythic = MakeDiffToggle("mythic"),
+                        diff_mythicplus = MakeDiffToggle("mythicplus"),
+                    },
                 },
                 chat_output = {
                     type = "group",
@@ -358,9 +404,15 @@ local guideOptions = {
     childGroups = "tree",
     args = {
         -- 最上方：编辑攻略按钮（直接显示在面板顶部，非树节点）
+        open_editor_hint = {
+            type = "description",
+            name = "点击下方按钮打开攻略编辑器，可修改任意副本/首领的攻略文本。",
+            fontSize = "medium",
+            order = 0.5,
+        },
         open_editor = {
             type = "execute",
-            name = L["Open Guide Editor"] or "编辑攻略",
+            name = "|cffffcc00› 编辑攻略 ‹|r",
             desc = "打开攻略编辑器，增删改任意副本/首领的攻略文本。",
             width = "full",
             order = 1,
@@ -369,18 +421,23 @@ local guideOptions = {
                 addon:OpenEditor()
             end,
         },
+        editor_divider = {
+            type = "header",
+            name = "副本与分类",
+            order = 2,
+        },
         -- 5人本 / 团本 树（单击节点即可展开/折叠）
         dungeon_tree = {
             type = "group",
             name = "5人本",
-            order = 4,
+            order = 3,
             childGroups = "tree",
             args = {},
         },
         raid_tree = {
             type = "group",
             name = "团本",
-            order = 5,
+            order = 4,
             childGroups = "tree",
             args = {},
         },

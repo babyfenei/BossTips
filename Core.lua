@@ -5,7 +5,7 @@
 local addonName, addon = ...
 local L = addon.L
 
-addon.version = "2.0.0"
+addon.version = "1.4.3"
 addon.currentInstanceName = nil
 addon.currentSelectedBoss = nil
 addon.manuallyHidden = false
@@ -224,6 +224,80 @@ local function DiffIDToKey(diffId)
 end
 addon.DiffIDToKey = DiffIDToKey
 
+-- ============ 难度显示开关 ============
+-- 设置面板可勾选要展示的难度，未勾选的难度不出现在攻略窗难度切换列表、
+-- 也不作为进本自动切换的默认难度。数据存放于 BossTipsGlobalDB.enabledDifficulties。
+function addon.IsDifficultyEnabled(key)
+    if not key then return false end
+    local ed = BossTipsGlobalDB.enabledDifficulties
+    return ed == nil or ed[key] ~= false  -- 缺省（未设置）= 启用
+end
+
+-- 返回当前应展示的难度顺序（已按开关过滤）。isRaid=true 时去掉史诗+（M+ 仅大秘境）。
+-- 显示顺序：随机 → 普通 → 英雄 → 史诗 → 史诗+（与设置面板、循环按钮一致）。
+function addon.GetEnabledDiffOrder(isRaid)
+    local base = isRaid and { "lfr", "normal", "heroic", "mythic" }
+                         or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
+    local out = {}
+    for _, k in ipairs(base) do
+        if addon.IsDifficultyEnabled(k) then out[#out + 1] = k end
+    end
+    if #out == 0 then out = base end  -- 全部关闭时回退全开，避免无难度可选
+    return out
+end
+
+function addon.GetFirstEnabledDifficulty(isRaid)
+    local order = addon.GetEnabledDiffOrder(isRaid)
+    return order[1] or "normal"
+end
+
+-- 把某个难度键规范化到「已启用」集合内；若被关闭则回退到首个启用的难度。
+function addon.ResolveVisibleDifficulty(diffKey, isRaid)
+    if addon.IsDifficultyEnabled(diffKey) then return diffKey end
+    return addon.GetFirstEnabledDifficulty(isRaid)
+end
+
+-- 返回指定 BOSS 实际有攻略内容的难度键列表（已按显示顺序排列）。
+-- 规则：
+-- 1. 遍历 DIFF_ORDER，若 tipsByDifficulty[key] 非空则纳入。
+-- 2. 与设置中的「启用难度」取交集；若交集为空则返回第 1 步结果（避免无难度可选）。
+-- normal 为真实难度（五人本=链接4普通攻略，团本=普通难度），仅在有专属内容时显示。
+-- isRaid 仅用于剔除团本不存在的 mythicplus。
+function addon.GetBossAvailableDifficulties(instanceName, bossName, isRaid)
+    local BossData = addon.GetBossData and addon.GetBossData()
+    local entry = BossData and BossData[instanceName] and BossData[instanceName][bossName]
+    if not entry then return {} end
+
+    local base = isRaid and { "lfr", "normal", "heroic", "mythic" }
+                         or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
+    local available = {}
+    for _, k in ipairs(base) do
+        local hasSpecific = type(entry.tipsByDifficulty) == "table" and
+                            type(entry.tipsByDifficulty[k]) == "string" and
+                            entry.tipsByDifficulty[k] ~= ""
+        if hasSpecific then
+            available[#available + 1] = k
+        end
+    end
+
+    -- 再与「设置中启用的难度」取交集
+    local enabled = {}
+    for _, k in ipairs(available) do
+        if addon.IsDifficultyEnabled(k) then enabled[#enabled + 1] = k end
+    end
+    if #enabled == 0 then
+        -- 全被设置关闭时，回退到 available，保证至少能看
+        return available
+    end
+    return enabled
+end
+
+-- normal 为真实难度（普通），不再回退通用攻略并标注「通用」。
+-- 五人本攻略按 随机/普通/英雄/史诗/史诗+ 分难度独立存放；团本按 随机/普通/英雄/史诗。
+function addon.IsDifficultyGeneric(instanceName, bossName, diffKey)
+    return false
+end
+
 local function CheckInstance()
     local name, _, difficultyID, _, _, _, _, id = GetInstanceInfo()
     local prevInstance = addon.currentInstanceName
@@ -276,10 +350,14 @@ local function CheckInstance()
             addon.currentInstanceName or "|cffff0000未匹配|r"))
     end
 
-    -- 按副本难度自动切换攻略窗难度（随机/普通/英雄/史诗/史诗+）
+    -- 按副本难度自动切换攻略窗难度（默认：五人本→史诗+(M+)，团本→普通(PT)）
+    -- 若首选难度被设置关闭或无内容，由其本身回退逻辑处理（ShowInstanceGuide 会回退到首个可用难度）。
     if addon.currentInstanceName and addon.tipsFrame then
-        local diffKey = addon.DiffIDToKey and addon.DiffIDToKey(difficultyID)
-        if diffKey then addon.tipsFrame.difficulty = diffKey end
+        local isRaid = false
+        local m = addon.GuideData and addon.GuideData.meta and addon.GuideData.meta[addon.currentInstanceName]
+        if m and m.isRaid then isRaid = true end
+        local preferred = isRaid and "normal" or "mythicplus"
+        addon.tipsFrame.difficulty = addon.ResolveVisibleDifficulty(preferred, isRaid)
     end
 
     local mode = BossTipsGlobalDB.guideWindowMode or "auto"
@@ -332,7 +410,7 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
             local BossTipsLDB = LDB:NewDataObject("BossTips", {
                 type = "data source",
                 text = "BossTips",
-                icon = "Interface\\Icons\\INV_Misc_QuestionMark",
+                icon = "Interface\\AddOns\\BossTips\\logo.png",
                 OnClick = function(self, button)
                     if InCombatLockdown() then
                         print("|cffff0000BossTips|r 战斗中无法打开面板。")

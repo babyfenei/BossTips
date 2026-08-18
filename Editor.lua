@@ -15,10 +15,9 @@ local SEP = "/"
 -- 编辑器当前显示的标签页：地下城(dungeon) / 团本(raid)
 local editorMode = "dungeon"
 
--- 当前正在编辑的难度（"all"=通用攻略；否则编辑该难度专属文本）
-local editDiff = "all"
+-- 当前正在编辑的难度（各难度独立编辑；已取消「通用」聚合难度，改为分别编辑 随机/英雄/史诗/史诗+）
+local editDiff = "lfr"
 local DIFF_EDIT_OPTIONS = {
-    ["all"] = "通用（所有难度）",
     ["lfr"] = "随机",
     ["normal"] = "普通",
     ["heroic"] = "英雄",
@@ -39,6 +38,13 @@ local DIFFICULTIES = {
     ["heroic"] = L["Heroic"],
     ["mythic"] = L["Mythic"],
     ["mythicplus"] = L["Mythic Plus Short"],
+}
+-- 团本无 M+ 模式（M+ 仅大秘境），团本难度类型不含 mythicplus
+local RAID_DIFFICULTIES = {
+    [""] = L["No Limit"],
+    ["normal"] = L["Normal"],
+    ["heroic"] = L["Heroic"],
+    ["mythic"] = L["Mythic"],
 }
 
 local function IsBuiltInVersion(verId)
@@ -428,22 +434,16 @@ local function SaveBossTips(instName, bossName, text)
     BossTipsGlobalDB.guides = BossTipsGlobalDB.guides or {}
     BossTipsGlobalDB.guides[instName] = BossTipsGlobalDB.guides[instName] or {}
     local rg = BossTipsGlobalDB.guides[instName][bossName]
-    if editDiff == "all" then
-        if type(rg) == "table" then
-            rg.tips = text
-        else
-            BossTipsGlobalDB.guides[instName][bossName] = text
-        end
-    else
-        -- 编辑特定难度：确保该条目标为 table 并写入 tipsByDifficulty
-        if type(rg) ~= "table" then
-            local base = (type(rg) == "string" and rg) or ""
-            rg = { tips = base, type = "BOSS", tipsByDifficulty = {} }
-            BossTipsGlobalDB.guides[instName][bossName] = rg
-        end
-        rg.tipsByDifficulty = rg.tipsByDifficulty or {}
-        rg.tipsByDifficulty[editDiff] = text
+    -- 编辑特定难度：确保该条目标为 table 并写入 tipsByDifficulty
+    if type(rg) ~= "table" then
+        local base = (type(rg) == "string" and rg) or ""
+        rg = { tips = base, type = "BOSS", tipsByDifficulty = {} }
+        BossTipsGlobalDB.guides[instName][bossName] = rg
     end
+    rg.tipsByDifficulty = rg.tipsByDifficulty or {}
+    rg.tipsByDifficulty[editDiff] = text
+    -- 编辑随机(lfr)时同步更新 tips 字段，保持兜底内容一致
+    if editDiff == "lfr" then rg.tips = text end
     addon.RefreshGuides()
 end
 
@@ -463,22 +463,26 @@ end
 local function GetRawGuide(instName, bossName)
     local entry = addon.GetActiveGuideEntry(instName, bossName)
     local rg = BossTipsGlobalDB.guides[instName] and BossTipsGlobalDB.guides[instName][bossName]
-    local curTips = ""
     local currentType = (entry and entry.type) or "BOSS"
-    -- WTF 覆盖层的难度专属文本优先
-    if editDiff ~= "all" and type(rg) == "table" and rg.tipsByDifficulty and rg.tipsByDifficulty[editDiff] and rg.tipsByDifficulty[editDiff] ~= "" then
-        curTips = rg.tipsByDifficulty[editDiff]
-    elseif type(rg) == "table" then
-        curTips = rg.tips or ""
-        currentType = rg.type or currentType
-    elseif rg then
-        curTips = rg
-    elseif entry then
-        if editDiff ~= "all" and type(entry.tipsByDifficulty) == "table" and entry.tipsByDifficulty[editDiff] and entry.tipsByDifficulty[editDiff] ~= "" then
-            curTips = entry.tipsByDifficulty[editDiff]
-        else
-            curTips = entry.tips or ""
+
+    local function extractTips(tbl)
+        if type(tbl) ~= "table" then return nil end
+        if tbl.tipsByDifficulty and tbl.tipsByDifficulty[editDiff] and tbl.tipsByDifficulty[editDiff] ~= "" then
+            return tbl.tipsByDifficulty[editDiff]
         end
+        if tbl.tips and tbl.tips ~= "" then return tbl.tips end
+        return nil
+    end
+
+    local curTips
+    local wtfTips = rg and extractTips(rg)
+    if wtfTips then
+        curTips = wtfTips
+        if type(rg) == "table" and rg.type then currentType = rg.type end
+    elseif entry then
+        curTips = addon.GetTipsForDifficulty(entry, editDiff)
+    else
+        curTips = ""
     end
     return curTips, currentType
 end
@@ -508,6 +512,9 @@ function addon:CreateEditorFrame()
     end)
 
     -- 顶部工具栏：标签页切换（地下城/团本）+ 展开/折叠
+    -- 前置声明 treeGroup：下方“一键展开/折叠”按钮闭包需捕获本变量，
+    -- 否则若在按钮之后才 local treeGroup，闭包会捕获到 nil/外层变量导致按钮失效。
+    local treeGroup
     local toolbar = AceGUI:Create("SimpleGroup")
     toolbar:SetLayout("Flow")
     toolbar:SetFullWidth(true)
@@ -572,7 +579,7 @@ function addon:CreateEditorFrame()
     frame:AddChild(toolbar)
     RefreshTabHighlight()
 
-    local treeGroup = AceGUI:Create("TreeGroup")
+    treeGroup = AceGUI:Create("TreeGroup")
     -- TreeGroup 右侧内容区应使用 Fill，让 ScrollFrame 占满整个右侧面板
     treeGroup:SetLayout("Fill")
     treeGroup:SetTreeWidth(260)
@@ -991,7 +998,7 @@ function addon:CreateEditorFrame()
 
                 local diffDD = AceGUI:Create("Dropdown")
                 diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(DIFFICULTIES)
+                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
                 diffDD:SetValue("")
                 AddRow(scroll, typeDD, diffDD)
 
@@ -1043,7 +1050,7 @@ function addon:CreateEditorFrame()
                 typeDD:SetValue("")
                 local diffDD = AceGUI:Create("Dropdown")
                 diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(DIFFICULTIES)
+                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
                 diffDD:SetValue("")
                 AddRow(scroll, typeDD, diffDD)
                 AddButton(scroll, L["Save Dungeon"] or "保存并添加副本", function()
@@ -1261,10 +1268,17 @@ function addon:CreateEditorFrame()
                     AddFullWidth(scroll, typeDD)
                 end
 
-                -- 编辑难度选择（团本/地下城均可为不同难度写不同攻略）
+                -- 编辑难度选择（团本无 M+ 模式，仅大秘境有 M+；取消「通用」聚合，改为分难度编辑）
+                if isRaid and editDiff == "mythicplus" then editDiff = "lfr" end
+                local diffEditList = isRaid and {
+                    ["lfr"] = "随机",
+                    ["normal"] = "普通",
+                    ["heroic"] = "英雄",
+                    ["mythic"] = "史诗",
+                } or DIFF_EDIT_OPTIONS
                 local diffDD = AceGUI:Create("Dropdown")
                 diffDD:SetLabel("编辑难度（可为不同难度写不同攻略）")
-                diffDD:SetList(DIFF_EDIT_OPTIONS)
+                diffDD:SetList(diffEditList)
                 diffDD:SetValue(editDiff)
                 diffDD:SetCallback("OnValueChanged", function(_, _, v)
                     editDiff = v
@@ -1273,7 +1287,7 @@ function addon:CreateEditorFrame()
                 AddFullWidth(scroll, diffDD)
 
                 -- 文本笔记
-                local diffLabel = DIFF_EDIT_OPTIONS[editDiff] or "通用"
+                local diffLabel = DIFF_EDIT_OPTIONS[editDiff] or "随机"
                 local noteEdit = AceGUI:Create("MultiLineEditBox")
                 noteEdit:SetLabel("文本笔记（当前：|cff00ccff" .. diffLabel .. "|r，输入后自动保存）")
                 noteEdit:SetText(curTips)
@@ -1321,7 +1335,7 @@ function addon:CreateEditorFrame()
 
                 local diffDD = AceGUI:Create("Dropdown")
                 diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(DIFFICULTIES)
+                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
                 diffDD:SetValue((customDungeon and customDungeon.difficulty) or (dungeonOverride and dungeonOverride.difficulty) or "")
                 diffDD:SetCallback("OnValueChanged", function(_, _, v)
                     if customDungeon then

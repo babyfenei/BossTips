@@ -365,22 +365,36 @@ local function BuildActiveGuides()
     local GD = addon.GuideData or { versions = {}, mplus = {} }
     local db = BossTipsGlobalDB
     local guides = {}
-    local function addBossEntry(copy, boss, entry)
+    -- 判断实例是否为团本（决定缺省难度兜底到「普通」还是「随机」）
+    local function IsRaidInstance(instance)
+        if not instance then return false end
+        local m = GD and GD.meta and GD.meta[instance]
+        if m and m.isRaid then return true end
+        local cr = db.customRaids and db.customRaids[instance]
+        return cr ~= nil
+    end
+    local function addBossEntry(copy, boss, entry, isRaid)
         local etype = entry.type or "BOSS"
-        -- MOB 始终加入 ActiveGuides，显示/隐藏由 Window.lua 的 showMobs 开关实时控制
-        local tips = entry.tips or ""
         copy[boss] = {
             order = entry.order or 999,
             type = etype,
-            tips = tips,
         }
-        -- 难度攻略：有则保留，缺的档位用通用 tips 兜底，保证难度按钮始终有内容
+        -- MOB 没有难度分层，保留外层 tips
+        if etype == "MOB" then
+            copy[boss].tips = entry.tips or ""
+            return
+        end
+        -- BOSS：难度键全部平级存放在 tipsByDifficulty，不再保留外层 tips。
+        -- 为兼容旧版/自定义/WTF 覆盖中仍使用外层 tips 的数据，按需映射到默认难度键。
+        local tips = entry.tips or ""
         local td = {}
         if type(entry.tipsByDifficulty) == "table" then
             for k, v in pairs(entry.tipsByDifficulty) do td[k] = v end
         end
-        for _, dk in ipairs(DIFF_KEYS) do
-            if not td[dk] or td[dk] == "" then td[dk] = tips end
+        if isRaid then
+            if (not td.normal or td.normal == "") and tips ~= "" then td.normal = tips end
+        else
+            if (not td.lfr or td.lfr == "") and tips ~= "" then td.lfr = tips end
         end
         copy[boss].tipsByDifficulty = td
     end
@@ -388,8 +402,9 @@ local function BuildActiveGuides()
         if db.hiddenDungeons and db.hiddenDungeons[instance] then return end
         if guides[instance] then return end
         local copy = {}
+        local isRaid = IsRaidInstance(instance)
         for boss, entry in pairs(dungeonTbl) do
-            addBossEntry(copy, boss, entry)
+            addBossEntry(copy, boss, entry, isRaid)
         end
         guides[instance] = copy
     end
@@ -431,7 +446,7 @@ local function BuildActiveGuides()
             if not guides[instance] then
                 local copy = {}
                 for boss, b in pairs(d.bosses or {}) do
-                    addBossEntry(copy, boss, b)
+                    addBossEntry(copy, boss, b, true)
                 end
                 guides[instance] = copy
             end
@@ -444,7 +459,7 @@ local function BuildActiveGuides()
             if not guides[instance] then
                 local copy = {}
                 for boss, b in pairs(d.bosses or {}) do
-                    addBossEntry(copy, boss, b)
+                    addBossEntry(copy, boss, b, IsRaidInstance(instance))
                 end
                 guides[instance] = copy
             end
@@ -495,6 +510,23 @@ local function GetActiveGuideEntry(instance, boss)
     if g and g[instance] and g[instance][boss] then return g[instance][boss] end
     return nil
 end
+
+-- 读取指定难度的攻略文本；MOB 直接返回 tips，BOSS 优先取 tipsByDifficulty[diff]，
+-- 其次兼容旧外层 tips，最后按难度顺序回退到首个非空难度。
+local function GetTipsForDifficulty(entry, diff)
+    if not entry then return "" end
+    if entry.type == "MOB" then return entry.tips or "" end
+    local td = entry.tipsByDifficulty
+    if type(td) == "table" and td[diff] and td[diff] ~= "" then return td[diff] end
+    if entry.tips and entry.tips ~= "" then return entry.tips end
+    if type(td) == "table" then
+        for _, k in ipairs(DIFF_KEYS) do
+            if td[k] and td[k] ~= "" then return td[k] end
+        end
+    end
+    return ""
+end
+addon.GetTipsForDifficulty = GetTipsForDifficulty
 
 -- 获取某个首领/小怪的 encounterId：自定义副本 > WTF 覆盖层 > 内置数据 > BigWigs 数据
 local function GetBossEncounterId(instance, boss)
@@ -1207,8 +1239,8 @@ local function ColorChatTips(text)
     text = string.gsub(text, "{rt1}(.-){rt1}", "【重点】%1")
     text = string.gsub(text, "{rt%d}", "")
     text = string.gsub(text, "%[rt%d%]", "")
-    -- 自由文本「打断X」-> [断-X]
-    text = string.gsub(text, "打断([^%s%[%]|，。；：,;!！?？]+)", "[断-%1]")
+    -- 注意：不再自动把自由文本「打断X」转成 [断-X]，避免把「打断/强控」等含标点的词
+    -- 错套成 [断-/强控] 进而被二次包装成 [断-断-/强控]，导致聊天发送被截断/乱码。
     -- [技能名] 按类型加前缀
     text = string.gsub(text, "%[([^%]]+)%]", function(skill)
         if skill:find("打断") or skill:find("必断") or skill:find("^断") or skill:find("^速断") then
@@ -1233,7 +1265,12 @@ local function SendBossTips(bossName, channelOverride)
         print("|cFFFF0000BossTips|r: 无", bossName, "的攻略信息")
         return
     end
-    local tips = BossData[addon.currentInstanceName][bossName].tips
+    local entry = BossData[addon.currentInstanceName][bossName]
+    -- 按当前窗口难度发送：优先取该难度的专属攻略。
+    -- 团本攻略为累计式撰写（高难度含低难度），发送所选难度即等于递进包含低难度；
+    -- 大秘境只发所选难度，不叠加低难度（缺专属时回退首个非空难度，避免空发）。
+    local diff = (addon.tipsFrame and addon.tipsFrame.difficulty) or "normal"
+    local tips = GetTipsForDifficulty(entry, diff)
     -- 聊天发送前预处理：保留法术链接，其余转为文本标记，剥除 rt 表情
     tips = ColorChatTips(tips)
     if not tips then
@@ -1279,7 +1316,7 @@ local function SendBossTips(bossName, channelOverride)
     end
     local chatType = ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
     local index = 1
-    local delay = 0.5
+    local delay = 1.5
     local function sendNext()
         if index <= #sortedParts then
             SendChatMessage(sortedParts[index], chatType)

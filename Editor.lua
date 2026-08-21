@@ -532,18 +532,6 @@ function addon:CreateEditorFrame()
         addon.RefreshGuides()
         if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
     end)
-    -- ESC 关闭：给 AceGUI Frame 自身挂 OnKeyDown；AceGUI Frame 的 close 按钮自带 ESC 处理，
-    -- 但要先 EnableKeyboard 让它接收键盘事件
-    if frame.frame then
-        frame.frame:EnableKeyboard(true)
-        frame.frame:SetScript("OnKeyDown", function(self, key)
-            if key == "ESCAPE" then
-                frame:Hide()
-                addon.RefreshGuides()
-                if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
-            end
-        end)
-    end
 
     -- 顶部工具栏：标签页切换（地下城/团本）+ 展开/折叠
     -- 前置声明 treeGroup：下方“一键展开/折叠”按钮闭包需捕获本变量，

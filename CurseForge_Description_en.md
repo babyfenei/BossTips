@@ -46,6 +46,13 @@ Slash commands: `/bts set` (settings) · `/bts edit` (editor) · `/bts manage` (
 
 ---
 
+## What's New in 1.4.4
+
+- **Localized boss name fix** — BOSS and trash names in the editor and strategy window now display correctly in the current language (zhCN / zhTW / enUS), no longer falling back to Simplified Chinese when the data uses the nested `tipsByDifficulty` format.
+- **Translation generator cleanup** — `_regen_trans_perdiff.py` moved to `tools/`; `convert_name` now harvests existing localized names from guide headers and falls back to existing English text when an EN mapping is missing, preventing M+ / raid regeneration from reverting to CJK.
+- **Code cleanup** — removed 5 unused functions and 1 duplicate alias (`EncodeGuidesOnly`, `ConfigStrToValue`, `IsCustomDungeon`, `IsCustomRaid`, `PathNewRaidVersion`, duplicate `ApplyAce3Backdrop` export); removed the temporary `_scratch/` directory and redundant `.bak` files.
+- **About panel refresh** — author order updated to `nga_babyfenei, nga_以德报德`; NGA / CurseForge links now use a "Copy Link" button (focuses a hidden edit box for Ctrl+C copying); NetEase DD / HeiHe Workshop changed to plain text instructing users to search for "BossTips" on those platforms.
+
 ## What's New in 1.4.3
 
 - **Full raid guide coverage** — complete raid strategies for all 13 tiers (Classic 1.0 → 至暗之夜 12.1), 439 bosses, with per-difficulty (LFR / Normal / Heroic / Mythic / Mythic+) strategies. A new dedicated **Raids** tab in the guide manager is auto-populated from the raid data files.

@@ -1,3 +1,41 @@
+# BossTips 1.4.4 — Update Notes
+
+This release focuses on localization robustness, code cleanup, and a refreshed About panel.
+
+## What's New
+
+### Localized Boss Name Fix
+- BOSS and trash names in the editor and strategy window now display correctly in the current language (zhCN / zhTW / enUS).
+- Fixed a fallback bug where names stored in the nested `tipsByDifficulty` format would revert to Simplified Chinese.
+
+### Translation Generator Cleanup
+- `_regen_trans_perdiff.py` moved from `_scratch/` to `tools/`.
+- `convert_name` now harvests existing localized names from guide headers and falls back to existing English text when an EN mapping is missing, preventing M+ / raid regeneration from reverting to CJK.
+
+### Code Cleanup
+- Removed 5 unused functions and 1 duplicate alias:
+  - `EncodeGuidesOnly`, `ConfigStrToValue` (Data.lua)
+  - `IsCustomDungeon`, `IsCustomRaid`, `PathNewRaidVersion` (Editor.lua)
+  - Duplicate `addon.ApplyAce3Backdrop` export (Data.lua)
+- Removed the temporary `_scratch/` directory and redundant `.bak` files.
+
+### About Panel Refresh
+- Author order updated to `nga_babyfenei, nga_以德报德`.
+- NGA / CurseForge links now use a "Copy Link" button: clicking focuses a hidden edit box and selects the URL so players can copy it with Ctrl+C.
+- NetEase DD / HeiHe Workshop changed to plain text: users are instructed to search for "BossTips" on those domestic platforms.
+
+## Compatibility
+- Content coverage unchanged: **125 native 5-player dungeons (1.0 – 12.0)**, **8 Mythic+ Current dungeons**, and **raid guides for 13 tiers (439 bosses)**.
+- Compatible with **WoW Retail 12.0 / 12.1** (`.toc` interface `120005`–`120200`; 12.2-safe).
+- Ships with embedded Ace3 libraries — works fully offline.
+
+## Credits
+Thanks to **nga_以德报德** (original author), the WA / guide authors, and data sources Wowhead / Icy-Veins / 17173 / NGA. Full credit list in the README.
+
+Feedback & bug reports: https://gitee.com/fenei/BossTips
+
+---
+
 # BossTips 1.4.3 — Update Notes
 
 Thanks for using BossTips! This release is a major content expansion focused on **full raid coverage** and **difficulty-aware strategies**, plus a round of usability and stability fixes for WoW 12.0 / 12.1.

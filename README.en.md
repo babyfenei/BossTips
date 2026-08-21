@@ -1,6 +1,6 @@
 ### BossTips World of Warcraft One-Sentence Strategy Addon
 
-> **Current Version: 1.4.3 (Ace3 rewrite)**
+> **Current Version: 1.4.4 (Ace3 rewrite)**
 >
 > Built-in guides: **125** native 5-player dungeons (versions 1.0 – 12.0), **8** Mythic+ Current pool dungeons, and raid guides for **13 tiers covering 439 bosses**.
 > Compatible with WoW Retail 12.0 / 12.1 clients.
@@ -63,7 +63,15 @@ BossTips/
 
 > Starting from **1.3.0**, the addon has been **fully rewritten on the Ace3 framework**. The old "single-file + hover NPC auto-prompt" model has been replaced by a "standalone editor + dungeon name match + manual send" model, and in **1.3.2** the settings UI has been integrated into the native Blizzard options panel.
 
-### 1.4.3 (Latest)
+### 1.4.4 (Latest)
+
+1. **Localized boss name fix**: BOSS and trash names in the editor and strategy window now display correctly in the current language (zhCN / zhTW / enUS) instead of falling back to Simplified Chinese when the data uses the nested `tipsByDifficulty` format.
+2. **Translation generator cleanup**: `_regen_trans_perdiff.py` moved to `tools/`; `convert_name` now harvests existing localized names from guide headers and falls back to existing English text when an EN mapping is missing, preventing M+ / raid regeneration from reverting to CJK.
+3. **Code cleanup**: removed 5 unused functions and 1 duplicate alias (`EncodeGuidesOnly`, `ConfigStrToValue`, `IsCustomDungeon`, `IsCustomRaid`, `PathNewRaidVersion`, duplicate `ApplyAce3Backdrop` export); removed the temporary `_scratch/` directory and redundant `.bak` files.
+4. **About panel refresh**: author order changed to `nga_babyfenei, nga_以德报德`; NGA / CurseForge links now use a "Copy Link" button (focuses a hidden edit box for Ctrl+C copying); NetEase DD / HeiHe Workshop changed to plain text instructing users to search for "BossTips" on those platforms.
+5. **Content coverage unchanged**: 125 native 5-player dungeons, 8 Mythic+ Current dungeons, 13 raid tiers with 439 bosses; compatible with WoW Retail 12.0 / 12.1.
+
+### 1.4.3
 
 1. **Full raid guide coverage** — complete raid strategies for **all 13 tiers from Classic (1.0) through Midnight (12.1)**, **439 bosses** total, with per-difficulty strategies (LFR / Normal / Heroic / Mythic / Mythic+); raid guides are cumulative so higher difficulties include lower ones.
 2. **Difficulty-aware display** — the strategy window auto-detects your current difficulty and shows that difficulty's guide; new **difficulty display toggles** let you hide unwanted difficulties, with auto-switch falling back to the first enabled one.
@@ -108,7 +116,7 @@ BossTips/
 
 ## 📋 Old vs. New Feature Comparison
 
-| Feature | Old (1.2.x) | New (1.4.3 / Ace3 rewrite) |
+| Feature | Old (1.2.x) | New (1.4.4 / Ace3 rewrite) |
 |---------|-------------|---------------------|
 | Architecture | Single-file Lua | **Ace3 framework + modular layers** (Core/Window/Settings/Editor/Data) |
 | Guide storage | Single version, inline | **Versioned files**: `Guides/Dungeons/vXX.lua` + `Guides/Raids/vXX.lua` + `Guides/MPlus/Current.lua` |
@@ -230,6 +238,7 @@ Thanks to the following WA authors / translators / data sources:
 
 - **CurseForge**: [https://legacy.curseforge.com/wow/addons/bosstips](https://legacy.curseforge.com/wow/addons/bosstips)
 - **Source / Issues**: [https://gitee.com/fenei/BossTips](https://gitee.com/fenei/BossTips)
+- **Domestic platforms**: search for "BossTips" in **NetEase DD** or **HeiHe Workshop** to install.
 
 Feedback format:
 ```

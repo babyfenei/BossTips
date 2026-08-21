@@ -1,6 +1,6 @@
 ### BossTips 魔兽世界一句话攻略插件
 
-> **当前版本：1.4.3（Ace3 架构重写版）**
+> **当前版本：1.4.4（Ace3 架构重写版）**
 >
 > 内置攻略数据：原生 5 人本 **125 个**（1.0–12.0）、大秘境 Current 池 **8 本**、团本 **13 版本 439 首领**全攻略。
 > 兼容 WoW Retail 12.0 / 12.1 客户端。
@@ -62,7 +62,15 @@ BossTips/
 
 > 从 **1.3.0** 起，插件进行了 **Ace3 架构完全重写**，从原来的"单文件 + 鼠标悬停 NPC 自动提醒"模型，改为"独立编辑器 + 按副本匹配 + 手动发送"模型，并随 **1.3.2** 把设置入口整合进游戏原生选项卡。
 
-### 1.4.3 版本（最新）
+### 1.4.4 版本（最新）
+
+1. **多语言首领名本地化修复**：编辑器与攻略窗中的 BOSS / 小怪名称现在会正确显示为当前语言（简中/繁中/英文），不再因 `tipsByDifficulty` 嵌套格式而回退简中。
+2. **英文/繁中译文生成器整理**：`_regen_trans_perdiff.py` 迁移至 `tools/` 目录；`convert_name` 优先收割现有译文头部名称，缺失英文映射时自动回退已有文本，避免 M+ / 团本重新生成后英文名回退中文。
+3. **代码清理**：删除 5 个未引用函数与 1 处重复别名（`EncodeGuidesOnly`、`ConfigStrToValue`、`IsCustomDungeon`、`IsCustomRaid`、`PathNewRaidVersion`、`ApplyAce3Backdrop` 重复导出），移除开发临时目录 `_scratch/`、冗余 `.bak` 文件。
+4. **关于面板优化**：作者排序调整为 `nga_babyfenei, nga_以德报德`；NGA / CurseForge 链接改为「复制链接」（点击后聚焦剪贴板辅助框，按 Ctrl+C 复制）；网易有爱（网易DD）/ 黑盒工坊改为文字说明，提示在平台内搜索「BossTips」下载。
+5. **数据覆盖保持不变**：原生 5 人本 125 个、大秘境 Current 8 本、团本 13 版本 439 首领；适配 WoW Retail 12.0 / 12.1。
+
+### 1.4.3 版本
 
 1. **团本全量攻略**：新增 1.0–12.1 共 **13 个团本版本、439 个首领** 完整攻略，支持 LFR / 普通 / 英雄 / 史诗 / 史诗钥石 五档分难度（团本攻略累计式撰写，高难度含低难度内容）
 2. **难度感知显示**：进本自动识别当前难度并显示对应难度攻略；设置新增「难度显示」开关，可关闭不需要的难度，自动切换回退到首个启用难度
@@ -107,7 +115,7 @@ BossTips/
 
 ## 📋 新旧版本功能对比
 
-| 功能项 | 旧版（1.2.x） | 新版（1.4.3 / Ace3 重写版） |
+| 功能项 | 旧版（1.2.x） | 新版（1.4.4 / Ace3 重写版） |
 |--------|---------------|----------------------|
 | 架构 | 单文件 Lua | **Ace3 框架 + 模块化分层**（Core/Window/Settings/Editor/Data） |
 | 攻略数据 | 单版本内嵌 | **按版本拆分文件** `Guides/Dungeons/vXX.lua` + `Guides/Raids/vXX.lua` + `Guides/MPlus/Current.lua` |
@@ -232,6 +240,7 @@ BossTips/
 
 - 已提交至 **CurseForge**：[https://legacy.curseforge.com/wow/addons/bosstips](https://legacy.curseforge.com/wow/addons/bosstips)
 - 源码 / Issues 反馈：[https://gitee.com/fenei/BossTips](https://gitee.com/fenei/BossTips)
+- 国内插件平台：在 **网易有爱（网易DD）**、**黑盒工坊** 中搜索「BossTips」即可下载本插件。
 
 提交反馈格式：
 ```

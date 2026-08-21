@@ -12,13 +12,24 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 -- 来源：.toc（插件名/作者/版本）+ 社区与发布平台
 local NGA_URL = "https://bbs.nga.cn/read.php?tid=42002877"
 local CURSE_URL = "https://legacy.curseforge.com/wow/addons/bosstips"
-local NETEASE_DD_URL = "https://ds.163.com"        -- 网易有爱（网易DD）
-local HEIHE_URL = "https://workshop.xiaoheihe.cn"  -- 黑盒工坊
 
--- 在聊天框输出可点击的外部链接（零售版点击 url 链接会打开默认浏览器）
-function addon:OpenExternalLink(url, label)
-    label = label or url
-    print(string.format("|cff58c6ff%s|r: |Hurl:%s|h[%s]|h", tostring(label), url, url))
+-- 复制 URL 到系统剪贴板（WoW 无直接写剪贴板 API，通过隐藏 EditBox 聚焦+全选实现 Ctrl+C 复制）
+local copyFrame = CreateFrame("Frame", nil, UIParent)
+copyFrame:SetSize(1, 1)
+copyFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -10, 10)
+local copyEdit = CreateFrame("EditBox", nil, copyFrame)
+copyEdit:SetMultiLine(false)
+copyEdit:SetWidth(1)
+copyEdit:SetHeight(1)
+copyEdit:SetFontObject("ChatFontNormal")
+copyEdit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+
+function addon:CopyUrlToClipboard(url, label)
+    label = label or L["Link"]
+    copyEdit:SetText(url)
+    copyEdit:HighlightText()
+    copyEdit:SetFocus()
+    print(string.format("|cff00ff00%s|r %s |cffffcc00Ctrl+C|r %s", tostring(label), L["URL selected, press"], L["to copy"]))
 end
 
 -- ============ 难度显示开关 ============
@@ -503,7 +514,7 @@ local function BuildMainOptions()
                     type = "description",
                     name = function()
                         return L["Title"] .. "：Boss Tips\n"
-                            .. L["Author"] .. "：nga_以德报德, nga_babyfenei\n"
+                            .. L["Author"] .. "：nga_babyfenei, nga_以德报德\n"
                             .. (L["Version"] or "Version") .. "：v" .. (addon.version or "?")
                     end,
                     fontSize = "medium",
@@ -533,11 +544,11 @@ local function BuildMainOptions()
                     set = function() end,
                     order = 6,
                 },
-                nga_open = {
+                nga_copy = {
                     type = "execute",
-                    name = function() return L["Open Link"] end,
+                    name = function() return L["Copy Link"] end,
                     width = 0.5,
-                    func = function() addon:OpenExternalLink(NGA_URL, L["NGA Post"]) end,
+                    func = function() addon:CopyUrlToClipboard(NGA_URL, L["NGA Post"]) end,
                     order = 6,
                 },
                 curse_url = {
@@ -548,42 +559,18 @@ local function BuildMainOptions()
                     set = function() end,
                     order = 7,
                 },
-                curse_open = {
+                curse_copy = {
                     type = "execute",
-                    name = function() return L["Open Link"] end,
+                    name = function() return L["Copy Link"] end,
                     width = 0.5,
-                    func = function() addon:OpenExternalLink(CURSE_URL, L["CurseForge"]) end,
+                    func = function() addon:CopyUrlToClipboard(CURSE_URL, L["CurseForge"]) end,
                     order = 7,
                 },
-                dd_url = {
-                    type = "input",
-                    name = function() return L["NetEase DD"] end,
-                    width = 1.5,
-                    get = function() return NETEASE_DD_URL end,
-                    set = function() end,
+                other_platforms_desc = {
+                    type = "description",
+                    name = function() return L["Other Platforms Hint"] end,
+                    fontSize = "medium",
                     order = 8,
-                },
-                dd_open = {
-                    type = "execute",
-                    name = function() return L["Open Link"] end,
-                    width = 0.5,
-                    func = function() addon:OpenExternalLink(NETEASE_DD_URL, L["NetEase DD"]) end,
-                    order = 8,
-                },
-                heihe_url = {
-                    type = "input",
-                    name = function() return L["HeiHe Workshop"] end,
-                    width = 1.5,
-                    get = function() return HEIHE_URL end,
-                    set = function() end,
-                    order = 9,
-                },
-                heihe_open = {
-                    type = "execute",
-                    name = function() return L["Open Link"] end,
-                    width = 0.5,
-                    func = function() addon:OpenExternalLink(HEIHE_URL, L["HeiHe Workshop"]) end,
-                    order = 9,
                 },
             },
         },

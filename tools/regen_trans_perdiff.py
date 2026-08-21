@@ -174,8 +174,10 @@ def rebuild(scope, lang, EN):
                 zh_tip = cc.convert(g(e, "tips") or "")
                 en_tip = None
                 eb = g(e_inst, boss_key)
-                if eb and g(eb, "tips"):
-                    en_tip = g(eb, "tips")
+                # 旧格式译文 MOB 仅存 mythicplus 单档（英文），新格式存外层 tips；
+                # 两种都要尝试，避免英文 MOB 译文被 opencc(zhCN) 覆盖丢失。
+                if eb:
+                    en_tip = g(eb, "tips") or g(eb, "mythicplus")
                 if en_tip is None:
                     en_tip = zh_tip
                 if lang == "zhTW":

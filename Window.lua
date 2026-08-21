@@ -44,6 +44,47 @@ titleText:SetTextColor(1.0, 1.0, 1.0)
 local targetFrames = {}
 local UpdateLayout
 
+-- ============ 聊天发送（SecureActionButton 宏方式）============
+-- 暴雪在大秘境/战斗中禁止插件用 SendChatMessage（tainted 闭包调用受保护函数会 ADDON_ACTION_BLOCKED）。
+-- 解决方案：发送按钮改为 SecureActionButton(type="macro")，点击是「硬件事件」，宏执行被授权，
+-- 战斗中/大秘境均可发，且一次宏执行发完所有分段、无逐条延迟。超长攻略超出宏上限(约1024字)的
+-- 部分，点击后由 OnPostClick 在脱战时补发，战斗中则入队、PLAYER_REGEN_ENABLED 时补发。
+local CHAT_SLASH = {
+    INSTANCE_CHAT = "/instance", SAY = "/say", PARTY = "/party", RAID = "/raid",
+    YELL = "/yell", GUILD = "/guild", CHANNEL = "/say",
+}
+-- 把分段拼成多行宏文本；超过 maxLen 的部分作为 remainder 返回（需点击后补发）。
+local function BuildMacroText(parts, chatType, maxLen)
+    maxLen = maxLen or 1000
+    local slash = CHAT_SLASH[chatType] or "/say"
+    local lines, used, remainder = {}, 0, {}
+    for _, p in ipairs(parts) do
+        local line = slash .. " " .. p
+        if used + #line + 1 <= maxLen then
+            lines[#lines + 1] = line
+            used = used + #line + 1
+        else
+            remainder[#remainder + 1] = p
+        end
+    end
+    return table.concat(lines, "\n"), remainder
+end
+-- 战斗结束补发队列
+local pendingSends = {}
+function addon.QueueRemainingSend(parts, chatType)
+    pendingSends[#pendingSends + 1] = { parts = parts, chatType = chatType }
+end
+local regenFrame = CreateFrame("Frame")
+regenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+regenFrame:SetScript("OnEvent", function(self, event)
+    if event == "PLAYER_REGEN_ENABLED" then
+        for _, item in ipairs(pendingSends) do
+            for _, p in ipairs(item.parts) do pcall(SendChatMessage, p, item.chatType) end
+        end
+        pendingSends = {}
+    end
+end)
+
 -- ============ 列表项图标（BOSS / 小怪）============
 -- 使用简单 ASCII 字符，避免纹理在不同客户端显示为方框/问号
 local ICON_PLUS = "|cffffcc00+|r"
@@ -595,14 +636,28 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 btn:GetFontString():SetPoint("LEFT", 5, 0)
                 frame.titleBtn = btn
 
-                local speakerBtn = CreateFrame("Button", nil, frame)
+                local speakerBtn = CreateFrame("Button", nil, frame, "SecureActionButtonTemplate")
                 speakerBtn:SetSize(24, 24)
                 speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
                 speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
-                -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
+                -- 必须显式注册右键，否则只响应左键；左键=设定频道，右键=右键频道
                 speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+                -- 发送走安全宏：点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发、无逐条延迟
+                speakerBtn:SetAttribute("type", "macro")
                 frame.speakerBtn = speakerBtn
+                -- 点击（安全宏执行）后，补发超出宏上限(约1024字)的剩余分段
+                speakerBtn:SetScript("OnPostClick", function(self, button)
+                    local rem = (button == "RightButton") and self.remainder2 or self.remainder1
+                    local ch = (button == "RightButton") and self.remainderChat2 or self.remainderChat1
+                    if rem and #rem > 0 then
+                        if InCombatLockdown() then
+                            addon.QueueRemainingSend(rem, ch)
+                        else
+                            for _, p in ipairs(rem) do pcall(SendChatMessage, p, ch) end
+                        end
+                    end
+                end)
 
                 local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
                 note:SetJustifyH("LEFT")
@@ -615,24 +670,26 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 targetFrames[i] = frame
             end
 
-            -- 每次显示副本攻略都重新绑定 speakerBtn，避免之前测试窗口复用 frame 时把它改成 SendTestTipsToChat
-            frame.speakerBtn:SetScript("OnClick", function(_, button)
-                local tdata = frame.targetData
-                -- 必须用「源 key」（简中）查找 BossData，不能用本地化显示名（繁中/英文），
-                -- 否则 GetBossData()[inst][localizedName] 会找不到并误报「无 XX 攻略信息」。
-                local tname = tdata and (tdata.bossKey or tdata.name)
-                if tname and tname ~= "" then
-                    if InCombatLockdown() then
-                        print(L["|cffff0000BossTips|r Cannot send message in combat."])
-                    else
-                        -- button 为第二参数（"LeftButton"/"RightButton"）；左键用设定频道，右键用右键频道
-                        local ch = (button == "RightButton")
-                            and (BossTipsGlobalDB.sendChannelRight or "SAY")
-                            or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-                        addon.SendBossTips(tname, ch)
-                    end
-                end
-            end)
+            -- 每次显示都用当前语言/难度重算攻略，拼成多行 /频道 宏文本写入安全按钮：
+            -- 点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发，且一次发完所有分段、无逐条延迟。
+            local bp = addon.BuildChatParts(target.bossKey, nil)
+            local sbtn = frame.speakerBtn
+            if bp then
+                local leftChat = addon.ResolveSendChannel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+                local rightChat = addon.ResolveSendChannel(BossTipsGlobalDB.sendChannelRight or "SAY")
+                local m1, r1 = BuildMacroText(bp.parts, leftChat)
+                local m2, r2 = BuildMacroText(bp.parts, rightChat)
+                sbtn:SetAttribute("type1", "macro")
+                sbtn:SetAttribute("macrotext1", m1)
+                sbtn:SetAttribute("type2", "macro")
+                sbtn:SetAttribute("macrotext2", m2)
+                sbtn.remainder1, sbtn.remainderChat1 = r1, leftChat
+                sbtn.remainder2, sbtn.remainderChat2 = r2, rightChat
+            else
+                sbtn:SetAttribute("macrotext1", "")
+                sbtn:SetAttribute("macrotext2", "")
+                sbtn.remainder1, sbtn.remainder2 = nil, nil
+            end
             frame.speakerBtn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(L["Send Guide"])

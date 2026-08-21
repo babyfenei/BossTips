@@ -1517,19 +1517,20 @@ local function SplitUtf8Bytes(text, maxBytes)
     return chunks
 end
 
-local function SendBossTips(bossName, channelOverride)
+-- 构造聊天发送分段（与显示同语言、同难度）。返回 { parts = {chat-ready 字符串}, displayName = "..." }，
+-- 失败返回 nil（错误已打印）。parts 与频道无关，调用方按目标频道拼 /slash 宏文本即可。
+local function BuildChatParts(bossName, channelOverride)
     if not bossName or not addon.currentInstanceName then
         print("|cFFFF0000BossTips|r: " .. (L["No Boss Selected"] or "未选中BOSS或副本信息异常"))
-        return
+        return nil
     end
     local BossData = GetBossData()
     if not BossData or not BossData[addon.currentInstanceName] or not BossData[addon.currentInstanceName][bossName] then
-        -- 用本地化显示名报错（避免简中源 key 直接出现在英文 locale 日志中）
         local disp = bossName
         local e = addon.GetActiveGuideEntry and addon.GetActiveGuideEntry(addon.currentInstanceName, bossName)
         if e and e.name then disp = e.name end
         print("|cFFFF0000BossTips|r: " .. ((L["No Guide For"] or "无 %s 的攻略信息"):format(disp)))
-        return
+        return nil
     end
     local entry = BossData[addon.currentInstanceName][bossName]
     local displayName = (entry and entry.name) or bossName
@@ -1538,7 +1539,6 @@ local function SendBossTips(bossName, channelOverride)
     -- 大秘境只发所选难度，不叠加低难度（缺专属时回退首个非空难度，避免空发）。
     local diff = (addon.tipsFrame and addon.tipsFrame.difficulty) or "normal"
     -- 与攻略窗显示保持一致：团本没有 M+，选到 mythicplus 时回退 normal，避免取到空攻略。
-    -- 注意 IsRaidInstance 是 BuildActiveGuides 内的嵌套局部，此处改用 entry._src.type 判断（文件级可见）。
     if entry and entry._src and (entry._src.type == "raids" or entry._src.type == "customraid") and diff == "mythicplus" then diff = "normal" end
     if BossTipsGlobalDB.debugSend then
         print(string.format("|cFF88CCFFBossTips[调试]|r 发送: 副本=%s 首领=%s 难度=%s 频道=%s",
@@ -1548,9 +1548,9 @@ local function SendBossTips(bossName, channelOverride)
     local tips = GetGuideText(entry, diff)
     -- 聊天发送前预处理：保留法术链接，其余转为文本标记，剥除 rt 表情
     tips = ColorChatTips(tips)
-    if not tips then
+    if not tips or tips == "" then
         print("|cFFFF0000BossTips|r: " .. ((L["No Guide For"] or "无 %s 的攻略信息"):format(displayName)))
-        return
+        return nil
     end
     local MAX_CHAT_BYTES = 240  -- SendChatMessage 硬上限约 255 字节，留安全边距
     local parts = { strsplit("||", tips) }
@@ -1568,7 +1568,7 @@ local function SendBossTips(bossName, channelOverride)
     end
     if #sortedParts == 0 then
         print("|cFFFF0000BossTips|r: " .. (L["Guide Empty"] or "攻略内容为空"))
-        return
+        return nil
     end
     -- 在第一条消息前加首领名 header（用本地化显示名；分语言独立 L key 渲染）
     local header = (L["Guide Header"] or "【%s】"):format(displayName)
@@ -1596,30 +1596,37 @@ local function SendBossTips(bossName, channelOverride)
             end
         end
     end
-    sortedParts = finalParts
+    if #finalParts == 0 then
+        print("|cFFFF0000BossTips|r: " .. (L["Guide Empty"] or "攻略内容为空"))
+        return nil
+    end
+    return { parts = finalParts, displayName = displayName }
+end
+addon.BuildChatParts = BuildChatParts
+
+-- 脱战兜底发送（测试窗口/程序化调用）：直接 SendChatMessage，仅脱战可用；
+-- 游戏内主发送走 SecureActionButton 宏（见 Window.lua），战斗中/大秘境均可发、无延迟。
+local function SendBossTips(bossName, channelOverride)
+    local result = BuildChatParts(bossName, channelOverride)
+    if not result then return end
+    local parts, displayName = result.parts, result.displayName
     local chatType = ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-    local index = 1
-    local delay = 1.0  -- 分条间隔（秒），低于 WoW 聊天限流阈值
-    local function sendNext()
-        if index <= #sortedParts then
-            local ok, err = pcall(SendChatMessage, sortedParts[index], chatType)
-            if not ok then
-                -- 单条发送异常（如频道不可用）：提示并跳过该条，继续后续分条
-                print("|cFFFF0000BossTips|r: " .. (L["Chat Send Failed"] or "攻略发送失败") .. "：" .. tostring(err):sub(1, 40))
-            end
-            index = index + 1
-            C_Timer.After(delay, sendNext)
-        else
-            -- 完成发送的本地化日志
-            local sentMsg = (L["Sent Guide To"] or "已发送 %s 攻略到 %s"):format(displayName, chatType)
-            print("|cFF00FF00BossTips|r: " .. sentMsg)
-            if BossTipsGlobalDB.closeWindowAfterSend and addon.tipsFrame and addon.tipsFrame:IsShown() then
-                addon.tipsFrame:Hide()
-                addon.manuallyHidden = true
-            end
+    if InCombatLockdown() then
+        print(L["|cffff0000BossTips|r Cannot send message in combat."])
+        return
+    end
+    for _, p in ipairs(parts) do
+        local ok, err = pcall(SendChatMessage, p, chatType)
+        if not ok then
+            print("|cFFFF0000BossTips|r: " .. (L["Chat Send Failed"] or "攻略发送失败") .. "：" .. tostring(err):sub(1, 40))
         end
     end
-    sendNext()  -- 首条同步立即发出，点击即有反馈
+    local sentMsg = (L["Sent Guide To"] or "已发送 %s 攻略到 %s"):format(displayName, chatType)
+    print("|cFF00FF00BossTips|r: " .. sentMsg)
+    if BossTipsGlobalDB.closeWindowAfterSend and addon.tipsFrame and addon.tipsFrame:IsShown() then
+        addon.tipsFrame:Hide()
+        addon.manuallyHidden = true
+    end
 end
 addon.SendBossTips = SendBossTips
 

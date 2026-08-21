@@ -326,9 +326,17 @@ local function BuildMainOptions()
                             set = function(_, val)
                                 BossTipsGlobalDB.lang = val
                                 if addon.RefreshLocale then addon.RefreshLocale() end
+                                -- 切换语言后重建攻略表：entry.name 等按新语言取，避免首领名/攻略残留旧语言。
+                                -- 注意 BuildActiveGuides 仅重算结构（引用译文/源文本），不修改任何攻略内容。
+                                if addon.BuildActiveGuides then addon.BuildActiveGuides() end
                                 if addon.BuildGuideOptions then addon.BuildGuideOptions() end
-                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
-                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                -- 若攻略窗正显示，强制按当前副本重新渲染（取新语言文本），避免部分条目残留旧语言。
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() then
+                                    if addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
+                                        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                    elseif addon.tipsFrame.RefreshIfShown then
+                                        addon.tipsFrame:RefreshIfShown()
+                                    end
                                 end
                                 if LibStub("AceConfigRegistry-3.0", true) then
                                     LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")

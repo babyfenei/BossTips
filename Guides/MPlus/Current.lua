@@ -100,6 +100,12 @@ addon.GuideData.meta["塞塔里斯神庙"] = {
     challengeID = 250,
     instanceId = 1864,
     mapID = 1877,
+    encounterIds = {
+        ["阿德里斯和阿斯匹克斯"] = 2124,
+        ["米利克萨"] = 2125,
+        ["加瓦兹特"] = 2126,
+        ["塞塔里斯的化身"] = 2127,
+    },
 }
 
 addon.GuideData.mplus["Current"]["夺目谷"] = {
@@ -188,6 +194,12 @@ addon.GuideData.meta["夺目谷"] = {
     challengeID = 584,
     instanceId = 2859,
     mapID = 2859,
+    encounterIds = {
+        ["光明众花"] = 3199,
+        ["圣光猎手伊库兹"] = 3200,
+        ["护光者鲁伊亚"] = 3201,
+        ["兹欧凯特"] = 3202,
+    },
 }
 
 addon.GuideData.mplus["Current"]["密谋小径"] = {
@@ -261,6 +273,12 @@ addon.GuideData.meta["密谋小径"] = {
     challengeID = 587,
     instanceId = 2813,
     mapID = 2813,
+    encounterIds = {
+        ["凯斯媞亚·魔力之心"] = 3101,
+        ["赞恩·刃悲"] = 3102,
+        ["歼灭者萨祖克斯"] = 3103,
+        ["利希尔·烬怒"] = 3105,
+    },
 }
 
 addon.GuideData.mplus["Current"]["毒牙祭坛"] = {
@@ -333,6 +351,11 @@ addon.GuideData.meta["毒牙祭坛"] = {
     challengeID = 588,
     instanceId = 2993,
     mapID = 2993,
+    encounterIds = {
+        ["拉维"] = 3456,
+        ["扭缠盘蛇"] = 3457,
+        ["祖尔加"] = 3458,
+    },
 }
 
 addon.GuideData.mplus["Current"]["红玉新生法池"] = {
@@ -420,6 +443,11 @@ addon.GuideData.meta["红玉新生法池"] = {
     challengeID = 399,
     instanceId = 2521,
     mapID = 2521,
+    encounterIds = {
+        ["梅莉杜莎·寒妆"] = 2609,
+        ["柯姬雅·焰蹄"] = 2606,
+        ["基拉卡与厄克哈特·风脉"] = 2623,
+    },
 }
 
 addon.GuideData.mplus["Current"]["纳洛拉克的洞穴"] = {
@@ -487,6 +515,11 @@ addon.GuideData.meta["纳洛拉克的洞穴"] = {
     challengeID = 586,
     instanceId = 2825,
     mapID = 2825,
+    encounterIds = {
+        ["囤宝狂人"] = 3207,
+        ["寒冬哨兵"] = 3208,
+        ["纳洛拉克"] = 3209,
+    },
 }
 
 addon.GuideData.mplus["Current"]["虚空之痕竞技场"] = {
@@ -554,6 +587,11 @@ addon.GuideData.meta["虚空之痕竞技场"] = {
     challengeID = 585,
     instanceId = 2923,
     mapID = 2923,
+    encounterIds = {
+        ["塔兹拉尔"] = 3285,
+        ["阿特洛苏斯"] = 3286,
+        ["煞戎努斯"] = 3287,
+    },
 }
 
 addon.GuideData.mplus["Current"]["诸王之眠"] = {
@@ -632,5 +670,11 @@ addon.GuideData.meta["诸王之眠"] = {
     challengeID = 249,
     instanceId = 1762,
     mapID = 1762,
+    encounterIds = {
+        ["黄金风蛇"] = 2139,
+        ["殓尸者姆沁巴"] = 2142,
+        ["部族议会"] = 2140,
+        ["始皇达萨"] = 2143,
+    },
 }
 

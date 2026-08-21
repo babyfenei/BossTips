@@ -1330,19 +1330,27 @@ function addon:CreateEditorFrame()
                     AddFullWidth(scroll, typeDD)
                 end
 
-                -- 编辑难度选择（团本无 M+ 模式，仅大秘境有 M+；取消「通用」聚合，改为分难度编辑）
-                if isRaid and editDiff == "mythicplus" then editDiff = "lfr" end
-                -- 大秘境仅一档 mythicplus：选中 M+ 首领时强制编辑难度为 mythicplus
+                -- 编辑难度选择（团本无 M+ 模式；大秘境仅一档 mythicplus；原生 5 人本可按多难度编辑）
                 local activeEntry = addon.GetActiveGuideEntry(instName, bossName)
-                if not isRaid and activeEntry and activeEntry._src and activeEntry._src.type == "mplus" and editDiff ~= "mythicplus" then editDiff = "mythicplus" end
+                local isMPlusEdit = activeEntry and activeEntry._src and activeEntry._src.type == "mplus"
+                -- 大秘境只有 mythicplus 一档：下拉仅提供 Mythic+，避免“选其它难度又被弹回 M+”
+                if isMPlusEdit then
+                    editDiff = "mythicplus"
+                elseif isRaid and editDiff == "mythicplus" then
+                    editDiff = "lfr"
+                end
+                local diffEditOrder
+                if isMPlusEdit then
+                    diffEditOrder = { "mythicplus" }
+                elseif isRaid then
+                    diffEditOrder = { "lfr", "normal", "heroic", "mythic" }
+                else
+                    diffEditOrder = { "lfr", "normal", "heroic", "mythic", "mythicplus" }
+                end
                 local diffEditList = {}
-                local diffEditOrder = isRaid and { "lfr", "normal", "heroic", "mythic" }
-                    or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
                 for _, dkey in ipairs(diffEditOrder) do
                     diffEditList[dkey] = GetDiffEditLabel(dkey)
                 end
-                local diffEditOrder = isRaid and { "lfr", "normal", "heroic", "mythic" }
-                    or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
                 local diffDD = AceGUI:Create("Dropdown")
                 diffDD:SetLabel(L["Edit Difficulty"])
                 diffDD:SetList(diffEditList, diffEditOrder)

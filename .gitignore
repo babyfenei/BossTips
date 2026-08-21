@@ -10,6 +10,10 @@ DBM/
 # 一次性工具脚本
 tag_mobs.py
 
+# Python 编译缓存
+__pycache__/
+*.pyc
+
 # 备份与历史快照
 Guides_bak_*/
 Guides_bak_pre_transform/

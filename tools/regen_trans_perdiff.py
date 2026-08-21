@@ -29,7 +29,7 @@ def harvest_name_from_text(txt):
     m = re.match(r"^\{rt\d+\}(.+?)\{rt\d+\}", str(txt).lstrip())
     return m.group(1) if m else None
 
-BASE = "E:/World of Warcraft/_retail_/Interface/AddOns/BossTips"
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 cc = OpenCC('s2t')
 DIFFS_RAID = ["lfr", "normal", "heroic", "mythic"]
 DIFFS_MP = ["lfr", "normal", "heroic", "mythic", "mythicplus"]
@@ -254,20 +254,20 @@ def rebuild(scope, lang, EN):
     print("[%s/%s] rebuilt %s -> %d bosses/MOBs" % (scope, lang, out_rel, n))
 
 if __name__ == "__main__":
-    EN_RAID = json.load(open(os.path.join(BASE, "_scratch/_en_raid121.json"), encoding="utf-8"))
+    EN_RAID = json.load(open(os.path.join(BASE, "tools/data/_en_raid121.json"), encoding="utf-8"))
     # 12.1 raid
     rebuild("raid", "enUS", EN_RAID)
     rebuild("raid", "zhTW", EN_RAID)
     # M+ : merge all _en_mp_*.json part files
     import glob
     EN_MP = {}
-    for pf in sorted(glob.glob(os.path.join(BASE, "_scratch/_en_mp_*.json"))):
+    for pf in sorted(glob.glob(os.path.join(BASE, "tools/data/_en_mp_*.json"))):
         part = json.load(open(pf, encoding="utf-8"))
         for inst, bosses in part.items():
             EN_MP.setdefault(inst, {}).update(bosses)
     if EN_MP:
         rebuild("mplus", "enUS", EN_MP)
-        print("M+ enUS merged from %d part files" % len(glob.glob(os.path.join(BASE, "_scratch/_en_mp_*.json"))))
+        print("M+ enUS merged from %d part files" % len(glob.glob(os.path.join(BASE, "tools/data/_en_mp_*.json"))))
     # M+ zhTW is opencc-based, no EN dict needed
     rebuild("mplus", "zhTW", {})
 

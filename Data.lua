@@ -979,23 +979,6 @@ local function B64Decode(b64)
     return candidates[1] or b64
 end
 
--- 旧版：仅导出 guides（兼容已有的纯 guides 分享码）
-local function EncodeGuidesOnly()
-    local db = BossTipsGlobalDB
-    if not db.guides then return "" end
-    local parts = {}
-    for instance, bosses in pairs(db.guides) do
-        for boss, tips in pairs(bosses) do
-            local tipText = tips
-            local etype = "BOSS"
-            if type(tips) == "table" then tipText = tips.tips or ""; etype = tips.type or "BOSS" end
-            parts[#parts + 1] = instance .. FIELD .. boss .. FIELD .. (tipText or "") .. FIELD .. etype
-        end
-    end
-    if #parts == 0 then return "" end
-    return B64Encode(table.concat(parts, REC))
-end
-
 -- 需要随分享码迁移的插件配置（UI/行为设置）。enabledRaids 等开关单独用标签导出。
 local CONFIG_KEYS = {
     { key = "FontSize", t = "number" },
@@ -1042,19 +1025,6 @@ local function ConfigValueToStr(v, t)
         return table.concat(pairs_, ",")
     end
     return tostring(v)
-end
-local function ConfigStrToValue(s, t)
-    if t == "bool" then return s == "1" end
-    if t == "number" then return tonumber(s) end
-    if t == "table" then
-        local out = {}
-        for pair in (s or ""):gmatch("[^,]+") do
-            local k, v = pair:match("^%s*([^=]+)=%s*(.-)%s*$")
-            if k and v then out[k] = (v == "true") or (v == "false") and false or v end
-        end
-        return out
-    end
-    return s
 end
 local function EncodeConfig()
     local db = BossTipsGlobalDB
@@ -1654,4 +1624,3 @@ addon.SendBossTips = SendBossTips
 addon.GetTipsBg = GetTipsBg
 addon.GetTipsFontPath = GetTipsFontPath
 addon.ApplyThemeToFrame = ApplyThemeToFrame
-addon.ApplyAce3Backdrop = ApplyThemeToFrame  -- 旧别名保持兼容

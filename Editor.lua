@@ -63,14 +63,6 @@ local function IsCustomRaidVersion(verId)
     return BossTipsGlobalDB.customRaidVersions and BossTipsGlobalDB.customRaidVersions[verId] ~= nil
 end
 
-local function IsCustomDungeon(instName)
-    return BossTipsGlobalDB.customDungeons and BossTipsGlobalDB.customDungeons[instName] ~= nil
-end
-
-local function IsCustomRaid(instName)
-    return BossTipsGlobalDB.customRaids and BossTipsGlobalDB.customRaids[instName] ~= nil
-end
-
 local function IsBuiltInDungeon(verId, instName, isRaid)
     local GD = addon.GuideData
     if isRaid then
@@ -210,7 +202,6 @@ local function PathBoss(verId, instName, bossName) return "V" .. SEP .. verId ..
 
 -- 团本路径（以 "R" 区分，避免与 5 人本 "V" 命名空间冲突）
 local function PathRaidVersion(verId) return "R" .. SEP .. verId end
-local function PathNewRaidVersion() return "new_raid_version" end
 local function PathNewRaidDungeon(verId) return "R" .. SEP .. verId .. SEP .. "NEW_DUNGEON" end
 local function PathRaidDungeon(verId, instName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName end
 local function PathNewRaidBoss(verId, instName) return "R" .. SEP .. verId .. SEP .. "D" .. SEP .. instName .. SEP .. "NEW_BOSS" end

@@ -806,7 +806,9 @@ local function GetBigWigsEncounterId(instance, boss)
     if not addon.BigWigsIdDB or not instance or not boss then return nil end
     local GD = addon.GuideData
     local meta = GD.meta and GD.meta[instance]
-    local instanceId = meta and (meta.instanceId or meta.mapID)
+    -- 优先用 mapID 取表：BigWigsIdDB 按 journalInstanceID(=mapID) 建表；
+    -- 团本 meta 无 mapID 字段，退回到 instanceId（其值即 journalInstanceID）。
+    local instanceId = meta and (meta.mapID or meta.instanceId)
     if not instanceId then return nil end
     local db = addon.BigWigsIdDB[instanceId]
     if not db then return nil end

@@ -2,7 +2,7 @@
 ## Title: Boss Tips
 ## Notes: 副本一句话攻略提示插件（Ace3 重写版）
 ## Author: nga_以德报德,nga_babyfenei
-## Version: 1.4.3
+## Version: 1.4.4
 ## SavedVariables: BossTipsGlobalDB
 
 # 内置 Ace3 库 + Libs（自包含，离线可用）
@@ -48,6 +48,65 @@ Guides/Raids/v10.0.lua
 Guides/Raids/v11.0.lua
 Guides/Raids/v12.0.lua
 Guides/Raids/v12.1.lua
+
+# 攻略翻译（分语言独立文件，跟随设置/客户端语言；仅译文，源见对应简中攻略）
+# —— 团本 raids（繁中）——
+Guides/Raids/v1.0_zhTW.lua
+Guides/Raids/v2.0_zhTW.lua
+Guides/Raids/v3.0_zhTW.lua
+Guides/Raids/v4.0_zhTW.lua
+Guides/Raids/v5.0_zhTW.lua
+Guides/Raids/v6.0_zhTW.lua
+Guides/Raids/v7.0_zhTW.lua
+Guides/Raids/v8.0_zhTW.lua
+Guides/Raids/v9.0_zhTW.lua
+Guides/Raids/v10.0_zhTW.lua
+Guides/Raids/v11.0_zhTW.lua
+Guides/Raids/v12.0_zhTW.lua
+Guides/Raids/v12.1_zhTW.lua
+# —— 原生副本 native（繁中）——
+Guides/Dungeons/v1.0_zhTW.lua
+Guides/Dungeons/v2.0_zhTW.lua
+Guides/Dungeons/v3.0_zhTW.lua
+Guides/Dungeons/v4.0_zhTW.lua
+Guides/Dungeons/v5.0_zhTW.lua
+Guides/Dungeons/v6.0_zhTW.lua
+Guides/Dungeons/v7.0_zhTW.lua
+Guides/Dungeons/v8.0_zhTW.lua
+Guides/Dungeons/v9.0_zhTW.lua
+Guides/Dungeons/v10.0_zhTW.lua
+Guides/Dungeons/v11.0_zhTW.lua
+Guides/Dungeons/v12.0_zhTW.lua
+# —— 大秘境 / 12.1 团本（已存在，繁中+英文）——
+Guides/MPlus/Current_zhTW.lua
+Guides/MPlus/Current_enUS.lua
+# —— 原生副本 native（英文）——
+Guides/Dungeons/v1.0_enUS.lua
+Guides/Dungeons/v2.0_enUS.lua
+Guides/Dungeons/v3.0_enUS.lua
+Guides/Dungeons/v4.0_enUS.lua
+Guides/Dungeons/v5.0_enUS.lua
+Guides/Dungeons/v6.0_enUS.lua
+Guides/Dungeons/v7.0_enUS.lua
+Guides/Dungeons/v8.0_enUS.lua
+Guides/Dungeons/v9.0_enUS.lua
+Guides/Dungeons/v10.0_enUS.lua
+Guides/Dungeons/v11.0_enUS.lua
+Guides/Dungeons/v12.0_enUS.lua
+# —— 团本 raids（英文）——
+Guides/Raids/v1.0_enUS.lua
+Guides/Raids/v2.0_enUS.lua
+Guides/Raids/v3.0_enUS.lua
+Guides/Raids/v4.0_enUS.lua
+Guides/Raids/v5.0_enUS.lua
+Guides/Raids/v6.0_enUS.lua
+Guides/Raids/v7.0_enUS.lua
+Guides/Raids/v8.0_enUS.lua
+Guides/Raids/v9.0_enUS.lua
+Guides/Raids/v10.0_enUS.lua
+Guides/Raids/v11.0_enUS.lua
+Guides/Raids/v12.0_enUS.lua
+Guides/Raids/v12.1_enUS.lua
 
 # 逻辑与 UI（Ace3 架构）
 Core.lua

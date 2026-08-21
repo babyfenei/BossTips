@@ -7,6 +7,9 @@ local _, addon = ...
 addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, versionInfo = {}, mplusInfo = {}, meta = {}, raids = {} }
 addon.ActiveGuides = addon.ActiveGuides or {}
 
+-- 本地化表：与 Core/Window/Editor/Settings 一致，从 addon.L 取（Locales.lua 已先加载）
+local L = addon.L
+
 -- ============ 工具 ============
 local function CopyTable(tbl)
     if type(tbl) ~= "table" then return tbl end
@@ -67,6 +70,8 @@ local defaultConfig = {
     minimapAngle = 225,
     testInstance = nil,
     closeWindowAfterSend = false,
+    lang = "AUTO",             -- 显示语言：AUTO 跟随系统 / zhCN / zhTW / enUS
+    defaultDifficulty = "mythic", -- 进本时攻略窗优先使用的难度（持久化；在攻略窗手动切换也会写回这里）。默认史诗
 }
 addon.defaultConfig = defaultConfig
 
@@ -95,6 +100,8 @@ local function ensureDBExists()
     if not BossTipsGlobalDB.disabledCustomRaidVersions then BossTipsGlobalDB.disabledCustomRaidVersions = {} end
     if not BossTipsGlobalDB.encounterOverrides then BossTipsGlobalDB.encounterOverrides = {} end
     if not BossTipsGlobalDB.dungeonOverrides then BossTipsGlobalDB.dungeonOverrides = {} end
+    -- 数据库兜底完成后，按真正的 lang 重新解析 locale（Locales.lua 加载早于 Data.lua，需刷新）
+    if addon.RefreshLocale then addon.RefreshLocale() end
 end
 ensureDBExists()
 addon.EnsureDB = ensureDBExists
@@ -190,13 +197,56 @@ local function GetMPlusOrder()
     local GD = addon.GuideData
     return BuildSortedIDs(GD.mplus, GD.mplusInfo)
 end
+
+-- 版本显示名本地化（源文件为中文，按 locale 替换为繁中/英文）
+local VERSION_LABEL_LOCALE = {
+    ["zhTW"] = {
+        ["1.0"] = "1.0 經典舊世",
+        ["2.0"] = "2.0 燃燒的遠征",
+        ["3.0"] = "3.0 巫妖王之怒",
+        ["4.0"] = "4.0 大地的裂變",
+        ["5.0"] = "5.0 熊貓人之謎",
+        ["6.0"] = "6.0 德拉諾之王",
+        ["7.0"] = "7.0 軍團再臨",
+        ["8.0"] = "8.0 爭霸艾澤拉斯",
+        ["9.0"] = "9.0 暗影國度",
+        ["10.0"] = "10.0 巨龍時代",
+        ["11.0"] = "11.0 地心之戰",
+        ["12.0"] = "12.0 至暗之夜",
+        ["Current"] = "大秘境（當前賽季）",
+    },
+    ["enUS"] = {
+        ["1.0"] = "1.0 Classic",
+        ["2.0"] = "2.0 The Burning Crusade",
+        ["3.0"] = "3.0 Wrath of the Lich King",
+        ["4.0"] = "4.0 Cataclysm",
+        ["5.0"] = "5.0 Mists of Pandaria",
+        ["6.0"] = "6.0 Warlords of Draenor",
+        ["7.0"] = "7.0 Legion",
+        ["8.0"] = "8.0 Battle for Azeroth",
+        ["9.0"] = "9.0 Shadowlands",
+        ["10.0"] = "10.0 Dragonflight",
+        ["11.0"] = "11.0 The War Within",
+        ["12.0"] = "12.0 The War Within",
+        ["Current"] = "Mythic+ Current Season",
+    },
+}
+local function LocalizeVersionLabel(id, rawLabel)
+    local loc = addon.LOCALE
+    local map = VERSION_LABEL_LOCALE[loc]
+    if map and map[id] then return map[id] end
+    -- 若 rawLabel 是中文且当前 locale 非简中，尝试用映射兜底
+    if loc ~= "zhCN" and map and map[id] then return map[id] end
+    return rawLabel
+end
 local function GetVersionLabel(id)
     ensureDBExists()
     local GD = addon.GuideData
     local i = (GD.versionInfo and GD.versionInfo[id]) or (GD.mplusInfo and GD.mplusInfo[id])
     local custom = BossTipsGlobalDB.customVersions[id]
     if custom and custom.label and custom.label ~= "" then return custom.label end
-    return (i and i.label) or tostring(id)
+    local raw = (i and i.label) or tostring(id)
+    return LocalizeVersionLabel(id, raw)
 end
 addon.GetNativeOrder = GetNativeOrder
 addon.GetMPlusOrder = GetMPlusOrder
@@ -228,7 +278,8 @@ local function GetRaidVersionLabel(id)
     -- 若该版本号在 5 人本/M+ 中也有定义，复用其显示名（保持 12.0 至暗之夜 等一致）
     local verLabel = GetVersionLabel(id)
     if verLabel and verLabel ~= tostring(id) then return verLabel end
-    return (id and tostring(id) .. " 团本") or "团本"
+    local suffix = (addon.LOCALE == "zhTW" and " 團隊副本") or (addon.LOCALE == "enUS" and " Raid") or " 团本"
+    return (id and tostring(id) .. suffix) or (addon.LOCALE == "zhTW" and "團隊副本" or addon.LOCALE == "enUS" and "Raid" or "团本")
 end
 local function GetRaidDungeons(verId)
     ensureDBExists()
@@ -373,12 +424,37 @@ local function BuildActiveGuides()
         local cr = db.customRaids and db.customRaids[instance]
         return cr ~= nil
     end
-    local function addBossEntry(copy, boss, entry, isRaid)
+    local function addBossEntry(copy, boss, entry, isRaid, catType, verId, instance)
         local etype = entry.type or "BOSS"
         copy[boss] = {
             order = entry.order or 999,
             type = etype,
         }
+        -- 多语言攻略回指：标记来源类型/版本/副本/首领，供 GetGuideText 按当前语言取译文
+        if catType then
+            copy[boss]._src = { type = catType, ver = verId, instance = instance, boss = boss }
+        end
+        -- 翻译名：优先从分语言攻略文件取当前语言的首领/小怪显示名；缺失则回退原始 key
+        local locale = addon.LOCALE or "zhCN"
+        local displayName = boss
+        if locale ~= "zhCN" and catType then
+            local trans = GD.translations and GD.translations[locale]
+            local cat = trans and trans[catType]
+            local ver = cat and cat[verId]
+            local inst = ver and ver[instance]
+            local b = inst and inst[boss]
+            if b and b.name and b.name ~= "" then
+                displayName = b.name
+            elseif b then
+                -- 大秘境译文条目无独立 name 字段：从神话难度攻略头 {rtN}NAME{rtN} 提取本地化名
+                local d = b.mythicplus or b.mythic or b.normal or b.heroic or b.lfr
+                if d then
+                    local nm = tostring(d):match("^{rt%d+}(.-){rt%d+}")
+                    if nm and nm ~= "" then displayName = nm end
+                end
+            end
+        end
+        copy[boss].name = displayName
         -- MOB 没有难度分层，保留外层 tips
         if etype == "MOB" then
             copy[boss].tips = entry.tips or ""
@@ -398,13 +474,17 @@ local function BuildActiveGuides()
         end
         copy[boss].tipsByDifficulty = td
     end
-    local function addDungeon(instance, dungeonTbl)
+    local function addDungeon(instance, dungeonTbl, catType, verId)
         if db.hiddenDungeons and db.hiddenDungeons[instance] then return end
         if guides[instance] then return end
         local copy = {}
         local isRaid = IsRaidInstance(instance)
         for boss, entry in pairs(dungeonTbl) do
-            addBossEntry(copy, boss, entry, isRaid)
+            addBossEntry(copy, boss, entry, isRaid, catType, verId, instance)
+        end
+        -- 实例级来源标记，供 GetLocalizedInstanceName 按当前 locale 取显示名
+        if catType then
+            copy._src = { type = catType, ver = verId, instance = instance }
         end
         guides[instance] = copy
     end
@@ -414,7 +494,7 @@ local function BuildActiveGuides()
         for _, sid in ipairs(GetMPlusOrder()) do
             if GD.mplus[sid] and not (db.disabledMPlus and db.disabledMPlus[sid]) then
                 for instance, dungeonTbl in pairs(GD.mplus[sid]) do
-                    addDungeon(instance, dungeonTbl)
+                    addDungeon(instance, dungeonTbl, "mplus", sid)
                 end
             end
         end
@@ -424,7 +504,7 @@ local function BuildActiveGuides()
         for _, vid in ipairs(GetNativeOrder()) do
             if GD.versions[vid] and not (db.disabledNative and db.disabledNative[vid]) then
                 for instance, dungeonTbl in pairs(GD.versions[vid]) do
-                    addDungeon(instance, dungeonTbl)
+                    addDungeon(instance, dungeonTbl, "native", vid)
                 end
             end
         end
@@ -434,7 +514,7 @@ local function BuildActiveGuides()
         for _, vid in ipairs(GetRaidVersionIDs()) do
             if GD.raids[vid] and not (db.disabledRaids and db.disabledRaids[vid]) then
                 for instance, dungeonTbl in pairs(GD.raids[vid]) do
-                    addDungeon(instance, dungeonTbl)
+                    addDungeon(instance, dungeonTbl, "raids", vid)
                 end
             end
         end
@@ -446,7 +526,7 @@ local function BuildActiveGuides()
             if not guides[instance] then
                 local copy = {}
                 for boss, b in pairs(d.bosses or {}) do
-                    addBossEntry(copy, boss, b, true)
+                    addBossEntry(copy, boss, b, true, "customraid", d.versionId, instance)
                 end
                 guides[instance] = copy
             end
@@ -459,7 +539,7 @@ local function BuildActiveGuides()
             if not guides[instance] then
                 local copy = {}
                 for boss, b in pairs(d.bosses or {}) do
-                    addBossEntry(copy, boss, b, IsRaidInstance(instance))
+                    addBossEntry(copy, boss, b, IsRaidInstance(instance), "customdungeon", d.versionId, instance)
                 end
                 guides[instance] = copy
             end
@@ -528,6 +608,99 @@ local function GetTipsForDifficulty(entry, diff)
 end
 addon.GetTipsForDifficulty = GetTipsForDifficulty
 
+-- 按当前语言(addon.LOCALE)读取首领/小怪攻略文本。
+-- 优先从分语言攻略文件(addon.GuideData.translations[locale][type][ver][instance][boss][diff])取译文；
+-- 缺失（未翻译语言/未覆盖首领）则回退 GetTipsForDifficulty（简中源）。
+local function GetGuideText(entry, diff)
+    if not entry then return "" end
+    local locale = addon.LOCALE or "zhCN"
+    if locale ~= "zhCN" then
+        local trans = addon.GuideData and addon.GuideData.translations and addon.GuideData.translations[locale]
+        local src = entry._src
+        if trans and src then
+            -- 大秘境译文仅存 mythicplus 一档：任何难度请求都映射到该键取译文
+            local lookupDiff = (src.type == "mplus") and "mythicplus" or diff
+            local cat = trans[src.type]
+            local ver = cat and cat[src.ver]
+            local inst = ver and ver[src.instance]
+            local b = inst and inst[src.boss]
+            if b then
+                -- 兼容旧/新两种译文存储结构：
+                --   旧格式 M+（_rebuild 产物）：BOSS/MOB 均只存 mythicplus 单档；
+                --   新格式（_regen_perdiff 产物）：BOSS 存 tipsByDifficulty 嵌套、MOB 存外层 tips。
+                -- 因此 MOB 依次尝试 tips / mythicplus / tipsByDifficulty[lookupDiff]；
+                -- BOSS 依次尝试 tipsByDifficulty[lookupDiff] / 扁平难度键(含 mythicplus) / 外层 tips。
+                local txt
+                if entry.type == "MOB" then
+                    txt = b.tips or b.mythicplus or (b.tipsByDifficulty and b.tipsByDifficulty[lookupDiff])
+                else
+                    txt = (b.tipsByDifficulty and b.tipsByDifficulty[lookupDiff]) or b[lookupDiff] or b.tips
+                end
+                if txt and txt ~= "" then return txt end
+            end
+        end
+    end
+    return GetTipsForDifficulty(entry, diff)
+end
+addon.GetGuideText = GetGuideText
+
+-- 根据当前 locale 获取首领/小怪的显示名（用于编辑器左侧树、攻略窗标题等）
+-- 仅 M+ Current 与有翻译文件的团本返回译文；其余返回原名
+function addon.GetLocalizedBossName(instName, bossName, isRaid, verId)
+    if not bossName or bossName == "" then return bossName end
+    local trans = addon.GuideData.translations and addon.GuideData.translations[addon.LOCALE]
+    if not trans then return bossName end
+    local t
+    if isRaid then
+        if verId and trans.raids and trans.raids[verId] and trans.raids[verId][instName] then
+            t = trans.raids[verId][instName][bossName]
+        end
+    else
+        if verId and trans.mplus and trans.mplus[verId] and trans.mplus[verId][instName] then
+            t = trans.mplus[verId][instName][bossName]
+        end
+        if not t and verId and trans.native and trans.native[verId] and trans.native[verId][instName] then
+            t = trans.native[verId][instName][bossName]
+        end
+        if not t and verId and trans.versions and trans.versions[verId] and trans.versions[verId][instName] then
+            t = trans.versions[verId][instName][bossName]
+        end
+    end
+    if t and t.name and t.name ~= "" then return t.name end
+    -- 兼容两种译文存储：扁平难度键（旧M+）或 tipsByDifficulty 嵌套（团本/原生5人本）
+    if t then
+        local d = t.mythicplus or t.mythic or t.normal or t.heroic or t.lfr
+        if not d then
+            local td = t.tipsByDifficulty
+            if td then
+                d = td.mythicplus or td.mythic or td.normal or td.heroic or td.lfr
+            end
+        end
+        if not d then
+            d = t.tips
+        end
+        if d then
+            local nm = tostring(d):match("^{rt%d+}(.-){rt%d+}")
+            if nm and nm ~= "" then return nm end
+        end
+    end
+    return bossName
+end
+
+-- 根据当前 locale 获取副本实例显示名（用于编辑器左侧树、攻略窗标题等）
+-- 仅 M+ Current 与有翻译文件的团本返回译文；其余返回原名
+function addon.GetLocalizedInstanceName(instName, catType, verId)
+    if not instName or instName == "" then return instName end
+    local trans = addon.GuideData.translations and addon.GuideData.translations[addon.LOCALE]
+    if trans and catType and verId then
+        local cat = trans[catType]
+        local ver = cat and cat[verId]
+        local inst = ver and ver[instName]
+        if inst and inst.name and inst.name ~= "" then return inst.name end
+    end
+    return instName
+end
+
 -- 获取某个首领/小怪的 encounterId：自定义副本 > WTF 覆盖层 > 内置数据 > BigWigs 数据
 local function GetBossEncounterId(instance, boss)
     ensureDBExists()
@@ -573,14 +746,58 @@ addon.BuildActiveGuides = BuildActiveGuides
 -- ============ BigWigs ID 自动匹配 ============
 local function NormalizeName(s)
     if type(s) ~= "string" then return "" end
-    return s:gsub("%s+", ""):gsub("[-–—]", ""):lower()
+    -- 同时移除空白/连字符/中点（处理繁简译名差异，如「魔力之心」vs「玛心」分段匹配）
+    return s:gsub("[%s%-–—·'’'\",.。、!！?？]", ""):lower()
+end
+
+-- 字符级 Jaccard 相似度（处理译名/繁简差异导致的字符不匹配）
+local function CharJaccard(a, b)
+    if a == "" or b == "" then return 0 end
+    local ca, cb = {}, {}
+    for i = 1, #a do ca[a:sub(i, i)] = (ca[a:sub(i, i)] or 0) + 1 end
+    for i = 1, #b do cb[b:sub(i, i)] = (cb[b:sub(i, i)] or 0) + 1 end
+    local inter, uni = 0, 0
+    for c, n in pairs(ca) do
+        uni = uni + n
+        if cb[c] then inter = inter + math.min(n, cb[c]) end
+    end
+    for c, n in pairs(cb) do
+        if not ca[c] then uni = uni + n end
+    end
+    return uni == 0 and 0 or inter / uni
+end
+
+-- 字符串分段匹配：把 a/b 按 · / - 拆成段，任意一段命中即视为匹配
+local function AnySegmentMatch(a, b)
+    if not a or not b then return false end
+    if a:find("·") or b:find("·") then
+        local function segs(s)
+            local out = {}
+            for p in s:gmatch("[^·]+") do out[#out+1] = p end
+            return out
+        end
+        for _, x in ipairs(segs(a)) do
+            for _, y in ipairs(segs(b)) do
+                local nx, ny = NormalizeName(x), NormalizeName(y)
+                if nx ~= "" and ny ~= "" and (nx == ny or nx:find(ny, 1, true) or ny:find(nx, 1, true)) then
+                    return true
+                end
+            end
+        end
+    end
+    return false
 end
 
 local function MatchBossName(a, b)
+    if not a or not b or a == "" or b == "" then return false end
     local na, nb = NormalizeName(a), NormalizeName(b)
     if na == "" or nb == "" then return false end
     if na == nb then return true end
-    if na:find(nb, 1, true) or nb:find(na, 1, true) then return true end
+    if #na >= 2 and #nb >= 2 and (na:find(nb, 1, true) or nb:find(na, 1, true)) then return true end
+    -- 字符级 Jaccard >= 0.55：处理译名/繁简差异
+    if CharJaccard(na, nb) >= 0.55 then return true end
+    -- 中点分段匹配
+    if AnySegmentMatch(a, b) then return true end
     return false
 end
 
@@ -607,9 +824,10 @@ local function GetBigWigsEncounterId(instance, boss)
         return tostring(onlyEid)
     end
 
-    -- 否则尝试用 EJ 中文名匹配
+    -- 用 EJ 客户端 ID 反查（带 SelectEncounter 兜底，确保数据就绪）
     for encName, eid in pairs(db) do
         if eid and EJ_GetEncounterInfo then
+            if EJ_SelectEncounter then pcall(EJ_SelectEncounter, tonumber(eid)) end
             local ok, ejName = pcall(EJ_GetEncounterInfo, tonumber(eid))
             if ok and ejName and ejName ~= "" then
                 if MatchBossName(boss, ejName) then
@@ -805,14 +1023,37 @@ local CONFIG_KEYS = {
     { key = "bossMenuPopDirection", t = "string" },
     { key = "tipsFramePopDirection", t = "string" },
     { key = "tipsFrameAlign", t = "string" },
+    -- 跨设备同步：界面语言、延展方向、难度显示开关
+    { key = "lang", t = "string" },
+    { key = "guideExpandDir", t = "string" },
+    { key = "guideFrameTopY", t = "number" },
+    { key = "guideFrameBottomY", t = "number" },
+    { key = "enabledDifficulties", t = "table" },
 }
 local function ConfigValueToStr(v, t)
     if t == "bool" then return v and "1" or "0" end
+    if t == "table" then
+        -- 序列化 table 为 "k1=v1,k2=v2" 形式（用 SUB 隔开），仅支持 {string=number/bool} 简单表
+        if type(v) ~= "table" then return "" end
+        local pairs_ = {}
+        for k, val in pairs(v) do
+            pairs_[#pairs_ + 1] = tostring(k) .. "=" .. tostring(val)
+        end
+        return table.concat(pairs_, ",")
+    end
     return tostring(v)
 end
 local function ConfigStrToValue(s, t)
     if t == "bool" then return s == "1" end
     if t == "number" then return tonumber(s) end
+    if t == "table" then
+        local out = {}
+        for pair in (s or ""):gmatch("[^,]+") do
+            local k, v = pair:match("^%s*([^=]+)=%s*(.-)%s*$")
+            if k and v then out[k] = (v == "true") or (v == "false") and false or v end
+        end
+        return out
+    end
     return s
 end
 local function EncodeConfig()
@@ -1254,30 +1495,92 @@ local function ColorChatTips(text)
 end
 addon.ColorChatTips = ColorChatTips
 
+-- 轻量聊天行清理：保留法术链接，仅剥除 rt 表情
+local function CleanChatLine(text)
+    if not text or text == "" then return "" end
+    -- [名称|spell:id] -> 可点击法术链接
+    text = string.gsub(text, "%[([^%]%|]+)|spell:(%d+)%]", "|Hspell:%2|h%1|h")
+    -- 剥除 rt 表情
+    text = string.gsub(text, "{rt%d}", "")
+    text = string.gsub(text, "%[rt%d%]", "")
+    return strtrim(text)
+end
+addon.CleanChatLine = CleanChatLine
+
+-- 从攻略文本提取「首领关键技能/要点」列表，供类 BigWigs 式逐条发送。
+-- 规则：按 || 分段；每段内提取 {rt1}重点块、[技能名]（含 spell 链接）；
+--       若剩余文本含打断/必断/速杀等关键词，也作为补充要点；
+--       同一段内的多个技能/要点合并成一行（与 BigWigs 一致）。
 -- ============ 攻略发送（按 || 分割，约 240 字/条发送） ============
+
+-- 攻略发送：首条同步立即发出（点击即有反馈，与旧版一致），后续分条用 C_Timer 间隔发送，
+-- 规避 WoW 聊天限流。所有分条已按 UTF-8 字节切分（≤ MAX_CHAT_BYTES），不会触发
+-- 「Chat message limits exceeded」。pcall 包裹单条发送，单条异常不影响其余分条与完成提示。
+
+-- 按字节切分 UTF-8 字符串，确保每块不超过 maxBytes 且不截断多字节字符。
+-- SendChatMessage 的 255 字节限制按 UTF-8 字节计算，中文攻略必须按字节而非字符数切分。
+local function SplitUtf8Bytes(text, maxBytes)
+    local chunks = {}
+    local current = ""
+    local currentLen = 0
+    for char in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+        local charLen = string.len(char)
+        if currentLen + charLen > maxBytes then
+            if current ~= "" then
+                chunks[#chunks + 1] = current
+                current = char
+                currentLen = charLen
+            else
+                -- 单个字符即超上限（理论上不会发生），直接成块
+                chunks[#chunks + 1] = char
+                current = ""
+                currentLen = 0
+            end
+        else
+            current = current .. char
+            currentLen = currentLen + charLen
+        end
+    end
+    if current ~= "" then chunks[#chunks + 1] = current end
+    return chunks
+end
+
 local function SendBossTips(bossName, channelOverride)
     if not bossName or not addon.currentInstanceName then
-        print("|cFFFF0000BossTips|r: 未选中BOSS或副本信息异常")
+        print("|cFFFF0000BossTips|r: " .. (L["No Boss Selected"] or "未选中BOSS或副本信息异常"))
         return
     end
     local BossData = GetBossData()
     if not BossData or not BossData[addon.currentInstanceName] or not BossData[addon.currentInstanceName][bossName] then
-        print("|cFFFF0000BossTips|r: 无", bossName, "的攻略信息")
+        -- 用本地化显示名报错（避免简中源 key 直接出现在英文 locale 日志中）
+        local disp = bossName
+        local e = addon.GetActiveGuideEntry and addon.GetActiveGuideEntry(addon.currentInstanceName, bossName)
+        if e and e.name then disp = e.name end
+        print("|cFFFF0000BossTips|r: " .. ((L["No Guide For"] or "无 %s 的攻略信息"):format(disp)))
         return
     end
     local entry = BossData[addon.currentInstanceName][bossName]
+    local displayName = (entry and entry.name) or bossName
     -- 按当前窗口难度发送：优先取该难度的专属攻略。
     -- 团本攻略为累计式撰写（高难度含低难度），发送所选难度即等于递进包含低难度；
     -- 大秘境只发所选难度，不叠加低难度（缺专属时回退首个非空难度，避免空发）。
     local diff = (addon.tipsFrame and addon.tipsFrame.difficulty) or "normal"
-    local tips = GetTipsForDifficulty(entry, diff)
+    -- 与攻略窗显示保持一致：团本没有 M+，选到 mythicplus 时回退 normal，避免取到空攻略。
+    -- 注意 IsRaidInstance 是 BuildActiveGuides 内的嵌套局部，此处改用 entry._src.type 判断（文件级可见）。
+    if entry and entry._src and (entry._src.type == "raids" or entry._src.type == "customraid") and diff == "mythicplus" then diff = "normal" end
+    if BossTipsGlobalDB.debugSend then
+        print(string.format("|cFF88CCFFBossTips[调试]|r 发送: 副本=%s 首领=%s 难度=%s 频道=%s",
+            tostring(addon.currentInstanceName), tostring(bossName), tostring(diff),
+            tostring(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")))
+    end
+    local tips = GetGuideText(entry, diff)
     -- 聊天发送前预处理：保留法术链接，其余转为文本标记，剥除 rt 表情
     tips = ColorChatTips(tips)
     if not tips then
-        print("|cFFFF0000BossTips|r: 无", bossName, "的攻略信息")
+        print("|cFFFF0000BossTips|r: " .. ((L["No Guide For"] or "无 %s 的攻略信息"):format(displayName)))
         return
     end
-    local MAX_CHAT_LENGTH = 240
+    local MAX_CHAT_BYTES = 240  -- SendChatMessage 硬上限约 255 字节，留安全边距
     local parts = { strsplit("||", tips) }
     local sortedParts = {}
     local hasSeparator = false
@@ -1288,24 +1591,16 @@ local function SendBossTips(bossName, channelOverride)
     if not hasSeparator then
         local trimmedTips = strtrim(tips)
         if trimmedTips ~= "" then
-            sortedParts = {}
-            local currentPart = ""
-            local words = { strsplit(" ", trimmedTips) }
-            for _, word in ipairs(words) do
-                if string.len(currentPart) + string.len(word) + 1 <= MAX_CHAT_LENGTH then
-                    currentPart = (currentPart ~= "" and (currentPart .. " " .. word) or word)
-                else
-                    if currentPart ~= "" then sortedParts[#sortedParts + 1] = currentPart end
-                    currentPart = word
-                end
-            end
-            if currentPart ~= "" then sortedParts[#sortedParts + 1] = currentPart end
+            sortedParts = SplitUtf8Bytes(trimmedTips, MAX_CHAT_BYTES)
         end
     end
     if #sortedParts == 0 then
-        print("|cFFFF0000BossTips|r: 攻略内容为空")
+        print("|cFFFF0000BossTips|r: " .. (L["Guide Empty"] or "攻略内容为空"))
         return
     end
+    -- 在第一条消息前加首领名 header（用本地化显示名；分语言独立 L key 渲染）
+    local header = (L["Guide Header"] or "【%s】"):format(displayName)
+    if sortedParts[1] then sortedParts[1] = header .. " " .. sortedParts[1] end
     if #sortedParts == 1 and string.find(sortedParts[1], "{rt8}.*{rt8}") then
         sortedParts[#sortedParts + 1] = strtrim(string.gsub(tips, "{rt8}.*{rt8}", ""))
         local filtered = {}
@@ -1314,25 +1609,48 @@ local function SendBossTips(bossName, channelOverride)
         end
         sortedParts = filtered
     end
+    -- 最终按字节再切分：header 加入后首条可能超长，且 || 段本身也可能超过 255 字节
+    local finalParts = {}
+    for _, part in ipairs(sortedParts) do
+        local trimmed = strtrim(part)
+        if trimmed ~= "" then
+            if string.len(trimmed) <= MAX_CHAT_BYTES then
+                finalParts[#finalParts + 1] = trimmed
+            else
+                local chunks = SplitUtf8Bytes(trimmed, MAX_CHAT_BYTES)
+                for _, chunk in ipairs(chunks) do
+                    finalParts[#finalParts + 1] = chunk
+                end
+            end
+        end
+    end
+    sortedParts = finalParts
     local chatType = ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
     local index = 1
-    local delay = 1.5
+    local delay = 1.0  -- 分条间隔（秒），低于 WoW 聊天限流阈值
     local function sendNext()
         if index <= #sortedParts then
-            SendChatMessage(sortedParts[index], chatType)
+            local ok, err = pcall(SendChatMessage, sortedParts[index], chatType)
+            if not ok then
+                -- 单条发送异常（如频道不可用）：提示并跳过该条，继续后续分条
+                print("|cFFFF0000BossTips|r: " .. (L["Chat Send Failed"] or "攻略发送失败") .. "：" .. tostring(err):sub(1, 40))
+            end
             index = index + 1
             C_Timer.After(delay, sendNext)
         else
-            print("|cFF00FF00BossTips|r: 已发送", bossName, "攻略到", chatType)
+            -- 完成发送的本地化日志
+            local sentMsg = (L["Sent Guide To"] or "已发送 %s 攻略到 %s"):format(displayName, chatType)
+            print("|cFF00FF00BossTips|r: " .. sentMsg)
             if BossTipsGlobalDB.closeWindowAfterSend and addon.tipsFrame and addon.tipsFrame:IsShown() then
                 addon.tipsFrame:Hide()
                 addon.manuallyHidden = true
             end
         end
     end
-    sendNext()
+    sendNext()  -- 首条同步立即发出，点击即有反馈
 end
 addon.SendBossTips = SendBossTips
+
 addon.GetTipsBg = GetTipsBg
 addon.GetTipsFontPath = GetTipsFontPath
 addon.ApplyThemeToFrame = ApplyThemeToFrame

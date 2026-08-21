@@ -8,22 +8,40 @@ local L = addon.L
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
+-- ============ 外部链接（关于/帮助页签使用）============
+-- 来源：.toc（插件名/作者/版本）+ 社区与发布平台
+local NGA_URL = "https://bbs.nga.cn/read.php?tid=42002877"
+local CURSE_URL = "https://legacy.curseforge.com/wow/addons/bosstips"
+local NETEASE_DD_URL = "https://ds.163.com"        -- 网易有爱（网易DD）
+local HEIHE_URL = "https://workshop.xiaoheihe.cn"  -- 黑盒工坊
+
+-- 在聊天框输出可点击的外部链接（零售版点击 url 链接会打开默认浏览器）
+function addon:OpenExternalLink(url, label)
+    label = label or url
+    print(string.format("|cff58c6ff%s|r: |Hurl:%s|h[%s]|h", tostring(label), url, url))
+end
+
 -- ============ 难度显示开关 ============
 -- 设置面板可勾选要展示的难度；未勾选的难度不会出现在攻略窗难度切换列表，
 -- 也不会作为进本自动切换的默认难度。数据与筛选逻辑见 Core.lua：addon.IsDifficultyEnabled 等。
-local DIFF_TOGGLE_LABELS = {
-    lfr = "随机（LFR）",
-    normal = "普通",
-    heroic = "英雄",
-    mythic = "史诗",
-    mythicplus = "史诗+（大秘境）",
-}
-local function MakeDiffToggle(key)
+local function GetDiffToggleLabel(key)
+    local map = {
+        lfr = "LFR",
+        normal = "Normal",
+        heroic = "Heroic",
+        mythic = "Mythic",
+        mythicplus = "Mythic Plus",
+    }
+    return L[map[key]] or key
+end
+local function MakeDiffToggle(key, order)
     return {
         type = "toggle",
-        name = DIFF_TOGGLE_LABELS[key] or key,
-        desc = "取消勾选后，该难度不会出现在攻略窗的难度切换列表中，也不会作为进本后的默认显示难度。",
-        width = "full",
+        name = function() return GetDiffToggleLabel(key) end,
+        desc = function() return L["Diff Toggle Desc"] end,
+        -- 0.65 ≈ 1/3 行宽，5 个复选框按 3+2 两行均衡分布
+        width = 0.65,
+        order = order,
         get = function()
             local ed = BossTipsGlobalDB.enabledDifficulties
             return ed == nil or ed[key] ~= false  -- 缺省（未设置）= 启用
@@ -40,12 +58,35 @@ local function MakeDiffToggle(key)
     }
 end
 
+-- ============ 主题应用到设置框（含内层 content/tab 区域）============
+-- Ace3 的 AceConfigDialog.Open() 打开的 frame 是 AceGUI Frame，
+-- 内部 content 区域是 frame.content（不同 AceGUI 版本可能为 frame.children / 直接的子 frame）。
+-- 我们对 frame 本身以及所有 child frame 套用主题，确保内层背景/边框也跟随 ACE3 风格。
+local function ApplyThemeToOpenSettings(openFrame)
+    if not openFrame or not openFrame.frame or not addon.ApplyThemeToFrame then return end
+    addon.ApplyThemeToFrame(openFrame.frame)
+    -- 遍历子 frame（content、tab container 等），逐个套用主题
+    local function walkChildren(parent)
+        if not parent or not parent.GetChildren then return end
+        local kids = { parent:GetChildren() }
+        for _, child in ipairs(kids) do
+            if child and child.SetBackdrop then
+                -- 跳过标准 Blizzard 控件（按钮/下拉/编辑框自身的边框由 Blizzard 渲染，强行改 backdrop 容易渲染异常）
+                local objType = child.GetObjectType and child:GetObjectType()
+                if objType ~= "Button" and objType ~= "EditBox" and objType ~= "Slider" and objType ~= "CheckButton" then
+                    addon.ApplyThemeToFrame(child)
+                end
+            end
+            walkChildren(child)
+        end
+    end
+    walkChildren(openFrame.frame)
+end
+
 local function ApplyThemeToSettingsFrame()
     local ACD = LibStub("AceConfigDialog-3.0", true)
     local openFrame = ACD and ACD.OpenFrames and ACD.OpenFrames["BossTips"]
-    if openFrame and openFrame.frame and addon.ApplyThemeToFrame then
-        addon.ApplyThemeToFrame(openFrame.frame)
-    end
+    if openFrame then ApplyThemeToOpenSettings(openFrame) end
 end
 
 local function ApplyAppearanceChange()
@@ -59,31 +100,34 @@ local function ApplyAppearanceChange()
     ApplyThemeToSettingsFrame()
 end
 
-local options = {
-    type = "group",
-    name = "BossTips",
-    childGroups = "tab",
-    args = {
+local function BuildMainOptions()
+    local options = {
+        type = "group",
+        name = "BossTips v" .. (addon.version or "?"),
+        childGroups = "tab",
+        args = {
         -- ===== 第一个标签页：设置 =====
         settings_tab = {
             type = "group",
-            name = L["Settings"],
+            name = function() return L["Settings"] end,
             order = 1,
             args = {
                 behavior = {
                     type = "group",
-                    name = L["Behavior & Interaction"],
+                    name = function() return L["Behavior & Interaction"] end,
+                    desc = function() return L["Behavior Desc"] end,
                     inline = true,
                     order = 2,
                     args = {
                         guide_window_mode = {
                             type = "select",
-                            name = "显示方式",
-                            desc = "自动展开：进本自动弹出攻略窗。按钮模式：仅显示悬浮按钮，点击后弹窗。",
-                            values = {
-                                ["auto"] = "自动展开",
-                                ["button"] = "按钮模式",
-                            },
+                            name = function() return L["Display Mode"] end,
+                            desc = function() return L["Display Mode Desc"] end,
+                            width = 1.5,
+                            values = function() return {
+                                ["auto"] = L["Auto Expand"],
+                                ["button"] = L["Button Mode"],
+                            } end,
                             get = function() return BossTipsGlobalDB.guideWindowMode or "auto" end,
                             set = function(_, val)
                                 BossTipsGlobalDB.guideWindowMode = val
@@ -102,8 +146,8 @@ local options = {
                         },
                         autoExpand = {
                             type = "toggle",
-                            name = L["Enable Smart Expand"],
-                            desc = L["Smart Expand Desc"],
+                            name = function() return L["Enable Smart Expand"] end,
+                            desc = function() return L["Smart Expand Desc"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.autoExpandOnTarget end,
                             set = function(_, val) BossTipsGlobalDB.autoExpandOnTarget = val end,
@@ -111,7 +155,7 @@ local options = {
                         },
                         autoOpen = {
                             type = "toggle",
-                            name = L["Auto Open On Enter"],
+                            name = function() return L["Auto Open On Enter"] end,
                             width = "full",
                             hidden = function() return (BossTipsGlobalDB.guideWindowMode or "auto") ~= "auto" end,
                             get = function() return BossTipsGlobalDB.autoOpenOnEnter end,
@@ -120,8 +164,8 @@ local options = {
                         },
                         lock_window = {
                             type = "toggle",
-                            name = L["Lock Window"],
-                            desc = L["Lock Window Desc"],
+                            name = function() return L["Lock Window"] end,
+                            desc = function() return L["Lock Window Desc"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.lockWindow end,
                             set = function(_, val)
@@ -135,7 +179,7 @@ local options = {
                         },
                         singleExpand = {
                             type = "toggle",
-                            name = L["Only allow one expanded item at a time"],
+                            name = function() return L["Only allow one expanded item at a time"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.singleExpand end,
                             set = function(_, val) BossTipsGlobalDB.singleExpand = val; ApplyAppearanceChange() end,
@@ -143,8 +187,8 @@ local options = {
                         },
                         showMobs = {
                             type = "toggle",
-                            name = "显示小怪条目",
-                            desc = "关闭时攻略窗口只显示首领（BOSS），不显示小怪/重点怪。",
+                            name = function() return L["Show Mob Entries"] end,
+                            desc = function() return L["Show Mobs Desc"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.showMobs end,
                             set = function(_, val)
@@ -160,28 +204,57 @@ local options = {
                 },
                 difficulty_visibility = {
                     type = "group",
-                    name = "难度显示",
-                    desc = "勾选要在攻略窗中展示的难度；未勾选的难度不会出现在难度切换列表，也不会作为进本后的默认难度。",
+                    name = function() return L["Difficulty Display"] end,
+                    desc = function() return L["Diff Display Desc"] end,
                     inline = true,
                     order = 2.5,
                     args = {
-                        diff_lfr = MakeDiffToggle("lfr"),
-                        diff_normal = MakeDiffToggle("normal"),
-                        diff_heroic = MakeDiffToggle("heroic"),
-                        diff_mythic = MakeDiffToggle("mythic"),
-                        diff_mythicplus = MakeDiffToggle("mythicplus"),
+                        default_difficulty = {
+                            type = "select",
+                            name = function() return L["Default Difficulty"] end,
+                            desc = function() return L["Default Difficulty Desc"] end,
+                            width = "full",
+                            order = 0,
+                            values = function()
+                                return {
+                                    lfr = GetDiffToggleLabel("lfr"),
+                                    normal = GetDiffToggleLabel("normal"),
+                                    heroic = GetDiffToggleLabel("heroic"),
+                                    mythic = GetDiffToggleLabel("mythic"),
+                                    mythicplus = GetDiffToggleLabel("mythicplus"),
+                                }
+                            end,
+                            get = function() return BossTipsGlobalDB.defaultDifficulty or "mythic" end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.defaultDifficulty = val
+                                -- 若攻略窗当前显示，立即按新默认难度刷新（优先新默认；该副本无攻略则回退首个可用）
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                                    local isRaid = false
+                                    local m = addon.GuideData and addon.GuideData.meta and addon.GuideData.meta[addon.currentInstanceName]
+                                    if m and m.isRaid then isRaid = true end
+                                    addon.tipsFrame.difficulty = addon.ResolveVisibleDifficulty(val, isRaid)
+                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                end
+                            end,
+                        },
+                        diff_lfr = MakeDiffToggle("lfr", 1),
+                        diff_normal = MakeDiffToggle("normal", 2),
+                        diff_heroic = MakeDiffToggle("heroic", 3),
+                        diff_mythic = MakeDiffToggle("mythic", 4),
+                        diff_mythicplus = MakeDiffToggle("mythicplus", 5),
                     },
                 },
                 chat_output = {
                     type = "group",
-                    name = L["Chat Output"],
+                    name = function() return L["Chat Output"] end,
+                    desc = function() return L["Chat Output Desc"] end,
                     inline = true,
                     order = 3,
                     args = {
                         enable_chat_send = {
                             type = "toggle",
-                            name = L["Enable sending guide to chat"],
-                            desc = L["Chat Send Desc"],
+                            name = function() return L["Enable sending guide to chat"] end,
+                            desc = function() return L["Chat Send Desc"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.enableChatSend end,
                             set = function(_, val)
@@ -192,15 +265,16 @@ local options = {
                         },
                         chat_channel_left = {
                             type = "select",
-                            name = "左键发送频道",
-                            desc = "攻略窗体小喇叭「左键」点击时发送的频道。默认副本（INSTANCE_CHAT）。",
-                            values = {
-                                ["SAY"] = "说",
-                                ["PARTY"] = "队伍",
-                                ["RAID"] = "团队",
-                                ["INSTANCE_CHAT"] = "副本",
-                                ["YELL"] = "大喊",
-                            },
+                            name = function() return L["Left Click Channel"] end,
+                            desc = function() return L["Left Channel Desc"] end,
+                            width = 1.0,
+                            values = function() return {
+                                ["SAY"] = L["Say"],
+                                ["PARTY"] = L["Party"],
+                                ["RAID"] = L["Raid Channel"],
+                                ["INSTANCE_CHAT"] = L["Instance"],
+                                ["YELL"] = L["Yell"],
+                            } end,
                             get = function() return BossTipsGlobalDB.defaultChatChannel end,
                             set = function(_, val) BossTipsGlobalDB.defaultChatChannel = val end,
                             hidden = function() return not BossTipsGlobalDB.enableChatSend end,
@@ -208,15 +282,16 @@ local options = {
                         },
                         chat_channel_right = {
                             type = "select",
-                            name = "右键发送频道",
-                            desc = "攻略窗体小喇叭「右键」点击时发送的频道。默认说（SAY）。",
-                            values = {
-                                ["SAY"] = "说",
-                                ["PARTY"] = "队伍",
-                                ["RAID"] = "团队",
-                                ["INSTANCE_CHAT"] = "副本",
-                                ["YELL"] = "大喊",
-                            },
+                            name = function() return L["Right Click Channel"] end,
+                            desc = function() return L["Right Channel Desc"] end,
+                            width = 1.0,
+                            values = function() return {
+                                ["SAY"] = L["Say"],
+                                ["PARTY"] = L["Party"],
+                                ["RAID"] = L["Raid Channel"],
+                                ["INSTANCE_CHAT"] = L["Instance"],
+                                ["YELL"] = L["Yell"],
+                            } end,
                             get = function() return BossTipsGlobalDB.sendChannelRight or "SAY" end,
                             set = function(_, val) BossTipsGlobalDB.sendChannelRight = val end,
                             hidden = function() return not BossTipsGlobalDB.enableChatSend end,
@@ -224,8 +299,8 @@ local options = {
                         },
                         close_after_send = {
                             type = "toggle",
-                            name = "发送攻略后关闭窗口",
-                            desc = "勾选后点击小喇叭发送攻略会自动隐藏攻略窗口。",
+                            name = function() return L["Close After Send"] end,
+                            desc = function() return L["Close After Send Desc"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.closeWindowAfterSend end,
                             set = function(_, val) BossTipsGlobalDB.closeWindowAfterSend = val end,
@@ -236,41 +311,93 @@ local options = {
                 },
                 appearance = {
                     type = "group",
-                    name = L["Appearance & Testing"],
+                    name = function() return L["Appearance & Testing"] end,
+                    desc = function() return L["Appearance Desc"] end,
                     inline = true,
                     order = 4,
                     args = {
-                        theme = {
+                        -- 语言和框体延展方向移入外观与测试分组顶部
+                        lang = {
                             type = "select",
-                            name = "主题风格",
-                            desc = "选择界面整体主题。ACE3 主题与攻略窗一致（半透明暗色+用户颜色+灰色边框）；官方默认使用暴雪对话框风格。",
-                            values = {
-                                ["ace3"] = "ACE3 主题",
-                                ["default"] = "官方默认主题",
-                            },
-                            get = function() return BossTipsGlobalDB.theme or "ace3" end,
+                            name = function() return L["Language"] end,
+                            desc = function() return L["Language Desc"] end,
+                            width = 1.0,
+                            values = function()
+                                return {
+                                    ["AUTO"] = L["Follow System"],
+                                    ["zhCN"] = L["简体中文"],
+                                    ["zhTW"] = L["繁體中文"],
+                                    ["enUS"] = L["English"],
+                                }
+                            end,
+                            get = function() return BossTipsGlobalDB.lang or "AUTO" end,
                             set = function(_, val)
-                                BossTipsGlobalDB.theme = val
-                                -- 同时刷新设置框、攻略窗、悬浮按钮、编辑器主题
-                                if addon.RefreshAllThemes then addon.RefreshAllThemes() end
+                                BossTipsGlobalDB.lang = val
+                                if addon.RefreshLocale then addon.RefreshLocale() end
+                                if addon.BuildGuideOptions then addon.BuildGuideOptions() end
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
+                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                end
+                                if LibStub("AceConfigRegistry-3.0", true) then
+                                    LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
+                                end
                             end,
                             order = 0,
                         },
+                        expandDir = {
+                            type = "select",
+                            name = function() return L["Expansion Direction"] end,
+                            desc = function() return L["Expansion Direction Desc"] end,
+                            width = 0.8,
+                            values = function() return {
+                                ["down"] = L["Expand Down"],
+                                ["up"]   = L["Expand Up"],
+                            } end,
+                            get = function() return BossTipsGlobalDB.guideExpandDir or "down" end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.guideExpandDir = val
+                                if addon.tipsFrame and addon.tipsFrame.GetTop then
+                                    BossTipsGlobalDB.guideFrameTopY = addon.tipsFrame:GetTop()
+                                    BossTipsGlobalDB.guideFrameBottomY = addon.tipsFrame:GetBottom()
+                                end
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
+                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                end
+                            end,
+                            order = 0,
+                        },
+                        theme = {
+                            type = "select",
+                            name = function() return L["Theme Style"] end,
+                            desc = function() return L["Theme Style Desc"] end,
+                            width = 1.0,
+                            values = function() return {
+                                ["ace3"] = L["ACE3 Theme"],
+                                ["default"] = L["Default Theme"],
+                            } end,
+                            get = function() return BossTipsGlobalDB.theme or "ace3" end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.theme = val
+                                if addon.RefreshAllThemes then addon.RefreshAllThemes() end
+                            end,
+                            order = 1,
+                        },
                         font = {
                             type = "select",
-                            name = L["Font"],
-                            values = {
-                                ["default"] = "系统默认",
-                                ["damage"] = "伤害数字",
-                                ["chat"] = "聊天粗体",
-                            },
+                            name = function() return L["Font"] end,
+                            width = 1.0,
+                            values = function() return {
+                                ["default"] = L["System Default"],
+                                ["damage"] = L["Damage Font"],
+                                ["chat"] = L["Chat Bold"],
+                            } end,
                             get = function() return BossTipsGlobalDB.tipsFont end,
                             set = function(_, val) BossTipsGlobalDB.tipsFont = val; ApplyAppearanceChange() end,
                             order = 1,
                         },
                         fontSize = {
                             type = "range",
-                            name = L["Font Size"],
+                            name = function() return L["Font Size"] end,
                             min = 10, max = 30, step = 1,
                             get = function() return BossTipsGlobalDB.FontSize end,
                             set = function(_, val) BossTipsGlobalDB.FontSize = val; ApplyAppearanceChange() end,
@@ -278,7 +405,8 @@ local options = {
                         },
                         collapsedAlpha = {
                             type = "range",
-                            name = L["Collapsed Alpha"],
+                            name = function() return L["Collapsed Alpha"] end,
+                            width = 1.0,
                             min = 0.1, max = 1.0, step = 0.05,
                             get = function() return BossTipsGlobalDB.collapsedAlpha end,
                             set = function(_, val) BossTipsGlobalDB.collapsedAlpha = val; ApplyAppearanceChange() end,
@@ -286,7 +414,8 @@ local options = {
                         },
                         bgColor = {
                             type = "color",
-                            name = L["Background Color & Alpha"],
+                            name = function() return L["Background Color & Alpha"] end,
+                            width = 1.0,
                             hasAlpha = true,
                             get = function()
                                 return BossTipsGlobalDB.tipsBgR or 0.05, BossTipsGlobalDB.tipsBgG or 0.05,
@@ -297,28 +426,23 @@ local options = {
                                 BossTipsGlobalDB.tipsBgB, BossTipsGlobalDB.tipsBgA = b, a
                                 ApplyAppearanceChange()
                             end,
-                            order = 4,
+                            order = 3,
                         },
                         minimap_btn = {
                             type = "toggle",
-                            name = L["Show Minimap Button"],
+                            name = function() return L["Show Minimap Button"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.showMinimapButton end,
                             set = function(_, val)
                                 BossTipsGlobalDB.showMinimapButton = val
-                                BossTipsGlobalDB.minimap = BossTipsGlobalDB.minimap or {}
-                                BossTipsGlobalDB.minimap.hide = not val
-                                local icon = LibStub("LibDBIcon-1.0", true)
-                                if icon then
-                                    if val then icon:Show("BossTips") else icon:Hide("BossTips") end
-                                end
+                                if addon.RefreshMinimapButton then addon.RefreshMinimapButton() end
                             end,
                             order = 5,
                         },
                         hide_main_button_no_guide = {
                             type = "toggle",
-                            name = "无攻略时隐藏悬浮按钮",
-                            desc = "按钮模式下，当前区域/副本没有攻略时自动隐藏悬浮按钮。",
+                            name = function() return L["Hide Button When No Guide"] end,
+                            desc = function() return L["按钮模式下_当前区域_副本没有攻略时自动隐藏悬浮按钮"] end,
                             width = "full",
                             get = function() return BossTipsGlobalDB.hideMainButtonWhenNoGuide end,
                             set = function(_, val)
@@ -330,7 +454,7 @@ local options = {
                         },
                         reset_main_button = {
                             type = "execute",
-                            name = "重置悬浮按钮位置",
+                            name = function() return L["Reset Button Position"] end,
                             width = "full",
                             func = function()
                                 BossTipsGlobalDB.mainButtonPos = { point = "TOPLEFT", relativePoint = "TOPLEFT", xOffset = 20, yOffset = -50 }
@@ -344,7 +468,7 @@ local options = {
                         },
                         show_test_window = {
                             type = "execute",
-                            name = L["Show Test Window"],
+                            name = function() return L["Show Test Window"] end,
                             width = "full",
                             func = function()
                                 if addon.ShowTestWindow then addon.ShowTestWindow() end
@@ -353,7 +477,7 @@ local options = {
                         },
                         hide_test_window = {
                             type = "execute",
-                            name = L["Hide Test Window"],
+                            name = function() return L["Hide Test Window"] end,
                             width = "full",
                             func = function()
                                 if addon.HideTestWindow then addon.HideTestWindow() end
@@ -364,8 +488,111 @@ local options = {
                 },
             }
         },
+        -- ===== 第四个标签页：关于（版权 / 帮助 / 下载与社区）=====
+        about_tab = {
+            type = "group",
+            name = function() return L["About"] end,
+            order = 4,
+            args = {
+                copyright_header = {
+                    type = "header",
+                    name = function() return L["Copyright"] end,
+                    order = 1,
+                },
+                copyright_desc = {
+                    type = "description",
+                    name = function()
+                        return L["Title"] .. "：Boss Tips\n"
+                            .. L["Author"] .. "：nga_以德报德, nga_babyfenei\n"
+                            .. (L["Version"] or "Version") .. "：v" .. (addon.version or "?")
+                    end,
+                    fontSize = "medium",
+                    order = 2,
+                },
+                help_header = {
+                    type = "header",
+                    name = function() return L["Help"] end,
+                    order = 3,
+                },
+                help_desc = {
+                    type = "description",
+                    name = function() return L["Help Info"] end,
+                    fontSize = "medium",
+                    order = 4,
+                },
+                links_header = {
+                    type = "header",
+                    name = function() return L["Download & Community"] end,
+                    order = 5,
+                },
+                nga_url = {
+                    type = "input",
+                    name = function() return L["NGA Post"] end,
+                    width = 1.5,
+                    get = function() return NGA_URL end,
+                    set = function() end,
+                    order = 6,
+                },
+                nga_open = {
+                    type = "execute",
+                    name = function() return L["Open Link"] end,
+                    width = 0.5,
+                    func = function() addon:OpenExternalLink(NGA_URL, L["NGA Post"]) end,
+                    order = 6,
+                },
+                curse_url = {
+                    type = "input",
+                    name = function() return L["CurseForge"] end,
+                    width = 1.5,
+                    get = function() return CURSE_URL end,
+                    set = function() end,
+                    order = 7,
+                },
+                curse_open = {
+                    type = "execute",
+                    name = function() return L["Open Link"] end,
+                    width = 0.5,
+                    func = function() addon:OpenExternalLink(CURSE_URL, L["CurseForge"]) end,
+                    order = 7,
+                },
+                dd_url = {
+                    type = "input",
+                    name = function() return L["NetEase DD"] end,
+                    width = 1.5,
+                    get = function() return NETEASE_DD_URL end,
+                    set = function() end,
+                    order = 8,
+                },
+                dd_open = {
+                    type = "execute",
+                    name = function() return L["Open Link"] end,
+                    width = 0.5,
+                    func = function() addon:OpenExternalLink(NETEASE_DD_URL, L["NetEase DD"]) end,
+                    order = 8,
+                },
+                heihe_url = {
+                    type = "input",
+                    name = function() return L["HeiHe Workshop"] end,
+                    width = 1.5,
+                    get = function() return HEIHE_URL end,
+                    set = function() end,
+                    order = 9,
+                },
+                heihe_open = {
+                    type = "execute",
+                    name = function() return L["Open Link"] end,
+                    width = 0.5,
+                    func = function() addon:OpenExternalLink(HEIHE_URL, L["HeiHe Workshop"]) end,
+                    order = 9,
+                },
+            },
+        },
     }
 }
+    return options
+end
+addon.BuildMainOptions = BuildMainOptions
+local options = BuildMainOptions()
 
 -- ============ 攻略配置标签（编辑按钮 → 5人本/团本 树） ============
 -- 保留此辅助函数供测试脚本/tools 使用，设置面板内不再提供一键展开/折叠按钮。
@@ -399,21 +626,22 @@ addon.SetGuideTreesExpanded = SetGuideTreesExpanded
 
 local guideOptions = {
     type = "group",
-    name = L["Guide Options"],
+    name = function() return L["Guide Options"] end,
+
     order = 2,
     childGroups = "tree",
     args = {
         -- 最上方：编辑攻略按钮（直接显示在面板顶部，非树节点）
         open_editor_hint = {
             type = "description",
-            name = "点击下方按钮打开攻略编辑器，可修改任意副本/首领的攻略文本。",
+            name = function() return L["Open Editor Desc"] end,
             fontSize = "medium",
             order = 0.5,
         },
         open_editor = {
             type = "execute",
-            name = "|cffffcc00› 编辑攻略 ‹|r",
-            desc = "打开攻略编辑器，增删改任意副本/首领的攻略文本。",
+            name = function() return L["Edit Guide Header"] end,
+            desc = function() return L["Open Editor Button Desc"] end,
             width = "full",
             order = 1,
             func = function()
@@ -423,29 +651,38 @@ local guideOptions = {
         },
         editor_divider = {
             type = "header",
-            name = "副本与分类",
+            name = function() return L["Dungeons & Categories"] end,
             order = 2,
         },
         -- 5人本 / 团本 树（单击节点即可展开/折叠）
         dungeon_tree = {
             type = "group",
-            name = "5人本",
+            name = function() return L["Dungeons"] end,
             order = 3,
             childGroups = "tree",
             args = {},
         },
         raid_tree = {
             type = "group",
-            name = "团本",
+            name = function() return L["Raid"] end,
             order = 4,
             childGroups = "tree",
             args = {},
         },
     }
 }
+addon.guideOptions = guideOptions
 
 local function BuildGuideOptions()
     if addon.EnsureDB then addon.EnsureDB() end
+    -- 刷新 guideOptions 所有本地化文本（文件加载时 L 可能还是 zhCN）
+    guideOptions.name = L["Guide Options"]
+    guideOptions.args.open_editor_hint.name = L["Open Editor Desc"]
+    guideOptions.args.open_editor.name = L["Edit Guide Header"]
+    guideOptions.args.open_editor.desc = L["Open Editor Button Desc"]
+    guideOptions.args.editor_divider.name = L["Dungeons & Categories"]
+    guideOptions.args.dungeon_tree.name = L["Dungeons"]
+    guideOptions.args.raid_tree.name = L["Raid"]
     local dt = guideOptions.args.dungeon_tree.args
     local rt = guideOptions.args.raid_tree.args
     for k in pairs(dt) do dt[k] = nil end
@@ -461,8 +698,8 @@ local function BuildGuideOptions()
         local verArgs = {}
         verArgs["enable"] = {
             type = "toggle",
-            name = L["Enable this version"],
-            desc = mode == "raid" and "取消勾选将隐藏该版本下所有团本" or "取消勾选将隐藏该版本下所有 5 人本/大秘境",
+            name = function() return L["Enable this version"] end,
+            desc = mode == "raid" and L["Hide Version Raids"] or L["Hide Version Dungeons"],
             width = "full",
             get = function()
                 if mode == "raid" then return addon.IsRaidVersionEnabled(vid) end
@@ -497,13 +734,17 @@ local function BuildGuideOptions()
             dungeons = addon.GetVersionDungeons(vid) or {}
         end
         local instList = {}
-        for inst in pairs(dungeons) do instList[#instList + 1] = inst end
-        table.sort(instList)
+        for inst, dinfo in pairs(dungeons) do
+            instList[#instList + 1] = { inst = inst, source = dinfo and dinfo.source }
+        end
+        table.sort(instList, function(a, b) return a.inst < b.inst end)
         local dorder = 2
-        for _, inst in ipairs(instList) do
+        for _, item in ipairs(instList) do
+            local inst = item.inst
+            local catType = (mode == "raid") and "raids" or ((item.source == "mplus") and "mplus" or "native")
             verArgs["dung_" .. inst] = {
                 type = "toggle",
-                name = inst,
+                name = addon.GetLocalizedInstanceName(inst, catType, vid),
                 width = "full",
                 get = function() return not (BossTipsGlobalDB.hiddenDungeons[inst]) end,
                 set = function(_, val)
@@ -545,11 +786,12 @@ local function BuildGuideOptions()
         rorder = rorder + 1
     end
 end
+addon.BuildGuideOptions = BuildGuideOptions
 
 -- ============ 配置文件标签（简单版，未使用 AceDB Profile） ============
 local function ResetProfile()
     StaticPopupDialogs["BOSSTIPS_RESET_PROFILE"] = {
-        text = "确定将当前配置文件重置为默认吗？所有自定义攻略、分类、副本开关都会丢失！",
+        text = L["Reset Profile Confirm"],
         button1 = YES,
         button2 = NO,
         OnAccept = function()
@@ -560,32 +802,36 @@ local function ResetProfile()
             if LibStub("AceConfigRegistry-3.0", true) then
                 LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
             end
-            print("|cff00ff00BossTips|r 当前配置文件已重置为默认。")
+            print(L["|cff00ff00BossTips|r profile reset."])
         end,
         timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
     }
     StaticPopup_Show("BOSSTIPS_RESET_PROFILE")
 end
 
-local profileOptions = {
-    type = "group",
-    name = L["Profiles"] or "配置文件",
-    order = 3,
-    args = {
-        current_profile = {
-            type = "description",
-            name = "当前配置文件：" .. (L["Default"] or "Default") .. "\n\nBossTips 使用账号级 SavedVariables，暂不支持多角色独立配置。点击下方按钮可将当前配置恢复为默认。",
-            order = 1,
-        },
-        reset_profile = {
-            type = "execute",
-            name = L["Reset Current Profile"] or "重置当前配置文件",
-            width = "full",
-            func = ResetProfile,
-            order = 2,
-        },
+local function BuildProfileOptions()
+    return {
+        type = "group",
+        name = function() return L["Profiles"] end,
+        order = 3,
+        args = {
+            current_profile = {
+                type = "description",
+                name = function() return L["Current Profile: "] .. L["Default"] .. L["Profile Reset Desc"] end,
+                order = 1,
+            },
+            reset_profile = {
+                type = "execute",
+                name = function() return L["Reset Current Profile"] end,
+                width = "full",
+                func = ResetProfile,
+                order = 2,
+            },
+        }
     }
-}
+end
+addon.BuildProfileOptions = BuildProfileOptions
+local profileOptions = BuildProfileOptions()
 
 -- ADDON_LOADED：注册选项表
 local eventFrame = CreateFrame("Frame")
@@ -593,6 +839,10 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
     if arg1 == addonName then
         if addon.EnsureDB then addon.EnsureDB() end
+        -- SavedVariables 此时已加载，按真实 lang 重新解析 locale 并重建设置面板
+        if addon.RefreshLocale then addon.RefreshLocale() end
+        options = BuildMainOptions()
+        profileOptions = BuildProfileOptions()
         BuildGuideOptions()
         options.args.guide_options_tab = guideOptions
         options.args.profiles_tab = profileOptions
@@ -606,15 +856,20 @@ end)
 local origOpen = addon.OpenMainGUI
 function addon:OpenMainGUI()
     if InCombatLockdown() then
-        print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
+        print(L["|cffff0000BossTips|r Cannot open settings in combat."])
         return
     end
-    -- 切换：已打开则关闭
+    local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
+    if not AceConfigDialog then return end
     local openFrame = AceConfigDialog.OpenFrames and AceConfigDialog.OpenFrames["BossTips"]
+    -- 切换：已打开则关闭（关闭后由 OnHide 钩子恢复攻略窗）
     if openFrame and openFrame.frame and openFrame.frame:IsShown() then
         AceConfigDialog:Close("BossTips")
         return
     end
+    -- 打开设置时临时隐藏攻略窗，避免“设置面板 + 攻略窗”两个面板叠加（选语言时尤为明显）
+    addon._guideShownBeforeSettings = (addon.tipsFrame and addon.tipsFrame:IsShown()) or false
+    if addon.tipsFrame then addon.tipsFrame:Hide() end
     if addon.EnsureDB then addon.EnsureDB() end
     if LibStub("AceConfigRegistry-3.0", true) then
         LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
@@ -622,4 +877,34 @@ function addon:OpenMainGUI()
     AceConfigDialog:Open("BossTips")
     -- 打开后立即套用当前主题（ACE3/官方默认），让设置框与攻略窗风格一致
     ApplyThemeToSettingsFrame()
+    -- 关闭按钮使用插件语言（Blizzard 默认 CLOSE 会跟随客户端语言）
+    openFrame = AceConfigDialog.OpenFrames and AceConfigDialog.OpenFrames["BossTips"]
+    if openFrame and openFrame.frame and openFrame.frame.close then
+        openFrame.frame.close:SetText(L["Close"])
+    end
+    -- ESC 关闭：开启键盘 + 钩 OnKeyDown，按 ESC 时调用 AceConfigDialog:Close
+    if openFrame and openFrame.frame and not addon._btSettingsEscHooked then
+        addon._btSettingsEscHooked = true
+        openFrame.frame:EnableKeyboard(true)
+        openFrame.frame:SetScript("OnKeyDown", function(self, key)
+            if key == "ESCAPE" then
+                local ACD = LibStub("AceConfigDialog-3.0", true)
+                if ACD then ACD:Close("BossTips") end
+            end
+        end)
+    end
+    -- 设置关闭后恢复攻略窗（若原本可见且未被手动隐藏），保持与切换语言前一致
+    if openFrame and openFrame.frame and not addon._btSettingsHideHooked then
+        addon._btSettingsHideHooked = true
+        openFrame.frame:HookScript("OnHide", function()
+            if addon._guideShownBeforeSettings and addon.tipsFrame and not addon.manuallyHidden then
+                -- 仅在副本内有匹配攻略时恢复攻略窗；
+                -- 测试窗体不再随设置关闭自动弹出（避免「其他时间」意外弹出），用户需主动点击主按钮或在设置里点「显示测试窗体」
+                if addon.currentInstanceName and (HasCurrentMapGuide and HasCurrentMapGuide()) then
+                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                end
+            end
+            addon._guideShownBeforeSettings = false
+        end)
+    end
 end

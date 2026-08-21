@@ -20,6 +20,10 @@ mainWindow:SetScript("OnDragStop", function(self)
         if point then
             BossTipsGlobalDB.tipsFramePos = { point = point, x = xOfs, y = yOfs }
         end
+        -- 保存当前 top/bottom y（独立于 tipsFramePos.point 的 anchor 类型），
+        -- 供 UpdateLayout 在「切换难度/内容长度变化」时保持固定延展方向，不让框体上下抖动
+        BossTipsGlobalDB.guideFrameTopY = self:GetTop()
+        BossTipsGlobalDB.guideFrameBottomY = self:GetBottom()
     end
 end)
 mainWindow:SetResizable(true)
@@ -31,7 +35,7 @@ addon.tipsFrame = mainWindow
 
 -- 当前窗口的临时状态（不写入 SavedVariables）
 mainWindow.showMobs = BossTipsGlobalDB.showMobs  -- 当前窗口是否显示小怪
-mainWindow.difficulty = "mythicplus"             -- 当前显示难度（默认 M+；五人本进本自动 M+，团本自动普通）
+mainWindow.difficulty = BossTipsGlobalDB.defaultDifficulty or "mythic"  -- 当前显示难度（初始化用持久化默认难度，进本时由 CheckInstance 按副本解析）
 
 local titleText = mainWindow:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 titleText:SetPoint("TOP", 0, -10)
@@ -155,7 +159,7 @@ local function FormatTips(text)
     -- 注意：不使用 ★ / ◆ 等装饰符号，这些字形在 WoW 中文字体中缺失会显示为方块（乱码）。
     -- 改用纯文字标签「重点」，保证任何客户端都正常显示。
     text = string.gsub(text, "{rt1}(.-){rt1}", function(inner)
-        return "|cffffcc00重点 " .. inner .. "|r"
+        return L["Focus "] .. inner .. "|r"
     end)
 
     -- 第5步：删除其余 {rtN} / [rtN] 表情标记
@@ -230,7 +234,7 @@ lockBtn:SetScript("OnClick", function()
     addon:UpdateWindowLock()
     local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
     if AceConfigRegistry then AceConfigRegistry:NotifyChange("BossTips") end
-    print("|cff00ff00BossTips|r " .. (BossTipsGlobalDB.lockWindow and "窗口已锁定" or "窗口已解锁"))
+    print("|cff00ff00BossTips|r " .. (BossTipsGlobalDB.lockWindow and L["Window locked"] or L["Window unlocked"]))
 end)
 
 local function UpdateLockVisual()
@@ -268,7 +272,7 @@ mainWindow:HookScript("OnHide", function() hoverWatcher:Hide() end)
 -- ============ 隐藏/展开 按钮 ============
 local toggleGuideBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
 toggleGuideBtn:SetSize(90, 24)
-toggleGuideBtn:SetText("隐藏攻略")
+toggleGuideBtn:SetText(L["Hide Guide"])
 toggleGuideBtn:SetScript("OnClick", function()
     mainWindow.isGuideHidden = true
     addon.manuallyHidden = true
@@ -277,7 +281,10 @@ end)
 
 -- ============ 难度选择按钮（循环切换） ============
 local DIFFICULTY_ORDER = { "lfr", "normal", "heroic", "mythic", "mythicplus" }
-local DIFFICULTY_LABELS = { lfr = "随机", normal = "普通", heroic = "英雄", mythic = "史诗", mythicplus = "史诗+" }
+local function GetDifficultyLabel(key)
+    local map = { lfr = "LFR", normal = "Normal", heroic = "Heroic", mythic = "Mythic", mythicplus = "Mythic Plus Short" }
+    return L[map[key]] or key
+end
 -- 团本没有 M+ 模式（M+ 仅大秘境），团本难度循环不含 mythicplus
 local function IsCurrentRaid()
     local name = addon.currentInstanceName
@@ -318,7 +325,17 @@ end
 
 -- 难度按钮标签：不再显示「通用」（通用攻略已并入随机/普通等真实难度）
 local function GetDiffButtonLabel(diffKey)
-    return DIFFICULTY_LABELS[diffKey] or "普通"
+    return GetDifficultyLabel(diffKey) or L["Normal"]
+end
+
+-- 取当前窗口中「已展开」的目标显示名（用于切换难度/小怪时保持展开同一目标，避免跳回第一个）
+local function GetExpandedBossName()
+    for _, f in ipairs(targetFrames) do
+        if f.inUse and f.isExpanded and f.targetData then
+            return f.targetData.name
+        end
+    end
+    return nil
 end
 
 local diffBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
@@ -330,9 +347,12 @@ diffBtn:SetScript("OnClick", function()
     local idx = 1
     for i, v in ipairs(order) do if v == cur then idx = i; break end end
     mainWindow.difficulty = order[(idx % #order) + 1]
-    diffBtn:SetText("难度: " .. GetDiffButtonLabel(mainWindow.difficulty))
+    -- 持久化：手动切换难度写回默认难度，下次进任何副本都沿用（也同步设置面板的「默认难度」）
+    BossTipsGlobalDB.defaultDifficulty = mainWindow.difficulty
+    diffBtn:SetText(GetDiffButtonLabel(mainWindow.difficulty))
     if addon.currentInstanceName then
-        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+        -- 切换难度时保留当前展开的目标，不再跳回第一个 BOSS
+        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName, GetExpandedBossName())
     end
 end)
 
@@ -341,19 +361,38 @@ local mobBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
 mobBtn:SetSize(80, 24)
 mobBtn:SetScript("OnClick", function()
     mainWindow.showMobs = not mainWindow.showMobs
-    mobBtn:SetText(mainWindow.showMobs and "隐藏小怪" or "显示小怪")
+    mobBtn:SetText(mainWindow.showMobs and L["Hide Mobs"] or L["Show Mobs"])
     if addon.currentInstanceName then
-        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+        -- 切换小怪显示时同样保留当前展开的目标
+        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName, GetExpandedBossName())
     end
 end)
 
 -- ============ 排版 ============
 UpdateLayout = function()
+    -- 攻略框体延展方向：默认「向下」（向屏幕下方延展）；
+    -- 可在设置中切换为「向上」（向屏幕上方延展，框体贴底时有用）。
+    -- 通过锚点固定实现：向下→TOPLEFT（高度增加时 BOTTOM 自然下移）；
+    -- 向上→BOTTOMLEFT（高度增加时 TOP 自然上移）。两种模式都不会上下抖动。
+    --
+    -- 关键：使用拖动时保存的 guideFrameTopY/guideFrameBottomY 作锚点（与当前内容高度无关），
+    -- 避免切换难度时 GetTop() 跟着高度变化导致顶部/底部「上下抖」。
+    local expandDir = BossTipsGlobalDB and BossTipsGlobalDB.guideExpandDir or "down"
     local left = mainWindow:GetLeft()
     local top = mainWindow:GetTop()
-    if left and top then
-        mainWindow:ClearAllPoints()
-        mainWindow:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+    local bottom = mainWindow:GetBottom()
+    -- 优先使用拖动时保存的「稳定」锚点 y（与内容高度无关）
+    local desiredTop = top
+    local desiredBottom = bottom
+    if BossTipsGlobalDB then
+        if BossTipsGlobalDB.guideFrameTopY then desiredTop = BossTipsGlobalDB.guideFrameTopY end
+        if BossTipsGlobalDB.guideFrameBottomY then desiredBottom = BossTipsGlobalDB.guideFrameBottomY end
+    end
+    mainWindow:ClearAllPoints()
+    if expandDir == "up" and desiredBottom then
+        mainWindow:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left or 0, desiredBottom)
+    else
+        mainWindow:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left or 0, desiredTop or 0)
     end
     local currentY = -40
     local db = BossTipsGlobalDB
@@ -364,7 +403,7 @@ UpdateLayout = function()
 
     if mainWindow.isGuideHidden then
         for i, frame in ipairs(targetFrames) do frame:Hide() end
-        toggleGuideBtn:SetText("展开攻略")
+        toggleGuideBtn:SetText(L["Show Guide"])
         toggleGuideBtn:ClearAllPoints()
         toggleGuideBtn:SetPoint("TOP", titleText, "BOTTOM", 0, -5)
         toggleGuideBtn:Show()
@@ -372,7 +411,7 @@ UpdateLayout = function()
         mobBtn:Hide()
         mainWindow:SetHeight(math.abs(-40 - 25))
     else
-        toggleGuideBtn:SetText("隐藏攻略")
+        toggleGuideBtn:SetText(L["Hide Guide"])
         local fontSize = db.FontSize or 14
         local fontPath = (GameFontNormal and GameFontNormal:GetFont()) or STANDARD_TEXT_FONT
         if addon.GetTipsFontPath then fontPath = addon.GetTipsFontPath() end
@@ -427,12 +466,12 @@ UpdateLayout = function()
         toggleGuideBtn:SetPoint("TOP", mainWindow, "TOP", -45, currentY)
         toggleGuideBtn:Show()
 
-        mobBtn:SetText(mainWindow.showMobs and "隐藏小怪" or "显示小怪")
+        mobBtn:SetText(mainWindow.showMobs and L["Hide Mobs"] or L["Show Mobs"])
         mobBtn:ClearAllPoints()
         mobBtn:SetPoint("TOP", mainWindow, "TOP", 45, currentY)
         mobBtn:Show()
 
-        diffBtn:SetText("难度: " .. GetDiffButtonLabel(mainWindow.difficulty))
+        diffBtn:SetText(GetDiffButtonLabel(mainWindow.difficulty))
         diffBtn:ClearAllPoints()
         diffBtn:SetPoint("TOPRIGHT", mainWindow, "TOPRIGHT", -10, -10)
         diffBtn:Show()
@@ -493,9 +532,15 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
         local isRaid = IsCurrentRaid()
         local sortedBosses = {}
         for boss, entry in pairs(instance) do
-            local etype = entry.type or "BOSS"
-            if etype ~= "MOB" or mainWindow.showMobs then
-                sortedBosses[#sortedBosses + 1] = { name = boss, entry = entry, order = entry.order or 999, type = etype }
+            -- _src 是内部元数据（记录来源版本/类型），不是 BOSS/MOB 条目，不能显示在攻略窗
+            if boss == "_src" then
+                -- 保留元数据供后续 GetLocalizedBossName 使用，但不加入排序列表
+            else
+                local etype = entry.type or "BOSS"
+                if etype ~= "MOB" or mainWindow.showMobs then
+                    local displayName = (addon.GetLocalizedBossName and addon.GetLocalizedBossName(instanceName, boss, isRaid, entry._src and entry._src.ver)) or entry.name or boss
+                    sortedBosses[#sortedBosses + 1] = { name = displayName, entry = entry, order = entry.order or 999, type = etype }
+                end
             end
         end
         table.sort(sortedBosses, function(a, b)
@@ -526,11 +571,14 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
         if isRaid and diff == "mythicplus" then diff = "normal" end
 
         -- 按当前难度取出每个 BOSS 的 tips（MOB 仍用外层 tips）
+        -- 同时保留「源 key」（entry._src.boss，简体中），供聊天发送时按源 key 查找 BossData，
+        -- 避免用本地化显示名（繁中/英文）作为 key 查找时失败。
         local sorted = {}
         for _, t in ipairs(sortedBosses) do
             local entry = t.entry
-            local tips = addon.GetTipsForDifficulty(entry, diff)
-            sorted[#sorted + 1] = { name = t.name, tips = tips, order = t.order, type = t.type }
+            local tips = addon.GetGuideText(entry, diff)
+            local srcKey = (entry._src and entry._src.boss) or t.bossKey
+            sorted[#sorted + 1] = { name = t.name, bossKey = srcKey, tips = tips, order = t.order, type = t.type }
         end
         -- 隐藏多余的旧 frame
         for j = #sorted + 1, #targetFrames do targetFrames[j].inUse = false end
@@ -569,10 +617,13 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
 
             -- 每次显示副本攻略都重新绑定 speakerBtn，避免之前测试窗口复用 frame 时把它改成 SendTestTipsToChat
             frame.speakerBtn:SetScript("OnClick", function(_, button)
-                local tname = frame.targetData and frame.targetData.name
+                local tdata = frame.targetData
+                -- 必须用「源 key」（简中）查找 BossData，不能用本地化显示名（繁中/英文），
+                -- 否则 GetBossData()[inst][localizedName] 会找不到并误报「无 XX 攻略信息」。
+                local tname = tdata and (tdata.bossKey or tdata.name)
                 if tname and tname ~= "" then
                     if InCombatLockdown() then
-                        print("|cffff0000BossTips|r 战斗中无法发送消息。")
+                        print(L["|cffff0000BossTips|r Cannot send message in combat."])
                     else
                         -- button 为第二参数（"LeftButton"/"RightButton"）；左键用设定频道，右键用右键频道
                         local ch = (button == "RightButton")
@@ -584,9 +635,9 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
             end)
             frame.speakerBtn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("发送攻略")
-                GameTooltip:AddLine("左键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
-                GameTooltip:AddLine("右键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
+                GameTooltip:SetText(L["Send Guide"])
+                GameTooltip:AddLine(L["Left: send to "] .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
+                GameTooltip:AddLine(L["Right: send to "] .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
                 GameTooltip:Show()
             end)
             frame.speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -622,16 +673,17 @@ function addon:HideWindow()
 end
 
 -- ============ 测试窗口 ============
-local testInstanceName = "测试窗口"
+local testInstanceName = L["Test Window"]
 -- 测试文本：包含所有角色共有的通用技能（炉石 spell:6948），验证可点击技能链接
-local TEST_TIPS = "{rt8}示例目标{rt8}||这是测试窗口的示例攻略文本。||[炉石|spell:6948]：所有角色共有的通用技能，点击/悬停可查看技能说明。||必断示例：[打断] 技能会标红；速杀示例：[集火] 技能会标金。||拖动标题栏可移动窗口，右下角可缩放；点小喇叭把本攻略发到聊天。"
+-- 注意：不再在模块加载时捕获 TEST_TIPS，改为在 ShowTestWindow / SendTestTipsToChat
+-- 调用时实时取 L["TestWindowSampleTips"]，使切换语言后测试窗能立即显示对应译文。
 local function SendTestTipsToChat(channelOverride)
     if InCombatLockdown() then
-        print("|cffff0000BossTips|r 战斗中无法发送消息。")
+        print(L["|cffff0000BossTips|r Cannot send message in combat."])
         return
     end
     local chatType = addon.ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-    local segs = { strsplit("||", TEST_TIPS) }
+    local segs = { strsplit("||", L["TestWindowSampleTips"]) }
     for _, seg in ipairs(segs) do
         seg = strtrim(seg)
         if seg ~= "" then
@@ -639,12 +691,12 @@ local function SendTestTipsToChat(channelOverride)
             SendChatMessage(seg, chatType)
         end
     end
-    print("|cFF00FF00BossTips|r 已发送测试攻略到 " .. chatType)
+    print(L["|cFF00FF00BossTips|r sent test guide to "] .. chatType)
 end
 
 function addon.ShowTestWindow()
     mainWindow.isGuideHidden = false
-    titleText:SetText(L["Show Test Window"] or "测试窗口")
+    titleText:SetText(L["Show Test Window"] or L["Test Window"])
     for _, f in ipairs(targetFrames) do f.inUse = false end
     local frame = targetFrames[1]
     if not frame then
@@ -665,6 +717,7 @@ function addon.ShowTestWindow()
         -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
         speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
         frame.speakerBtn = speakerBtn
+
         local note = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         note:SetJustifyH("LEFT")
         note:SetWordWrap(true)
@@ -673,13 +726,13 @@ function addon.ShowTestWindow()
         frame.noteText = note
         targetFrames[1] = frame
     end
-    frame.targetData = { name = "示例目标", type = "BOSS", tips = TEST_TIPS }
+    frame.targetData = { name = L["Sample Target"], type = "BOSS", tips = L["TestWindowSampleTips"] }
     frame.inUse = true
     frame.isExpanded = true
     frame.titleBtn:SetScript("OnClick", function() end)
     frame.speakerBtn:SetScript("OnClick", function(_, button)
         if InCombatLockdown() then
-            print("|cffff0000BossTips|r 战斗中无法发送消息。")
+            print(L["|cffff0000BossTips|r Cannot send message in combat."])
         else
             local ch = (button == "RightButton")
                 and (BossTipsGlobalDB.sendChannelRight or "SAY")
@@ -689,9 +742,9 @@ function addon.ShowTestWindow()
     end)
     frame.speakerBtn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("发送攻略")
-        GameTooltip:AddLine("左键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
-        GameTooltip:AddLine("右键：发送到 " .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
+        GameTooltip:SetText(L["Send Guide"])
+        GameTooltip:AddLine(L["Left: send to "] .. addon.ChannelLabel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT"), 1, 1, 1)
+        GameTooltip:AddLine(L["Right: send to "] .. addon.ChannelLabel(BossTipsGlobalDB.sendChannelRight or "SAY"), 1, 1, 1)
         GameTooltip:Show()
     end)
     frame.speakerBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)

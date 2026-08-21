@@ -17,35 +17,38 @@ local editorMode = "dungeon"
 
 -- 当前正在编辑的难度（各难度独立编辑；已取消「通用」聚合难度，改为分别编辑 随机/英雄/史诗/史诗+）
 local editDiff = "lfr"
-local DIFF_EDIT_OPTIONS = {
-    ["lfr"] = "随机",
-    ["normal"] = "普通",
-    ["heroic"] = "英雄",
-    ["mythic"] = "史诗",
-    ["mythicplus"] = "史诗+",
+local DIFF_EDIT_OPTION_KEYS = {
+    ["lfr"] = "LFR",
+    ["normal"] = "Normal",
+    ["heroic"] = "Heroic",
+    ["mythic"] = "Mythic",
+    ["mythicplus"] = "Mythic Plus Short",
 }
+local function GetDiffEditLabel(key)
+    return L[DIFF_EDIT_OPTION_KEYS[key]] or key
+end
 
--- 副本类型 / 难度选项
-local DUNGEON_TYPES = {
-    [""] = L["No Limit"],
-    ["dungeon"] = L["Dungeon"],
-    ["raid"] = L["Raid"],
-    ["mplus"] = L["Mythic Plus"],
-}
-local DIFFICULTIES = {
-    [""] = L["No Limit"],
-    ["normal"] = L["Normal"],
-    ["heroic"] = L["Heroic"],
-    ["mythic"] = L["Mythic"],
-    ["mythicplus"] = L["Mythic Plus Short"],
-}
--- 团本无 M+ 模式（M+ 仅大秘境），团本难度类型不含 mythicplus
-local RAID_DIFFICULTIES = {
-    [""] = L["No Limit"],
-    ["normal"] = L["Normal"],
-    ["heroic"] = L["Heroic"],
-    ["mythic"] = L["Mythic"],
-}
+-- 副本类型 / 难度选项（运行时查询 L，避免文件加载时 locale 未就绪导致定死中文）
+local DIFFICULTIES_ORDER = { "", "normal", "heroic", "mythic", "mythicplus" }
+local RAID_DIFFICULTIES_ORDER = { "", "normal", "heroic", "mythic" }
+local function GetDungeonTypes()
+    return {
+        [""] = L["No Limit"],
+        ["dungeon"] = L["Dungeon"],
+        ["raid"] = L["Raid"],
+        ["mplus"] = L["Mythic Plus"],
+    }
+end
+local function GetDifficulties(isRaid)
+    local t = {
+        [""] = L["No Limit"],
+        ["normal"] = L["Normal"],
+        ["heroic"] = L["Heroic"],
+        ["mythic"] = L["Mythic"],
+    }
+    if not isRaid then t["mythicplus"] = L["Mythic Plus Short"] end
+    return t
+end
 
 local function IsBuiltInVersion(verId)
     local GD = addon.GuideData
@@ -58,6 +61,14 @@ end
 
 local function IsCustomRaidVersion(verId)
     return BossTipsGlobalDB.customRaidVersions and BossTipsGlobalDB.customRaidVersions[verId] ~= nil
+end
+
+local function IsCustomDungeon(instName)
+    return BossTipsGlobalDB.customDungeons and BossTipsGlobalDB.customDungeons[instName] ~= nil
+end
+
+local function IsCustomRaid(instName)
+    return BossTipsGlobalDB.customRaids and BossTipsGlobalDB.customRaids[instName] ~= nil
 end
 
 local function IsBuiltInDungeon(verId, instName, isRaid)
@@ -313,11 +324,11 @@ end
 local function BuildTree()
     if addon.EnsureDB then addon.EnsureDB() end
     local treeData = {}
-    table.insert(treeData, { value = "import_export", text = "|cff00ccff" .. (L["Import Export Short"] or "[<=> 导入与导出]") .. "|r" })
+    table.insert(treeData, { value = "import_export", text = "|cff00ccff" .. (L["Import Export Short"] or L["[<=> Import & Export]"]) .. "|r" })
     if editorMode == "raid" then
-        table.insert(treeData, { value = "new_raid_version", text = "|cff00ff00" .. (L["New Raid Category"] or "[+ 新建团本分类]") .. "|r" })
+        table.insert(treeData, { value = "new_raid_version", text = "|cff00ff00" .. (L["New Raid Category"] or L["[New Raid Category]"]) .. "|r" })
     else
-        table.insert(treeData, { value = "new_version", text = "|cff00ff00" .. (L["New Category"] or "[+ 新建分类]") .. "|r" })
+        table.insert(treeData, { value = "new_version", text = "|cff00ff00" .. (L["New Category"] or L["[New Category]"]) .. "|r" })
     end
 
     -- ============ 团本模式：仅渲染团本树 ============
@@ -332,26 +343,27 @@ local function BuildTree()
         end)
         for _, verId in ipairs(raidVerIds) do
             local enabled = addon.IsRaidVersionEnabled(verId)
-            local statusStr = enabled and "" or " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r"
+            local statusStr = enabled and "" or " |cff888888" .. (L["Hidden"] or L["[Hidden]"]) .. "|r"
             local verNode = {
                 value = PathRaidVersion(verId),
                 text = "|cffffcc00" .. addon.GetRaidVersionLabel(verId) .. "|r" .. statusStr,
                 children = {}
             }
-            table.insert(verNode.children, { value = PathNewRaidDungeon(verId), text = "|cff00ff00" .. (L["New Raid"] or "[+ 新建团本副本]") .. "|r" })
+            table.insert(verNode.children, { value = PathNewRaidDungeon(verId), text = "|cff00ff00" .. (L["New Raid"] or L["[New Raid Dungeon]"]) .. "|r" })
             local dungeons = addon.GetRaidDungeons(verId)
             local names = {}
             for instName in pairs(dungeons) do names[#names + 1] = instName end
             table.sort(names)
             for _, instName in ipairs(names) do
                 local hidden = IsDungeonHidden(instName)
-                local hStr = hidden and " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r" or ""
+                local hStr = hidden and " |cff888888" .. (L["Hidden"] or L["[Hidden]"]) .. "|r" or ""
+                local instDisplay = (addon.GetLocalizedInstanceName and addon.GetLocalizedInstanceName(instName, "raids", verId)) or instName
                 local instNode = {
                     value = PathRaidDungeon(verId, instName),
-                    text = instName .. hStr,
+                    text = instDisplay .. hStr,
                     children = {}
                 }
-                table.insert(instNode.children, { value = PathNewRaidBoss(verId, instName), text = "|cff00ff00" .. (L["New Target"] or "[+ 在此副本中新增目标]") .. "|r" })
+                table.insert(instNode.children, { value = PathNewRaidBoss(verId, instName), text = "|cff00ff00" .. (L["New Target"] or L["[Add Target In Dungeon]"]) .. "|r" })
                 local bosses = GetDungeonBossesForEditor(verId, instName, true)
                 local bossList = {}
                 for boss in pairs(bosses) do bossList[#bossList + 1] = boss end
@@ -361,7 +373,8 @@ local function BuildTree()
                     return a < b
                 end)
                 for _, boss in ipairs(bossList) do
-                    table.insert(instNode.children, { value = PathRaidBoss(verId, instName, boss), text = boss })
+                    local displayName = (addon.GetLocalizedBossName and addon.GetLocalizedBossName(instName, boss, true, verId)) or boss
+                    table.insert(instNode.children, { value = PathRaidBoss(verId, instName, boss), text = displayName })
                 end
                 table.insert(verNode.children, instNode)
             end
@@ -386,14 +399,14 @@ local function BuildTree()
 
     for _, verId in ipairs(allVerIds) do
         local enabled = addon.IsVersionEnabled(verId)
-        local statusStr = enabled and "" or " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r"
+        local statusStr = enabled and "" or " |cff888888" .. (L["Hidden"] or L["[Hidden]"]) .. "|r"
         local verNode = {
             value = PathVersion(verId),
             text = "|cffffcc00" .. addon.GetVersionLabel(verId) .. "|r" .. statusStr,
             children = {}
         }
 
-        table.insert(verNode.children, { value = PathNewDungeon(verId), text = "|cff00ff00" .. (L["New Dungeon"] or "[+ 新建副本]") .. "|r" })
+        table.insert(verNode.children, { value = PathNewDungeon(verId), text = "|cff00ff00" .. (L["New Dungeon"] or L["[New Dungeon]"]) .. "|r" })
 
         local dungeons = addon.GetVersionDungeons(verId)
         local names = {}
@@ -402,13 +415,16 @@ local function BuildTree()
         for _, instName in ipairs(names) do
             local hidden = IsDungeonHidden(instName)
             local active = IsDungeonActive(instName)
-            local hStr = (hidden or not active) and " |cff888888" .. (L["Hidden"] or "[已隐藏]") .. "|r" or ""
+            local hStr = (hidden or not active) and " |cff888888" .. (L["Hidden"] or L["[Hidden]"]) .. "|r" or ""
+            local info = dungeons[instName]
+            local catType = (info and info.source == "mplus") and "mplus" or "native"
+            local instDisplay = (addon.GetLocalizedInstanceName and addon.GetLocalizedInstanceName(instName, catType, verId)) or instName
             local instNode = {
                 value = PathDungeon(verId, instName),
-                text = instName .. hStr,
+                text = instDisplay .. hStr,
                 children = {}
             }
-            table.insert(instNode.children, { value = PathNewBoss(verId, instName), text = "|cff00ff00" .. (L["New Target"] or "[+ 在此副本中新增目标]") .. "|r" })
+            table.insert(instNode.children, { value = PathNewBoss(verId, instName), text = "|cff00ff00" .. (L["New Target"] or L["[Add Target In Dungeon]"]) .. "|r" })
             local bosses = GetDungeonBossesForEditor(verId, instName)
             local bossList = {}
             for boss in pairs(bosses) do bossList[#bossList + 1] = boss end
@@ -418,7 +434,8 @@ local function BuildTree()
                 return a < b
             end)
             for _, boss in ipairs(bossList) do
-                table.insert(instNode.children, { value = PathBoss(verId, instName, boss), text = boss })
+                local displayName = (addon.GetLocalizedBossName and addon.GetLocalizedBossName(instName, boss, false, verId)) or boss
+                table.insert(instNode.children, { value = PathBoss(verId, instName, boss), text = displayName })
             end
             table.insert(verNode.children, instNode)
         end
@@ -426,6 +443,7 @@ local function BuildTree()
     end
     return treeData
 end
+addon.BuildEditorTree = BuildTree
 
 -- ==========================================
 -- 保存辅助
@@ -441,9 +459,13 @@ local function SaveBossTips(instName, bossName, text)
         BossTipsGlobalDB.guides[instName][bossName] = rg
     end
     rg.tipsByDifficulty = rg.tipsByDifficulty or {}
-    rg.tipsByDifficulty[editDiff] = text
+    -- 大秘境仅存 mythicplus 一档：即使编辑难度落在其它档也写入 mythicplus
+    local saveDiff = editDiff
+    local e = addon.GetActiveGuideEntry(instName, bossName)
+    if e and e._src and e._src.type == "mplus" then saveDiff = "mythicplus" end
+    rg.tipsByDifficulty[saveDiff] = text
     -- 编辑随机(lfr)时同步更新 tips 字段，保持兜底内容一致
-    if editDiff == "lfr" then rg.tips = text end
+    if saveDiff == "lfr" then rg.tips = text end
     addon.RefreshGuides()
 end
 
@@ -477,15 +499,20 @@ local function GetRawGuide(instName, bossName)
     local curTips
     local wtfTips = rg and extractTips(rg)
     if wtfTips then
+        -- WTF 自定义攻略：用户自己编辑/导入的内容，保持原样不翻译
         curTips = wtfTips
         if type(rg) == "table" and rg.type then currentType = rg.type end
     elseif entry then
-        curTips = addon.GetTipsForDifficulty(entry, editDiff)
+        -- 内置攻略：走翻译层，按当前 locale + 编辑难度取译文
+        -- 大秘境仅存 mythicplus 一档，强制按该难度取译文
+        local lookupDiff = (entry._src and entry._src.type == "mplus") and "mythicplus" or editDiff
+        curTips = addon.GetGuideText(entry, lookupDiff) or addon.GetTipsForDifficulty(entry, lookupDiff) or ""
     else
         curTips = ""
     end
     return curTips, currentType
 end
+addon.GetRawGuide = GetRawGuide
 
 -- ==========================================
 -- 主编辑器窗口
@@ -499,17 +526,33 @@ function addon:CreateEditorFrame()
     end
 
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle(L["Dungeon & Target Editor"] or "BossTips - 副本与目标编辑器")
+    frame:SetTitle(L["Dungeon & Target Editor"] or L["Dungeon & Target Editor"])
     frame:SetLayout("Flow")
     frame:SetWidth(820)
     frame:SetHeight(600)
     addon.editorFrame = frame
+    -- 关闭按钮跟随插件语言（AceGUI Frame 的关闭按钮为 frame.frame.close）
+    if frame.frame and frame.frame.close then
+        frame.frame.close:SetText(L["Close"])
+    end
 
     frame:SetCallback("OnClose", function(widget)
         widget:Hide()
         addon.RefreshGuides()
         if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
     end)
+    -- ESC 关闭：给 AceGUI Frame 自身挂 OnKeyDown；AceGUI Frame 的 close 按钮自带 ESC 处理，
+    -- 但要先 EnableKeyboard 让它接收键盘事件
+    if frame.frame then
+        frame.frame:EnableKeyboard(true)
+        frame.frame:SetScript("OnKeyDown", function(self, key)
+            if key == "ESCAPE" then
+                frame:Hide()
+                addon.RefreshGuides()
+                if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
+            end
+        end)
+    end
 
     -- 顶部工具栏：标签页切换（地下城/团本）+ 展开/折叠
     -- 前置声明 treeGroup：下方“一键展开/折叠”按钮闭包需捕获本变量，
@@ -520,14 +563,14 @@ function addon:CreateEditorFrame()
     toolbar:SetFullWidth(true)
 
     local dungeonTab = AceGUI:Create("Button")
-    dungeonTab:SetText("地下城")
+    dungeonTab:SetText(L["Dungeon"])
     dungeonTab:SetWidth(100)
     local raidTab = AceGUI:Create("Button")
-    raidTab:SetText("团本")
+    raidTab:SetText(L["Raid"])
     raidTab:SetWidth(100)
     local function RefreshTabHighlight()
-        dungeonTab:SetText(editorMode == "dungeon" and "|cffffff00[地下城]|r" or "地下城")
-        raidTab:SetText(editorMode == "raid" and "|cffffff00[团本]|r" or "团本")
+        dungeonTab:SetText(editorMode == "dungeon" and "|cffffff00[" .. L["Dungeon"] .. "]|r" or L["Dungeon"])
+        raidTab:SetText(editorMode == "raid" and "|cffffff00[" .. L["Raid"] .. "]|r" or L["Raid"])
     end
     dungeonTab:SetCallback("OnClick", function()
         if editorMode ~= "dungeon" then editorMode = "dungeon"; RefreshTabHighlight(); frame:RefreshTree() end
@@ -539,7 +582,7 @@ function addon:CreateEditorFrame()
     toolbar:AddChild(raidTab)
     -- 一键展开 / 一键折叠（作用于当前树）
     local expandBtn = AceGUI:Create("Button")
-    expandBtn:SetText("一键展开")
+    expandBtn:SetText(L["Expand All"])
     expandBtn:SetWidth(100)
     expandBtn:SetCallback("OnClick", function()
         local status = treeGroup.status or treeGroup.localstatus
@@ -558,7 +601,7 @@ function addon:CreateEditorFrame()
     end)
     toolbar:AddChild(expandBtn)
     local collapseBtn = AceGUI:Create("Button")
-    collapseBtn:SetText("一键折叠")
+    collapseBtn:SetText(L["Collapse All"])
     collapseBtn:SetWidth(100)
     collapseBtn:SetCallback("OnClick", function()
         local status = treeGroup.status or treeGroup.localstatus
@@ -630,9 +673,9 @@ function addon:CreateEditorFrame()
 
         local function ShowError(msg)
             scroll:ReleaseChildren()
-            AddHeading(scroll, "编辑器加载失败")
+            AddHeading(scroll, L["Editor Load Failed"])
             AddLabel(scroll, "|cffff0000" .. tostring(msg) .. "|r")
-            AddLabel(scroll, "请截图此提示并反馈。")
+            AddLabel(scroll, L["Please screenshot and report"])
             widget:DoLayout()
         end
 
@@ -643,11 +686,11 @@ function addon:CreateEditorFrame()
 
             -- ========== 导入导出 ==========
             if nodeType == "import_export" then
-                AddHeading(scroll, L["Import / Export"] or "数据导入/导出")
-                AddLabel(scroll, "导出生成一段分享码，包含自定义分类、副本、目标攻略与开关状态。")
+                AddHeading(scroll, L["Import / Export"] or L["Import / Export"])
+                AddLabel(scroll, L["Export Desc"])
 
                 local exportBox = AceGUI:Create("MultiLineEditBox")
-                exportBox:SetLabel(L["Export Code"] or "导出码（分享给好友）")
+                exportBox:SetLabel(L["Export Code"] or L["Export Code"])
                 exportBox:SetNumLines(8)
                 exportBox:DisableButton(true)
                 local exportStatus = AceGUI:Create("Label")
@@ -656,22 +699,22 @@ function addon:CreateEditorFrame()
                 local function RefreshExport()
                     local ok, t = pcall(addon.EncodeGuides)
                     if not ok then
-                        exportBox:SetText("导出出错：" .. tostring(t))
-                        exportStatus:SetText("|cffff0000导出失败：" .. tostring(t) .. "|r")
-                        print("|cffff0000BossTips|r 导出出错：" .. tostring(t))
+                        exportBox:SetText(L["Export error: "] .. tostring(t))
+                        exportStatus:SetText(L["|cffff0000Export failed: "] .. tostring(t) .. "|r")
+                        print(L["Export error: "] .. tostring(t))
                         return
                     end
                     t = t or ""
                     if t == "" then
-                        exportBox:SetText("（当前没有可导出的自定义数据，请在编辑器中修改任意攻略后再试）")
-                        exportStatus:SetText("|cffffff00提示：尚未修改任何内置攻略或创建自定义数据。|r")
+                        exportBox:SetText(L["No custom data to export"])
+                        exportStatus:SetText(L["No custom data hint"])
                     else
                         local okSet = pcall(function() exportBox:SetText(t) end)
                         if okSet then
-                            exportStatus:SetText("|cff00ff00导出成功：" .. #t .. " 字符。点击上方框内文字后 Ctrl+A / Ctrl+C 复制。|r")
+                            exportStatus:SetText(L["|cff00ff00Export successful: "] .. #t .. L[" chars. Click the text above, then Ctrl+A / Ctrl+C to copy.|r"])
                         else
-                            exportStatus:SetText("|cffff0000导出结果无法显示，请查看聊天框。|r")
-                            print("|cffffff00BossTips 导出码（" .. #t .. " 字符）：|r")
+                            exportStatus:SetText(L["|cffff0000Export result too large, check chat.|r"])
+                            print(L["BossTips export code ("] .. #t .. L[" chars):|r"])
                             print(t)
                         end
                     end
@@ -681,25 +724,25 @@ function addon:CreateEditorFrame()
                 AddFullWidth(scroll, exportStatus)
 
                 local genBtn = AceGUI:Create("Button")
-                genBtn:SetText(L["Generate Export Code"] or "生成导出码")
+                genBtn:SetText(L["Generate Export Code"] or L["Generate Export Code"])
                 genBtn:SetCallback("OnClick", function()
                     RefreshExport()
                     exportBox:HighlightText()
                     exportBox:SetFocus()
                 end)
                 AddFullWidth(scroll, genBtn)
-                AddLabel(scroll, "|cff888888导出范围：自定义攻略覆盖、开关状态、自定义分类/副本、首领战ID覆盖。不包含内置攻略与UI设置。|r")
+                AddLabel(scroll, L["Export scope hint"])
 
-                AddLabel(scroll, "粘贴别人分享的导入码后点击导入，兼容旧版纯攻略分享码。")
+                AddLabel(scroll, L["Import Desc"])
 
                 local importBox = AceGUI:Create("MultiLineEditBox")
-                importBox:SetLabel(L["Import Code"] or "导入码（粘贴分享码）")
+                importBox:SetLabel(L["Import Code"] or L["Import Code"])
                 importBox:SetNumLines(5)
                 importBox:DisableButton(true)
                 AddFullWidth(scroll, importBox)
 
                 local importBtn = AceGUI:Create("Button")
-                importBtn:SetText(L["Verify & Import"] or "校验并导入")
+                importBtn:SetText(L["Verify & Import"] or L["Verify & Import"])
                 importBtn:SetCallback("OnClick", function()
                     local code = importBox:GetText() or ""
                     local decoded = addon.DecodeGuides(code)
@@ -707,11 +750,11 @@ function addon:CreateEditorFrame()
                         or next(decoded.disabledNative or {}) or next(decoded.disabledMPlus or {}) or next(decoded.hiddenDungeons or {})
                         or next(decoded.encounterOverrides or {})) then
                         local count = addon.MergeImportedGuides(decoded)
-                        importBox:SetText((L["Import successful!"] or "导入成功！") .. " (" .. count .. ")")
+                        importBox:SetText((L["Import successful!"] or L["Import successful!"]) .. " (" .. count .. ")")
                         addon.RefreshGuides()
                         frame:RefreshTree("import_export")
                     else
-                        importBox:SetText((L["Import failed: "] or "导入失败：") .. "格式无效或内容为空")
+                        importBox:SetText((L["Import failed: "] or L["Import failed: "]) .. L["Invalid format or empty"])
                     end
                 end)
                 AddFullWidth(scroll, importBtn)
@@ -720,16 +763,16 @@ function addon:CreateEditorFrame()
 
             -- ========== 新建分类 ==========
             if nodeType == "new_version" then
-                AddHeading(scroll, L["New Category"] or "新建分类")
+                AddHeading(scroll, L["New Category"] or L["New Category"])
 
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Category Name"] or "分类名称")
+                nameEdit:SetLabel(L["Category Name"])
                 AddFullWidth(scroll, nameEdit)
 
-                AddButton(scroll, L["Save Category"] or "保存并添加分类", function()
+                AddButton(scroll, L["Save Category"] or L["Save Category"], function()
                     local label = strtrim(nameEdit:GetText() or "")
                     if label == "" then
-                        print("|cffff0000BossTips|r 请输入分类名称！")
+                        print(L["|cffff0000BossTips|r Please enter category name!"])
                         return
                     end
                     local base = label:gsub("[^%w%u%l%d]", "")
@@ -751,14 +794,14 @@ function addon:CreateEditorFrame()
 
             -- ========== 新建团本分类 ==========
             if nodeType == "new_raid_version" then
-                AddHeading(scroll, L["New Raid Category"] or "新建团本分类")
+                AddHeading(scroll, L["New Raid Category"] or L["New Raid Category"])
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Category Name"] or "分类名称")
+                nameEdit:SetLabel(L["Category Name"])
                 AddFullWidth(scroll, nameEdit)
-                AddButton(scroll, L["Save Category"] or "保存并添加分类", function()
+                AddButton(scroll, L["Save Category"] or L["Save Category"], function()
                     local label = strtrim(nameEdit:GetText() or "")
                     if label == "" then
-                        print("|cffff0000BossTips|r 请输入分类名称！")
+                        print(L["|cffff0000BossTips|r Please enter category name!"])
                         return
                     end
                     local base = label:gsub("[^%w%u%l%d]", "")
@@ -777,11 +820,11 @@ function addon:CreateEditorFrame()
 
             -- ========== 管理团本版本 ==========
             if nodeType == "raid_version" then
-                AddHeading(scroll, (L["Manage Raid Version"] or "管理团本版本") .. "：" .. addon.GetRaidVersionLabel(verId))
+                AddHeading(scroll, (L["Manage Raid Version"] or L["Manage Raid Version"]) .. "：" .. addon.GetRaidVersionLabel(verId))
 
                 local enabled = addon.IsRaidVersionEnabled(verId)
                 local activeCheck = AceGUI:Create("CheckBox")
-                activeCheck:SetLabel("启用此团本版本（取消勾选将隐藏其下所有团本）")
+                activeCheck:SetLabel(L["Enable Raid Version Hint"])
                 activeCheck:SetValue(enabled)
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
                     if IsCustomRaidVersion(verId) then
@@ -795,45 +838,60 @@ function addon:CreateEditorFrame()
                 AddFullWidth(scroll, activeCheck)
                 if IsCustomRaidVersion(verId) then
                     local labelEdit = AceGUI:Create("EditBox")
-                    labelEdit:SetLabel(L["Category Name"] or "分类名称")
+                    labelEdit:SetLabel(L["Category Name"])
                     labelEdit:SetText(BossTipsGlobalDB.customRaidVersions[verId].label or verId)
                     labelEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         BossTipsGlobalDB.customRaidVersions[verId].label = strtrim(text)
                         frame:RefreshTree(PathRaidVersion(verId))
                     end)
                     local orderEdit = AceGUI:Create("EditBox")
-                    orderEdit:SetLabel(L["Category Order"] or "排序权重")
+                    orderEdit:SetLabel(L["Category Order"] or L["Category Order"])
                     orderEdit:SetText(tostring(BossTipsGlobalDB.customRaidVersions[verId].order or 999))
                     orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         BossTipsGlobalDB.customRaidVersions[verId].order = tonumber(text) or 999
                         frame:RefreshTree(PathRaidVersion(verId))
                     end)
                     AddRow(scroll, labelEdit, orderEdit)
-                    AddButton(scroll, L["Delete Category"] or "删除此分类及其所有内容", function()
-                        ConfirmDialog("确定删除自定义团本分类 '" .. addon.GetRaidVersionLabel(verId) .. "' 及其所有团本吗？", {
-                            frame = frame,
-                            selectPath = "new_raid_version",
-                            func = function()
+                end
+                -- 删除按钮：自定义版本彻底删除；内置版本隐藏其下所有团本
+                local confirmDelCat = IsCustomRaidVersion(verId)
+                    and (L["Confirm delete custom raid category '"] .. addon.GetRaidVersionLabel(verId) .. L["' and all its raids?"])
+                    or (L["Confirm delete raid category '"] .. addon.GetRaidVersionLabel(verId) .. L["'? Built-in raids will be hidden."])
+                AddButton(scroll, L["Delete Category"] or L["Delete Category"], function()
+                    ConfirmDialog(confirmDelCat, {
+                        frame = frame,
+                        selectPath = "new_raid_version",
+                        func = function()
+                            if IsCustomRaidVersion(verId) then
                                 for inst, d in pairs(BossTipsGlobalDB.customRaids or {}) do
                                     if d.versionId == verId then BossTipsGlobalDB.customRaids[inst] = nil end
                                 end
                                 BossTipsGlobalDB.customRaidVersions[verId] = nil
                                 BossTipsGlobalDB.disabledCustomRaidVersions[verId] = nil
-                                addon.RefreshGuides()
-                            end,
-                        })
-                    end, true)
-                end
+                            else
+                                -- 内置版本：彻底禁用并隐藏其下所有团本
+                                BossTipsGlobalDB.disabledRaids[verId] = true
+                                local GD = addon.GuideData
+                                if GD.raids and GD.raids[verId] then
+                                    for inst in pairs(GD.raids[verId]) do
+                                        BossTipsGlobalDB.hiddenDungeons[inst] = true
+                                    end
+                                end
+                            end
+                            addon.RefreshGuides()
+                        end,
+                    })
+                end, true)
                 return
             end
 
             -- ========== 管理团本副本 ==========
             if nodeType == "raid_dungeon" then
-                AddHeading(scroll, (L["Manage Raid"] or "管理团本") .. "：" .. instName)
+                AddHeading(scroll, (L["Manage Raid"] or L["Manage Raid"]) .. "：" .. instName)
 
                 local meta = addon.GuideData.meta and addon.GuideData.meta[instName]
                 local idEdit = AceGUI:Create("EditBox")
-                idEdit:SetLabel(L["Dungeon ID"] or "副本ID（实例ID）")
+                idEdit:SetLabel(L["Dungeon ID"] or L["Dungeon ID Instance"])
                 if customRaid then
                     idEdit:SetText(customRaid.id or "")
                     idEdit:SetDisabled(false)
@@ -848,7 +906,7 @@ function addon:CreateEditorFrame()
                 AddFullWidth(scroll, idEdit)
 
                 -- 自动填充 BigWigs 首领战ID
-                AddButton(scroll, L["Auto Fill BigWigs IDs"] or "自动填充 BigWigs 首领战ID", function()
+                AddButton(scroll, L["Auto Fill BigWigs IDs"] or L["Auto Fill BigWigs IDs"], function()
                     local bosses = GetDungeonBossesForEditor(verId, instName, true)
                     local filled = 0
                     for boss in pairs(bosses) do
@@ -858,13 +916,13 @@ function addon:CreateEditorFrame()
                             if eid then SaveEncounterId(instName, boss, eid); filled = filled + 1 end
                         end
                     end
-                    print("|cff00ff00BossTips|r 已填充 " .. filled .. " 个首领战ID")
+                    print(L["|cff00ff00BossTips|r filled "] .. filled .. L[" encounter IDs"])
                     frame:RefreshTree(PathRaidDungeon(verId, instName))
                 end, true)
 
                 -- 激活/隐藏此团本
                 local activeCheck = AceGUI:Create("CheckBox")
-                activeCheck:SetLabel(L["Active Dungeon Hint"] or "激活此团本（取消勾选将在屏幕上隐藏）")
+                activeCheck:SetLabel(L["Active Dungeon Hint"] or L["Active Raid Hint"])
                 activeCheck:SetValue(IsDungeonActive(instName) and not IsDungeonHidden(instName))
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
                     if customRaid then
@@ -881,7 +939,7 @@ function addon:CreateEditorFrame()
                 -- 移动到分类（仅自定义团本）
                 if customRaid then
                     local moveDD = AceGUI:Create("Dropdown")
-                    moveDD:SetLabel(L["Move To Category"] or "移动到分类")
+                    moveDD:SetLabel(L["Move To Category"] or L["Move To Category"])
                     local catList = {}
                     for _, vid in ipairs(addon.GetRaidVersionIDs()) do
                         catList[vid] = addon.GetRaidVersionLabel(vid)
@@ -897,41 +955,47 @@ function addon:CreateEditorFrame()
                     end)
                     AddFullWidth(scroll, moveDD)
 
-                    AddButton(scroll, L["Add Target In Dungeon"] or "+ 在此副本中新增目标", function()
+                    AddButton(scroll, L["Add Target In Dungeon"] or L["Add Target In Dungeon"], function()
                         frame:RefreshTree(PathNewRaidBoss(verId, instName))
                     end, true)
-
-                    AddButton(scroll, L["Delete Dungeon"] or "删除此副本及其所有内容", function()
-                        ConfirmDialog("确定删除自定义团本 '" .. instName .. "' 吗？内置团本不会被删除。", {
-                            frame = frame,
-                            selectPath = PathRaidVersion(verId),
-                            func = function()
-                                BossTipsGlobalDB.customRaids[instName] = nil
-                                BossTipsGlobalDB.guides[instName] = nil
-                                BossTipsGlobalDB.hiddenDungeons[instName] = nil
-                                addon.RefreshGuides()
-                            end,
-                        })
-                    end, true)
                 else
-                    AddLabel(scroll, "|cff888888团本首领已按 ID 库预建骨架，点击左侧首领即可编辑攻略与首领战ID（保存到 WTF 覆盖层）。|r")
+                    AddLabel(scroll, L["Raid skeleton hint"])
                 end
+
+                -- 删除按钮：自定义团本彻底删除；内置团本隐藏
+                local confirmDelRaid = customRaid
+                    and (L["Confirm delete custom raid '"] .. instName .. L["'? Built-in raids won't be deleted."])
+                    or (L["Confirm delete raid '"] .. instName .. L["'? Built-in raid will be hidden."])
+                AddButton(scroll, L["Delete Dungeon"] or L["Delete Dungeon"], function()
+                    ConfirmDialog(confirmDelRaid, {
+                        frame = frame,
+                        selectPath = PathRaidVersion(verId),
+                        func = function()
+                            if customRaid then
+                                BossTipsGlobalDB.customRaids[instName] = nil
+                            end
+                            BossTipsGlobalDB.guides[instName] = nil
+                            BossTipsGlobalDB.hiddenDungeons[instName] = true
+                            addon.RefreshGuides()
+                        end,
+                    })
+                end, true)
                 return
             end
 
             if nodeType == "unknown" then
-                AddLabel(scroll, "请从左侧选择一个分类、副本或目标节点。")
-                AddLabel(scroll, "|cff888888调试：未识别路径 [|r" .. tostring(group or "nil") .. "|cff888888]，叶子 [|r" .. tostring(leaf or "nil") .. "|cff888888]|r")
+                AddLabel(scroll, L["Select Node Hint"])
+                AddLabel(scroll, L["Debug: unrecognized path [|r"] .. tostring(group or "nil") .. L["], leaf [|r"] .. tostring(leaf or "nil") .. "|cff888888]|r")
                 return
             end
 
             -- ========== 管理分类 ==========
             if nodeType == "version" then
-                AddHeading(scroll, (L["Manage Category"] or "管理分类") .. "：" .. addon.GetVersionLabel(verId))
+                AddHeading(scroll, (L["Manage Category"] or L["Manage Category"]) .. "：" .. addon.GetVersionLabel(verId))
 
                 local enabled = addon.IsVersionEnabled(verId)
                 local activeCheck = AceGUI:Create("CheckBox")
-                activeCheck:SetLabel("启用此分类（取消勾选将隐藏该分类下所有副本）")
+                activeCheck:SetLabel(L["Enable Category Hint"])
                 activeCheck:SetValue(enabled)
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
                     local isNative = addon.GuideData.versions and addon.GuideData.versions[verId]
@@ -946,7 +1010,7 @@ function addon:CreateEditorFrame()
 
                 if IsCustomVersion(verId) then
                     local labelEdit = AceGUI:Create("EditBox")
-                    labelEdit:SetLabel(L["Category Name"] or "分类名称")
+                    labelEdit:SetLabel(L["Category Name"])
                     labelEdit:SetText(BossTipsGlobalDB.customVersions[verId].label or verId)
                     labelEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         BossTipsGlobalDB.customVersions[verId].label = strtrim(text)
@@ -954,71 +1018,89 @@ function addon:CreateEditorFrame()
                     end)
 
                     local orderEdit = AceGUI:Create("EditBox")
-                    orderEdit:SetLabel(L["Category Order"] or "排序权重")
+                    orderEdit:SetLabel(L["Category Order"] or L["Category Order"])
                     orderEdit:SetText(tostring(BossTipsGlobalDB.customVersions[verId].order or 999))
                     orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         BossTipsGlobalDB.customVersions[verId].order = tonumber(text) or 999
                         frame:RefreshTree(PathVersion(verId))
                     end)
                     AddRow(scroll, labelEdit, orderEdit)
+                end
 
-                    AddButton(scroll, L["Delete Category"] or "删除此分类及其所有内容", function()
-                        ConfirmDialog("确定删除自定义分类 '" .. addon.GetVersionLabel(verId) .. "' 及其所有副本吗？", {
-                            frame = frame,
-                            selectPath = "new_version",
-                            func = function()
+                -- 删除按钮：自定义分类彻底删除；内置版本隐藏其下所有副本
+                local confirmDelVer = IsCustomVersion(verId)
+                    and (L["Confirm delete custom category '"] .. addon.GetVersionLabel(verId) .. L["' and all its dungeons?"])
+                    or (L["Confirm delete category '"] .. addon.GetVersionLabel(verId) .. L["'? Built-in dungeons will be hidden."])
+                AddButton(scroll, L["Delete Category"] or L["Delete Category"], function()
+                    ConfirmDialog(confirmDelVer, {
+                        frame = frame,
+                        selectPath = "new_version",
+                        func = function()
+                            if IsCustomVersion(verId) then
                                 for inst, d in pairs(BossTipsGlobalDB.customDungeons or {}) do
                                     if d.versionId == verId then BossTipsGlobalDB.customDungeons[inst] = nil end
                                 end
                                 BossTipsGlobalDB.customVersions[verId] = nil
                                 BossTipsGlobalDB.disabledCustomVersions[verId] = nil
-                                addon.RefreshGuides()
-                            end,
-                        })
-                    end, true)
-                end
+                            else
+                                local isNative = addon.GuideData.versions and addon.GuideData.versions[verId]
+                                local isMplus = addon.GuideData.mplus and addon.GuideData.mplus[verId]
+                                if isNative then BossTipsGlobalDB.disabledNative[verId] = true end
+                                if isMplus then BossTipsGlobalDB.disabledMPlus[verId] = true end
+                                local GD = addon.GuideData
+                                if isNative and GD.versions[verId] then
+                                    for inst in pairs(GD.versions[verId]) do BossTipsGlobalDB.hiddenDungeons[inst] = true end
+                                end
+                                if isMplus and GD.mplus[verId] then
+                                    for inst in pairs(GD.mplus[verId]) do BossTipsGlobalDB.hiddenDungeons[inst] = true end
+                                end
+                            end
+                            addon.RefreshGuides()
+                        end,
+                    })
+                end, true)
                 return
             end
 
             -- ========== 新建副本 ==========
             if nodeType == "new_dungeon" then
-                AddHeading(scroll, L["New Dungeon"] or "新建副本")
+                AddHeading(scroll, L["New Dungeon"] or L["New Dungeon"])
 
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Dungeon Name"] or "副本名称（需与 GetInstanceInfo() 一致才能自动匹配）")
+                nameEdit:SetLabel(L["Dungeon Name"])
 
                 local idEdit = AceGUI:Create("EditBox")
-                idEdit:SetLabel(L["Dungeon ID"] or "副本ID（可选）")
+                idEdit:SetLabel(L["Dungeon ID"] or L["Dungeon ID Optional"])
                 AddRow(scroll, nameEdit, idEdit)
 
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel(L["Dungeon Type"] or "副本类型")
-                typeDD:SetList(DUNGEON_TYPES)
+                typeDD:SetLabel(L["Dungeon Type"] or L["Dungeon Type"])
+                typeDD:SetList(GetDungeonTypes())
                 typeDD:SetValue("")
 
                 local diffDD = AceGUI:Create("Dropdown")
-                diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
+                diffDD:SetLabel(L["Difficulty"] or L["Difficulty"])
+                diffDD:SetList(GetDifficulties(isRaid), isRaid and RAID_DIFFICULTIES_ORDER or DIFFICULTIES_ORDER)
                 diffDD:SetValue("")
                 AddRow(scroll, typeDD, diffDD)
 
-                AddButton(scroll, L["Print Current Instance Info"] or "在聊天框打印当前副本信息（需手动输入）", function()
+                AddButton(scroll, L["Print Current Instance Info"] or L["Print Instance Info"], function()
                     local n, _, dID, dName, _, _, _, i = GetInstanceInfo()
                     if i then
-                        print("|cff00ff00BossTips|r 当前副本：|cffffff00" .. tostring(n) .. "|r  ID：|cffffff00" .. tostring(i) .. "|r  难度：|cffffff00" .. tostring(dName) .. "|r")
+                        print((L["Print Inst Header"] or "|cff00ff00BossTips|r current instance: |cffffff00%s|r  ID:|cffffff00%s|r  Difficulty:|cffffff00%s|r"):format(tostring(n), tostring(i), tostring(dName)))
                     else
-                        print("|cffff0000BossTips|r 当前不在副本中")
+                        print("|cFFFF0000BossTips|r: " .. (L["No Instance"] or "Not in an instance"))
                     end
                 end, true)
 
-                AddButton(scroll, L["Save Dungeon"] or "保存并添加副本", function()
+                AddButton(scroll, L["Save Dungeon"] or L["Save Dungeon"], function()
                     local nm = strtrim(nameEdit:GetText() or "")
                     if nm == "" then
-                        print("|cffff0000BossTips|r 请输入副本名称！")
+                        print(L["|cffff0000BossTips|r Please enter dungeon name!"])
                         return
                     end
                     if BossTipsGlobalDB.customDungeons[nm] or IsBuiltInDungeon(verId, nm) then
-                        print("|cffff0000BossTips|r 副本名称已存在（或与内置副本重名）！")
+                        print(L["|cffff0000BossTips|r Dungeon name already exists!"])
                         return
                     end
                     BossTipsGlobalDB.customDungeons[nm] = {
@@ -1038,29 +1120,29 @@ function addon:CreateEditorFrame()
 
             -- 新建团本副本
             if nodeType == "new_raid_dungeon" then
-                AddHeading(scroll, L["New Raid"] or "新建团本副本")
+                AddHeading(scroll, L["New Raid"] or L["New Raid Dungeon"])
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Dungeon Name"] or "副本名称（需与 GetInstanceInfo() 一致才能自动匹配）")
+                nameEdit:SetLabel(L["Dungeon Name"])
                 local idEdit = AceGUI:Create("EditBox")
-                idEdit:SetLabel(L["Dungeon ID"] or "副本ID（可选）")
+                idEdit:SetLabel(L["Dungeon ID"] or L["Dungeon ID Optional"])
                 AddRow(scroll, nameEdit, idEdit)
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel(L["Dungeon Type"] or "副本类型")
-                typeDD:SetList(DUNGEON_TYPES)
+                typeDD:SetLabel(L["Dungeon Type"] or L["Dungeon Type"])
+                typeDD:SetList(GetDungeonTypes())
                 typeDD:SetValue("")
                 local diffDD = AceGUI:Create("Dropdown")
-                diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
+                diffDD:SetLabel(L["Difficulty"] or L["Difficulty"])
+                diffDD:SetList(GetDifficulties(isRaid), isRaid and RAID_DIFFICULTIES_ORDER or DIFFICULTIES_ORDER)
                 diffDD:SetValue("")
                 AddRow(scroll, typeDD, diffDD)
-                AddButton(scroll, L["Save Dungeon"] or "保存并添加副本", function()
+                AddButton(scroll, L["Save Dungeon"] or L["Save Dungeon"], function()
                     local nm = strtrim(nameEdit:GetText() or "")
                     if nm == "" then
-                        print("|cffff0000BossTips|r 请输入副本名称！")
+                        print(L["|cffff0000BossTips|r Please enter dungeon name!"])
                         return
                     end
                     if BossTipsGlobalDB.customRaids[nm] or BossTipsGlobalDB.customDungeons[nm] or IsBuiltInDungeon(verId, nm, true) then
-                        print("|cffff0000BossTips|r 副本名称已存在（或与内置副本重名）！")
+                        print(L["|cffff0000BossTips|r Dungeon name already exists!"])
                         return
                     end
                     BossTipsGlobalDB.customRaids[nm] = {
@@ -1090,25 +1172,25 @@ function addon:CreateEditorFrame()
 
             -- ========== 新建目标 ==========
             if nodeType == "new_boss" then
-                AddHeading(scroll, L["New Target Title"] or "新建目标")
+                AddHeading(scroll, L["New Target Title"])
 
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Target Name"] or "目标名称")
+                nameEdit:SetLabel(L["Target Name"] or L["Target Name"])
                 AddFullWidth(scroll, nameEdit)
 
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel("类型")
-                typeDD:SetList({ ["BOSS"] = "首领", ["MOB"] = "小怪" })
+                typeDD:SetLabel(L["Type"])
+                typeDD:SetList({ ["BOSS"] = L["BOSS"], ["MOB"] = L["MOB"] })
                 typeDD:SetValue("BOSS")
                 AddFullWidth(scroll, typeDD)
 
-                AddButton(scroll, L["Save Target"] or "保存并添加目标", function()
+                AddButton(scroll, L["Save Target"] or L["Save Target"], function()
                     local nm = strtrim(nameEdit:GetText() or "")
                     if nm == "" then
-                        print("|cffff0000BossTips|r 请输入目标名称！")
+                        print(L["|cffff0000BossTips|r Please enter target name!"])
                         return
                     end
-                    local defaultTips = "{rt8}" .. nm .. "{rt8}||在此输入攻略"
+                    local defaultTips = "{rt8}" .. nm .. L["NewTargetDefaultTips"]
                     if isBuiltInDungeon then
                         BossTipsGlobalDB.guides = BossTipsGlobalDB.guides or {}
                         BossTipsGlobalDB.guides[instName] = BossTipsGlobalDB.guides[instName] or {}
@@ -1119,7 +1201,7 @@ function addon:CreateEditorFrame()
                         end
                     else
                         if not customDungeon then
-                            print("|cffff0000BossTips|r 自定义副本数据异常")
+                            print(L["|cffff0000BossTips|r Custom dungeon data error"])
                             return
                         end
                         customDungeon.bosses[nm] = { order = 999, type = typeDD:GetValue() or "BOSS", tips = defaultTips, encounterId = "" }
@@ -1132,26 +1214,26 @@ function addon:CreateEditorFrame()
 
             -- 新建团本目标
             if nodeType == "new_raid_boss" then
-                AddHeading(scroll, L["New Target Title"] or "新建目标")
+                AddHeading(scroll, L["New Target Title"])
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Target Name"] or "目标名称")
+                nameEdit:SetLabel(L["Target Name"] or L["Target Name"])
                 AddFullWidth(scroll, nameEdit)
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel("类型")
-                typeDD:SetList({ ["BOSS"] = "首领", ["MOB"] = "小怪" })
+                typeDD:SetLabel(L["Type"])
+                typeDD:SetList({ ["BOSS"] = L["BOSS"], ["MOB"] = L["MOB"] })
                 typeDD:SetValue("BOSS")
                 AddFullWidth(scroll, typeDD)
-                AddButton(scroll, L["Save Target"] or "保存并添加目标", function()
+                AddButton(scroll, L["Save Target"] or L["Save Target"], function()
                     local nm = strtrim(nameEdit:GetText() or "")
                     if nm == "" then
-                        print("|cffff0000BossTips|r 请输入目标名称！")
+                        print(L["|cffff0000BossTips|r Please enter target name!"])
                         return
                     end
                     if not customRaid then
-                        print("|cffff0000BossTips|r 自定义团本数据异常")
+                        print(L["|cffff0000BossTips|r Custom raid data error"])
                         return
                     end
-                    local defaultTips = "{rt8}" .. nm .. "{rt8}||在此输入攻略"
+                    local defaultTips = "{rt8}" .. nm .. L["NewTargetDefaultTips"]
                     customRaid.bosses[nm] = { order = 999, type = typeDD:GetValue() or "BOSS", tips = defaultTips, encounterId = "" }
                     addon.RefreshGuides()
                     frame:RefreshTree(PathRaidBoss(verId, instName, nm))
@@ -1164,17 +1246,18 @@ function addon:CreateEditorFrame()
                 local bosses = GetDungeonBossesForEditor(verId, instName, isRaid)
                 local binfo = bosses[bossName]
                 if not binfo then
-                    AddLabel(scroll, "未找到 '" .. tostring(bossName) .. "' 的攻略数据。")
+                    AddLabel(scroll, L["Not found '"] .. tostring(bossName) .. L["' guide data."])
                     return
                 end
 
                 local sourceLabel = ""
                 if binfo.source == "builtin" then
-                    sourceLabel = " |cffaaaaaa(内置)|r"
+                    sourceLabel = L["BuiltinSuffix"]
                 else
-                    sourceLabel = " |cff00ccff(自定义)|r"
+                    sourceLabel = L["CustomSuffix"]
                 end
-                AddHeading(scroll, (L["Edit Target"] or "编辑目标") .. "：" .. bossName .. sourceLabel)
+                local displayName = (addon.GetLocalizedBossName and addon.GetLocalizedBossName(instName, bossName, isRaid, verId)) or bossName
+                AddHeading(scroll, L["Edit Target"] .. displayName .. sourceLabel)
 
                 local curTips, currentType = GetRawGuide(instName, bossName)
 
@@ -1183,16 +1266,16 @@ function addon:CreateEditorFrame()
                 nameRow:SetLayout("Flow")
                 nameRow:SetFullWidth(true)
                 local nameLabel = AceGUI:Create("EditBox")
-                nameLabel:SetLabel(L["Target Name"] or "目标名称")
-                nameLabel:SetText(bossName)
+                nameLabel:SetLabel(L["Target Name"] or L["Target Name"])
+                nameLabel:SetText(displayName)
                 nameLabel:SetDisabled(true)
                 nameLabel:SetRelativeWidth(0.65)
                 nameRow:AddChild(nameLabel)
                 local delBtn = AceGUI:Create("Button")
-                delBtn:SetText(L["Delete Target"] or "删除此目标")
+                delBtn:SetText(L["Delete Target"] or L["Delete Target"])
                 delBtn:SetRelativeWidth(0.35)
                 delBtn:SetCallback("OnClick", function()
-                    ConfirmDialog("确定删除 '" .. bossName .. "' 吗？", {
+                    ConfirmDialog(L["Confirm delete '"] .. bossName .. L["'?"], {
                         frame = frame,
                         selectPath = PD(verId, instName),
                         func = function()
@@ -1215,7 +1298,7 @@ function addon:CreateEditorFrame()
                 encRow:SetLayout("Flow")
                 encRow:SetFullWidth(true)
                 local encounterEdit = AceGUI:Create("EditBox")
-                encounterEdit:SetLabel(L["Encounter ID"] or "首领战ID")
+                encounterEdit:SetLabel(L["Encounter ID"] or L["Encounter ID"])
                 encounterEdit:SetText(binfo.encounterId or "")
                 encounterEdit:SetRelativeWidth(0.65)
                 encounterEdit:SetCallback("OnEnterPressed", function(_, _, text)
@@ -1228,7 +1311,7 @@ function addon:CreateEditorFrame()
                 end)
                 encRow:AddChild(encounterEdit)
                 local autoEncBtn = AceGUI:Create("Button")
-                autoEncBtn:SetText(L["Auto Fill"] or "自动填充")
+                autoEncBtn:SetText(L["Auto Fill"] or L["Auto Fill"])
                 autoEncBtn:SetRelativeWidth(0.35)
                 autoEncBtn:SetCallback("OnClick", function()
                     local eid = addon.GetBigWigsEncounterId(instName, bossName)
@@ -1239,25 +1322,25 @@ function addon:CreateEditorFrame()
                         elseif customBosses and customBosses[bossName] then
                             customBosses[bossName].encounterId = eid
                         end
-                        print("|cff00ff00BossTips|r 已填充首领战ID：" .. eid)
+                        print(L["|cff00ff00BossTips|r filled encounter IDs: "] .. eid)
                     else
-                        print("|cffff0000BossTips|r 未找到匹配的首领战ID")
+                        print(L["|cffff0000BossTips|r No matching encounter ID"])
                     end
                 end)
                 encRow:AddChild(autoEncBtn)
                 scroll:AddChild(encRow)
-                AddLabel(scroll, "|cffffcc00" .. (L["Encounter ID Hint"] or "可通过DBM/BigWigs等插件查找，帮助智能展开") .. "|r")
+                AddLabel(scroll, "|cffffcc00" .. L["Encounter ID Hint"] .. "|r")
 
                 -- 类型 + 排序（自定义目标可排序）
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel("类型")
-                typeDD:SetList({ ["BOSS"] = "首领", ["MOB"] = "小怪" })
+                typeDD:SetLabel(L["Type"])
+                typeDD:SetList({ ["BOSS"] = L["BOSS"], ["MOB"] = L["MOB"] })
                 typeDD:SetValue(currentType)
                 typeDD:SetCallback("OnValueChanged", function(_, _, v) SaveBossType(instName, bossName, v) end)
 
                 if not isBuiltInDungeon and customBosses and customBosses[bossName] then
                     local orderEdit = AceGUI:Create("EditBox")
-                    orderEdit:SetLabel(L["Category Order"] or "排序权重")
+                    orderEdit:SetLabel(L["Category Order"] or L["Category Order"])
                     orderEdit:SetText(tostring(customBosses[bossName].order or 999))
                     orderEdit:SetCallback("OnEnterPressed", function(_, _, text)
                         customBosses[bossName].order = tonumber(text) or 999
@@ -1270,15 +1353,20 @@ function addon:CreateEditorFrame()
 
                 -- 编辑难度选择（团本无 M+ 模式，仅大秘境有 M+；取消「通用」聚合，改为分难度编辑）
                 if isRaid and editDiff == "mythicplus" then editDiff = "lfr" end
-                local diffEditList = isRaid and {
-                    ["lfr"] = "随机",
-                    ["normal"] = "普通",
-                    ["heroic"] = "英雄",
-                    ["mythic"] = "史诗",
-                } or DIFF_EDIT_OPTIONS
+                -- 大秘境仅一档 mythicplus：选中 M+ 首领时强制编辑难度为 mythicplus
+                local activeEntry = addon.GetActiveGuideEntry(instName, bossName)
+                if not isRaid and activeEntry and activeEntry._src and activeEntry._src.type == "mplus" and editDiff ~= "mythicplus" then editDiff = "mythicplus" end
+                local diffEditList = {}
+                local diffEditOrder = isRaid and { "lfr", "normal", "heroic", "mythic" }
+                    or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
+                for _, dkey in ipairs(diffEditOrder) do
+                    diffEditList[dkey] = GetDiffEditLabel(dkey)
+                end
+                local diffEditOrder = isRaid and { "lfr", "normal", "heroic", "mythic" }
+                    or { "lfr", "normal", "heroic", "mythic", "mythicplus" }
                 local diffDD = AceGUI:Create("Dropdown")
-                diffDD:SetLabel("编辑难度（可为不同难度写不同攻略）")
-                diffDD:SetList(diffEditList)
+                diffDD:SetLabel(L["Edit Difficulty"])
+                diffDD:SetList(diffEditList, diffEditOrder)
                 diffDD:SetValue(editDiff)
                 diffDD:SetCallback("OnValueChanged", function(_, _, v)
                     editDiff = v
@@ -1287,9 +1375,9 @@ function addon:CreateEditorFrame()
                 AddFullWidth(scroll, diffDD)
 
                 -- 文本笔记
-                local diffLabel = DIFF_EDIT_OPTIONS[editDiff] or "随机"
+                local diffLabel = GetDiffEditLabel(editDiff)
                 local noteEdit = AceGUI:Create("MultiLineEditBox")
-                noteEdit:SetLabel("文本笔记（当前：|cff00ccff" .. diffLabel .. "|r，输入后自动保存）")
+                noteEdit:SetLabel(L["Text Notes Current"] .. diffLabel .. L["Text Notes Suffix"])
                 noteEdit:SetText(curTips)
                 noteEdit:SetNumLines(18)
                 noteEdit:DisableButton(true)
@@ -1300,16 +1388,16 @@ function addon:CreateEditorFrame()
 
             -- ========== 管理副本 ==========
             if nodeType == "dungeon" then
-                AddHeading(scroll, (L["Manage Dungeon"] or "管理副本") .. "：" .. instName)
+                AddHeading(scroll, (L["Manage Dungeon"] or L["Manage Dungeon"]) .. "：" .. instName)
 
                 -- 副本名称 / 副本ID（内置副本也能编辑并保存到 dungeonOverrides）
                 local nameEdit = AceGUI:Create("EditBox")
-                nameEdit:SetLabel(L["Dungeon Name"] or "副本名称")
+                nameEdit:SetLabel(L["Dungeon Name"] or L["Dungeon Name"])
                 nameEdit:SetText(instName)
                 nameEdit:SetDisabled(true)
 
                 local idEdit = AceGUI:Create("EditBox")
-                idEdit:SetLabel(L["Dungeon ID"] or "副本ID")
+                idEdit:SetLabel(L["Dungeon ID"] or L["Dungeon ID"])
                 idEdit:SetText((customDungeon and customDungeon.id) or (dungeonOverride and dungeonOverride.id) or "")
                 idEdit:SetCallback("OnEnterPressed", function(_, _, text)
                     if customDungeon then
@@ -1322,8 +1410,8 @@ function addon:CreateEditorFrame()
 
                 -- 副本类型 / 难度（内置副本也能编辑并保存到 dungeonOverrides）
                 local typeDD = AceGUI:Create("Dropdown")
-                typeDD:SetLabel(L["Dungeon Type"] or "副本类型")
-                typeDD:SetList(DUNGEON_TYPES)
+                typeDD:SetLabel(L["Dungeon Type"] or L["Dungeon Type"])
+                typeDD:SetList(GetDungeonTypes())
                 typeDD:SetValue((customDungeon and customDungeon.dungeonType) or (dungeonOverride and dungeonOverride.dungeonType) or "")
                 typeDD:SetCallback("OnValueChanged", function(_, _, v)
                     if customDungeon then
@@ -1334,8 +1422,8 @@ function addon:CreateEditorFrame()
                 end)
 
                 local diffDD = AceGUI:Create("Dropdown")
-                diffDD:SetLabel(L["Difficulty"] or "难度")
-                diffDD:SetList(isRaid and RAID_DIFFICULTIES or DIFFICULTIES)
+                diffDD:SetLabel(L["Difficulty"] or L["Difficulty"])
+                diffDD:SetList(GetDifficulties(isRaid), isRaid and RAID_DIFFICULTIES_ORDER or DIFFICULTIES_ORDER)
                 diffDD:SetValue((customDungeon and customDungeon.difficulty) or (dungeonOverride and dungeonOverride.difficulty) or "")
                 diffDD:SetCallback("OnValueChanged", function(_, _, v)
                     if customDungeon then
@@ -1346,17 +1434,17 @@ function addon:CreateEditorFrame()
                 end)
                 AddRow(scroll, typeDD, diffDD)
 
-                AddButton(scroll, L["Print Current Instance Info"] or "在聊天框打印当前副本信息（需手动修改）", function()
+                AddButton(scroll, L["Print Current Instance Info"] or L["Print Instance Info Edit"], function()
                     local n, _, dID, dName, _, _, _, i = GetInstanceInfo()
                     if i then
-                        print("|cff00ff00BossTips|r 当前副本：|cffffff00" .. tostring(n) .. "|r  ID：|cffffff00" .. tostring(i) .. "|r  难度：|cffffff00" .. tostring(dName) .. "|r")
+                        print((L["Print Inst Header"] or "|cff00ff00BossTips|r current instance: |cffffff00%s|r  ID:|cffffff00%s|r  Difficulty:|cffffff00%s|r"):format(tostring(n), tostring(i), tostring(dName)))
                     else
-                        print("|cffff0000BossTips|r 当前不在副本中")
+                        print("|cFFFF0000BossTips|r: " .. (L["No Instance"] or "Not in an instance"))
                     end
                 end, true)
 
                 -- 自动填充 BigWigs 首领战ID
-                AddButton(scroll, L["Auto Fill BigWigs IDs"] or "自动填充 BigWigs 首领战ID", function()
+                AddButton(scroll, L["Auto Fill BigWigs IDs"] or L["Auto Fill BigWigs IDs"], function()
                     local bosses = GetDungeonBossesForEditor(verId, instName)
                     local filled = 0
                     for boss in pairs(bosses) do
@@ -1369,13 +1457,13 @@ function addon:CreateEditorFrame()
                             end
                         end
                     end
-                    print("|cff00ff00BossTips|r 已填充 " .. filled .. " 个首领战ID")
+                    print(L["|cff00ff00BossTips|r filled "] .. filled .. L[" encounter IDs"])
                     frame:RefreshTree(PD(verId, instName))
                 end, true)
 
                 -- 激活此副本
                 local activeCheck = AceGUI:Create("CheckBox")
-                activeCheck:SetLabel(L["Active Dungeon Hint"] or "激活此副本（取消勾选将在屏幕上隐藏）")
+                activeCheck:SetLabel(L["Active Dungeon Hint"] or L["Active Dungeon Hint"])
                 activeCheck:SetValue(IsDungeonActive(instName) and not IsDungeonHidden(instName))
                 activeCheck:SetCallback("OnValueChanged", function(_, _, val)
                     if customDungeon then
@@ -1395,7 +1483,7 @@ function addon:CreateEditorFrame()
                 -- 移动到分类（仅自定义副本）
                 if customDungeon then
                     local moveDD = AceGUI:Create("Dropdown")
-                    moveDD:SetLabel(L["Move To Category"] or "移动到分类")
+                    moveDD:SetLabel(L["Move To Category"] or L["Move To Category"])
                     local catList = {}
                     for _, vid in ipairs(addon.GetAllVersionIDs()) do
                         catList[vid] = addon.GetVersionLabel(vid)
@@ -1413,30 +1501,33 @@ function addon:CreateEditorFrame()
                 end
 
                 -- + 在此副本中新增目标
-                AddButton(scroll, L["Add Target In Dungeon"] or "+ 在此副本中新增目标", function()
+                AddButton(scroll, L["Add Target In Dungeon"] or L["Add Target In Dungeon"], function()
                     frame:RefreshTree(PathNewBoss(verId, instName))
                 end, true)
 
-                -- 删除此副本及其所有内容
-                if customDungeon then
-                    AddButton(scroll, L["Delete Dungeon"] or "删除此副本及其所有内容", function()
-                        ConfirmDialog("确定删除自定义副本 '" .. instName .. "' 吗？内置副本不会被删除。", {
-                            frame = frame,
-                            selectPath = PathVersion(verId),
-                            func = function()
+                -- 删除按钮：自定义副本彻底删除；内置副本隐藏并清掉覆盖
+                local confirmDelDung = customDungeon
+                    and (L["Confirm delete custom dungeon '"] .. instName .. L["'? Built-in dungeons won't be deleted."])
+                    or (L["Confirm delete dungeon '"] .. instName .. L["'? Built-in dungeon will be hidden."])
+                AddButton(scroll, L["Delete Dungeon"] or L["Delete Dungeon"], function()
+                    ConfirmDialog(confirmDelDung, {
+                        frame = frame,
+                        selectPath = PathVersion(verId),
+                        func = function()
+                            if customDungeon then
                                 BossTipsGlobalDB.customDungeons[instName] = nil
-                                BossTipsGlobalDB.guides[instName] = nil
-                                BossTipsGlobalDB.hiddenDungeons[instName] = nil
-                                addon.RefreshGuides()
-                            end,
-                        })
-                    end, true)
-                end
+                            end
+                            BossTipsGlobalDB.guides[instName] = nil
+                            BossTipsGlobalDB.hiddenDungeons[instName] = true
+                            addon.RefreshGuides()
+                        end,
+                    })
+                end, true)
                 return
             end
 
             -- 兜底
-            AddLabel(scroll, "请从左侧选择一个分类、副本或目标节点。")
+            AddLabel(scroll, L["Select Node Hint"])
         end)
 
         if not ok then

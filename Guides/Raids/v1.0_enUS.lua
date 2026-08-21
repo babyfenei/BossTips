@@ -1,0 +1,691 @@
+-- ============================================================================
+-- BossTips Raid 攻略翻译 —— enUS
+-- ============================================================================
+local _, addon = ...
+addon.GuideData = addon.GuideData or { versions = {}, mplus = {}, raids = {}, meta = {}, mplusInfo = {}, versionInfo = {} }
+addon.GuideData.translations = addon.GuideData.translations or {}
+addon.GuideData.translations.enUS = addon.GuideData.translations.enUS or {}
+addon.GuideData.translations.enUS.raids = addon.GuideData.translations.enUS.raids or {}
+addon.GuideData.translations.enUS.raids["1.0"] = {
+    ["祖尔格拉布"] = {
+        name = "Zul'Gurub",
+        ["血领主曼多基尔"] = {
+            type = "BOSS",
+            name = "Bloodlord Mandokir",
+            tipsByDifficulty = {
+                ["lfr"] = "[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt",
+                ["normal"] = "[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt",
+                ["heroic"] = "[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt",
+                ["mythic"] = "[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt",
+                ["mythicplus"] = "[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt",
+            },
+        },
+        ["高阶祭司维诺克西斯"] = {
+            type = "BOSS",
+            name = "High Priest Venoxis",
+            tipsByDifficulty = {
+                ["lfr"] = "[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox",
+                ["normal"] = "[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox",
+                ["heroic"] = "[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox",
+                ["mythic"] = "[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox",
+                ["mythicplus"] = "[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox",
+            },
+        },
+        ["高阶祭司塞卡尔"] = {
+            type = "BOSS",
+            name = "High Priest Sekar",
+            tipsByDifficulty = {
+                ["lfr"] = "[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst",
+                ["normal"] = "[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst",
+                ["heroic"] = "[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst",
+                ["mythic"] = "[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst",
+                ["mythicplus"] = "[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst",
+            },
+        },
+        ["加兹兰卡"] = {
+            type = "BOSS",
+            name = "Gahz'ranka",
+            tipsByDifficulty = {
+                ["lfr"] = "[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus",
+                ["normal"] = "[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus",
+                ["heroic"] = "[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus",
+                ["mythic"] = "[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus",
+                ["mythicplus"] = "[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus",
+            },
+        },
+        ["哈卡"] = {
+            type = "BOSS",
+            name = "Hakkar",
+            tipsByDifficulty = {
+                ["lfr"] = "[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel",
+                ["normal"] = "[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel",
+                ["heroic"] = "[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel",
+                ["mythic"] = "[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel",
+                ["mythicplus"] = "[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel",
+            },
+        },
+        ["疯狂之缘"] = {
+            type = "BOSS",
+            name = "Edge of Madness",
+            tipsByDifficulty = {
+                ["lfr"] = "[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss",
+                ["normal"] = "[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss",
+                ["heroic"] = "[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss",
+                ["mythic"] = "[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss",
+                ["mythicplus"] = "[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss",
+            },
+        },
+        ["高阶祭司阿洛克"] = {
+            type = "BOSS",
+            name = "High Priest Thekal",
+            tipsByDifficulty = {
+                ["lfr"] = "[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["normal"] = "[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["heroic"] = "[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["mythic"] = "[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["mythicplus"] = "[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+            },
+        },
+        ["高阶祭司玛尔里"] = {
+            type = "BOSS",
+            name = "High Priestess Mar'li",
+            tipsByDifficulty = {
+                ["lfr"] = "[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus",
+                ["normal"] = "[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus",
+                ["heroic"] = "[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus",
+                ["mythic"] = "[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus",
+                ["mythicplus"] = "[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus",
+            },
+        },
+        ["妖术师金度"] = {
+            type = "BOSS",
+            name = "Jin'do the Hexxer",
+            tipsByDifficulty = {
+                ["lfr"] = "[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together",
+                ["normal"] = "[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together",
+                ["heroic"] = "[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together",
+                ["mythic"] = "[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together",
+                ["mythicplus"] = "[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together",
+            },
+        },
+        ["高阶祭司耶克里克"] = {
+            type = "BOSS",
+            name = "High Priestess Jeklik",
+            tipsByDifficulty = {
+                ["lfr"] = "[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["normal"] = "[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["heroic"] = "[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["mythic"] = "[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+                ["mythicplus"] = "[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue",
+            },
+        },
+    },
+    ["黑翼之巢"] = {
+        name = "Blackwing Lair",
+        ["克洛玛古斯"] = {
+            type = "BOSS",
+            name = "Chromaggus",
+            tipsByDifficulty = {
+                ["lfr"] = "[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break",
+                ["normal"] = "[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break",
+                ["heroic"] = "[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break",
+                ["mythic"] = "[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break",
+                ["mythicplus"] = "[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break",
+            },
+        },
+        ["埃博诺克"] = {
+            type = "BOSS",
+            name = "Ebonroc",
+            tipsByDifficulty = {
+                ["lfr"] = "[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus",
+                ["normal"] = "[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus",
+                ["heroic"] = "[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus",
+                ["mythic"] = "[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus",
+                ["mythicplus"] = "[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus",
+            },
+        },
+        ["费尔默"] = {
+            type = "BOSS",
+            name = "Firemaw",
+            tipsByDifficulty = {
+                ["lfr"] = "[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread",
+                ["normal"] = "[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread",
+                ["heroic"] = "[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythic"] = "[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythicplus"] = "[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread",
+            },
+        },
+        ["弗莱格尔"] = {
+            type = "BOSS",
+            name = "Flamegor",
+            tipsByDifficulty = {
+                ["lfr"] = "[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread",
+                ["normal"] = "[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread",
+                ["heroic"] = "[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythic"] = "[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythicplus"] = "[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread",
+            },
+        },
+        ["堕落的瓦拉斯塔兹"] = {
+            type = "BOSS",
+            name = "Vaelastrasz the Corrupt",
+            tipsByDifficulty = {
+                ["lfr"] = "[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst",
+                ["normal"] = "[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst",
+                ["heroic"] = "[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst",
+                ["mythic"] = "[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst",
+                ["mythicplus"] = "[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst",
+            },
+        },
+        ["奈法利安"] = {
+            type = "BOSS",
+            name = "Nefarian",
+            tipsByDifficulty = {
+                ["lfr"] = "[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile",
+                ["normal"] = "[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile",
+                ["heroic"] = "[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile",
+                ["mythic"] = "[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile",
+                ["mythicplus"] = "[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile",
+            },
+        },
+        ["狂野的拉佐格尔"] = {
+            type = "BOSS",
+            name = "Razorgore the Untamed",
+            tipsByDifficulty = {
+                ["lfr"] = "[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs",
+                ["normal"] = "[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs",
+                ["heroic"] = "[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs",
+                ["mythic"] = "[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs",
+                ["mythicplus"] = "[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs",
+            },
+        },
+        ["勒什雷尔"] = {
+            type = "BOSS",
+            name = "Broodlord Lashlayer",
+            tipsByDifficulty = {
+                ["lfr"] = "[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal",
+                ["normal"] = "[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal",
+                ["heroic"] = "[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal",
+                ["mythic"] = "[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal",
+                ["mythicplus"] = "[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal",
+            },
+        },
+    },
+    ["纳克萨玛斯"] = {
+        name = "Naxxramas",
+        ["黑女巫法琳娜"] = {
+            type = "BOSS",
+            name = "Black Witch Faline",
+            tipsByDifficulty = {
+                ["lfr"] = "[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts",
+                ["normal"] = "[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts",
+                ["heroic"] = "[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts",
+                ["mythic"] = "[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts",
+                ["mythicplus"] = "[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts",
+            },
+        },
+        ["收割者戈提克"] = {
+            type = "BOSS",
+            name = "Gothik the Harvester",
+            tipsByDifficulty = {
+                ["lfr"] = "[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus",
+                ["normal"] = "[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus",
+                ["heroic"] = "[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus",
+                ["mythic"] = "[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus",
+                ["mythicplus"] = "[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus",
+            },
+        },
+        ["肮脏的希尔盖"] = {
+            type = "BOSS",
+            name = "Heigan the Unclean",
+            tipsByDifficulty = {
+                ["lfr"] = "[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving",
+                ["normal"] = "[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving",
+                ["heroic"] = "[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving",
+                ["mythic"] = "[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving",
+                ["mythicplus"] = "[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving",
+            },
+        },
+        ["萨菲隆"] = {
+            type = "BOSS",
+            name = "Sapphiron",
+            tipsByDifficulty = {
+                ["lfr"] = "[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics",
+                ["normal"] = "[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics",
+                ["heroic"] = "[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics",
+                ["mythic"] = "[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics",
+                ["mythicplus"] = "[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics",
+            },
+        },
+        ["教官拉苏维奥斯"] = {
+            type = "BOSS",
+            name = "Instructor Razuvious",
+            tipsByDifficulty = {
+                ["lfr"] = "[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds",
+                ["normal"] = "[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds",
+                ["heroic"] = "[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds",
+                ["mythic"] = "[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds",
+                ["mythicplus"] = "[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds",
+            },
+        },
+        ["阿努布雷坎"] = {
+            type = "BOSS",
+            name = "Anub'Rekhan",
+            tipsByDifficulty = {
+                ["lfr"] = "[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs",
+                ["normal"] = "[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs",
+                ["heroic"] = "[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs",
+                ["mythic"] = "[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs",
+                ["mythicplus"] = "[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs",
+            },
+        },
+        ["格拉斯"] = {
+            type = "BOSS",
+            name = "Gluth",
+            tipsByDifficulty = {
+                ["lfr"] = "[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds",
+                ["normal"] = "[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds",
+                ["heroic"] = "[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds",
+                ["mythic"] = "[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds",
+                ["mythicplus"] = "[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds",
+            },
+        },
+        ["格罗布鲁斯"] = {
+            type = "BOSS",
+            name = "Grobbulus",
+            tipsByDifficulty = {
+                ["lfr"] = "[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement",
+                ["normal"] = "[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement",
+                ["heroic"] = "[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement",
+                ["mythic"] = "[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement",
+                ["mythicplus"] = "[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement",
+            },
+        },
+        ["迈克斯纳"] = {
+            type = "BOSS",
+            name = "Maexxna",
+            tipsByDifficulty = {
+                ["lfr"] = "[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders",
+                ["normal"] = "[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders",
+                ["heroic"] = "[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders",
+                ["mythic"] = "[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders",
+                ["mythicplus"] = "[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders",
+            },
+        },
+        ["药剂师诺斯"] = {
+            type = "BOSS",
+            name = "Apothecary Raz",
+            tipsByDifficulty = {
+                ["lfr"] = "[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost",
+                ["normal"] = "[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost",
+                ["heroic"] = "[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost",
+                ["mythic"] = "[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost",
+                ["mythicplus"] = "[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost",
+            },
+        },
+        ["塔迪乌斯"] = {
+            type = "BOSS",
+            name = "Thaddius",
+            tipsByDifficulty = {
+                ["lfr"] = "[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides",
+                ["normal"] = "[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides",
+                ["heroic"] = "[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides",
+                ["mythic"] = "[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides",
+                ["mythicplus"] = "[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides",
+            },
+        },
+        ["天启四骑士"] = {
+            type = "BOSS",
+            name = "Four Horsemen",
+            tipsByDifficulty = {
+                ["lfr"] = "[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides",
+                ["normal"] = "[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides",
+                ["heroic"] = "[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides",
+                ["mythic"] = "[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides",
+                ["mythicplus"] = "[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides",
+            },
+        },
+        ["克尔苏加德"] = {
+            type = "BOSS",
+            name = "Kel'Thuzad",
+            tipsByDifficulty = {
+                ["lfr"] = "P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue",
+                ["normal"] = "P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue",
+                ["heroic"] = "P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue",
+                ["mythic"] = "P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue",
+                ["mythicplus"] = "P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue",
+            },
+        },
+        ["帕奇维克"] = {
+            type = "BOSS",
+            name = "Patchwerk",
+            tipsByDifficulty = {
+                ["lfr"] = "[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast",
+                ["normal"] = "[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast",
+                ["heroic"] = "[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast",
+                ["mythic"] = "[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast",
+                ["mythicplus"] = "[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast",
+            },
+        },
+        ["洛欧塞布"] = {
+            type = "BOSS",
+            name = "Loatheb",
+            tipsByDifficulty = {
+                ["lfr"] = "[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore",
+                ["normal"] = "[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore",
+                ["heroic"] = "[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore",
+                ["mythic"] = "[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore",
+                ["mythicplus"] = "[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore",
+            },
+        },
+    },
+    ["奥妮克希亚的巢穴"] = {
+        name = "Onyxia's Lair",
+        ["奥妮克希亚"] = {
+            type = "BOSS",
+            name = "Onyxia",
+            tipsByDifficulty = {
+                ["lfr"] = "[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps",
+                ["normal"] = "[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps",
+                ["heroic"] = "[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps",
+                ["mythic"] = "[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps",
+                ["mythicplus"] = "[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps",
+            },
+        },
+    },
+    ["安其拉废墟"] = {
+        name = "Ruins of Ahn'Qiraj",
+        ["狩猎者阿亚米斯"] = {
+            type = "BOSS",
+            name = "Ayamiss the Hunter",
+            tipsByDifficulty = {
+                ["lfr"] = "[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land",
+                ["normal"] = "[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land",
+                ["heroic"] = "[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land",
+                ["mythic"] = "[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land",
+                ["mythicplus"] = "[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land",
+            },
+        },
+        ["拉贾克斯将军"] = {
+            type = "BOSS",
+            name = "General Rajaxx",
+            tipsByDifficulty = {
+                ["lfr"] = "[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave",
+                ["normal"] = "[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave",
+                ["heroic"] = "[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave",
+                ["mythic"] = "[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave",
+                ["mythicplus"] = "[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave",
+            },
+        },
+        ["库林纳克斯"] = {
+            type = "BOSS",
+            name = "Kurinaxx",
+            tipsByDifficulty = {
+                ["lfr"] = "[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs",
+                ["normal"] = "[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs",
+                ["heroic"] = "[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs",
+                ["mythic"] = "[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs",
+                ["mythicplus"] = "[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs",
+            },
+        },
+        ["吞咽者布鲁"] = {
+            type = "BOSS",
+            name = "Buru the Gorger",
+            tipsByDifficulty = {
+                ["lfr"] = "[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs",
+                ["normal"] = "[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs",
+                ["heroic"] = "[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs",
+                ["mythic"] = "[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs",
+                ["mythicplus"] = "[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs",
+            },
+        },
+        ["莫阿姆"] = {
+            type = "BOSS",
+            name = "Moam",
+            tipsByDifficulty = {
+                ["lfr"] = "[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element",
+                ["normal"] = "[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element",
+                ["heroic"] = "[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element",
+                ["mythic"] = "[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element",
+                ["mythicplus"] = "[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element",
+            },
+        },
+        ["无疤者奥斯里安"] = {
+            type = "BOSS",
+            name = "Ossirian the Unscarred",
+            tipsByDifficulty = {
+                ["lfr"] = "[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase",
+                ["normal"] = "[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase",
+                ["heroic"] = "[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase",
+                ["mythic"] = "[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase",
+                ["mythicplus"] = "[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase",
+            },
+        },
+    },
+    ["安其拉神殿"] = {
+        name = "Ahn'Qiraj Temple",
+        ["安其拉三宝"] = {
+            type = "BOSS",
+            name = "AQ20 Trio",
+            tipsByDifficulty = {
+                ["lfr"] = "[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch",
+                ["normal"] = "[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch",
+                ["heroic"] = "[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch",
+                ["mythic"] = "[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch",
+                ["mythicplus"] = "[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch",
+            },
+        },
+        ["奥罗"] = {
+            type = "BOSS",
+            name = "Ouro",
+            tipsByDifficulty = {
+                ["lfr"] = "[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs",
+                ["normal"] = "[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs",
+                ["heroic"] = "[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs",
+                ["mythic"] = "[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs",
+                ["mythicplus"] = "[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs",
+            },
+        },
+        ["克苏恩"] = {
+            type = "BOSS",
+            name = "C'Thun",
+            tipsByDifficulty = {
+                ["lfr"] = "[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye",
+                ["normal"] = "[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye",
+                ["heroic"] = "[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye",
+                ["mythic"] = "[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye",
+                ["mythicplus"] = "[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye",
+            },
+        },
+        ["维希度斯"] = {
+            type = "BOSS",
+            name = "Viscidus",
+            tipsByDifficulty = {
+                ["lfr"] = "[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter",
+                ["normal"] = "[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter",
+                ["heroic"] = "[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter",
+                ["mythic"] = "[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter",
+                ["mythicplus"] = "[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter",
+            },
+        },
+        ["顽强的范克瑞斯"] = {
+            type = "BOSS",
+            name = "Fankriss the Unyielding",
+            tipsByDifficulty = {
+                ["lfr"] = "[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds",
+                ["normal"] = "[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds",
+                ["heroic"] = "[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds",
+                ["mythic"] = "[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds",
+                ["mythicplus"] = "[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds",
+            },
+        },
+        ["沙尔图拉"] = {
+            type = "BOSS",
+            name = "Sartura",
+            tipsByDifficulty = {
+                ["lfr"] = "[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind",
+                ["normal"] = "[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind",
+                ["heroic"] = "[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind",
+                ["mythic"] = "[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind",
+                ["mythicplus"] = "[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind",
+            },
+        },
+        ["预言者斯克拉姆"] = {
+            type = "BOSS",
+            name = "Prophet Skeram",
+            tipsByDifficulty = {
+                ["lfr"] = "[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real",
+                ["normal"] = "[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real",
+                ["heroic"] = "[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real",
+                ["mythic"] = "[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real",
+                ["mythicplus"] = "[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real",
+            },
+        },
+        ["哈霍兰公主"] = {
+            type = "BOSS",
+            name = "Princess Huhuran",
+            tipsByDifficulty = {
+                ["lfr"] = "[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal",
+                ["normal"] = "[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal",
+                ["heroic"] = "[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal",
+                ["mythic"] = "[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal",
+                ["mythicplus"] = "[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal",
+            },
+        },
+        ["双子皇帝"] = {
+            type = "BOSS",
+            name = "Twin Emperors",
+            tipsByDifficulty = {
+                ["lfr"] = "[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides",
+                ["normal"] = "[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides",
+                ["heroic"] = "[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides",
+                ["mythic"] = "[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides",
+                ["mythicplus"] = "[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides",
+            },
+        },
+    },
+    ["熔火之心"] = {
+        name = "Molten Core",
+        ["萨弗隆先驱者"] = {
+            type = "BOSS",
+            name = "Sulfuron Harbinger",
+            tipsByDifficulty = {
+                ["lfr"] = "[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first",
+                ["normal"] = "[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first",
+                ["heroic"] = "[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first",
+                ["mythic"] = "[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first",
+                ["mythicplus"] = "[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first",
+            },
+        },
+        ["鲁西弗隆"] = {
+            type = "BOSS",
+            name = "Lucifron",
+            tipsByDifficulty = {
+                ["lfr"] = "[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel",
+                ["normal"] = "[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel",
+                ["heroic"] = "[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel",
+                ["mythic"] = "[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel",
+                ["mythicplus"] = "[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel",
+            },
+        },
+        ["基赫纳斯"] = {
+            type = "BOSS",
+            name = "Gehennas",
+            tipsByDifficulty = {
+                ["lfr"] = "[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps",
+                ["normal"] = "[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps",
+                ["heroic"] = "[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps",
+                ["mythic"] = "[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps",
+                ["mythicplus"] = "[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps",
+            },
+        },
+        ["拉格纳罗斯"] = {
+            type = "BOSS",
+            name = "Ragnaros",
+            tipsByDifficulty = {
+                ["lfr"] = "[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons",
+                ["normal"] = "[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons",
+                ["heroic"] = "[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons",
+                ["mythic"] = "[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons",
+                ["mythicplus"] = "[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons",
+            },
+        },
+        ["熔火核心"] = {
+            type = "BOSS",
+            name = "Molten Core",
+            tipsByDifficulty = {
+                ["lfr"] = "[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic",
+                ["normal"] = "[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic",
+                ["heroic"] = "[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic",
+                ["mythic"] = "[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic",
+                ["mythicplus"] = "[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic",
+            },
+        },
+        ["沙斯拉尔"] = {
+            type = "BOSS",
+            name = "Shazzrah",
+            tipsByDifficulty = {
+                ["lfr"] = "[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread",
+                ["normal"] = "[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread",
+                ["heroic"] = "[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythic"] = "[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread",
+                ["mythicplus"] = "[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread",
+            },
+        },
+        ["迦顿男爵"] = {
+            type = "BOSS",
+            name = "Baron Geddon",
+            tipsByDifficulty = {
+                ["lfr"] = "[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal",
+                ["normal"] = "[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal",
+                ["heroic"] = "[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal",
+                ["mythic"] = "[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal",
+                ["mythicplus"] = "[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal",
+            },
+        },
+        ["焚化者古雷曼格"] = {
+            type = "BOSS",
+            name = "Golemagg the Incinerator",
+            tipsByDifficulty = {
+                ["lfr"] = "[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus",
+                ["normal"] = "[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus",
+                ["heroic"] = "[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus",
+                ["mythic"] = "[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus",
+                ["mythicplus"] = "[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus",
+            },
+        },
+        ["管理者埃克索图斯"] = {
+            type = "BOSS",
+            name = "Majordomo Executus",
+            tipsByDifficulty = {
+                ["lfr"] = "[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus",
+                ["normal"] = "[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus",
+                ["heroic"] = "[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus",
+                ["mythic"] = "[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus",
+                ["mythicplus"] = "[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus",
+            },
+        },
+        ["加尔"] = {
+            type = "BOSS",
+            name = "Garr",
+            tipsByDifficulty = {
+                ["lfr"] = "[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first",
+                ["normal"] = "[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first",
+                ["heroic"] = "[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first",
+                ["mythic"] = "[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first",
+                ["mythicplus"] = "[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first",
+            },
+        },
+        ["玛格曼达"] = {
+            type = "BOSS",
+            name = "Magmadar",
+            tipsByDifficulty = {
+                ["lfr"] = "[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained",
+                ["normal"] = "[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained",
+                ["heroic"] = "[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained",
+                ["mythic"] = "[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained",
+                ["mythicplus"] = "[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained",
+            },
+        },
+    },
+}

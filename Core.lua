@@ -5,7 +5,7 @@
 local addonName, addon = ...
 local L = addon.L
 
-addon.version = "1.4.3"
+addon.version = "1.4.4"
 addon.currentInstanceName = nil
 addon.currentSelectedBoss = nil
 addon.manuallyHidden = false
@@ -56,9 +56,9 @@ local function CreateMainButton()
         self:SetBackdropBorderColor(0.7, 0.7, 0.7, 1.0)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:AddLine("BossTips")
-        GameTooltip:AddLine("左键：打开/关闭攻略框体（非副本时显示测试窗口）", 1, 1, 1)
-        GameTooltip:AddLine("右键：打开/关闭设置面板", 1, 1, 1)
-        GameTooltip:AddLine("拖拽：按住左键拖动按钮位置", 0.8, 0.8, 0.8)
+        GameTooltip:AddLine(L["Floating Left Click"] or "左键：打开/关闭攻略框体（非副本时显示测试窗口）", 1, 1, 1)
+        GameTooltip:AddLine(L["Floating Right Click"] or "右键：打开/关闭设置面板", 1, 1, 1)
+        GameTooltip:AddLine(L["Floating Drag"] or "拖拽：按住左键拖动按钮位置", 0.8, 0.8, 0.8)
         GameTooltip:Show()
     end)
     btn:SetScript("OnLeave", function(self)
@@ -356,7 +356,10 @@ local function CheckInstance()
         local isRaid = false
         local m = addon.GuideData and addon.GuideData.meta and addon.GuideData.meta[addon.currentInstanceName]
         if m and m.isRaid then isRaid = true end
-        local preferred = isRaid and "normal" or "mythicplus"
+        -- 进本默认难度：优先用用户持久化保存的默认难度（在攻略窗手动切换或设置里指定），
+        -- 缺省时五人本→史诗+(M+)、团本→普通（兼容旧行为）；该难度在当前副本无攻略时由 ShowInstanceGuide 回退首个可用。
+        local preferred = BossTipsGlobalDB.defaultDifficulty
+            or (isRaid and "normal" or "mythicplus")
         addon.tipsFrame.difficulty = addon.ResolveVisibleDifficulty(preferred, isRaid)
     end
 
@@ -384,6 +387,20 @@ local function CheckInstance()
 end
 addon.CheckInstance = CheckInstance
 
+-- ============ 初始化错误可见（先定义，供 ADDON_LOADED 调用） ============
+local function SafeInit()
+    local ok, err = pcall(function()
+        local loc = addon.LOCALE or "?"
+        local lang = BossTipsGlobalDB.lang or "AUTO"
+        print("|cFF00FF00BossTips|r v" .. addon.version .. " 加载完成！  [语言设置=" .. lang .. "  解析locale=" .. loc .. "]")
+        print("|cFFFFFF00/bts|r " .. (L["Settings"] or "设置面板") .. "  |cFFFFFF00/bts edit|r " .. (L["Open Guide Editor"] or "攻略编辑器") .. "  |cFFFFFF00/bts version|r " .. (L["Version"] or "版本") .. "  |cFFFFFF00/bts locale|r " .. (L["Current Language"] or "当前语言"))
+    end)
+    if not ok then
+        local handler = geterrorhandler and geterrorhandler()
+        if handler then handler(err) end
+    end
+end
+
 -- ============ 事件 ============
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
@@ -395,55 +412,82 @@ frame:RegisterEvent("ENCOUNTER_START")
 frame:SetScript("OnEvent", function(self, event, arg1, arg2)
     if event == "ADDON_LOADED" and arg1 == addonName then
         if addon.EnsureDB then addon.EnsureDB() end
+        -- SavedVariables 此时已加载，根据真实 lang 重新解析 locale
+        if addon.RefreshLocale then addon.RefreshLocale() end
         addon.BuildActiveGuides()
         CreateMainButton()
         UpdateMainButtonVisibility()
 
-        -- 小地图按钮（LibDBIcon）
-        BossTipsGlobalDB.minimap = BossTipsGlobalDB.minimap or {
-            hide = not BossTipsGlobalDB.showMinimapButton,
-            minimapPos = BossTipsGlobalDB.minimapAngle or 225,
-        }
-        local LDB = LibStub("LibDataBroker-1.1", true)
-        local icon = LibStub("LibDBIcon-1.0", true)
-        if LDB and icon then
-            local BossTipsLDB = LDB:NewDataObject("BossTips", {
-                type = "data source",
-                text = "BossTips",
-                icon = "Interface\\AddOns\\BossTips\\logo.png",
-                OnClick = function(self, button)
-                    if InCombatLockdown() then
-                        print("|cffff0000BossTips|r 战斗中无法打开面板。")
-                    elseif button == "LeftButton" then
-                        if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
-                            addon.tipsFrame:Hide()
-                            addon.manuallyHidden = true
-                        elseif addon.currentInstanceName and HasCurrentMapGuide() then
-                            addon.manuallyHidden = false
-                            if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
-                            local ok, err = pcall(function()
-                                addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
-                            end)
-                            if not ok then
-                                print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
-                            end
-                        else
-                            addon:OpenMainGUI()
+        -- 小地图按钮（自包含实现，不依赖 LibDBIcon / LibDataBroker；内置 Libs 缺失时仍可用）
+        do
+            local miniBtn = CreateFrame("Button", "BossTipsMinimapButton", Minimap)
+            miniBtn:SetSize(32, 32)
+            miniBtn:SetFrameStrata("MEDIUM")
+            miniBtn:SetFrameLevel(8)
+            miniBtn:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
+            local bg = miniBtn:CreateTexture(nil, "BACKGROUND")
+            bg:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+            bg:SetSize(24, 24); bg:SetPoint("CENTER")
+            local ic = miniBtn:CreateTexture(nil, "ARTWORK")
+            ic:SetTexture("Interface\\Icons\\INV_Misc_Book_09")
+            ic:SetSize(20, 20); ic:SetPoint("CENTER")
+            miniBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+            miniBtn:RegisterForDrag("LeftButton")
+            miniBtn:SetScript("OnClick", function(_, button)
+                if InCombatLockdown() then
+                    print("|cffff0000BossTips|r 战斗中无法打开面板。")
+                elseif button == "LeftButton" then
+                    if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                        addon.tipsFrame:Hide(); addon.manuallyHidden = true
+                    elseif addon.currentInstanceName and HasCurrentMapGuide() then
+                        addon.manuallyHidden = false
+                        if addon.ResetTipsFramePos then addon.ResetTipsFramePos() end
+                        local ok, err = pcall(function()
+                            addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                        end)
+                        if not ok then
+                            print("|cffff0000BossTips|r 显示攻略窗出错: " .. tostring(err))
                         end
                     else
                         addon:OpenMainGUI()
                     end
-                end,
-                OnTooltipShow = function(tooltip)
-                    tooltip:AddLine("BossTips")
-                    tooltip:AddLine("左键：切换攻略窗", 1, 1, 1)
-                    tooltip:AddLine("右键：打开设置", 1, 1, 1)
-                end,
-            })
-            icon:Register("BossTips", BossTipsLDB, BossTipsGlobalDB.minimap)
-        else
-            print("|cffff0000BossTips|r 缺少 LibDataBroker / LibDBIcon 库，小地图按钮加载失败！")
+                else
+                    addon:OpenMainGUI()
+                end
+            end)
+            miniBtn:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+                GameTooltip:AddLine("BossTips")
+                GameTooltip:AddLine(L["Minimap Left Click"] or "左键：切换攻略窗", 1, 1, 1)
+                GameTooltip:AddLine(L["Minimap Right Click"] or "右键：打开设置", 1, 1, 1)
+                GameTooltip:Show()
+            end)
+            miniBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            local function place()
+                local ang = math.rad(BossTipsGlobalDB.minimapAngle or 225)
+                local r = 64
+                miniBtn:ClearAllPoints()
+                miniBtn:SetPoint("CENTER", Minimap, "CENTER", math.cos(ang) * r, math.sin(ang) * r)
+            end
+            miniBtn:SetScript("OnDragStart", function()
+                miniBtn:SetScript("OnUpdate", function()
+                    local mx, my = Minimap:GetCenter()
+                    local px, py = GetCursorPosition()
+                    local s = Minimap:GetEffectiveScale()
+                    local ang = math.atan2((py / s) - my, (px / s) - mx)
+                    BossTipsGlobalDB.minimapAngle = math.deg(ang)
+                    place()
+                end)
+            end)
+            miniBtn:SetScript("OnDragStop", function() miniBtn:SetScript("OnUpdate", nil) end)
+            addon.minimapButton = miniBtn
+            addon.RefreshMinimapButton = function()
+                if BossTipsGlobalDB.showMinimapButton then miniBtn:Show() else miniBtn:Hide() end
+                place()
+            end
+            addon.RefreshMinimapButton()
         end
+        SafeInit()
 
     elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
         CheckInstance()
@@ -562,19 +606,12 @@ SlashCmdList["BOSSTIPS"] = function(msg)
         end
         if addon.UpdateMainButtonVisibility then addon.UpdateMainButtonVisibility() end
         print("|cff00ff00BossTips|r 已切换到按钮模式并重置悬浮按钮位置。")
+    elseif msg == "version" then
+        print("|cff00ff00BossTips|r 当前版本：v" .. addon.version)
+    elseif msg == "locale" then
+        print("|cff00ff00BossTips|r 语言设置=" .. (BossTipsGlobalDB.lang or "AUTO") .. "  解析locale=" .. (addon.LOCALE or "?"))
     else
         addon:OpenMainGUI()
     end
 end
 
--- ============ 初始化错误可见 ============
-local function SafeInit()
-    local ok, err = pcall(function()
-        print("|cFF00FF00BossTips|r v" .. addon.version .. " 加载完成！")
-        print("|cFFFFFF00/bts|r 设置面板  |cFFFFFF00/bts edit|r 攻略编辑器  |cFFFFFF00/bts button|r 重置悬浮按钮")
-    end)
-    if not ok then
-        local handler = geterrorhandler and geterrorhandler()
-        if handler then handler(err) end
-    end
-end

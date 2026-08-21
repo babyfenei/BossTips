@@ -1,0 +1,528 @@
+{rt8}Ebonroc{rt8}||[Shadow Burn] cast shadow damage interruptible; [Life Steal] attack heals||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: focus
+{rt8}Chromaggus{rt8}||[Five-Color Breath] random 2 (red fire/blue ice/green poison/dark/bronze); [Elemental Shield] need corresponding spell to break then focus||{rt1}Must interrupt/burst: use corresponding school spell to break [Shield] then focus{rt1}||Tank: hold; DPS: burst after shield break
+{rt8}Vaelastrasz the Corrupt{rt8}||[Self-Immolate] gives whole raid haste buff but limits own health; ~3 min countdown needs quick kill||{rt1}Must interrupt/burst: none; use haste for full raid burst{rt1}||Tank: hold; DPS: full burst
+{rt8}Moam{rt8}||[Transform] every 90s becomes uncontrollable element, casts [Arcane Explosion] raid-wide high damage; summons adds during transform||{rt1}Must interrupt/burst: before transform control/kite adds, after transform focus element{rt1}||Tank: hold; Healer: pre-lay for explosion; DPS: transform phase focus element
+{rt8}Ossirian the Unscarred{rt8}||[Armor Break] attack stacks armor break then self weak 3s; if not triggered frenzy wipe||{rt1}Must interrupt/burst: rotate trigger armor break, weak window full focus{rt1}||Tank: keep armor break stacks; DPS: burst in weak phase
+{rt8}Buru the Gorger{rt8}||[Sand Spit] blinds current tank needs reset threat to pick up; periodically summons small bugs||{rt1}Must interrupt/burst: none; after blind off-tank immediately picks up{rt1}||Tank: dual tank rotate for blind; DPS: clear bugs
+{rt8}Ayamiss the Hunter{rt8}||[Take Off] phase flies up casts [Spike] sacrificing marked player; lands [Larvae] handling||{rt1}Must interrupt/burst: none; marked by spike move away from group{rt1}||Tank: hold; DPS: air phase hit wings to force land
+{rt8}General Rajaxx{rt8}||[Multiple Waves] clear first few waves to activate general; adds have [Speed Aura] hit faster||{rt1}Must interrupt/burst: none; prioritize clearing incoming adds then focus general{rt1}||Tank: split tanks pull adds; DPS: clear adds by wave
+{rt8}Kurinaxx{rt8}||[Sand Burst] front knockback + raid damage needs tank face away from group; [Ground Spike] drills from ground dodge red circle; time-limited kill or frenzy||{rt1}Must interrupt/burst: no hard interrupt; [Sand Burst] marked/melee away from front{rt1}||Tank: hold face out; Healer: raid heal for burst; DPS: focus drilling bugs
+{rt8}Prophet Skeram{rt8}||[Clone] 3 clones appear focus real one; [Arcane Burst] raid-wide high damage interruptible; periodic [Teleport] reposition||{rt1}Must interrupt/burst: interrupt [Arcane Burst]{rt1}||Tank: hold real; DPS: focus real
+{rt8}Fankriss the Unyielding{rt8}||[Wormhole] periodic teleport adds need handling; [Sandbag] tank marked pulls bugs||{rt1}Must interrupt/burst: none; clear teleported adds promptly{rt1}||Tank: hold; DPS: focus adds
+{rt8}AQ20 Trio{rt8}||[Three Bugs Same Field] Vek'nilash(physical)/Vek'lor(magic)/Vem fight together shared rhythm||{rt1}Must interrupt/burst: none; three bugs rotate focus one{rt1}||Tank: split tanks; DPS: focus one then switch
+{rt8}Ouro{rt8}||[Burrow] periodic burrows then emerges [Sand Burst] knockback; summons bugs||{rt1}Must interrupt/burst: none; spread before emerge to dodge burst{rt1}||Tank: hold; DPS: clear bugs
+{rt8}Twin Emperors{rt8}||[Vek'lor] magic damage/[Vek'nilash] physical damage shared health; periodic swap position needs tank swap||{rt1}Must interrupt/burst: none; on tank swap keep single-target focus{rt1}||Tank: dual tank split swap; Healer: split sides
+{rt8}Sartura{rt8}||[Whirlwind] stand-and-cleave needs multi-tank circle to share; [Speed Aura] whole raid speed||{rt1}Must interrupt/burst: none; multi-tank ring surround spread whirlwind damage{rt1}||Tank: 3 tanks ring; DPS: stand behind
+{rt8}Princess Huhuran{rt8}||[Poison] high nature damage dot; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; [Poison] by healer/hunter dispel{rt1}||Tank: hold; Healer: detox + raid heal
+{rt8}C'Thun{rt8}||[Eye] phase giant eye laser sweep; [Digest] mark teleport to eye; P2 hit [Body] weak point eye||{rt1}Must interrupt/burst: none; eye phase dodge laser, hit giant eye{rt1}||Tank: hold; DPS: P2 focus body eye
+{rt8}Viscidus{rt8}||[Frost] frost spells slow -> stack then [Freeze]; frozen state needs high damage to shatter or unfreezes||{rt1}Must interrupt/burst: none; at freeze moment whole raid full output to shatter{rt1}||Tank: hold; DPS: frost stack then burst shatter
+{rt8}The Lurker Below{rt8}||[Spit] rotating sweep needs dodge to side; [Submarine] phase needs sink submarine||{rt1}Must interrupt/burst: none; dodge spit hit submarine{rt1}||Tank: hold
+{rt8}Lady Vashj{rt8}||[Three Phase] P1 adds/P2[Poison] needs detox/P3[Shock] dodge; [Elemental] needs hit||{rt1}Must interrupt/burst: none; P2 detox P3 dodge shock{rt1}||Tank: hold; Healer: detox
+{rt8}Morogrim Tidewalker{rt8}||[Watery Grave] mark circle high damage needs spread; [Healer] add needs control||{rt1}Must interrupt/burst: none; [Watery Grave] marked spread{rt1}||Tank: hold; DPS: control add
+{rt8}Fathom-Lord Karathress{rt8}||[Four Advisors] water/fire/earth/air split focus; [Revive]||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks
+{rt8}Leotheras the Blind{rt8}||[Two Hearts] shared health needs press together; [Whirlwind]||{rt1}Must interrupt/burst: none; focus both hearts together{rt1}||Tank: dual tanks
+{rt8}Hydross the Unstable{rt8}||[Nature/Frost] dual form switch needs corresponding resist; [Poison] dot||{rt1}Must interrupt/burst: none; switch resist by form{rt1}||Tank: hold
+{rt8}Nalorakk{rt8}||[Bear/Eagle] dual form switch; [Charge]||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold
+{rt8}Akil'zon{rt8}||[Lightning] mark; [Bird] phase dive||{rt1}Must interrupt/burst: none; dodge lightning{rt1}||Tank: hold
+{rt8}Zul'jin{rt8}||[Bear/Eagle/Dragon/Lynx] four forms rotate each mechanic; [Frenzy] timer||{rt1}Must interrupt/burst: none; respond by form{rt1}||Tank: hold
+{rt8}Hex Lord Malacrass{rt8}||[Hex] turn to animal mark; [Healer] add||{rt1}Must interrupt/burst: [Hex] quick rescue{rt1}||Tank: hold; DPS: rescue
+{rt8}Jan'alai{rt8}||[Dragon] fire damage; [Egg] needs destroy to prevent hatch||{rt1}Must interrupt/burst: none; destroy eggs{rt1}||Tank: hold
+{rt8}Halazzi{rt8}||[Tiger] charge; [Summon] adds||{rt1}Must interrupt/burst: none{rt1}||Tank: hold
+{rt8}Al'ar{rt8}||[Four Advisors] arcane/fire/ice/shadow split focus shared health; [Revive]||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks
+{rt8}Kael'thas Sunstrider{rt8}||[Advisors] multiple waves; [Weapons] need pick corresponding weapon to break shield; [Fire]||{rt1}Must interrupt/burst: none; pick weapon break shield focus{rt1}||Tank: hold
+{rt8}Void Reaver{rt8}||[Bomb] mark place circle; [Charge] high damage; [Flying] phase||{rt1}Must interrupt/burst: none; [Bomb] marked place circle{rt1}||Tank: hold
+{rt8}High Astromancer Solarian{rt8}||[Spell] fire/ice/arcane needs interrupt; [Summon] adds||{rt1}Must interrupt/burst: interrupt [Spell]{rt1}||Tank: hold; DPS: clear adds
+{rt8}Gurtogg Bloodboil{rt8}||[Bloodboil] periodic raid-wide high damage needs dual tank swap; [Acidic] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bloodboil] swap tank share{rt1}||Tank: dual tank rotate; Healer: raid heal
+{rt8}High Warlord Naj'entus{rt8}||[Impale] mark then marked needs ally step water circle to rescue; [Whirlwind] melee takes damage; kill drops [Vial of Vashj]||{rt1}Must interrupt/burst: none; [Impale] marked then ally use water circle to rescue{rt1}||Tank: hold; Healer: rescue; DPS: focus
+{rt8}Supremus{rt8}||[Burn] tracking red circle needs continuous movement; [Spark] randomly targets chaser||{rt1}Must interrupt/burst: none; [Burn] marked move away from group{rt1}||Tank: hold; DPS: dodge spark
+{rt8}Teron Gorefiend{rt8}||[Soul] mark then death turns to soul, needs shatter [Soul Vessel] in field or wipe; [Flame] dot||{rt1}Must interrupt/burst: none; [Soul] marked immediately go shatter the vessel{rt1}||Tank: hold; Healer: rescue soul; DPS: rescue soul
+{rt8}Reliquary of Souls{rt8}||[Three Phase] anger/desire/suffering rotate, each phase needs corresponding interrupt and assignment; [Mana Drain] mana drained||{rt1}Must interrupt/burst: by phase assign interrupt corresponding spell{rt1}||Tank: hold; DPS: control mana
+{rt8}Illidan Stormrage{rt8}||[Shear] mark turns to demon needs ally rescue; [Flame Wrath] place circle dodge; [Shadow] clone; P3[Demon Form] raid-wide fire damage||{rt1}Must interrupt/burst: none; [Shear] marked move away wait rescue{rt1}||Tank: hold; Healer: rescue; DPS: dodge mechanic
+{rt8}Illidari Council{rt8}||[Four Advisors] fight together shared health, need spread positioning pick off one by one; mixed fire/ice/shadow||{rt1}Must interrupt/burst: none; split focus single{rt1}||Tank: split tanks; DPS: focus
+{rt8}Mother Shahraz{rt8}||[Cleave]; [Mortal Strike]; [Mind Control] mark turns to demon needs interrupt rescue||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue
+{rt8}Akama's Shadow{rt8}||[Phase] phased progression, P2 needs protect Akama from adds killing him; [Shadow] dot||{rt1}Must interrupt/burst: none; P2 prioritize clearing adds threatening Akama{rt1}||Tank: hold; DPS: clear adds
+{rt8}Sapphiron{rt8}||[Ice Tomb] freeze mark needs to move away; [Deep Breath] sweep dodge to flank||{rt1}Must interrupt/burst: none; run away when marked by Ice Tomb, dodge Deep Breath to side{rt1}||Tank: hold; DPS: dodge mechanics
+{rt8}Black Witch Faline{rt8}||[Frenzy] stacks then wipes raid, suppress by interrupting [Lash]||{rt1}Must interrupt/burst: [Lash] must be continuously interrupted to prevent frenzy{rt1}||Tank: hold; DPS: assign lash interrupts
+{rt8}Instructor Razuvious{rt8}||[Need Apprentice] control adds to cast commands on him, otherwise wipe||{rt1}Must interrupt/burst: none; control adds use [Command] to interrupt boss{rt1}||Tank: boss controlled by student; DPS: control adds
+{rt8}Apothecary Raz{rt8}||[Teleport] reposition; [Frost] periodic raid-wide frost damage||{rt1}Must interrupt/burst: none; quickly find position after teleport{rt1}||Tank: hold; Healer: raid-heal frost
+{rt8}Kel'Thuzad{rt8}||P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt to rescue||{rt1}Must interrupt/burst: P3[Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: P1 clear adds, P3 rescue
+{rt8}Anub'Rekhan{rt8}||[Locust Swarm] mark chases people needs continuous running; [Summon Crypt Guards] needs tank to pick up||{rt1}Must interrupt/burst: none; those chased by [Locust Swarm] run in circles{rt1}||Tank: pick up guards; DPS: clear bugs
+{rt8}Loatheb{rt8}||[Spore] heal inside cloud; [Healing Inhibit] periodically forbids healing||{rt1}Must interrupt/burst: none; healers burst heal during spore window{rt1}||Tank: hold; Healer: burst during spore
+{rt8}Four Horsemen{rt8}||[Mark] stack swap tank, 4 tanks spread; shared threat mechanic||{rt1}Must interrupt/burst: none; mark stacks swap tank to avoid instant death{rt1}||Tank: 4 tanks spread swap; Healer: split sides
+{rt8}Grobbulus{rt8}||[Poison Cloud] expands after placed, need to move while placing||{rt1}Must interrupt/burst: none; move while placing poison to avoid stacking clouds{rt1}||Tank: hold and move; DPS: follow movement
+{rt8}Gothik the Harvester{rt8}||[Two Side Doors] living side and dead side, switch sides on rhythm to focus||{rt1}Must interrupt/burst: none; switch sides as directed{rt1}||Tank: split tanks; DPS: switch side focus
+{rt8}Thaddius{rt8}||[Polarity] positive/negative charge, same polarity near takes damage, opposite heals, need to switch sides||{rt1}Must interrupt/burst: none; stand on side by polarity{rt1}||Tank: by polarity; DPS: switch sides
+{rt8}Patchwerk{rt8}||[Frenzy] melee fight, high auto-attack; time-limited kill||{rt1}Must interrupt/burst: none; tank eats damage hard{rt1}||Tank: main tank tank hard; Healer: pre-cast
+{rt8}Gluth{rt8}||[Decimate] devours adds to heal, need to control adds; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds to prevent healing{rt1}||Tank: hold; DPS: control adds
+{rt8}Maexxna{rt8}||[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait for rescue{rt1}||Tank: hold; DPS: clear spiders
+{rt8}Heigan the Unclean{rt8}||[Dance] classic positioning mechanic, stepping on death circle dies, need to move with rhythm||{rt1}Must interrupt/burst: none; strictly follow safe-circle positioning{rt1}||Tank: hold; DPS: output while moving
+{rt8}Onyxia{rt8}||[Deep Breath] fire sweep needs dodge to flank; [Fire] phase high fire damage; periodically summons [Whelps]||{rt1}Must interrupt/burst: none; [Deep Breath] hear warning dodge to side{rt1}||Tank: face head out; Healer: fire resist; DPS: clear whelps
+{rt8}Bloodlord Mandokir{rt8}||[Execute] mark instakill needs interrupt; [Revive Soul] ally death revives and gets buff||{rt1}Must interrupt/burst: [Execute] must be interrupted{rt1}||Tank: hold; DPS: assign execute interrupt
+{rt8}High Priest Thekal{rt8}||[Panther] mind control mark; [Stealth] ambush||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue
+{rt8}High Priest Venoxis{rt8}||[Poison] nature dot; [Serpent] mark turns to snake needs ally protection||{rt1}Must interrupt/burst: none; [Serpent] marked move away from group{rt1}||Tank: hold; Healer: detox
+{rt8}Edge of Madness{rt8}||[Random Boss] each time activates one of 4 optional bosses, mechanics vary by boss||{rt1}Must interrupt/burst: respond by refreshed boss{rt1}||Tank: watch boss; DPS: watch boss
+{rt8}High Priest Sekar{rt8}||[Revive] tiger after frenzy; [Tiger] charge||{rt1}Must interrupt/burst: none; prevent revive after kill{rt1}||Tank: hold; DPS: burst
+{rt8}High Priestess Jeklik{rt8}||[Bat] mind control mark needs interrupt to rescue; [Fireball] direct damage||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue
+{rt8}Jin'do the Hexxer{rt8}||[Hex] turns to skeleton root; [Shade] need to kill shade simultaneously or heals||{rt1}Must interrupt/burst: none; shade shares health with body, hit both at once{rt1}||Tank: hold; DPS: hit shade together
+{rt8}Hakkar{rt8}||[Blood Drain] attack heals; [Corrupted Blood] dot spreads need to spread||{rt1}Must interrupt/burst: none; [Corrupted Blood] marked spread{rt1}||Tank: hold; Healer: dispel
+{rt8}High Priestess Mar'li{rt8}||[Spider/Tiger] dual form switch, tiger form charge, spider form poison||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: focus
+{rt8}Gahz'ranka{rt8}||[Fishing] need to fish to summon first; [Frost] high damage||{rt1}Must interrupt/burst: none; complete quest to summon then fight{rt1}||Tank: hold; DPS: focus
+{rt8}Majordomo Executus{rt8}||[Eight Advisors] fire/ice/shadow etc grouped, need to kill by groups per mechanic before boss activates||{rt1}Must interrupt/burst: clear advisors by group then hit boss{rt1}||Tank: split tanks; DPS: group focus
+{rt8}Gehennas{rt8}||[Shadow Burn] cast shadow damage interruptible; [Summon Imp] spawns imps||{rt1}Must interrupt/burst: interrupt [Shadow Burn]{rt1}||Tank: hold; DPS: clear imps
+{rt8}Lucifron{rt8}||[Shadow Curse] healer/DPS debuff needs dispel; [Rune Shield] mage spellsteal||{rt1}Must interrupt/burst: none; dispel curse promptly{rt1}||Tank: hold; Healer: dispel
+{rt8}Sulfuron Harbinger{rt8}||[Fire Damage] high flame; [Healer Add] summons healer follower needs control||{rt1}Must interrupt/burst: control/kill healer follower{rt1}||Tank: hold; DPS: kill add first
+{rt8}Magmadar{rt8}||[Panic] periodic fear whole raid; time-limited kill or frenzy||{rt1}Must interrupt/burst: none; keep DPS during fear{rt1}||Tank: hold; DPS: sustained
+{rt8}Baron Geddon{rt8}||[Inferno] self-explode needs away from group; [Bomb] mark place circle; [Burn] dot||{rt1}Must interrupt/burst: none; [Inferno] marked immediately run out of group{rt1}||Tank: hold; Healer: raid heal
+{rt8}Shazzrah{rt8}||[Blink] reposition; [Arcane Explosion] cast interruptible||{rt1}Must interrupt/burst: interrupt [Arcane Explosion]{rt1}||Tank: hold; DPS: ranged spread
+{rt8}Molten Core{rt8}||[Whole Raid] Molten Core is a level-60 40-player raid, 10 bosses in order Lucifron->Ragnaros, centered on fire resist gear and dispels||{rt1}Must interrupt/burst: each boss mechanic see corresponding entry{rt1}||Tank: fire resist; Healer: dispel; DPS: by mechanic
+{rt8}Golemagg the Incinerator{rt8}||[Two Dogs] linked to master by [Pact], need to separate and interrupt pact||{rt1}Must interrupt/burst: [Pact] pull dogs away and interrupt{rt1}||Tank: pull dogs separate from master; DPS: focus
+{rt8}Garr{rt8}||[Fire Elemental] 8 followers, after kill [Self-Explode] need spread||{rt1}Must interrupt/burst: none; spread after followers die to dodge explosion{rt1}||Tank: hold; DPS: clear followers first
+{rt8}Ragnaros{rt8}||[Living Bomb] mark then explodes needs away; [Knockback] periodic knock tank; P2[Sons] need focus||{rt1}Must interrupt/burst: none; [Living Bomb] marked run out of group{rt1}||Tank: return after knockback; DPS: P2 focus sons
+{rt8}Nefarian{rt8}||[Class Debuff] randomly gives a class negative; P2[Revived Paladin] needs handling at bone pile||{rt1}Must interrupt/burst: none; P2 prioritize clearing revived bone pile{rt1}||Tank: hold; DPS: P2 focus bone pile
+{rt8}Firemaw{rt8}||[Fire Nova] cast raid-wide fire damage interruptible; similar to Flamegor mechanic||{rt1}Must interrupt/burst: interrupt [Fire Nova]{rt1}||Tank: hold; DPS: ranged spread
+{rt8}Broodlord Lashlayer{rt8}||[Mortal Strike] reduces healing 75%; standard stand-and-fight||{rt1}Must interrupt/burst: none; healers watch mortal strike healing reduction{rt1}||Tank: front; Healer: pre-cast big heal
+{rt8}Razorgore the Untamed{rt8}||[Control Dragon Eggs] use control rod to command red dragon burn eggs; platform adds keep spawning||{rt1}Must interrupt/burst: none; control dragon prioritize burning nearest eggs{rt1}||Tank: take over pulling; DPS: control dragon burn eggs
+{rt8}Flamegor{rt8}||[Fire Nova] cast raid-wide fire damage interruptible; [Cleave] melee takes damage||{rt1}Must interrupt/burst: [Fire Nova] must be interrupted{rt1}||Tank: hold; DPS: ranged spread
+{rt8}Azgalor{rt8}||[Fire Rain] place circle needs dodge; [Cleave]||{rt1}Must interrupt/burst: none; dodge fire rain{rt1}||Tank: hold
+{rt8}Kaz'rogal{rt8}||[Heavy Wound] high auto-attack; [Fire] direct damage||{rt1}Must interrupt/burst: none{rt1}||Tank: hard tank; Healer: pre-cast
+{rt8}Anetheron{rt8}||[Sleep] mark sleeps needs wake; [Poison] dot||{rt1}Must interrupt/burst: none; [Sleep] marked wake{rt1}||Tank: hold
+{rt8}Archimonde{rt8}||[Finger of Death] mark instakill needs immediately away; [Fire] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: [Finger of Death] marked away from group{rt1}||Tank: hold; DPS: quick kill
+{rt8}Rage Winterchill{rt8}||[Frost] high damage; [Ice Tomb] mark freeze needs ally rescue||{rt1}Must interrupt/burst: none; [Ice Tomb] marked rescue{rt1}||Tank: hold
+{rt8}Felmyst{rt8}||[Gas] raid needs dodge cloud; [Gas] nova; [Dive]||{rt1}Must interrupt/burst: none; dodge poison cloud{rt1}||Tank: hold
+{rt8}Eredar Twins{rt8}||[Fire/Shadow] twins shared health needs same-color positioning; [Aura]||{rt1}Must interrupt/burst: none; same-color positioning focus{rt1}||Tank: split tanks
+{rt8}Kil'jaeden{rt8}||[Mirror] clone; [Flame] raid-wide; [Hand] mark instakill; P5[Shadow]||{rt1}Must interrupt/burst: none; dodge [Hand] hit clones{rt1}||Tank: hold; DPS: dodge mechanic
+{rt8}Kalecgos{rt8}||[Blue Dragon/Demon] dual space, need enter portal to hit demon; [Mark]||{rt1}Must interrupt/burst: none; enter portal focus demon{rt1}||Tank: hold dragon
+{rt8}M'uru{rt8}||[Void] phase summons adds needs clear; [Shadow]; P2[Entropy] body||{rt1}Must interrupt/burst: none; clear void adds{rt1}||Tank: hold; DPS: clear adds
+{rt8}Brutallus{rt8}||[Burn] high dot; [Knockback]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Burn] marked away{rt1}||Tank: hard tank; Healer: raid heal
+{rt8}Maiden of Virtue{rt8}||[Holy] heal cast reflects damage; [Penance] mark root||{rt1}Must interrupt/burst: none; [Penance] marked away{rt1}||Tank: hold; Healer: no cast
+{rt8}Romeo and Juliet{rt8}||[Two People] shared health needs simultaneous focus; [Mind Control] mark||{rt1}Must interrupt/burst: none; press both targets together{rt1}||Tank: split tanks
+{rt8}Moroes{rt8}||[Summon Retainer] periodic summon needs control; [Blind] current tank||{rt1}Must interrupt/burst: control/kill retainer{rt1}||Tank: dual tank; DPS: control adds
+{rt8}Attumen the Huntsman{rt8}||[Horse and Hunter] separate phase, need pull apart and kill separately; [Charge]||{rt1}Must interrupt/burst: none; pull horse and hunter apart hit separately{rt1}||Tank: hold horse
+{rt8}Nightbane{rt8}||[Summon] needs cast at graveyard to summon; [Bone Rain] raid high damage; [Debuff] mark needs fly up dodge||{rt1}Must interrupt/burst: none; [Debuff] marked fly up dodge{rt1}||Tank: hold
+{rt8}The Servant's Quarters{rt8}||[Multiple Waves] continuous spawn needs control; [Fear] mark||{rt1}Must interrupt/burst: control/interrupt fear; clear adds by wave{rt1}||Tank: group pull; DPS: control adds
+{rt8}The Crone{rt8}||[Moon/Star] phase switch needs corresponding positioning; [Fire/Ice] mixed||{rt1}Must interrupt/burst: none; switch positioning by phase{rt1}||Tank: hold
+{rt8}Big Bad Wolf{rt8}||[Little Red Riding Hood] mark chases needs kite around pillar; [Devour] instakill chased||{rt1}Must interrupt/burst: none; [Little Red] marked run around pillar{rt1}||Tank: hold
+{rt8}Shade of Aran{rt8}||[Three Spells] fire/ice/arcane rotate cast needs corresponding interrupt; [Blink] reposition||{rt1}Must interrupt/burst: [Spell] must interrupt{rt1}||Tank: hold
+{rt8}Netherspite{rt8}||[Color] red/blue/green/bronze, need corresponding positioning for buff; [Mark]||{rt1}Must interrupt/burst: none; position by color{rt1}||Tank: hold
+{rt8}The Curator{rt8}||[Blue Ball] energy ball needs hit to restore mana; [Arc] raid-wide; [Frenzy] energy full||{rt1}Must interrupt/burst: none; [Blue Ball] hit to prevent frenzy{rt1}||Tank: hold
+{rt8}Terestian Illhoof{rt8}||[Mind Control] mark turns to demon needs interrupt rescue; [Fire]||{rt1}Must interrupt/burst: [Mind Control] quickly interrupt to save people{rt1}||Tank: hold; DPS: rescue
+{rt8}Prince Malchezaar{rt8}||[Mirror] clone needs focus real; [Fire]; [Orange Staff] phase||{rt1}Must interrupt/burst: none; focus real{rt1}||Tank: hold
+{rt8}Festergut{rt8}||[Plague] mark bomb needs away to detonate; [Ooze] spawn needs control||{rt1}Must interrupt/burst: none; [Plague] marked away from group{rt1}||Tank: hold; DPS: control ooze
+{rt8}Lady Deathwhisper{rt8}||[Summon Wraith] phased summon needs clear; [Shadow] dot||{rt1}Must interrupt/burst: none; clear summoned wraiths{rt1}||Tank: hold; DPS: clear add
+{rt8}Deathbringer Saurfang{rt8}||[Blood Beast] mark chases healer needs tank pick up; [Rune] death leaves needs step; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Blood Beast] tank picks up, step rune{rt1}||Tank: pick up beast; DPS: step rune
+{rt8}The Lich King{rt8}||[Defile] mark place circle expands; [Soul] harvest needs dodge; [Parasite] dot; P3[Frost] raid-wide; P5[Invincible] phase||{rt1}Must interrupt/burst: none; [Defile] marked place circle, dodge harvest{rt1}||Tank: hold; Healer: raid heal
+{rt8}Lord Marrowgar{rt8}||[Frost] raid periodic high damage; [Bone Spike] mark needs focus interrupt; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bone Spike] marked focus down{rt1}||Tank: hold; DPS: focus spike
+{rt8}Blood Prince Council{rt8}||[Three Princes] shared health split focus; [Shadow/Fire/Arcane] mixed; [Blood Drain] heal||{rt1}Must interrupt/burst: none; split focus single{rt1}||Tank: split tanks; DPS: focus
+{rt8}Blood-Queen Lana'thel{rt8}||[Bite] mark infect needs chain pass; [Blood Mirror] mirror; [Shadow] dot||{rt1}Must interrupt/burst: none; [Bite] chain pass in order{rt1}||Tank: hold; Healer: detox
+{rt8}Gunship Battle{rt8}||[Gunship] two ships duel, need use cannon/bomb to hit opposite; [Ice] landing||{rt1}Must interrupt/burst: none; cannon hit opposite ship{rt1}||Tank: none; DPS: operate cannon
+{rt8}Sindragosa{rt8}||[Ice Tomb] mark freeze needs away; [Blistering] wind reduce numbers; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Ice Tomb] marked run away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Valithria Dreamwalker{rt8}||[Dream] body unattackable, need enter dream hit [Nightmare] portal to save; [Fire] raid-wide||{rt1}Must interrupt/burst: none; enter dream clear adds save body{rt1}||Tank: hold; DPS: enter dream
+{rt8}Professor Putricide{rt8}||[Experiment] multi-phase, [Poison] and [Mutation] switch; [Acid Rain] place||{rt1}Must interrupt/burst: none; respond by experiment phase{rt1}||Tank: hold; DPS: focus
+{rt8}Rotface{rt8}||[Gas] periodic raid needs eat [Mushroom] reduce damage; [Disease] stack||{rt1}Must interrupt/burst: none; eat mushroom reduce poison{rt1}||Tank: hold; Healer: raid heal
+{rt8}Halion{rt8}||[Dual Space] real/dream, need enter portal hit clone; [Fire] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter portal focus clone{rt1}||Tank: hold; DPS: enter portal
+{rt8}Sapphiron{rt8}||[Ice Tomb] freeze mark away; [Deep Breath] sweep dodge side||{rt1}Must interrupt/burst: none; Ice Tomb run away Deep Breath dodge side{rt1}||Tank: hold; DPS: dodge mechanic
+{rt8}Black Witch Faline{rt8}||[Frenzy] stack needs continuous [Lash] interrupt suppress||{rt1}Must interrupt/burst: [Lash] must interrupt prevent frenzy{rt1}||Tank: hold; DPS: assign interrupt
+{rt8}Instructor Razuvious{rt8}||[Student] control add to cast [Command] interrupt boss||{rt1}Must interrupt/burst: none; control add use command interrupt boss{rt1}||Tank: boss controlled by student; DPS: control add
+{rt8}Apothecary Raz{rt8}||[Teleport] reposition; [Frost] periodic raid-wide||{rt1}Must interrupt/burst: none; find position after teleport{rt1}||Tank: hold; Healer: raid heal frost
+{rt8}Kel'Thuzad{rt8}||P1[Adds]; P2[Frost] shield; P3[Mind Control] mark needs interrupt rescue||{rt1}Must interrupt/burst: P3[Mind Control] quick interrupt rescue{rt1}||Tank: hold; DPS: P1 clear adds P3 rescue
+{rt8}Anub'Rekhan{rt8}||[Locust Swarm] mark chases needs run; [Crypt Guard] tank pick up||{rt1}Must interrupt/burst: none; [Locust Swarm] run in circles{rt1}||Tank: pick up guard; DPS: clear bugs
+{rt8}Loatheb{rt8}||[Spore] heal inside cloud; [Healing Inhibit] periodic forbids heal||{rt1}Must interrupt/burst: none; spore phase burst heal{rt1}||Tank: hold; Healer: spore phase burst
+{rt8}Four Horsemen{rt8}||[Mark] stack swap tank, 4 tanks spread; shared threat||{rt1}Must interrupt/burst: none; mark swap tank{rt1}||Tank: 4 tanks spread swap; Healer: split sides
+{rt8}Grobbulus{rt8}||[Poison Cloud] expands after placed needs move place||{rt1}Must interrupt/burst: none; move place poison{rt1}||Tank: hold move; DPS: follow move
+{rt8}Gothik the Harvester{rt8}||[Two Side Doors] living/dead side switch by rhythm||{rt1}Must interrupt/burst: none; switch by instruction{rt1}||Tank: split tanks; DPS: switch side
+{rt8}Thaddius{rt8}||[Polarity] positive/negative charge, same hurt opposite heal needs switch side||{rt1}Must interrupt/burst: none; switch side by polarity{rt1}||Tank: by polarity; DPS: switch side
+{rt8}Patchwerk{rt8}||[Frenzy] melee high auto-attack; time-limited||{rt1}Must interrupt/burst: none; tank hard tank{rt1}||Tank: main tank hard; Healer: pre-cast
+{rt8}Gluth{rt8}||[Decimate] devour adds heal needs control; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds prevent heal{rt1}||Tank: hold; DPS: control adds
+{rt8}Maexxna{rt8}||[Web] root; [Poison] dot; [Spiders] spawn||{rt1}Must interrupt/burst: none; webbed wait rescue{rt1}||Tank: hold; DPS: clear spiders
+{rt8}Heigan the Unclean{rt8}||[Dance] positioning mechanic, step death circle dies needs rhythm||{rt1}Must interrupt/burst: none; position by safe circle{rt1}||Tank: hold; DPS: output while moving
+{rt8}Lord Jaraxxus{rt8}||[Portal] need enter portal interrupt cast; [Incinerate] landing||{rt1}Must interrupt/burst: enter portal interrupt; dodge incinerate{rt1}||Tank: hold; DPS: enter portal
+{rt8}Northrend Beasts{rt8}||[Three Beasts] appear in turn, [Poison] and [Fire] mixed; [Interrupt] key||{rt1}Must interrupt/burst: interrupt by mechanic; kill in turn{rt1}||Tank: rotate; DPS: focus
+{rt8}The Val'kyr Twins{rt8}||[Light/Dark] need same-color positioning, opposite color hurt; [Shield]||{rt1}Must interrupt/burst: none; same-color positioning focus{rt1}||Tank: split tanks
+{rt8}The Champions{rt8}||[Multi Class] five enemy classes each have skills, need control one by one; [Mind Control]||{rt1}Must interrupt/burst: control/interrupt key; pick off one by one{rt1}||Tank: split tanks; DPS: control
+{rt8}Anub'arak{rt8}||[Burrow] periodic burrow, need hit [Frost] block force emerge; [Spike] mark||{rt1}Must interrupt/burst: none; hit ice block force emerge{rt1}||Tank: hold; DPS: hit ice
+{rt8}XT-002 Deconstructor{rt8}||[Heart] periodic exposed needs focus; [Bomb] mark place circle; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bomb] place circle, focus heart{rt1}||Tank: hold; DPS: focus heart
+{rt8}Hodir{rt8}||[Frozen] periodic needs break ice rescue; [Fire] buff positioning; [Frenzy] timer||{rt1}Must interrupt/burst: none; break ice, eat fire stand{rt1}||Tank: hold; DPS: quick kill
+{rt8}Iron Council{rt8}||[Three Dwarves] shared health, need focus in specified order; [Lightning]||{rt1}Must interrupt/burst: none; focus by order{rt1}||Tank: split tanks; DPS: focus
+{rt8}Ignis the Furnace Master{rt8}||[Iron Ball] needs water extinguish into [Ice] for tank to pull; [Fire]||{rt1}Must interrupt/burst: none; water into ice control{rt1}||Tank: pull ice; DPS: water
+{rt8}Freya{rt8}||[Three Elders] need clear three elders then hit body; [Nature] dot||{rt1}Must interrupt/burst: none; clear three elders{rt1}||Tank: hold; DPS: clear elders
+{rt8}Razorscale{rt8}||[Cannon] need hit in-field cannon to dragon; [Fire] dive||{rt1}Must interrupt/burst: none; cannon hit dragon{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Thorim{rt8}||[Two Sides] run channel trigger; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; run channel, dodge lightning{rt1}||Tank: hold; DPS: quick kill
+{rt8}Flame Leviathan{rt8}||[Vehicle] need drive siege vehicle to hit; [Fire] landing||{rt1}Must interrupt/burst: none; vehicle focus{rt1}||Tank: none; DPS: vehicle
+{rt8}Yogg-Saron{rt8}||[Sanity] enter dream keep sanity; [Tentacle] needs hit; P3[Body]; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter dream hit tentacle{rt1}||Tank: hold; DPS: focus
+{rt8}General Vezax{rt8}||[Black Puddle] mark circle high damage; [Shadow]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Black Puddle] marked spread{rt1}||Tank: hold; DPS: quick kill
+{rt8}Mimiron{rt8}||[Three Phase] robot/volcano/head, [Bomb] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bomb] place circle{rt1}||Tank: hold; DPS: focus
+{rt8}Algalon the Observer{rt8}||[Cosmic] raid periodic high damage; [Star] mark; [Frenzy] very short timer||{rt1}Must interrupt/burst: none; [Star] marked away{rt1}||Tank: hold; Healer: raid heal; DPS: quick kill
+{rt8}Auriaya{rt8}||[Sentinel] summon needs clear; [Light] mark||{rt1}Must interrupt/burst: none; clear sentinel{rt1}||Tank: hold; DPS: clear add
+{rt8}Kologarn{rt8}||[Arm] separate needs destroy; [Rock] landing||{rt1}Must interrupt/burst: none; destroy arm{rt1}||Tank: hold; DPS: focus arm
+{rt8}The Spine of Deathwing{rt8}||[Armor] need hit corruption plate and [Bind] fix; [Tentacle] needs pull away; vehicle phase||{rt1}Must interrupt/burst: none; hit plate bind tentacle{rt1}||Tank: pull tentacle; DPS: hit plate
+{rt8}The Madness of Deathwing{rt8}||[Platform] multiple platforms rotate, [Blood] mark needs share; [Scorching]; P4[Body]||{rt1}Must interrupt/burst: none; [Blood] marked share{rt1}||Tank: hold; DPS: focus
+{rt8}Yor'sahj the Unsleeping{rt8}||[Pus] by color decide kill order (red priority); [Tentacle]||{rt1}Must interrupt/burst: none; focus by color order{rt1}||Tank: hold; DPS: focus by color
+{rt8}Hagara the Stormbinder{rt8}||[Ice/Lightning] two phase switch, ice needs [Ice Chain] link, lightning needs spread; [Storm]||{rt1}Must interrupt/burst: none; ice phase link chain lightning phase spread{rt1}||Tank: hold; DPS: focus
+{rt8}Blackhorn{rt8}||[Ship Battle] need cannon hit dragon; [Descent] landing phase; [Transport]||{rt1}Must interrupt/burst: none; operate cannon hit dragon{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Morchok{rt8}||[Crystal] mark needs hit crystal share; [Stomp] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Crystal] marked hit crystal share{rt1}||Tank: hold; DPS: quick kill
+{rt8}Ultraxion{rt8}||[Time] by sequence dodge [Twilight]; [Heroic] phase needs burst; [Frenzy] timer||{rt1}Must interrupt/burst: none; move by time mechanic{rt1}||Tank: hold; DPS: heroic phase burst
+{rt8}Warlord Zon'ozz{rt8}||[Black Ball] mark needs hit ball share; [Shadow] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Black Ball] marked hit ball{rt1}||Tank: hold; DPS: quick kill
+{rt8}Lord Rhyolith{rt8}||[Foot] needs hit leg control move; [Lava] landing||{rt1}Must interrupt/burst: none; hit leg limit move{rt1}||Tank: hold; DPS: hit leg
+{rt8}Ragnaros{rt8}||[Seed] mark needs away detonate; [Lava] raid-wide; [Hammer] landing; P3[Knockback]||{rt1}Must interrupt/burst: none; [Seed] marked away, dodge hammer{rt1}||Tank: hold; DPS: dodge mechanic
+{rt8}Baleroc{rt8}||[Shield] needs focus break; [Blade] mark; [Healer] add||{rt1}Must interrupt/burst: none; focus break shield{rt1}||Tank: hold; DPS: control add
+{rt8}Fandral Staghelm{rt8}||[Poison/Fire] two form switch needs change positioning; [Scorpion] phase; [Frenzy] timer||{rt1}Must interrupt/burst: none; change positioning by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Beth'tilac{rt8}||[Web] go up spider web hit eggs; [Drop] phase land; [Poison] dot||{rt1}Must interrupt/burst: none; web clear eggs, land focus{rt1}||Tank: hold; DPS: focus
+{rt8}Shannox{rt8}||[Trap] place needs pull dog step; [Frenzy] dog; [Fire]||{rt1}Must interrupt/burst: none; pull dog step trap{rt1}||Tank: hold; DPS: control dog
+{rt8}Alysrazor{rt8}||[Flight] phase needs eat [Ash] keep fire; [Dive]; [Reborn]||{rt1}Must interrupt/burst: none; eat ash maintain, dodge dive{rt1}||Tank: hold; DPS: focus
+{rt8}Valiona and Theralion{rt8}||[Two Dragons] take turns enter, [Deep Breath] and [Meteor] need dodge; [Shadow] dot||{rt1}Must interrupt/burst: none; dodge deep breath and meteor{rt1}||Tank: hold; DPS: focus
+{rt8}Council of Exarchs{rt8}||[Four Elements] fire/ice/earth/wind phase, need interrupt corresponding; [Fusion]||{rt1}Must interrupt/burst: interrupt by element; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Halfus Wyrmbreaker{rt8}||[Dragons] bound different dragons give buff, need kill corresponding dragon first weaken; [Timer] timer||{rt1}Must interrupt/burst: none; by dragon buff decide kill order{rt1}||Tank: hold; DPS: focus dragon
+{rt8}Sinestra{rt8}||[Hatch] summon whelps needs clear; [Shadow] high damage; [Frenzy] timer||{rt1}Must interrupt/burst: none; clear whelps{rt1}||Tank: hold; DPS: clear whelps
+{rt8}Cho'gall{rt8}||[Parasite] mark; [Shadow] dot; [Fire]; P2[Frenzy] speed up||{rt1}Must interrupt/burst: none; [Parasite] marked away{rt1}||Tank: hold; Healer: detox
+{rt8}Conclave of Wind{rt8}||[Three Elements] need kill simultaneously prevent heal; [Wind/Lightning/Ice] mixed||{rt1}Must interrupt/burst: none; focus three elements together{rt1}||Tank: split tanks; DPS: focus
+{rt8}Al'Akir{rt8}||[Phase] wind/lightning/ice/earth rotate, [Lightning] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; respond by phase{rt1}||Tank: hold; DPS: quick kill
+{rt8}Nefarian{rt8}||[Electrode] need stand same polarity; [Shadow] raid-wide; P2[Dragonbone] mark||{rt1}Must interrupt/burst: none; stand by electrode{rt1}||Tank: hold; DPS: focus
+{rt8}Atramedes{rt8}||[Sound Wave] needs watch ground circle dodge; [Tracking] mark; [Silence]||{rt1}Must interrupt/burst: none; dodge sound circle{rt1}||Tank: hold; DPS: focus
+{rt8}Malorak{rt8}||[Test Tube] need by color interrupt corresponding; [Release] phase; [Fire/Ice]||{rt1}Must interrupt/burst: interrupt by tube color; focus{rt1}||Tank: hold; DPS: control tube
+{rt8}Magmaw{rt8}||[Chain] need pull head to [Spike] pin reduce damage; [Flame] front||{rt1}Must interrupt/burst: none; pull head pin{rt1}||Tank: pull head; DPS: pin
+{rt8}Omnotron Defense System{rt8}||[Four Robots] poison/fire/ice/lightning rotate activate, need corresponding respond; [Switch]||{rt1}Must interrupt/burst: interrupt by active robot; focus{rt1}||Tank: hold; DPS: focus by active
+{rt8}Chimaeron{rt8}||[Double Attack] lethal needs dual tank; [Annihilation] raid wipe needs heal up; [Toxic] dot||{rt1}Must interrupt/burst: none; [Annihilation] all survive{rt1}||Tank: dual tank; Healer: annihilation burst
+{rt8}Blade Lord Ta'yak{rt8}||[Gale] push; [Blade] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge gale{rt1}||Tank: hold; DPS: quick kill
+{rt8}Imperial Vizier Zor'lok{rt8}||[Convert] by room mechanic switch needs move; [Mind Control]; [Decay]||{rt1}Must interrupt/burst: none; move by room{rt1}||Tank: hold; DPS: focus
+{rt8}Garalon{rt8}||[Leg] need hit leg weaken body; [Stomp] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit leg reduce{rt1}||Tank: hold; DPS: hit leg
+{rt8}Empress Shek'zeer{rt8}||[Poison] high dot needs spread; [Mind Control] mark; [Frenzy] timer||{rt1}Must interrupt/burst: [Mind Control] quick interrupt rescue; spread{rt1}||Tank: hold; DPS: rescue
+{rt8}Wind Lord Mel'jarak{rt8}||[Adds] periodic summon needs control; [Whirlwind]; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill adds; focus{rt1}||Tank: hold; DPS: control adds
+{rt8}Amber-Shaper Un'sok{rt8}||[Amber] absorb needs break; [Construct] phase; [Toxic]||{rt1}Must interrupt/burst: none; hit amber construct{rt1}||Tank: hold; DPS: focus
+{rt8}The Spirit Kings{rt8}||[Four Kings] rotate activate, need interrupt corresponding; [Shared]||{rt1}Must interrupt/burst: interrupt by king; one by one{rt1}||Tank: hold; DPS: focus
+{rt8}Feng the Accursed{rt8}||[Element] fire/lightning/ice rotate, need interrupt corresponding; [Phase]||{rt1}Must interrupt/burst: interrupt by element; focus{rt1}||Tank: hold; DPS: focus
+{rt8}The Emperor's Will{rt8}||[Puppet] dual tank pull, [Energy] full needs interrupt; [Frenzy] timer||{rt1}Must interrupt/burst: interrupt before energy full; focus{rt1}||Tank: dual tank; DPS: quick kill
+{rt8}Gara'jal the Spiritbinder{rt8}||[Spirit] need enter spirit rescue captured; [Shadow] dot||{rt1}Must interrupt/burst: none; enter spirit rescue ally{rt1}||Tank: hold; DPS: enter spirit
+{rt8}Elegon{rt8}||[Energy] need hit [Star] restore energy; [Beam]; [Heroic] phase||{rt1}Must interrupt/burst: none; hit star restore, dodge beam{rt1}||Tank: hold; DPS: hit star
+{rt8}The Stone Guard{rt8}||[Gem] need by color activate corresponding; [Pet] tank pick up||{rt1}Must interrupt/burst: none; activate by gem color{rt1}||Tank: split tanks; DPS: focus
+{rt8}Tsulong{rt8}||[Day/Night] day needs interrupt, night needs keep blood; [Light]||{rt1}Must interrupt/burst: day interrupt by mechanic; night keep blood{rt1}||Tank: hold; Healer: night keep blood
+{rt8}Protectors of the Endless{rt8}||[Three Guardians] shared health split focus; [Light/Shadow] phase switch||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Sha of Fear{rt8}||[Fear] mark needs dodge [Light]; [Tentacle]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Fear] marked dodge light{rt1}||Tank: hold; DPS: focus
+{rt8}Lei Shi{rt8}||[Stealth] periodic disappear needs stop attack find position; [Water Stream]; [Splash]||{rt1}Must interrupt/burst: none; stealth stop attack locate{rt1}||Tank: hold; DPS: focus
+{rt8}Durumu the Forgotten{rt8}||[Beam] needs watch [Eye] move; [Red/Blue] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; move by beam{rt1}||Tank: hold; DPS: quick kill
+{rt8}Ji-Kun{rt8}||[Egg] needs hit egg; [Poison] landing; [Dive]||{rt1}Must interrupt/burst: none; hit egg, dodge poison{rt1}||Tank: hold; DPS: hit egg
+{rt8}Iron Qon{rt8}||[Four Phase] wind/fire/ice/lightning rotate, need corresponding positioning; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by phase{rt1}||Tank: hold; DPS: quick kill
+{rt8}Primordius{rt8}||[Ball] needs eat [Slime] grow strong; [Mutation]; [Frenzy] timer||{rt1}Must interrupt/burst: none; eat slime grow strong{rt1}||Tank: hold; DPS: quick kill
+{rt8}Ra-den{rt8}||[Ball] complex mechanic, need move by hint; [Frenzy] timer (hidden)||{rt1}Must interrupt/burst: none; move by hint{rt1}||Tank: hold; DPS: quick kill
+{rt8}Lei Shen{rt8}||[Platform] multi-mechanic rotate, [Chain]; [Lightning] raid-wide; P3[Invincible]||{rt1}Must interrupt/burst: none; respond by platform mechanic{rt1}||Tank: hold; DPS: focus
+{rt8}The Twin Consorts{rt8}||[Twins] need kill simultaneously; [Ice/Fire] mixed; [Mind Control]||{rt1}Must interrupt/burst: none; focus simultaneously{rt1}||Tank: split tanks; DPS: focus
+{rt8}Tortos{rt8}||[Shell] needs hit exposed; [Earthquake]; [Turtle] needs control||{rt1}Must interrupt/burst: none; hit exposed, control turtle{rt1}||Tank: hold; DPS: focus
+{rt8}Jin'rokh the Breaker{rt8}||[Water] mark needs stand water reduce damage; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Water] marked stand water{rt1}||Tank: hold; DPS: quick kill
+{rt8}Horridon{rt8}||[Adds] multi-door summon needs control; [Frenzy] timer||{rt1}Must interrupt/burst: control/clear door adds; focus{rt1}||Tank: hold; DPS: control adds
+{rt8}Megaera{rt8}||[Multi Head] needs interrupt head prevent revive; [Acid]; [Frenzy] timer||{rt1}Must interrupt/burst: interrupt head prevent revive; focus{rt1}||Tank: hold; DPS: break head
+{rt8}Council of Elders{rt8}||[Four Elders] need focus single prevent heal; [Element] mixed||{rt1}Must interrupt/burst: none; focus single{rt1}||Tank: split tanks; DPS: focus
+{rt8}Dark Animus{rt8}||[Ball] needs pull [Animated] into circle remove; [Energy]; [Frenzy] timer||{rt1}Must interrupt/burst: none; pull animated into circle{rt1}||Tank: hold; DPS: focus
+{rt8}The Pandaria Treasure{rt8}||[Chest] open both sides clear adds, time-limited kill||{rt1}Must interrupt/burst: none; time-limited open chest clear adds{rt1}||Tank: split tanks; DPS: clear adds
+{rt8}Norushen{rt8}||[Test] enter inner field clear [Doubt] ball; [Corruption] dot||{rt1}Must interrupt/burst: none; enter inner field clear doubt ball{rt1}||Tank: hold; DPS: enter inner field
+{rt8}Garrosh Hellscream{rt8}||[Iron Star] needs dodge; [Mind Control]; P2[Horde]; P3[Void] raid-wide||{rt1}Must interrupt/burst: none; dodge iron star, P2 respond{rt1}||Tank: hold; DPS: focus
+{rt8}Siegecrafter Blackfuse{rt8}||[Conveyor] needs interrupt corresponding; [Mine]; [Disassemble]||{rt1}Must interrupt/burst: interrupt by conveyor; focus{rt1}||Tank: hold; DPS: focus
+{rt8}Iron Juggernaut{rt8}||[Cannon] needs hit cannon; [Mine]; [Frenzy] timer||{rt1}Must interrupt/burst: none; operate cannon, dodge mine{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Immerseus{rt8}||[Water Drop] needs hit to prevent heal; [Corruption] dot; [Phase]||{rt1}Must interrupt/burst: none; hit water drop prevent heal{rt1}||Tank: hold; DPS: focus water drop
+{rt8}General Nazgrim{rt8}||[War Banner] needs pull; [Adds] summon; [Frenzy] timer||{rt1}Must interrupt/burst: pull war banner, clear adds; focus{rt1}||Tank: hold; DPS: pull banner
+{rt8}Galakras{rt8}||[Tower] needs hit tower trigger; [Dragon] phase; [Adds]||{rt1}Must interrupt/burst: none; hit tower trigger, clear adds{rt1}||Tank: split tanks; DPS: hit tower
+{rt8}The Klaxxi Paragons{rt8}||[Paragons] rotate activate, need corresponding respond; [Poison]||{rt1}Must interrupt/burst: by paragon mechanic; focus{rt1}||Tank: hold; DPS: focus
+{rt8}Sha of Pride{rt8}||[Pride] full needs spread; [Light] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Pride] full spread{rt1}||Tank: hold; DPS: quick kill
+{rt8}Kor'kron Dark Shaman{rt8}||[Fire/Lightning] two shamans split sides, need corresponding positioning; [Totem]||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Malkorok{rt8}||[Ball] mark needs pull together share; [Landing] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Ball] marked pull together share{rt1}||Tank: hold; DPS: quick kill
+{rt8}Thok the Bloodthirsty{rt8}||[Cage] needs rescue captured; [Poison] phase; [Frenzy] timer||{rt1}Must interrupt/burst: none; rescue captured{rt1}||Tank: hold; DPS: rescue
+{rt8}The Fallen Protectors{rt8}||[Three Protectors] shared health split; [Mind Control]; [Shadow]||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Imperator Mar'gok{rt8}||[Arcane] mark needs away; [Teleport]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Arcane] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Tectus{rt8}||[Earth] needs hit exposed; [Earthquake]; [Split]||{rt1}Must interrupt/burst: none; hit exposed, focus clone{rt1}||Tank: hold; DPS: focus
+{rt8}Ko'ragh{rt8}||[Shield] needs focus break; [Mana] needs control; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus break shield{rt1}||Tank: hold; DPS: break shield
+{rt8}Kargath Bladefist{rt8}||[Iron Cage] needs pull; [Spear] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; pull iron cage, dodge spear{rt1}||Tank: hold; DPS: quick kill
+{rt8}Twin Ogron{rt8}||[Twins] need kill simultaneously; [Charge]||{rt1}Must interrupt/burst: none; focus simultaneously{rt1}||Tank: split tanks; DPS: focus
+{rt8}Brackenspore{rt8}||[Mushroom] needs step heal; [Poison] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; step mushroom heal{rt1}||Tank: hold; Healer: step mushroom
+{rt8}The Butcher{rt8}||[Cleave] raid high damage needs tank swap; [Frenzy] timer||{rt1}Must interrupt/burst: none; swap tank avoid cleave{rt1}||Tank: dual tank; Healer: raid heal
+{rt8}Hans'gar and Franzok{rt8}||[Stamp] periodic needs dodge; [Fist] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge stamp{rt1}||Tank: dual tank; DPS: focus
+{rt8}Beastlord Darmac{rt8}||[Beast] periodic summon needs control; [Spear] mark; [Frenzy] timer||{rt1}Must interrupt/burst: control/kill beast; focus{rt1}||Tank: hold; DPS: control adds
+{rt8}The Iron Maidens{rt8}||[Three Valkyrie] shared health split; [Torpedo]; [Frenzy] timer||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}The Blast Furnace{rt8}||[Lava] splash needs dodge; [Element] tank pick up; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge lava{rt1}||Tank: hold; DPS: focus
+{rt8}Oregorger{rt8}||[Roll] needs dodge; [Ore] eat ore grow strong; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge roll, eat ore{rt1}||Tank: hold; DPS: quick kill
+{rt8}Socrethar{rt8}||[Train] needs move by signal; [Bomb]; [Frenzy] timer||{rt1}Must interrupt/burst: none; move by signal{rt1}||Tank: hold; DPS: quick kill
+{rt8}Blackhand{rt8}||[Anvil] periodic slam ground; [Bomb] mark; P3[Furnace]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge anvil, [Bomb] place circle{rt1}||Tank: hold; DPS: quick kill
+{rt8}Kromog{rt8}||[Shockwave] needs jump; [Stone Fist] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Stone Fist] marked away, jump shockwave{rt1}||Tank: hold; DPS: quick kill
+{rt8}Gruul{rt8}||[Shatter] mark needs away; [Geo] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Shatter] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Flamebender Ka'graz{rt8}||[Two Dragons] needs pull apart; [Fire] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; split pull two dragons{rt1}||Tank: dual tank; DPS: focus
+{rt8}Kormrok{rt8}||[Hand] mark needs pull together; [Landing] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Hand] marked pull together{rt1}||Tank: hold; DPS: quick kill
+{rt8}Iron Reaver{rt8}||[Cannon] needs hit cannon; [Mine]; [Frenzy] timer||{rt1}Must interrupt/burst: none; operate cannon, dodge mine{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Hellfire High Council{rt8}||[Three Advisors] shared health split; [Fire/Shadow/Fel] mixed||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Gorefiend{rt8}||[Soul] mark needs rescue; [Corruption] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Soul] marked rescue{rt1}||Tank: hold; DPS: rescue
+{rt8}Kilrogg Deadeye{rt8}||[Vision] needs enter vision hit; [Eye] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter vision hit{rt1}||Tank: hold; DPS: enter vision
+{rt8}Hellfire Assault{rt8}||[Multiple Waves] continuous adds + vehicle; [Fire]||{rt1}Must interrupt/burst: clear adds, vehicle advance{rt1}||Tank: hold; DPS: clear adds
+{rt8}Xhul'horac{rt8}||[Light/Dark] two phase, need corresponding positioning; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by light/dark{rt1}||Tank: hold; DPS: quick kill
+{rt8}Tyrant Velhari{rt8}||[Light/Dark] two phase switch needs change positioning; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by light/dark{rt1}||Tank: hold; DPS: quick kill
+{rt8}Archimonde{rt8}||[Hand] mark instakill needs away; [Fire] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: [Hand] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Shadow-Lord Iskar{rt8}||[Eye] needs pass; [Shadow] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; pass eye, dodge shadow{rt1}||Tank: hold; DPS: quick kill
+{rt8}Fel Lord Zakuun{rt8}||[Maze] needs follow route; [Fel] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; move by maze{rt1}||Tank: hold; DPS: quick kill
+{rt8}Sorceras the Eternal{rt8}||[Soul] needs hunt; [Fel]; [Frenzy] timer||{rt1}Must interrupt/burst: none; hunt soul{rt1}||Tank: hold; DPS: focus
+{rt8}Mannoroth{rt8}||[Fel] mark needs share; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Fel] marked share{rt1}||Tank: hold; DPS: quick kill
+{rt8}Elerethe Renferal{rt8}||[Spider/Bird] dual form switch; [Web]; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Xavius{rt8}||[Dream] mark needs rescue; [Corruption] dot; P3[Body]||{rt1}Must interrupt/burst: none; [Dream] marked rescue{rt1}||Tank: hold; DPS: focus
+{rt8}Ursoc{rt8}||[Charge] needs dodge; [Slam] tank; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge charge{rt1}||Tank: hold; DPS: quick kill
+{rt8}Cenarius{rt8}||[Nightmare] needs clear; [Root] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; clear nightmare, dodge root{rt1}||Tank: hold; DPS: quick kill
+{rt8}Il'gynoth{rt8}||[Eyeball] needs hit to prevent heal; [Tentacle]; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit eyeball prevent heal{rt1}||Tank: hold; DPS: focus eyeball
+{rt8}Nythendra{rt8}||[Bug] mark needs away; [Infestation] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bug] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Dragons of Nightmare{rt8}||[Four Dragons] need focus single; [Poison/Fire] mixed; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus single{rt1}||Tank: split tanks; DPS: focus
+{rt8}Lady Sassz'ine{rt8}||[Water] needs dodge; [Tentacle]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge water, focus{rt1}||Tank: hold; DPS: quick kill
+{rt8}The Desolate Host{rt8}||[Spirit] needs enter spirit hit; [Shadow]; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter spirit hit{rt1}||Tank: hold; DPS: enter portal
+{rt8}Demonic Inquisition{rt8}||[Sin] needs focus; [Fire/Fel]; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus sin{rt1}||Tank: hold; DPS: focus
+{rt8}Harjatan{rt8}||[Water] mark needs stand water reduce damage; [Hammer]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Water] marked stand water{rt1}||Tank: hold; DPS: quick kill
+{rt8}Fallen Avatar{rt8}||[Light/Dark] needs corresponding positioning; [Tear]; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by light/dark{rt1}||Tank: hold; DPS: quick kill
+{rt8}Maiden of Vigilance{rt8}||[Bomb] mark needs away; [Holy] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bomb] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Kil'jaeden{rt8}||[Mirror] clone; [Fire] raid-wide; [Hand] mark; P5[Shadow]||{rt1}Must interrupt/burst: none; dodge [Hand], hit clones{rt1}||Tank: hold; DPS: focus
+{rt8}Goroth{rt8}||[Meteor] needs dodge; [Fire] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge meteor{rt1}||Tank: hold; DPS: quick kill
+{rt8}Sisters of the Moon{rt8}||[Three Sisters] shared health split; [Moon] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Trilliax{rt8}||[Purify] needs eat corresponding food; [Three Form]; [Frenzy] timer||{rt1}Must interrupt/burst: none; eat corresponding food{rt1}||Tank: hold; DPS: quick kill
+{rt8}Spellblade Aluriel{rt8}||[Three Blades] needs corresponding positioning; [Frost] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by blade{rt1}||Tank: hold; DPS: quick kill
+{rt8}Skorpyron{rt8}||[Spike] mark needs away; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Spike] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Grand Magistrix Elisande{rt8}||[Time] needs eat ball control speed; [Crystal]; [Frenzy] timer||{rt1}Must interrupt/burst: none; eat time ball{rt1}||Tank: hold; DPS: quick kill
+{rt8}Temporal Anomaly{rt8}||[Time] needs eat [Fast/Slow] ball; [Frenzy] timer||{rt1}Must interrupt/burst: none; eat time ball maintain{rt1}||Tank: hold; DPS: quick kill
+{rt8}Star Augur Etraeus{rt8}||[Star] mark needs away; [Planet] phase; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Star] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}High Botanist Tel'arn{rt8}||[Three Plants] need focus single; [Poison]; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus single{rt1}||Tank: hold; DPS: focus
+{rt8}Krosus{rt8}||[Bridge] needs blow bridge; [Fire] landing; [Frenzy] timer||{rt1}Must interrupt/burst: none; blow bridge, dodge fire{rt1}||Tank: hold; DPS: quick kill
+{rt8}Gul'dan{rt8}||[Soul] mark needs rescue; [Chaos] dot; P3[Illidan] phase||{rt1}Must interrupt/burst: none; [Soul] marked rescue{rt1}||Tank: hold; DPS: focus
+{rt8}Tichondrius{rt8}||[Bat] needs dodge; [Mind Control] mark; [Frenzy] timer||{rt1}Must interrupt/burst: [Mind Control] quick interrupt rescue; dodge bat{rt1}||Tank: hold; DPS: rescue
+{rt8}Gor'mul{rt8}||[Head] multi-form switch; [Spray]; [Frenzy] timer||{rt1}Must interrupt/burst: none; respond by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Helya{rt8}||[Water] needs dodge; [Tentacle]; P2[Body]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge water, focus{rt1}||Tank: hold; DPS: quick kill
+{rt8}Odyn{rt8}||[Hammer] mark needs dodge; [Shield]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge hammer, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}Varimathras{rt8}||[Mirror] clone needs focus; [Shadow] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus real{rt1}||Tank: hold; DPS: focus
+{rt8}Kin'garoth{rt8}||[Construct] needs interrupt; [Bomb] mark; [Frenzy] timer||{rt1}Must interrupt/burst: interrupt by construct; focus{rt1}||Tank: hold; DPS: focus
+{rt8}Garothi Worldbreaker{rt8}||[Cannon] needs hit cannon; [Landing]; [Frenzy] timer||{rt1}Must interrupt/burst: none; operate cannon, dodge landing{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Eonar the Life-Binder{rt8}||[Shield] needs protect seed restore health; [Seed]; [Frenzy] timer||{rt1}Must interrupt/burst: none; protect seed restore health{rt1}||Tank: hold; DPS: protect seed
+{rt8}The Felhounds of Sargeras{rt8}||[Two Hounds] needs pull apart; [Fire/Fel]; [Frenzy] timer||{rt1}Must interrupt/burst: none; split pull two hounds{rt1}||Tank: dual tank; DPS: focus
+{rt8}Aggramar{rt8}||[Sword] mark needs dodge; [Flame] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge sword, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}The Coven of Shivarra{rt8}||[Three Sisters] shared health split; [Fire/Ice/Fel] mixed||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Imonar the Soulhunter{rt8}||[Bomb] mark needs away; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bomb] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Portal Keeper Hasabel{rt8}||[Portal] needs enter portal hit; [Poison] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter portal focus{rt1}||Tank: hold; DPS: enter portal
+{rt8}Argus the Unmaker{rt8}||[Multiple] multi-mechanic rotate, [Ball]; [Void] raid-wide; P3[Obliteration]||{rt1}Must interrupt/burst: none; respond by phase{rt1}||Tank: hold; DPS: focus
+{rt8}Antoran High Command{rt8}||[Three Ships] need focus single; [Cannon]; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus single ship{rt1}||Tank: split tanks; DPS: focus
+{rt8}Ogozoa{rt8}||[Hatch] needs control; [Spray]; [Frenzy] timer||{rt1}Must interrupt/burst: none; control hatch, quick kill{rt1}||Tank: hold; DPS: control
+{rt8}Radiance of Azshara{rt8}||[Star] mark needs away; [Thunder] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Star] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Queen Azshara{rt8}||[Multiple] multi-mechanic rotate, [Ball]; [Water] raid-wide; P3[Body]||{rt1}Must interrupt/burst: none; respond by phase{rt1}||Tank: hold; DPS: focus
+{rt8}Blackwater Behemoth{rt8}||[Tentacle] needs hit; [Water] needs dodge; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit tentacle, dodge water{rt1}||Tank: hold; DPS: focus
+{rt8}The Queen's Court{rt8}||[Two Kings] shared health split; [Holy] mixed; [Frenzy] timer||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Lady Ashvane{rt8}||[Bubble] needs hit; [Poison] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit bubble, quick kill{rt1}||Tank: hold; DPS: focus
+{rt8}Abyssal Commander Sivara{rt8}||[Two Form] fire/ice switch needs change positioning; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Za'qul{rt8}||[Dream] mark needs rescue; [Mind Control]; [Frenzy] timer||{rt1}Must interrupt/burst: [Mind Control] quick interrupt rescue; [Dream] rescue{rt1}||Tank: hold; DPS: rescue
+{rt8}N'Zoth the Corruptor{rt8}||[Sanity] needs keep; [Tentacle] raid-wide; P3[Body]||{rt1}Must interrupt/burst: none; keep sanity, focus{rt1}||Tank: hold; DPS: focus
+{rt8}The Carapace of N'Zoth{rt8}||[Shell] needs hit exposed; [Tentacle]; P2[Body]||{rt1}Must interrupt/burst: none; hit exposed, focus{rt1}||Tank: hold; DPS: focus
+{rt8}Il'gynoth, Corruption Reborn{rt8}||[Eyeball] needs hit to prevent heal; [Tentacle]; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit eyeball prevent heal{rt1}||Tank: hold; DPS: focus eyeball
+{rt8}Prophet Skitra{rt8}||[Mirror] needs focus real; [Phantom]; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus real{rt1}||Tank: hold; DPS: focus
+{rt8}Dark Inquisitor Sanish{rt8}||[Door] needs enter; [Light] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; enter door, quick kill{rt1}||Tank: hold; DPS: enter door
+{rt8}Vexiona{rt8}||[Shadow] mark needs away; [Dragon] phase; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Shadow] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Drest'agath{rt8}||[Tentacle] needs focus; [Eye]; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus tentacle{rt1}||Tank: hold; DPS: focus
+{rt8}Ra-den the Despoiled{rt8}||[Ball] needs pull together; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Ball] marked pull together{rt1}||Tank: hold; DPS: quick kill
+{rt8}Shad'har the Insatiable{rt8}||[Three Juice] needs eat corresponding color; [Frenzy] timer||{rt1}Must interrupt/burst: none; eat corresponding color juice{rt1}||Tank: hold; DPS: quick kill
+{rt8}Maut{rt8}||[Energy] needs hit [Treasure] remove; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit treasure remove energy{rt1}||Tank: hold; DPS: focus
+{rt8}The Hivemind{rt8}||[Multi Brain] needs hit; [Tentacle]; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit brain, quick kill{rt1}||Tank: hold; DPS: focus
+{rt8}Rashio{rt8}||[Fire] mark needs share; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Fire] marked share{rt1}||Tank: hold; DPS: quick kill
+{rt8}Un'at the Void Herald{rt8}||[Void] multi-mechanic; [Ball]; [Frenzy] timer||{rt1}Must interrupt/burst: none; respond by mechanic{rt1}||Tank: hold; DPS: quick kill
+{rt8}The Restless Cabal{rt8}||[Twins] need kill simultaneously; [Touch] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; focus simultaneously{rt1}||Tank: split tanks; DPS: focus
+{rt8}Lightforged Crusader (Alliance){rt8}||[Light] mark needs interrupt; [Shield]; [Frenzy] timer||{rt1}Must interrupt/burst: [Light] interrupt; focus{rt1}||Tank: hold; DPS: focus
+{rt8}Lightforged Crusader (Horde){rt8}||[Light] mark needs interrupt; [Shield]; [Frenzy] timer||{rt1}Must interrupt/burst: [Light] interrupt; focus{rt1}||Tank: hold; DPS: focus
+{rt8}Council of the Chosen{rt8}||[Three Gods] shared health split; [Poison/Thunder/Fire] mixed||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}King Rastakhan{rt8}||[Blood] totem needs hit; [Frenzy] timer; P2[God]||{rt1}Must interrupt/burst: none; hit blood totem, P2 respond{rt1}||Tank: hold; DPS: quick kill
+{rt8}Grong (Alliance){rt8}||[Thunder] mark needs away; [Charge]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Thunder] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Jade Fire Master (Alliance){rt8}||[Wu/Magic] dual form switch needs change positioning; [Fire] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Jaina Proudmoore{rt8}||[Ice] raid-wide high damage; [Water] phase needs dodge; P3[Freeze]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge ice, P3 respond{rt1}||Tank: hold; DPS: quick kill
+{rt8}Grong (Horde){rt8}||[Thunder] mark needs away; [Charge]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Thunder] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Stormwall Blockade{rt8}||[Two Ships] needs split sides hit; [Lightning] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; split focus{rt1}||Tank: split tanks; DPS: focus
+{rt8}Opulence{rt8}||[Treasure] needs hit; [Gold] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit treasure, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}High Tinker Mekkatorque{rt8}||[Mech] needs hit parts; [Bomb] mark; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit parts, [Bomb] place circle{rt1}||Tank: hold; DPS: focus
+{rt8}Jade Fire Master (Horde){rt8}||[Wu/Magic] dual form switch needs change positioning; [Fire] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; switch positioning by form{rt1}||Tank: hold; DPS: quick kill
+{rt8}Zul{rt8}||[Blood] totem needs hit; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit blood totem, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}Vectis{rt8}||[Chain] mark contagion; [Disease] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Chain] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}G'huun{rt8}||[Blood] mark needs share; [Tentacle]; P3[Body]||{rt1}Must interrupt/burst: none; [Blood] marked share{rt1}||Tank: hold; DPS: focus
+{rt8}Zek'voz, Herald of N'Zoth{rt8}||[Bug] mark needs away; [Eye]; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Bug] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Taloc{rt8}||[Blood] phase needs hit; [Spray]; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit blood, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}The Mother{rt8}||[Laser] needs dodge; [Purify]; [Frenzy] timer||{rt1}Must interrupt/burst: none; dodge laser, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}Mislax the Deconstructor{rt8}||[Shield] needs break; [Thunder] raid-wide; [Frenzy] timer||{rt1}Must interrupt/burst: none; break shield, quick kill{rt1}||Tank: hold; DPS: quick kill
+{rt8}Fetid Devourer{rt8}||[Vomit] mark needs away; [Poison] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; [Vomit] marked away{rt1}||Tank: hold; DPS: quick kill
+{rt8}Inerva Darkvein{rt8}||[Ball] needs hit; [Drain] dot; [Frenzy] timer||{rt1}Must interrupt/burst: none; hit ball, quick kill{rt1}||Tank: hold; DPS: focus
+{rt8}Shriekwing{rt8}||[Sonic] watch ground to dodge; [Marked]; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge sonic rings{rt1}||Tank: hold; DPS: burn
+{rt8}Huntsman Altimor{rt8}||[Hound] needs separate tanking; [Marked]; [Enrage] timer||{rt1}Interrupt/Burst: none; split-tank the hounds{rt1}||Tank: split; DPS: focus
+{rt8}Artificer Xy'mox{rt8}||[Teleport] need to group up; [Orb] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; [Orb] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}Stone Legion Generals{rt8}||[Dual generals] share health, split sides; [Stone]; [Enrage] timer||{rt1}Interrupt/Burst: none; split and focus{rt1}||Tank: split; DPS: focus
+{rt8}Sludgefist{rt8}||[Slam] marked needs to move away; [Wallbreak]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Slam] marked move away, dodge wall{rt1}||Tank: hold; DPS: burn
+{rt8}Hungering Destroyer{rt8}||[Orb] marked need to group up; [Explosion]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Orb] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}The Council of Blood{rt8}||[Three vampires] interrupt assigned; [Dance] mechanic; [Enrage] timer||{rt1}Interrupt/Burst: interrupt by mechanic; one by one{rt1}||Tank: hold; DPS: focus
+{rt8}Sun King's Salvation{rt8}||[Save] keep [Kael'thas] health; [Fire] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; keep health, attack adds{rt1}||Tank: hold; DPS: swap-target
+{rt8}Sire Denathrius{rt8}||[Mirror] need to dodge; [Harvest] marked; P3 [Main body]; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge mirror, handle P3{rt1}||Tank: hold; DPS: swap-target
+{rt8}Painsmith Raznal{rt8}||[Iron] watch ground to dodge; [Spike] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; watch ground for iron, [Spike] keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Fatescribe Roh-Kalo{rt8}||[Rune] stand at assigned spot; [Star] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; stand by rune, [Star] keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Soulrender Dormazain{rt8}||[Chain] need to group up; [Soul]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Chain] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}The Tarragrue{rt8}||[Door] open in order; [Charge]; [Enrage] timer||{rt1}Interrupt/Burst: none; door order, burn{rt1}||Tank: hold; DPS: burn
+{rt8}The Nine{rt8}||[Nine] focus one; [Illusion]; [Enrage] timer||{rt1}Interrupt/Burst: none; focus one{rt1}||Tank: hold; DPS: focus
+{rt8}Eye of the Jailer{rt8}||[Eye] marked keep away; [Chain]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Eye] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Vigilant Guardian{rt8}||[Shield] need to break; [Laser]; [Enrage] timer||{rt1}Interrupt/Burst: none; break shield, dodge laser{rt1}||Tank: hold; DPS: burn
+{rt8}Remnant of Ner'zhul{rt8}||[Orb] need to tank; [Frost] whole raid; [Enrage] timer||{rt1}Interrupt/Burst: none; [Orb] marked tank it{rt1}||Tank: hold; DPS: burn
+{rt8}Sylvanas Windrunner{rt8}||[Chain] marked need to pull; [Arrow]; P2 [Wind]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Chain] marked pull, handle P2{rt1}||Tank: hold; DPS: swap-target
+{rt8}Kel'Thuzad{rt8}||[Iceblock] need to enter; [Soul] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; enter iceblock, save [Soul]{rt1}||Tank: hold; DPS: enter door
+{rt8}Halondrus the Reclaimer{rt8}||[Burrow] hit when exposed; [Laser]; [Enrage] timer||{rt1}Interrupt/Burst: none; hit when exposed, dodge laser{rt1}||Tank: hold; DPS: swap-target
+{rt8}The Jailer{rt8}||[Multiple] rotating mechanics, [Chain]; [Frost] whole raid; P3 [Main body]||{rt1}Interrupt/Burst: none; handle by phase{rt1}||Tank: hold; DPS: swap-target
+{rt8}Artificer Xy'mox (return){rt8}||[Teleport] need to group up; [Orb] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; [Orb] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}Skolex the Insatiable Devourer{rt8}||[Burrow] hit when exposed; [Spike]; [Enrage] timer||{rt1}Interrupt/Burst: none; hit when exposed, burn{rt1}||Tank: hold; DPS: swap-target
+{rt8}Lords of Dread{rt8}||[Dual] focus one; [Illusion]; [Enrage] timer||{rt1}Interrupt/Burst: none; focus one{rt1}||Tank: hold; DPS: focus
+{rt8}Rygelon{rt8}||[Star] marked keep away; [Collapse]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Star] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Vigilant Warden{rt8}||[Cannon] need to destroy; [Lightning] whole raid; [Enrage] timer||{rt1}Interrupt/Burst: none; destroy cannon, dodge lightning{rt1}||Tank: hold; DPS: operate cannon
+{rt8}Anduin Wrynn{rt8}||[Orb] need to destroy; [Mind control] marked; P2 [Light]; [Enrage] timer||{rt1}Interrupt/Burst: [Mind control] quick interrupt to rescue; destroy orb{rt1}||Tank: hold; DPS: swap-target
+{rt8}Dausegne the Fallen Oracle{rt8}||[Orb] marked keep away; [Holy] whole raid; [Enrage] timer||{rt1}Interrupt/Burst: none; [Orb] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Chief Architect Li'huveim{rt8}||[Construct] need to interrupt; [Block] marked; [Enrage] timer||{rt1}Interrupt/Burst: interrupt constructs; focus{rt1}||Tank: hold; DPS: swap-target
+{rt8}Pantheon Prototype{rt8}||[Four titans] focus one; [Mixed]; [Enrage] timer||{rt1}Interrupt/Burst: none; focus one{rt1}||Tank: hold; DPS: focus
+{rt8}Kazzara the Hellforged{rt8}||[Fire] whole-raid high damage; [Charge]; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge fire, burn{rt1}||Tank: hold; DPS: burn
+{rt8}The Forgotten Experiments{rt8}||[Two forms] switch need to handle; [Poison] DoT; [Enrage] timer||{rt1}Interrupt/Burst: none; handle by form{rt1}||Tank: hold; DPS: burn
+{rt8}Fusion Chamber{rt8}||[Two mobs] need to kill simultaneously; [Poison/Fire] mixed; [Enrage] timer||{rt1}Interrupt/Burst: none; focus both together{rt1}||Tank: split; DPS: focus
+{rt8}Assault of the Zaqali{rt8}||[Waves] trash + vehicle; [Fire]; [Enrage] timer||{rt1}Interrupt/Burst: clear trash, push vehicle{rt1}||Tank: hold; DPS: clear trash
+{rt8}Scalecommander Sarkareth{rt8}||[Void] marked keep away; [Summon] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; [Void] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Echo of Neltharion{rt8}||[Rupture] marked keep away; [Lava] whole raid; P3 [Main body]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Rupture] marked keep away{rt1}||Tank: hold; DPS: swap-target
+{rt8}Magmorax{rt8}||[Chain] need to group up; [Spray]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Chain] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}Rashok the Elder{rt8}||[Energy] full need to interrupt; [Heavy]; [Enrage] timer||{rt1}Interrupt/Burst: interrupt before energy full; focus{rt1}||Tank: hold; DPS: burn
+{rt8}The Vigilant Steward Zskarn{rt8}||[Trap] need to handle; [Fire]; [Enrage] timer||{rt1}Interrupt/Burst: none; handle traps, burn{rt1}||Tank: hold; DPS: burn
+{rt8}Dathea Ascended{rt8}||[Wind] marked keep away; [Ascend] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; [Wind] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}The Primal Council{rt8}||[Four elements] focus one; [Mixed]; [Enrage] timer||{rt1}Interrupt/Burst: none; focus one{rt1}||Tank: split; DPS: focus
+{rt8}Kurog Grimtotem{rt8}||[Totem] need to destroy; [Earth] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; destroy totem, burn{rt1}||Tank: hold; DPS: burn
+{rt8}Eranog{rt8}||[Link] need to group up; [Fire] whole raid; [Enrage] timer||{rt1}Interrupt/Burst: none; [Link] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}Broodkeeper Diurna{rt8}||[Egg] need to protect; [Dragon] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; protect egg, burn{rt1}||Tank: hold; DPS: burn
+{rt8}Sennarth the Cold Breath{rt8}||[Ice] marked keep away; [Web]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Ice] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Raszageth the Storm-Eater{rt8}||[Lightning] whole-raid high damage; [Chain] marked; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge lightning, [Chain] group up{rt1}||Tank: hold; DPS: burn
+{rt8}Terros{rt8}||[Stone] hit when exposed; [Quake]; [Enrage] timer||{rt1}Interrupt/Burst: none; hit when exposed, burn{rt1}||Tank: hold; DPS: swap-target
+{rt8}Fyrakk{rt8}||[Fire] whole-raid high damage; [Flight] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge fire, burn{rt1}||Tank: hold; DPS: burn
+{rt8}Dream Council{rt8}||[Three dreams] share health, split sides; [Mixed]; [Enrage] timer||{rt1}Interrupt/Burst: none; split and focus{rt1}||Tank: split; DPS: focus
+{rt8}Tindral Sageswift{rt8}||[Star] marked keep away; [Wind]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Star] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Nymue, Weaver of the Cycle{rt8}||[Ring] stand at assigned spot; [Marked]; [Enrage] timer||{rt1}Interrupt/Burst: none; stand by ring{rt1}||Tank: hold; DPS: burn
+{rt8}Smolderon{rt8}||[Lava] need to dodge; [Charge]; [Enrage] timer||{rt1}Interrupt/Burst: none; dodge lava{rt1}||Tank: hold; DPS: burn
+{rt8}Igira the Cruel{rt8}||[Arrow] marked keep away; [Shield]; [Enrage] timer||{rt1}Interrupt/Burst: none; [Arrow] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Gnarlroot{rt8}||[Root] marked keep away; [Poison] DoT; [Enrage] timer||{rt1}Interrupt/Burst: none; [Root] marked keep away{rt1}||Tank: hold; DPS: burn
+{rt8}Volcoross{rt8}||[Chain] need to group up; [Fire] whole raid; [Enrage] timer||{rt1}Interrupt/Burst: none; [Chain] marked group up{rt1}||Tank: hold; DPS: burn
+{rt8}Larodar, Keeper of the Flame{rt8}||[Fire] need to control; [Tree] phase; [Enrage] timer||{rt1}Interrupt/Burst: none; control fire, burn{rt1}||Tank: hold; DPS: burn
+Many turrets fire staggered; holes and lasers are permanent; black-blood stacks are lethal. Extremely high demands on conveyor timing, crossing the field and assignments.
+Electrified more frequent, turrets denser; those who misstep must stomp the charge to prevent explosion. Black-blood turret damage is higher, crossing tighter.
+Easy: dodge rockets and lasers, don't fall in holes, cross to attack during gaps.
+Conveyor + holes + turrets (rocket/mine/magnet/laser) rotate; electrified zones alternate in two segments, dodge burrow from below. Heavy strike with gravity-vine layer, tank swap; keep away from fireworks pack. Cross to boss during gaps; one turret infects black-blood empowerment.
+Bombs and electric rings fire staggered; absorb is permanently lethal; dud and gigabomb windows extremely short. Hard time limit on intermittent shield break, P3 all-mechanics stacked with enrage; extremely high demands on assignment and execution.
+Dud explosion damage higher, electric rings more frequent, weld-can absorb more painful. Shield-break window shorter, P3 tank heavy strike harsher.
+Simplified: dodge bombs, tank-swap on scatter-can, break shield during gaps, P3 free.
+P1 Chrome House mech: scatter-can front (heal absorb, tank-swap ~5 stacks); bomb rain burn DoT and delayed explosion; keep away from blast pack; 1500-lb dud detonated by designated player. P2 electric ring pulse + gigabomb throw + weld-can absorb. Break flying-head shield during gaps to prevent total wipe. P3 full mobility, all mechanics.
+Two kings' mechanics staggered and stacked; fire/electric fields permanently compress; charge and barrage fire together. Extremely high demands on side-splitting, side-switching and simultaneous-death timing.
+Slag spatter needs spread, voltage images chase players, grudge stacks faster. Side-switch rhythm tighter, simultaneous-death window shorter.
+Easy: pull the two kings apart, dodge fire and electric rings, kill simultaneously.
+Pyreborn (fire) and Tock (electric) pulled apart to avoid overload fusion; proximity stacks scorch/shock grudge, switch sides after each charge. Dodge devour-stomp and thunder-drum barrage; the two kings must die together.
+Trash and burning-trash permanently stack; rolling-ball path blocked by fire; doomsday-bomb window extremely short. Extremely high demands on ball-rolling assignment, bomb-ramming and positioning.
+Burning-trash ignites faster, ball-ram bomb window tighter, coyote disease needs spread. Heavy strike damage higher.
+Easy: roll trash into boss, ram bombs, dodge fire, clear trash freely.
+One tank + four ball-rollers stick small trash and roll big ball, ram abandoned doomsday bomb (safe) or boss (deal damage); roll over waster/coyote for bonus damage. Minimize incinerator igniting trash into burning-trash; tank-swap after heavy strike.
+Megaphone charges faster, discharge DoT lethal, barrage mind-control frequent. Sound-cloud drop-rings staggered and stacked; extremely high demands on discharge assignment and ring-jump precision.
+Discharge-stacked DoT more painful, resonance-echo barrage mind-controls on hit. Sound-cloud rings denser, need steadier ring jumps.
+Easy: go to megaphone to discharge, dodge sonic waves, jump rings in sound cloud.
+Megaphone charges; player guides discharge (with DoT) to prevent full-energy wipe; dodge sonic waves. When boss retreats into sound cloud, use megaphone blue-ring to jump the blast drop-rings.
+Combos staggered and stacked, symbols frequent, tower self-damage lethal. P2 cheat-mechanic fires together with extremely hard enrage; extremely high demands on symbol-storage assignment and positioning.
+Combos messier, symbols drop faster, tower-click self-damage higher. P2 beam-pipes denser, hard enrage tighter.
+Easy: store correct symbols, dodge lines, P2 free.
+Slot machine: scroll-helper drops symbols, store into assigned combos to avoid wipe; energy-tower click self-damage needs assignment. Heavy strike leaves electric field for tank-swap. P2 (30%) cheat hard-enrage, dodge beam-pipes.
+Plate count and oil-fire stack lethal, car-steal path blocked by oil-fire. Armor-plate window extremely short, wrong interrupt on mechanic loses burn; extremely high demands on car-stealing and positioning.
+Armor-plate 6 stacks, extra oil on each heavy strike, oil-fire chains easier. Car-ram plate window tighter, mechanic more frequent.
+Easy: kill racer to steal car, ram boss to remove plate, dodge oil-fire, P2 free burn.
+Before breaking armor-plate (normal 4 stacks) boss full energy = wipe; kill racer to steal car, ram boss to remove plate. Oil slick slips, bomb-fire ignites oil, tank heavy-strike stacks tank-swap. P2 interrupt mechanic, backfire heals.
+Red/blue mechanics staggered, wrong side-switch = wipe, ice-spike spears and lightning permanent. 40% bullet-storm stacks all skills with extremely hard enrage; extremely high demands on duty-splitting and positioning.
+Side-switch DoT more painful, prison and lightning more frequent, ice-spike spear needs precise shot at cover. 40% bullet-storm window shorter.
+Simplified: red/blue side-switch, dodge lightning and spears, free after 40%.
+Red/blue split sides, switch every minute (miss = wipe); red side prison/slide/ice-spike spear shoot toward cover, blue side detonate lightning/share/clear trash. 40% two heads concentric rotating bullet-storm stacks all skills, hard enrage.
+Whole fight space extremely compressed, acid pools and shadow pools permanently stack; P3 door shoots balls + pick up soul to pass door, spider-silk roots leave permanent web. Devour-greed and silk-line staggered, one misstep = wipe.
+P1 two players drop foam simultaneously and each only triggers once, more acid pools on field; reaction-toxin with bomb needs to keep away. Slight spread during gaps needed; P3 door still shoots balls, need to carry soul to pass door.
+Simplified: jump poison nova in foam pool, dodge lines and roots, break shield during gaps, P2 clear trash, P3 pass door dodge waves, all damage lowered.
+P1 use reaction-toxin-blasted foam to jump poison nova, dodge spider-silk mound and spider-blade; tank-swap on liquefy. Break shield during gaps to prevent devour. P2 two groups each climb 3 platforms to clear trash; P3 use abyssal portal to dodge devour-greed and break silk.
+Spider-web becomes 30s hard-CC net; Devour-Frenzy with fewer than 5 players triggers Contempt enrage (+250% damage), failed participants take heavy damage. Mythic poison-blood bug-meat slowed carrying, feeding timing must be precise, else juggernaut chain instant-kills.
+On normal base, swarms add corrosive sting stacks for bonus damage, harder test of Feeding Frenzy rhythm. Acid and web larger radius, tighter positioning, tank-swap more decisive.
+Simple loop: join Devour-Frenzy, dodge juggernaut, feed bug-meat to boss. Trash and web damage very low, healer easily sustains.
+Two-phase loop. Devour-Frenzy binds players pulling toward boss, need >=5 participants to avoid enrage; after Hungry Roar juggernaut charges whole raid, stay off path. Feed bug-meat to boss. Tank-swap on maul.
+Two kings' mechanics staggered and stacked, vortex permanently pulls players and swarms stack lethal, poison-rain covers most of the field. Extremely high demands on dispel chain, target-swap and compressed positioning.
+More swarm marks, more frequent vortex, larger poison-rain. P3 Frenzied Swarm deteriorates faster, need pre-assigned dispel and target-swap.
+Easy: dodge poison-rain and vortex, run away when swarmed, free on two kings.
+Anub'arash and Weaver on field together. P1 poison-rain, P2 spider-web vortex pulls players, stinging swarm gives long DoT needs dispel, P3 Frenzied Swarm 8s deterioration. Two kings share heavy strike, tank-swap.
+Three zones' mechanics pressure simultaneously, poison pools permanently stack and larger, black-blood rhythm extremely tight. Extremely high demands on dispel assignment, blob-break timing and field management.
+Each zone's mechanics stack denser, sticky-web and dose-circle more frequent, black-blood absorb larger. Tumor-blobs appear faster, need pre-assigned blob-break and dispel crews.
+Easy: follow boss between zones, dodge dose-circle, dispel sticky-web, pop damage-reduction when swallowing black-blood.
+Boss cycles three zones, swallowing black-blood whole-raid absorb needs sharing, sticky-web must be dispelled. Experiment-dose marked player move away from group leaving poison pool, focus tumor-blob after breaking.
+Two-realm mechanics pressure simultaneously, avatar brings extra lethal skills, wrong in/out timing = wipe. Blood pools permanently stack, extremely high demands on half-split rotation timing and single-target burst.
+Inside Phaseless realm avatar tankier, higher damage, in/out rhythm faster. Scarlet Rain absorb larger, healer needs mana control and ready burst heals.
+Left/right half rotation is simple: those sent inside kill their own little dread, outside players just dodge Scarlet Rain.
+Team split left/right. Scarlet Rain periodic whole-raid absorb, Defiling Vomit sends players into Phaseless realm, those inside kill their own avatar. Outside handles blood-bound trash and boss.
+Single-target and line dual pressure, void rift permanently stacks, Night Without Stars nearly whole-raid hard-heal. One wrong line = instant kill, ultimate demands on reaction and positioning.
+Lines denser and more frequent, Night Without Stars higher damage and longer gaps. Kingslayer lock window shorter, line-break must be decisive, higher positioning precision.
+Easy: dodge lines, don't step on rifts, run away when marked, very low damage.
+Dodge phantom-blade lines, avoid void rifts (every 30s for 6s). Night Without Stars gap whole-raid high damage must be healed through, Kingslayer-locked player breaks line to avoid. Pace quickens over time.
+Clone count and line count greatly increased, one wrong position = chain. Annihilation timing must be precise, poison pools permanently stack, extremely high demands on single-target focus and positioning precision.
+More poison-darts and shadow clones, annihilation window shorter. Sweep DoT more painful, healer needs pre-laid damage-reduction, clone clearing faster.
+Simple positioning: dodge lines, step on poison, clear clones. Very low damage, just follow raid movement.
+Positioning is everything. Spider-line marked player move away from group to drop line; Annihilation clears shadow clones and leaves DoT, clear clones promptly. Sweep whole-raid damage, tank eats heavy strike on swap.
+Spider-web pull-lines permanent and chain damage high, acid-wave leaves permanent acid pool compressing field. After flying away, landing drop spawns share-circle, miss = raid wipe, extremely high demands on follow-flight and interrupt precision.
+New spider-web annihilation big circle, need >=3 to share or whole raid pulled off field; silk-line marked move away from group to avoid chain. Acid-burst interrupt window tighter.
+Easy: green-line marked player fling acid-wave out of field, interrupt acid-burst during cast, clear trash freely.
+Roll acid to fling acid-wave away from team, spider-web pull-line broken by spreading out, hatch trash then AoE. After 100 energy flying away, follow and interrupt acid-eruption. Tank-swap after slam.
+P1 multiple circles collapse simultaneously, entangled trash tankier; below half-health pus permanently stacks and cone-damage staggered. Extremely high demands on circle-break efficiency, sharing and field management.
+Silk-circle collapse faster, roots more frequent, below half-health pus larger radius, cone-damage more painful. Higher demands on circle-break assignment and sharing.
+Easy: kill trash to break silk-circle, dodge sweep and roots, free below half-health.
+P1 kill infused entangled trash to break collapsing silk-circle, dodge nest-sweep and roots. Below half-health boss leaves wall and takes more damage, leaves pus and cone-spray needs sharing, tank-swap handle.
+Mass cap limited, devour needs more precise grouping each time; P3 black-hole permanent and Darkening Sky stacks lethal. One wrong mass-gravity or levitate = wipe, extremely hard finish.
+Dark-matter landing leaves permanent dark pool needs pushing to edge, P2 lord leaves wreckage field, P3 black-hole harder to circle. Devour needed mass increases each time, tighter rhythm.
+Simplified: kill blobs to pick mass, group to dodge devour, fly wings freely, P3 stand in star to dodge devour.
+P1 kill living-blob to pick excess mass, stack mass-gravity circle to dodge devour; reverse-gravity levitator pulled back by mass-player standing under. Antimatter pool go absorb for damage-reduction, dark-matter spread. Intermittent fly-wings dodge obstacles. P2 dual void-lords split platforms, P3 eight void-stars become black-holes then dodge devour to finish.
+Multiple lines activate collectors simultaneously, trash-wave stacks lethal. Break-collector window extremely short and needs precise line-split, final black-hole staggered pull extremely high demands.
+Collectors activate faster, trash denser, black-hole pull stronger. Break-collector needs more concentrated burst, final positioning tighter.
+Easy: kill trash, don't let collectors fill, free finish at end.
+Trash-wave: tank heavy-strike summons trash, marked summons trash walking toward three collectors. Three collectors activating will summon Dimensius, before gap break it before it hits 100. Final stage fight black-hole pull to finish.
+Multiple pods hatch simultaneously, orb window shorter, shoot-down threat permanent. Extremely high demands on pod-bomb pre-lay, interrupt assignment and edge positioning.
+Faster trash, denser phase-blades, more assassin marks. Pod-bomb timing earlier, interrupt chain unbroken.
+Easy: interrupt mages, dodge phase-blades, don't fall off, clear trash freely.
+Use soul-shatter orb to bomb hatch-pods reducing trash; after trash out, interrupt mages, phase-blade AoE, spread on assassins. Stay central to avoid knocked off platform.
+Multiple walls stack at high speed simultaneously, throw window tighter. Ultimate demands on wall-break rhythm, wall-lane assignment and raid-heal chain, one wrong wall = wipe.
+Walls stack faster, throw interval shorter, wall-break damage higher. Need more precise wall-break crew assignment to avoid raid-health collapse.
+Easy: get thrown to smash walls, don't let walls stack too high, very low damage.
+Six crystal walls stack toward boss, any wall reaching 6 stacks boss damage buff nearly wipes. Boss throws players back to smash walls, don't break too many at once or healer collapses. Tank guards own lane.
+Volley can't be solo-tanked full, traps permanently stack, gap pushes wall faster. Extremely high demands on damage-taken grouping, tank-swap movement and wall-phase rhythm.
+Volley damage higher, grouping tighter, trap residue longer. Gap rotating lines and bubbles denser, wall-phase timing precise.
+Easy: volley group to share damage, push traps to edge, at 100 energy phase wall just chase a bit.
+Purifying volley group 3-4 to share damage, annihilation-arcane-cannon gives tank vulnerable, tank-swap move away to drop pool, manifest-matrix trap push to edge. At 100 energy enter purification gap, use cape extra-button to phase energy-wall and chase boss.
+Three rotate and empower simultaneously, line-cone staggered stacks, purple zone permanent and absorb lethal. Extremely high demands on even-split, orb-absorb timing and line-dodge precision.
+Metamorph one skills more frequent, eye-beam denser, purple-zone absorb damage higher. Even-split output more critical to avoid falling behind.
+Easy: dodge eye-beam and lines, marked stand in purple zone, even-split output.
+Three demon hunters. Don't stand in eye-beam/hunt-path/void-zone; Devouring Wrath marked player stands in purple void-zone to absorb. Each at 100 energy two fly off, one metamorph-empowers, absorb orb dodge lines dodge cone. Even-split output.
+Whole fight staggered stacks, P3 dark-star circle and star-kill window extremely short, fourth star-burst = wipe. Extremely high demands on stack-clear, platform-split and star-shoot precision.
+P1 death still mind-controls, P2 laser with tank damage splash, P3 dark-star circling harder to dodge rings and missiles. Beheading and laser damage higher.
+Simplified: soak to remove vow-stacks, dodge cone damage, P2 dodge laser, P3 stand at edge to spawn dark-star missiles.
+P1 whole raid 3 stacks vow, soak to remove 1 stack or mind-controlled; tank combo cone damage outward, beheading run far. P2 portal laser outward. Gap split platforms clear trash, P3 star-burst spawns dark-star, star-kill missile shoots dark-star to destroy.
+Mythic swaps [Waterjet Gust] for fiercer [Water Spout], tanks must precisely control beam direction and rotate taking hits by cue. Murloc trash count and spawn denser, need fixed two groups covering left/right without occupying boss DPS window. [Frostbite] and [Abyssal Rain] overlap windows need pre-planned raid-CD, very little DPS margin before enrage.
+Each skill ~20s cycle and overlaps, [Charm Bubble] trash-wave and [Abyssal Rain] arriving together need to secure raid health first then clear. [Tidebreaker Charge] path must be cleared ahead, getting hit also chains follow-up damage. Watch [Endless Tide] timer throughout, dragging trash too long gets caught by enrage.
+World difficulty very forgiving: follow the main group, clear murloc trash spawned at edges on sight. Don't stand in the straight water jet in front of tank. During [Abyssal Rain] whole-raid damage, stand still don't wander, let healer top health.
+Assign ranged and slow-classes to specifically intercept [Charm Bubble] murlocs, don't let them reach center. After [Frostbite] mark move by cue, don't bring ice-orb into group. Pre-shield before [Abyssal Rain], tank always leads line-skills to open ground.
+Mythic adds prototype-venom pairing and positioning layer, near-zero tolerance, any ooze into pit = restart. Three [Adaptive Infection] overlap, need pre-planned dispel, absorb-shield and outer-explosion-rotation table. Follow [Quaff] beat throughout, burst window on early rounds while [Toxic Vapor] stacks still low.
+Heroic adds [Vile Catalyst]: above the many-venoms pit condenses venom orb, whole raid takes one high toxin hit, then scattered [Catalytic Bile] must be caught, empty-cast switches to whole-raid damage. Fountain drains faster, [Infusion] stacks raise ooze health and spray damage doubled, clear pace must speed up. During [Venom Fang] physical-vulnerable healer must watch tank and use external damage-reduction.
+Focus the big ooze crawling from fountain, never let it reach the center pit. When [Plague Foam] appears on you run outside group, return after venom spray ends. [Explosive Infection] marked run far, other two infections stay in place let healer heal.
+Tank by positioning fixes [Quaff] fountain combos, avoid hard combos. Assign melee and ranged each intercept one ooze route, control works on shadow and flame oozes, blood ooze immune-control must hard-kill. [Burning Venom] kill offset in time from other big oozes, avoid [Corrosive Surge] and [Shadow Spray] stacking.
+Mythic adds mechanic and makes ooze-enrage a hard check, fight must end before [Furious Liberation]. Venom-wave route, serpent-egg hatch order and collapse zones must be written as full run-plan executed each round. Melee/ranged zone rotation, ensure no DPS drop in [Venom Heart] window, any positioning error chains to next phase.
+Almost no breather between phase transitions, [Falling Rubble] and environmental damage keep stacking, healer CD must be precisely on the two amplification windows. Hatch control stricter, one wrong wave route spawns multiple [Devourer Spawn] causing manpower shortage. P3 [Ghostly Coil] whole raid must stack at impact zone on time, spreading = wipe.
+Stick to group, avoid spreading venom-wave on ground, don't step on serpent-egg hatch trash pile. When someone wrapped in membrane prioritize freeing them. Boss heart-exposed phase is focus-DPS time, pop big cooldowns.
+Venom-wave direction controlled by team, commander directs which side to push to reduce hatched [Devourer Spawn]. [Bound's Wrath] exposes [Venom Heart] pop bloodlust burst once to fill. Final stage field gets torn down, gather to safe ground early, don't stay at edge waiting to fall.
+Near-zero tolerance: axe-line, [Guillotine] landing, [Condensed Venom] and [Dread Manifestation] movement routes all pre-planned as fixed runs. [Gloom Bomb] and [Gravebind] need per-person rotation to pick shards, missing one person drops them next wave. Final stage must kill two targets almost simultaneously, else survivor's damage-buff instantly breaks healer.
+[Condensed Venom] keeps accumulating on field, share and kite routes must both avoid venom, save movement abilities. Possession phase [Dread March] and [Soul Sever] overlap trash waves, interrupt-table and target-swap-table split into two groups. Final stage two-target simultaneous DPS high pressure, raid-CD and healer-CD save for here.
+First half follow group: [Guillotine] step in to share, dodge venom on ground and flying axes. After Malakas appears trash chases you, fight while running don't stand. When [Gravebind] appears on you go pick [Soul Shard] on ground to remove.
+Assign [Guillotine] share groups, too few kills the taker. Interrupt [Vicious Soulbinder]'s [Dread Screech], [Dread Manifestation] locks onto whoever kites it, others don't block. Final stage two targets health-linked, pre-plan burst to kill both simultaneously.
+Stack management precise per person: catch droplet, enter [Gluttonous Feast], eat [Churning Abyss] all rotate by table, any extra eat may hit 10 stacks and die. [Blood Clot] feed Israz to correct order, unclean handling enters next round with full [Blood Surge]. Finish must drop two snakes simultaneously, error within seconds.
+Heroic [Gluttonous Feast] turns swallowed venom into [Blood Clot], [Effervescent Mixture] grows thicker with stacks, must focus immediately, else [Blood Surge] keeps stacking whole-raid damage-buff. At full energy Vexsul's [Surge] and Israz's [Torrent] arrive together, need pre-saved raid-CD and big heal. [Congealed Flesh] blood pool compresses field, leave retreat space in positioning.
+The [Eternal Venom] stacks on you are the key; when near cap must step into Israz's [Gluttonous Feast] share range to clear stacks. Don't step on or touch the green slime on ground and floating venom orbs. When small snake [Vexsul Spawn] appears immediately target-swap and kill it, each spit adds stacks.
+Two tanks each hug one snake, [Stone Shatter] must have someone catch within 3 yards. Assign fixed players to catch [Corrosive Torrent] droplets, avoid whole raid eating stacks together. Sync two-head health down, kill simultaneously at end, don't leave [Rage Surge] window.
+Trash health and timer fully tightened, share/interrupt/fish-smash three chains must stay online together. Three-health difference compressed to minimal, nearly simultaneous execute, no [Relentless Aggravation] window. Melee pile must handle [Crushing Shovel] knockback and [Evil Eye] 2-yard sweep together, positioning adjusts real-time with statue rotation.
+[Fungal Explosion] and [Shockwave] touch = million-level damage, [Explosive Surprise] knockback must control landing not into mushrooms. [Morzashi] full energy enrages, [Nasty Fish] must be smashed right when [Dark Whisper] is freshly applied, prioritize un-smashed targets. Wrong kill order triggers [Relentless Aggravation] basically = wipe, execute phase needs unified command.
+Three turtles stand as spread as possible, clustered they get 99% damage-reduction unkillable. Boxes, bounce-mushrooms and shock-bombs drop on ground, walk away on sight, watch landing after knockback. Pick up [Nasty Fish] and smash onto controlled turtle to rescue it.
+Pre-split three groups to catch the three [Colossal Smash] landing points for sharing, nobody catches = whole raid heavy damage. Interrupt [Scroll Sage Iku]'s [Frostfire], [Frostfire Barrage] spread to prevent two orbs merging. Sync three-health down, leave [Scroll Sage Iku] last, don't kill any early.
+Mythic adds [Serpent's Wrath]: marked player within 8 yards must gather 14 players to trigger [Kill Frenzy], insufficient players boss fills rage and enters [Uncontrollable Rage] direct wipe. [Kill Frenzy] leaves [Deadly Poison] which explodes when removed and leaves [Corrosive Residue] (in-stack +30% damage taken), dispel timing and positioning must be unified command. Throughout toggle between 'gather to share' and 'spread to dodge wind', one rhythm error can't be recovered.
+[Viscous Cyst] keeps spreading on field, placement pre-plan a path, during [Howling Vortex] no foothold = free death. Tank [Plunder] stacks raise damage-taken exponentially, need external damage-reduction with fixed tank-swap point. [Erosive Venom] and [Storm] poison-slow stack makes movement hard, save movement abilities.
+Stand at boss side-rear, don't eat frontal cone. Green venom marked run to sparse area, don't touch venom orb left after explosion. When gale blows you up, collide with a also-blown teammate to land.
+[Devastation] arrange enough players to share, too few directly kills the taker. [Furious Crosswind] end blows you away and applies [Turbulent Gust], pre-find collision partner to remove. [Burrow Hold]'s 25s is the only +30% vulnerable window, dump bloodlust and burst here.
+Phase transition adds [Tight Grasp Abyss]: [Drowned Echo] periodically pulls whole raid toward well and drains health, must kill ASAP; those who enter well to DPS leave with [Soul Fatigue] (well and [Undying Entangle] damage +300%), need rotation list in/out. [Pray] phase must interrupt all [Hidden Cultist] casts, interrupted caster silences interrupter 3s, so kick-table assigned per person. Whole fight near-zero tolerance, one well-entry or missed interrupt basically = restart.
+Heroic adds [Ritual Burn], each stack raises [Soulbind Ritual] damage +15% for 1 min, so one missed add snowballs, control-add chain must be flawless. [Soulbind Ignite] fixed use raid-CD plus extra healer-CD to survive, don't hard-take when DoT and vulnerable stacks high. Push phase before vulnerable stacks build, avoid entering [Uncoil] with full stacks.
+Just remember three things: don't stand in the black water of the center well, don't let trash into the well, when pulled by [Soulbind] wait in place for interrupt or dispel. Boss at half retreats, then focus the [Javay's Echo] on field to pull her back. Final stage whole-raid damage faster, use personal damage-reduction and stay with healer.
+Assign two groups rotating slow and control to stop [Sleepless Amani], not one into [Soulbind Well]. Before [Soulbind Ignite]'s 4s cast pre-shield, during cast also dodge [Agony Echo]'s knockback small circle; after [Essence Tear] clear [Hidden Cultist]. At 50% focus [Javay's Echo], [Uncoil] is soft-enrage, bloodlust saved for this stage to finish in one push.
+Separation tolerance further tightened, when two charge together to big-move the raid splits into two teams and periodically swaps field, swap process also completes tank-swap. Health must be strictly synced, else [Caustic Stasis] healed-back health directly eats a whole burst round. Any wrong [Spiral Toxin] collision carries DoT into next round, once rhythm breaks hard to recover.
+Heroic [Living Venom] after spitting 4s flies back to source, pre-clear return path don't stand on the line. [Spiral Toxin] must be exactly 4 stacks, over or under leaves persistent damage, pairing table fixed per person. Tank rotates fixed by [Empowered Slam] stacks, swapping field must not let two stick together.
+Core rule only one: two sentinels always stand apart, don't pull them together, else they get 99% damage-reduction. The green one's [Deadly Venom Droplet] proactively run up to step on, only when all stepped won't explode. After [Spiral Toxin] on you find another poisoned person to collide, at 4 stacks auto-disappears.
+Two tanks split left/right each take one, keep at least 40 yards between; DPS split into two teams each hit one, sync health down, don't let [Caustic Stasis] heal back for nothing. Whole raid shares stepping [Deadly Venom Droplet] and focuses [Venom Clot], healer watches [Withering Blood] dispel. [Spiral Toxin] pre-pair two-person collision pairs, collide to 4 stacks.

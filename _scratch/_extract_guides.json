@@ -1,0 +1,650 @@
+{
+ "mplus": {
+  "虚空之痕竞技场": {
+   "煞戎努斯": {
+    "mythicplus": {
+     "zhTW": "{rt8}查洛努斯{rt8}||1. 黑洞出現後別被吸進中心；被點名球的風箏進黑洞銷掉。||2. 腳下紫圈互相分開；被六發球狀射線點名持續移動。",
+     "enUS": "{rt8}Charonus{rt8}||1. After a black hole appears, don't get sucked into its center; kite the marked orb into the black hole to delete it.||2. Keep the purple circles under you separate; when marked by the six-shot orb-ray, keep moving."
+    }
+   },
+   "法术风暴拉杰克斯": {
+    "mythicplus": {
+     "zhTW": "{rt8}法術風暴拉傑克斯{rt8}||[干擾寶珠]點名禁魔球持續15秒需帶離人群||法術風暴多段AoE；擊殺後提供對應buff；寶珠攜帶者遠離人群15秒。",
+     "enUS": "{rt8}Spellstorm Rajaxx{rt8}||[Disruption Orb] marks a player with a silence orb for 15s—lead it away from the group.||Multi-hit AoE spellstorm; on death grants the matching buff; the orb carrier stays 15s away from the group."
+    }
+   },
+   "焦躁的虚镰": {
+    "mythicplus": {
+     "zhTW": "{rt8}焦躁的虛鐮{rt8}||[腐蝕精華]改為僅2名玩家(原5名)，持續12秒腐蝕DoT必驅/必躲重疊||中腐蝕者分散12秒，治療預讀；按路線取對應競技場增益。",
+     "enUS": "{rt8}Restless Void Scythe{rt8}||[Corrosive Essence] now hits only 2 players (was 5), a 12s corruption DoT—must dispel or avoid overlap.||Those corrupted spread for 12s, healer pre-casts; grab the matching arena buff along the route."
+    }
+   },
+   "防护龟壳守卫": {
+    "mythicplus": {
+     "zhTW": "{rt8}防護龜殼守衛{rt8}||有限時間引導護盾讀條；讀條結束若未被打斷則自身暈眩+10秒受傷增加(集火窗口)||優先打斷其引導觸發暈眩增傷，再爆發擊殺；屬開場兩隻新miniboss之一。",
+     "enUS": "{rt8}Warding Turtle Guardian{rt8}||It channels a shield for a limited time; if the channel ends uninterrupted, it stuns itself and takes +10s increased damage (burn window).||Prioritize interrupting the channel to trigger the stun, then burst it down; one of the two new opening minibosses."
+    }
+   },
+   "鲁莽监督者": {
+    "mythicplus": {
+     "zhTW": "{rt8}魯莽監督者{rt8}||[殘暴猛擊]週期傷害-17%但仍為高額順劈/擊退||坦面向外，猛擊時團隊減傷；取對應增益。",
+     "enUS": "{rt8}Reckless Overseer{rt8}||[Brutal Smash] periodic damage -17% but still a heavy cleave/knockback.||Tank faces outward; raid DR during the smash; grab the matching buff."
+    }
+   },
+   "吞噬暴虐者": {
+    "mythicplus": {
+     "zhTW": "{rt8}吞噬暴虐者{rt8}||[吞噬]讀條(施法時間增加可更從容打斷/救人)；吞噬機制秒殺被吞目標||吞噬必斷或救出被吞者；按路線取增益。",
+     "enUS": "{rt8}Devouring Tyrant{rt8}||[Devour] channels (longer cast time makes interrupting/saving easier); the devour mechanic instantly kills the swallowed target.||Must interrupt Devour or rescue the swallowed; grab the buff along the route."
+    }
+   },
+   "阿特洛苏斯": {
+    "mythicplus": {
+     "zhTW": "{rt8}阿特洛克斯{rt8}||1. 小怪一出立刻轉火（鎖定T）。||2. 扇形噴吐點你時帶離人群；沒點中的躲開，別踩毒池。",
+     "enUS": "{rt8}Atroxus{rt8}||1. The moment an add spawns, switch to it (it locks the tank).||2. When the cone spit targets you, lead it away from the group; those not targeted dodge and avoid the poison pool."
+    }
+   },
+   "塔兹拉尔": {
+    "mythicplus": {
+     "zhTW": "{rt8}塔茲拉{rt8}||1. 影子連線點名：盡量放到場地同一側牆邊，衝鋒路線別重疊。||2. 躲永久紫圈和散射小球。",
+     "enUS": "{rt8}Taz'Rah{rt8}||1. Shadow-link marks: place them on the same wall side, don't overlap charge paths.||2. Dodge the permanent purple circles and scattered orbs."
+    }
+   }
+  },
+  "毒牙祭坛": {
+   "高阶进化者": {
+    "mythicplus": {
+     "zhTW": "{rt8}高階進化者{rt8}||毒傷用毒驅散；集火壓力小優先控場||{rt1}必斷/速殺：[進化]施法用控制打斷，否則[淬毒]變[群體淬毒]{rt1}||[淬毒]點名隨機優先斷，治療備驅散",
+     "enUS": "{rt8}High Evolutionary{rt8}||Dispel poison damage with poison dispel; if focus pressure is low, prioritize control.||{rt1}Must interrupt/kill fast: [Evolve]—interrupt the cast with CC, else [Envenom] becomes [Mass Envenom].{rt1}||[Envenom] is random—prioritize interrupts; healer be ready to dispel."
+    }
+   },
+   "原始毒蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}原始毒蛇{rt8}||散開避免[惡臭吐沫]濺射；保持輸出距離||{rt1}必斷/速殺：[穿刺嘶鳴]每發必斷{rt1}||毒傷持續注意，近戰別站吐沫圈",
+     "enUS": "{rt8}Primitive Serpent{rt8}||Spread to avoid [Foul Spit] splash; keep range.||{rt1}Must interrupt/kill fast: [Piercing Shriek]—interrupt every cast.{rt1}||Watch the poison damage; melee stay out of the spit circle."
+    }
+   },
+   "双牙掠夺者": {
+    "mythicplus": {
+     "zhTW": "{rt8}雙牙掠奪者{rt8}||免疫控制；坦將其正面[劇毒吐息]掃向場外、吃[雙重打擊]高傷；[麻痺射擊]點兩人用魔法驅散/自由||{rt1}必斷/速殺：無硬斷{rt1}||保持分散避免吐息橫掃多人，近戰站背後",
+     "enUS": "{rt8}Twin-Fang Pillager{rt8}||Immune to CC; tank turns its front [Venom Breath] away from the group and soaks [Double Strike]'s heavy hit; [Deadly Shot] hits two players—magic dispel or freedom.||{rt1}Must interrupt/kill fast: no hard interrupt available.{rt1}||Stay spread to avoid breath hitting multiple; melee stand behind."
+    }
+   },
+   "仪式首领": {
+    "mythicplus": {
+     "zhTW": "{rt8}儀式首領{rt8}||免疫控制；開怪前先拆腐蝕迷霧圖騰止住[不穩定圖騰]脈衝；[肢解]點坦開減傷||{rt1}必斷/速殺：[血祭]團傷+治療吸收必預讀{rt1}||治療注意吸收盾，法術驅散可用",
+     "enUS": "{rt8}Ritual Leader{rt8}||Immune to CC; before engaging, destroy the Corrupted Mist totem to stop the [Unstable Totem] pulse; [Dissect] hits the tank—use a damage-reduction.||{rt1}Must interrupt/kill fast: [Blood Sacrifice] deals raid-wide damage and applies a heal absorb—pre-cast heals.{rt1}||Healer: watch the absorb shield; spell dispel is available."
+    }
+   },
+   "扭缠盘蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}扭纏盤蛇{rt8}||1. 連續三次毒素讀條分配好斷條。||2. 全員往外跑拉斷線；出分身吃控，被追的人風箏別被咬到。",
+     "enUS": "{rt8}The Writhing Coil{rt8}||1. Assign interrupts for its three consecutive poison casts.||2. Everyone runs outward to break the link; when split images appear, CC them; the person being chased should kite and avoid being bitten."
+    }
+   },
+   "拉维": {
+    "mythicplus": {
+     "zhTW": "{rt8}拉維{rt8}||1. Boss進食時接綠圈並盡快破盾；平時躲落石與大圈。||坦：拉到沒有幼蛇／鮮肉的食物堆旁，避免進食狂熱。",
+     "enUS": "{rt8}Rav'i{rt8}||1. Soak the green circle while the boss feeds and break the shield ASAP; otherwise avoid falling rocks and the big circle.||Tank: Pull the boss away from food piles with young serpents or fresh meat to avoid Feeding Frenzy."
+    }
+   },
+   "祖尔加": {
+    "mythicplus": {
+     "zhTW": "{rt8}祖爾加{rt8}||1. 蛇頭射線全擋（疊毒層）；開打前預分配站位。||2. 切骨者直線分攤消層，坦不用吃；躲反彈斧，毒水靠邊放。",
+     "enUS": "{rt8}Zul'jan{rt8}||1. Block all serpent-head beams (they stack a poison debuff); pre-assign positions before pull.||2. Share the Bone-Cleaver line to drop the stack; the tank does not need to soak it; avoid the ricochet axe and place poison water at the edge."
+    }
+   },
+   "乌拉泰克的选民": {
+    "mythicplus": {
+     "zhTW": "{rt8}烏拉泰克的選民{rt8}||[劇毒湧動]線技時躲線、治療頂脈衝傷害；保持分散站位||{rt1}必斷/速殺：[群體淬毒]每發必斷{rt1}||同組[活毒]死亡爆炸需錯開擊殺給治療緩衝",
+     "enUS": "{rt8}Chosen of Ulataq{rt8}||When [Venom Surge] draws lines, dodge them and the healer covers the pulse damage; stay spread.||{rt1}Must interrupt/kill fast: [Mass Envenom]—interrupt every cast.{rt1}||Same-pack [Living Venom] explodes on death—stagger kills to give the healer breathing room."
+    }
+   },
+   "晋升之蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}晉升之蛇{rt8}||免疫控制；[感染]散開、出[孵化蛇]後集合AOE；躲[劇毒漩渦]風圈、[劇毒噴射]正面拉離人群||{rt1}必斷/速殺：[祭壇鍍刃]點名隨機必躲{rt1}||坦抗[劇毒噴射]擊退正面，治療頂毒傷",
+     "enUS": "{rt8}Ascended Serpent{rt8}||Immune to CC; [Infected]—spread, then group up for AoE after [Hatched Serpents] spawn; avoid the [Venom Vortex] wind ring and keep [Venom Spray]'s front cone away from the group.||{rt1}Must interrupt/kill fast: [Altar Edge]—random targeted, always dodge.{rt1}||Tank faces [Venom Spray]'s knockback outward; healer covers poison damage."
+    }
+   }
+  },
+  "红玉新生法池": {
+   "深石塑地者": {
+    "mythicplus": {
+     "zhTW": "{rt8}深石塑地者{rt8}||鋼條[大地裂擊]全團AOE,暈斷或控制||{rt1}必斷/控：[大地裂擊]40碼範圍否則團滅{rt1}||[塑地]被動疊減益,T注意身後龍蛋防ADD",
+     "enUS": "{rt8}Deep Earthshaper{rt8}||Uninterruptible-channel [Earthsplitter] is a raid-wide AoE—stun or control it.||{rt1}Must interrupt/control: [Earthsplitter] hits 40 yards or wipes the raid.{rt1}||[Terraform] passively stacks a debuff; tank watch dragon eggs behind to avoid adds."
+    }
+   },
+   "缚地守护者": {
+    "mythicplus": {
+     "zhTW": "{rt8}縛地守護者{rt8}||[縛地印記]隨機點名,集中治療並開減傷覆蓋||{rt1}必斷：其強化/控制讀條勿漏{rt1}||速殺減層數",
+     "enUS": "{rt8}Grounding Guardian{rt8}||[Grounding Brand] marks a random target—focus heal and cover with damage reduction.||{rt1}Must interrupt: don't miss its buff/control casts.{rt1}||Kill fast to reduce stacks."
+    }
+   },
+   "毁灭唤风者": {
+    "mythicplus": {
+     "zhTW": "{rt8}毀滅喚風者{rt8}||[閃電風暴]全團AOE開減傷;讀條快用斷條/盾反||{rt1}必斷：閃電/震爆類讀條{rt1}||拉住召喚小怪仇恨",
+     "enUS": "{rt8}Destructive Windcaller{rt8}||[Lightning Storm] raid-wide AoE—pop DR; interrupt or spell-reflect fast casts.||{rt1}Must interrupt: lightning/thunder casts.{rt1}||Hold aggro on summoned adds."
+    }
+   },
+   "大引导者莱瓦迪": {
+    "mythicplus": {
+     "zhTW": "{rt8}大引導者萊瓦迪{rt8}||門口精英,擊殺才能開門;優先集火與打斷||{rt1}必斷：高危讀條(閃霜引導類)勿漏{rt1}||全團減傷覆蓋,T拉穩",
+     "enUS": "{rt8}Grand Conductor Rivazdi{rt8}||Door elite—must be killed to open the door; prioritize focus and interrupts.||{rt1}Must interrupt: high-threat casts (frost-channel type) don't miss.{rt1}||Raid-wide DR coverage; tank holds steady."
+    }
+   },
+   "梅莉杜莎·寒妆": {
+    "mythicplus": {
+     "zhTW": "{rt8}梅莉杜莎·寒妝{rt8}||1. 有啥躲啥，出啥打啥；凜冽飛彈打斷。||2. 66%/33%出盾優先破盾，順帶清小龍；別被龍捲風推上冰刺。||奶：出小龍時驅散T的減速。",
+     "enUS": "{rt8}Melidrussa Chillworn{rt8}||1. Dodge what spawns and kill what appears; interrupt Chilling Missiles.||2. At 66%/33% a shield spawns—break it first and clear the whelps; don't get pushed onto ice spikes by the tornado.||Healer: dispel the tank's slow when whelps spawn."
+    }
+   },
+   "基拉卡与厄克哈特·风脉": {
+    "mythicplus": {
+     "zhTW": "{rt8}基拉卡與厄克哈特·風脈{rt8}||1. 先打人形；躲龍的扇形噴火；火圈放到空地。||2. 人形讀「阻斷暴雨」時停手；約40%人龍合一，繼續上述機制。",
+     "enUS": "{rt8}Kyrakka and Erkhart Stormvein{rt8}||1. Damage the humanoid first; dodge the dragon's cone breath; drop fire circles on open ground.||2. When the humanoid casts 'Storm Breaker' stop DPS; around 40% they merge—keep doing the above."
+    }
+   },
+   "闪霜织寒者": {
+    "mythicplus": {
+     "zhTW": "{rt8}閃霜織寒者{rt8}||[寒冰箭]遠程打斷保護坦克;優先控殺||{rt1}必斷/驅散：[寒冰壁壘]否則目標免控且帶盾{rt1}||有盾時集火減傷覆蓋",
+     "enUS": "{rt8}Flashfrost Weaver{rt8}||Ranged interrupt [Frostbolt] to protect the tank; prioritize CC-kill.||{rt1}Must interrupt/dispel: [Ice Barrier]—else the target is CC-immune and shielded.{rt1}||With the barrier up, focus fire under damage-reduction coverage."
+    }
+   },
+   "烈焰之咽": {
+    "mythicplus": {
+     "zhTW": "{rt8}烈焰之咽{rt8}||躲[烈焰吐息]正面;T開減傷吃[烈焰之喉]持續灼燒||{rt1}速殺：半血後[熔岩之血]層數越高團傷越爆炸{rt1}||留爆發/嗜血壓半血後",
+     "enUS": "{rt8}Flame Gullet{rt8}||Dodge [Flame Breath]'s front; tank pops DR for the [Flame Maw] DoT.||{rt1}Kill fast: below half health [Lava Blood] stacks make raid damage explode.{rt1}||Save cooldowns/bloodlust for after half health."
+    }
+   },
+   "灰烬先知烈焰鞭笞者": {
+    "mythicplus": {
+     "zhTW": "{rt8}灰燼先知烈焰鞭笞者{rt8}||[烈焰齊射]讀條鎖T,用控制打斷傷害||{rt1}必控/驅散：死亡觸發[烈焰榮光]留火圈,驅散或遠離{rt1}||",
+     "enUS": "{rt8}Ashen Prophet{rt8}||[Flame Volley] channels and locks the tank—use control to interrupt the damage.||{rt1}Must control/dispel: on death it triggers [Flame Glory] leaving a fire circle—dispel or move away.{rt1}||"
+    }
+   },
+   "炎缚毁灭者": {
+    "mythicplus": {
+     "zhTW": "{rt8}炎縛毀滅者{rt8}||免疫控制;死前離開[燃盡]20碼爆炸圈||{rt1}必斷：[熾炎衝擊];[活體炸彈]擊退前走開{rt1}||[地獄火]全團傷害T開減傷",
+     "enUS": "{rt8}Flamebound Destroyer{rt8}||Immune to CC; leave the [Burnout] 20-yard explosion circle before it dies.||{rt1}Must interrupt: [Searing Strike]; walk away before [Living Bomb]'s knockback.{rt1}||[Infernal] raid-wide damage—tank pops DR."
+    }
+   },
+   "柯姬雅·焰蹄": {
+    "mythicplus": {
+     "zhTW": "{rt8}柯姬雅·焰蹄{rt8}||1. 大火圈出火元素立刻轉火；死前離開周圍大紅圈。||2. 熔岩球往遠處放，躲開路線。",
+     "enUS": "{rt8}Kokia Blazehoof{rt8}||1. When the big fire circle spawns a fire elemental, switch to it immediately; leave the large red circle before it dies.||2. Drop the lava orb far away and avoid its path."
+    }
+   },
+   "雷霆之颅": {
+    "mythicplus": {
+     "zhTW": "{rt8}雷霆之顱{rt8}||躲[風暴吐息]正面;T開減傷防[雷霆顎咬]擊飛||{rt1}必驅散：[滾雷]只驅一層,兩層同驅必滅{rt1}||",
+     "enUS": "{rt8}Thunderous Skull{rt8}||Dodge [Storm Breath]'s front; tank pops DR against [Thunderous Bite]'s knockback.||{rt1}Must dispel correctly: [Rolling Thunder]—dispel only one stack; dispelling two at once wipes.{rt1}||"
+    }
+   }
+  },
+  "密谋小径": {
+   "赞恩·刃悲": {
+    "mythicplus": {
+     "zhTW": "{rt8}澤恩·哀刃{rt8}||1. 紅圈點名去炸綠桶，別的桶留著擋槍。||2. 絕命凶徑連線：每人躲到不同桶後擋視線。",
+     "enUS": "{rt8}Zaen Bladesorrow{rt8}||1. Red-circle marked players go detonate the green barrels; leave the others as cover.||2. For the 'Deadly Path' link, each player hides behind a different barrel to break line of sight."
+    }
+   },
+   "腐化术士": {
+    "mythicplus": {
+     "zhTW": "{rt8}腐化術士{rt8}||免疫控制||{rt1}[厄運詛咒]隨機debuff(驅散或紮堆分攤，死人召厄運守衛){rt1}；[吸取生命]點名防禦/脫戰||優先控/斷厄運箭；詛咒及時驅或集體分攤；50%獲黑暗契約護盾前壓血破盾。",
+     "enUS": "{rt8}Corrupting Warlock{rt8}||Immune to CC.||{rt1}[Curse of Doom] random debuff (dispel or stack to share; a dead player summons a Doomguard).{rt1}||[Drain Life] marks a target—defend or drop combat.||Prioritize CC/interrupt on the doom bolt; dispel or share the curse promptly; before 50% it gains a Dark Pact shield—burn through it."
+    }
+   },
+   "利希尔·烬怒": {
+    "mythicplus": {
+     "zhTW": "{rt8}莉希爾·烬怒{rt8}||1. 混亂箭必斷；地獄火盯T帶著走；出什麼打什麼，集合站位。||2. Boss開門放擴散圈；等圈讀出來再點門；小怪必須先打死再進門。",
+     "enUS": "{rt8}Lishir{rt8}||1. Interrupt Chaos Bolt; the infernal follows the tank—drag it along; kill what spawns and stack up.||2. The boss opens a door with expanding circles; wait for the circle to fully form before clicking the door; kill the adds before entering."
+    }
+   },
+   "亵渎魔像": {
+    "mythicplus": {
+     "zhTW": "{rt8}褻瀆魔像{rt8}||免疫控制||{rt1}[褻瀆猛擊]重通道傷害，治療預讀{rt1}；[邪能射線]向每人射出留水窪的線，躲開||集中在尾王前區域；坦減傷吃猛擊，全團躲邪能射線。",
+     "enUS": "{rt8}Defiled Golem{rt8}||Immune to CC.||{rt1}[Profane Smash] is a heavy channel—healer pre-cast.{rt1}||[Fel Beam] fires a line at each player leaving a puddle—dodge.||Found before the last boss; tank eats the smash with DR, raid dodges fel beams."
+    }
+   },
+   "歼灭者萨祖克斯": {
+    "mythicplus": {
+     "zhTW": "{rt8}湮滅者薩蘇斯{rt8}||1. 斧子落地持續炸團，立刻轉火打掉。||2. 魔化狂怒時Boss鋪火地，靠邊風箏。||T：拉著靠邊放水；側身躲軍團打擊錐形。",
+     "enUS": "{rt8}Xathuux the Annihilator{rt8}||1. The axe that lands keeps exploding the raid—switch and kill it immediately.||2. During Demonic Fury the boss lays fire on the ground—kite at the edge.||Tank: pull to the edge while dropping water; sidestep the Legion Strike cone."
+    }
+   },
+   "希凡惩罚者": {
+    "mythicplus": {
+     "zhTW": "{rt8}希凡懲罰者{rt8}||免疫控制||[懲戒之力]額外物理傷害坦注意；50%血觸發[惡魔狂熱]高脈衝群傷||躲[旋風]AoE；50%時DPS集火壓下狂熱，坦開減傷。",
+     "enUS": "{rt8}Shivan Punisher{rt8}||Immune to CC.||[Punishing Power] adds physical damage—tank beware; at 50% it triggers [Demoniac Frenzy] high pulse raid damage.||Dodge [Whirlwind] AoE; at 50% DPS burns it down before frenzy; tank pops DR."
+    }
+   },
+   "酒馆打卡(五星级好评)": {
+    "mythicplus": {
+     "zhTW": "{rt8}酒館打卡(五星級好評){rt8}||1號後強制事件：5人偽裝上尖塔，全隊與Selenar對話觸發||每人隨機角色(侍者/藝人/清潔/保鏢)，完成本職累計滿意度集滿5星||全隊獲[五星級好評]buff(+10%傷害治療約4分鐘)||期間刷[嚴苛評價]讀條，任何人CC/斷可打斷使其消失；路線約占用4分鐘。",
+     "enUS": "{rt8}Tavern Check-in (Five-Star Review){rt8}||Forced event after boss 1: the 5-man disguises and climbs the spire; the whole group talks to Selenar to trigger it.||Each gets a random role (waiter/performer/cleaner/bodyguard); complete your role to fill the satisfaction meter to 5 stars.||The group gains [Five-Star Review] buff (+10% damage/healing ~4 min).||During it, [Harsh Review] casts spawn—any CC/interrupt makes them vanish; the route takes ~4 min."
+    }
+   },
+   "凯斯媞亚·魔力之心": {
+    "mythicplus": {
+     "zhTW": "{rt8}琪絲緹婭·魔心{rt8}||1. 主打浮龍「咬咬」；壓到約20%變光形態，Boss進入不穩定（易傷窗口）。||2. 鏡像讀條打斷/強控；躲開咬咬錐形飛濺。",
+     "enUS": "{rt8}Kystia Manaheart{rt8}||1. Focus the floating dragon 'Chomp'; at ~20% it turns to light form and the boss becomes unstable (damage-taken window).||2. Interrupt/CC the mirror's casts; dodge Chomp's cone splash."
+    }
+   }
+  },
+  "纳洛拉克的洞穴": {
+   "纳洛拉克": {
+    "mythicplus": {
+     "zhTW": "{rt8}納羅拉克{rt8}||1. 綠圈幻影集合放牆邊；NPC開盾時站進去。||2. 幻影變紅衝向NPC時全員主動撞掉。||T：吃地面土圈，分攤NPC傷害。",
+     "enUS": "{rt8}Nalorakk{rt8}||1. Stack the green-circle phantoms at the wall; when the NPC raises a shield, stand inside it.||2. When phantoms turn red and charge the NPC, everyone intercepts them.||Tank: eat the ground earth circles and share the NPC's damage."
+    }
+   },
+   "洛阿祭司娜妮娅": {
+    "mythicplus": {
+     "zhTW": "{rt8}洛阿祭司娜妮亞{rt8}||免疫控制||{rt1}[閃電箭]隨機目標需轉斷；[地震]2人放圈；[不穩定圖騰]持續AoE{rt1}||保持閃電箭打斷鏈；地震移出人群；速殺圖騰。",
+     "enUS": "{rt8}Loa Priestess Naniyah{rt8}||Immune to CC.||{rt1}[Lightning Bolt] random target—rotate interrupts; [Earthquake] two players drop circles; [Unstable Totem] persistent AoE.{rt1}||Keep the lightning-bolt interrupt chain; move out of Earthquake; kill the totem fast."
+    }
+   },
+   "老练的战争使者": {
+    "mythicplus": {
+     "zhTW": "{rt8}老練的戰爭使者{rt8}||免疫控制||[原始迴響]全團AoE；[毒矛亂射]地圈(彈道3秒)||治療開減傷；躲毒矛圈；無硬控。",
+     "enUS": "{rt8}Veteran Warbringer{rt8}||Immune to CC.||[Primordial Echo] raid-wide AoE; [Poison Spear Volley] ground circles (3s projectile).||Healer pop DR; dodge poison-spear circles; no hard CC."
+    }
+   },
+   "决意化身": {
+    "mythicplus": {
+     "zhTW": "{rt8}決意化身{rt8}||免疫控制||[冰封墓穴]定身全體→需打破或自由解；[粉碎]AoE高傷||保持分散避免被冰封連鎖；出粉碎圈立刻走出；自由/破冰解定身。",
+     "enUS": "{rt8}Resolute Avatar{rt8}||Immune to CC.||[Frozen Tomb] roots the whole group—break it or use freedom; [Shatter] is a high-damage AoE.||Stay spread to avoid chained freezes; step out of Shatter circles immediately; use freedom/icebreak to clear the root."
+    }
+   },
+   "饥荒雕像": {
+    "mythicplus": {
+     "zhTW": "{rt8}飢荒雕像{rt8}||由[飢餓之靈]召喚，免疫控制||刷新即集火否則多次施放[無盡飢渴](約5-6秒讀條上減益)||詛咒驅散減益；治療準備[苦難盛宴]引導傷害。",
+     "enUS": "{rt8}Famine Statue{rt8}||Summoned by [Hungry Spirit], immune to CC.||Focus it on spawn or it repeatedly casts [Endless Hunger] (~5-6s cast applying a debuff).||Dispel the curse debuff; healer prepare for [Feast of Suffering] channel damage."
+    }
+   },
+   "囤宝狂人": {
+    "mythicplus": {
+     "zhTW": "{rt8}囤積者{rt8}||1. 綠圈蘑菇每個都要人踩，漏一個炸團。||2. 平時躲前方扇形和地面尖刺。",
+     "enUS": "{rt8}The Hoardmonger{rt8}||1. Every green-circle mushroom must be soaked by someone; miss one and it explodes the raid.||2. Normally dodge the front cone and ground spikes."
+    }
+   },
+   "寒冬哨兵": {
+    "mythicplus": {
+     "zhTW": "{rt8}凜冬哨兵{rt8}||1. 集合放風，放完拉走；打斷小怪，接大白圈。||2. 全屏AOE時集合踩白圈/雪堆抗擊退。||T：把Boss拉在小怪死後的白圈旁。",
+     "enUS": "{rt8}Sentinel of Winter{rt8}||1. Stack to drop the wind, then pull away; interrupt the add and take the big white circle.||2. During the full-screen AoE, stack on the white circle/snow mound to resist knockback.||Tank: pull the boss next to the white circle left by the dead add."
+    }
+   },
+   "寒冬暴雪": {
+    "mythicplus": {
+     "zhTW": "{rt8}寒冬暴雪{rt8}||免疫控制||[凜冽寒風]持續脈衝直到擊殺；[寒冬長廊]推人||優先擊殺以停止區域寒風；利用無雪掩體躲風；雪堆不再打滑。",
+     "enUS": "{rt8}Winter Blizzard{rt8}||Immune to CC.||[Biting Blizzard] pulses until killed; [Winter Hall] pushes players.||Prioritize killing it to stop the zone blizzard; use snow-free cover to dodge the wind; snow mounds no longer cause slipping."
+    }
+   }
+  },
+  "塞塔里斯神庙": {
+   "精华污染者": {
+    "mythicplus": {
+     "zhTW": "{rt8}精華污染者{rt8}||[精華干擾]對吞噬之眼引導，打斷以保住點眼能量開門||{rt1}必斷：精華干擾{rt1}||優先控殺，保護正在點眼的玩家",
+     "enUS": "{rt8}Essence Purifier{rt8}||[Essence Interference] channels on the Devouring Eye—interrupt to preserve the eye-energy and open the door.||{rt1}Must interrupt: Essence Interference.{rt1}||Prioritize CC-kill; protect the player channeling the eye."
+    }
+   },
+   "堕落的守护者": {
+    "mythicplus": {
+     "zhTW": "{rt8}墮落的守護者{rt8}||免疫控制；[震地踐踏]30碼AoE+擊退需分散/靠牆；[碎擊]主坦開減傷並承受增傷||{rt1}必斷/速殺：不可打斷，[碎擊]坦必開減傷{rt1}||優先集火；避免與其他高傷疊加時硬吃",
+     "enUS": "{rt8}Fallen Guardian{rt8}||Immune to CC; [Earthstomp] is a 30-yard AoE + knockback—spread or hug the wall; [Shatter] the main tank soaks with damage reduction and takes increased damage.||{rt1}Must kill fast: uninterruptible; [Shatter] tank must pop DR.{rt1}||Focus fire; avoid hard-soaking when stacked with other big hits."
+    }
+   },
+   "塞塔里斯的化身": {
+    "mythicplus": {
+     "zhTW": "{rt8}塞塔里斯的化身{rt8}||1. 奶抬中間化身；DPS撞黑球，奶一定不要撞。||2. 污染者優先轉火；奶別被連線小怪摸到。||奶：專心抬化身；不要撞黑球。",
+     "enUS": "{rt8}Avatar of Sethraliss{rt8}||1. Healer sustains the central avatar; DPS collide with the dark orbs, healer must NOT.||2. Prioritize the Corruptor; healer avoid the linked add.||Healer: focus on the avatar; do not collide with orbs."
+    }
+   },
+   "米利克萨": {
+    "mythicplus": {
+     "zhTW": "{rt8}米利克薩{rt8}||1. 隊友被纏優先打小蛇/吃控解開；點名水放場邊。||2. 躲開潛地橫穿。",
+     "enUS": "{rt8}Merektha{rt8}||1. If an ally is coiled, prioritize killing the small snakes or CC to free them; drop the targeted water at the edge.||2. Dodge the underground traversal."
+    }
+   },
+   "阿德里斯和阿斯匹克斯": {
+    "mythicplus": {
+     "zhTW": "{rt8}阿德里斯和阿斯匹克斯{rt8}||1. 只打沒有護盾的那個。||2. 風Boss擊退後集合去電近戰位分攤弧光斬擊；白圈靠邊放。",
+     "enUS": "{rt8}Adderis and Aspix{rt8}||1. Only damage the one without a shield.||2. After the wind boss knocks back, group up at the lightning-melee spot to share Arcane Slash; drop white circles at the edge."
+    }
+   },
+   "扭曲的妖术师": {
+    "mythicplus": {
+     "zhTW": "{rt8}扭曲的妖術師{rt8}||[潛伏妖術]點名放圈後變青蛙，移開人群並別踩[妖術泥]；[烈焰震擊]可斷||{rt1}必斷：烈焰震擊{rt1}||免疫控制；[潛伏妖術]到期前驅散防變蛙",
+     "enUS": "{rt8}Twisted Hexxer{rt8}||[Lurking Hex] marks a player, drops a circle then turns them into a frog—move out of the group and avoid [Hex Mud]; [Flame Shock] is interruptible.||{rt1}Must interrupt: Flame Shock.{rt1}||Immune to CC; dispel [Lurking Hex] before it expires to prevent the frog."
+    }
+   },
+   "无信征服者": {
+    "mythicplus": {
+     "zhTW": "{rt8}無信征服者{rt8}||[心智紊亂]隨機點名混亂(詛咒)，打斷或驅散解除||{rt1}必斷：心智紊亂{rt1}||注意與[暗影鞭笞]疊加時的治療壓力",
+     "enUS": "{rt8}Faithless Conqueror{rt8}||[Mind Disruption] randomly curses a player with confusion—interrupt or dispel to clear.||{rt1}Must interrupt: Mind Disruption.{rt1}||Watch healer pressure when stacked with [Shadow Lash]."
+    }
+   },
+   "流沙猎手": {
+    "mythicplus": {
+     "zhTW": "{rt8}流沙獵手{rt8}||[箭雨]對隨機目標引導，用控制/打斷止傷；[沙爆箭]落點圈躲開||{rt1}必斷/速殺：[箭雨]引導用CC或打斷停止{rt1}||先手控住再開怪，避免箭雨+其他傷害疊加",
+     "enUS": "{rt8}Quicksand Hunter{rt8}||[Arrow Barrage] channels on a random target—use CC/interrupt to stop the damage; dodge [Sandblast Arrow] landing circles.||{rt1}Must interrupt/kill fast: stop [Arrow Barrage]'s channel with CC or interrupt.{rt1}||CC it before pulling to avoid barrage stacking with other damage."
+    }
+   },
+   "无信折磨者": {
+    "mythicplus": {
+     "zhTW": "{rt8}無信折磨者{rt8}||優先集火；鎖定治療者疊[暗影鞭笞]降低治療，儘快擊殺遠離治療||{rt1}必斷/速殺：速殺鎖治療的折磨者防降療疊層{rt1}||<25%會被化身處決回血，保持>25%再收尾",
+     "enUS": "{rt8}Faithless Torturer{rt8}||Focus fire; it locks onto a healer and stacks [Shadow Lash] to reduce healing—kill it fast and away from the healer.||{rt1}Must kill fast: burn the healer-locking torturer before the healing debuff stacks.{rt1}||Below 25% the avatar executes it for a heal—keep it above 25% before finishing."
+    }
+   },
+   "风暴飞蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}風暴飛蛇{rt8}||[風暴催化]讀條後地面留雷暴池，全員出池；坦[蛇之風暴召喚]增益期開減傷||{rt1}必斷：風暴催化(留池傷){rt1}||把蛇拉到邊緣/已有毒池處減少場地污染",
+     "enUS": "{rt8}Storm Viper{rt8}||[Storm Catalyst] leaves a thunder pool—everyone get out; tank pops damage reduction during [Serpent's Storm Call] buff.||{rt1}Must interrupt: Storm Catalyst (leaves pool damage).{rt1}||Pull the snake to the edge or onto existing poison to reduce field clutter."
+    }
+   },
+   "剧毒蝰蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}劇毒蝰蛇{rt8}||[劇毒噴射]讀條隨機目標，打斷防疊毒；中[細胞毒素]用毒解或減傷||{rt1}必斷：劇毒噴射{rt1}||毒池遠離人群，治療注意點名毒傷",
+     "enUS": "{rt8}Venomous Viper{rt8}||[Venom Spray] targets a random player—interrupt to avoid stacking poison; [Cell Poison] use poison cleanse or damage reduction.||{rt1}Must interrupt: Venom Spray.{rt1}||Keep poison pools away from the group; healer watch targeted poison damage."
+    }
+   },
+   "加瓦兹特": {
+    "mythicplus": {
+     "zhTW": "{rt8}加瓦兹特{rt8}||1. 電塔連線由DPS擋（疊物理易傷），T不要擋。||T：拉到場邊，帶著轉圈放水。",
+     "enUS": "{rt8}Galvazzt{rt8}||1. DPS (not the tank) soak the lightning-tower links to stack the physical-vulnerability debuff.||Tank: pull to the edge and kite in circles while dropping water."
+    }
+   }
+  },
+  "夺目谷": {
+   "护光者鲁伊亚": {
+    "mythicplus": {
+     "zhTW": "{rt8}光衛魯伊婭{rt8}||1. 鳥形態：打斷讀條；三人被風點名時分散躲六芒風。||2. 熊形態頭前錐形：中點的人站定，三人分散別重疊。",
+     "enUS": "{rt8}Light Warden Ruia{rt8}||1. Bird form: interrupt casts; when three are marked by wind, spread to dodge the hexagram gale.||2. Bear form frontal cone: the marked player stands still while the other three spread without overlapping."
+    }
+   },
+   "薯蛙母": {
+    "mythicplus": {
+     "zhTW": "{rt8}薯蛙母{rt8}||免疫控制||[舌投]把坦拋飛(地形殺風險)；[毒液噴吐]群體中毒DoT；[產蛋]孵化[新生蝌蚪](擊退)||坦遠離平台邊緣接拋；治療驅毒；蛋一出立刻AoE秒掉別讓它孵化。",
+     "enUS": "{rt8}Taro Frogmother{rt8}||Immune to CC.||[Tongue Toss] flings the tank (terrain-kill risk); [Venom Spit] raid poison DoT; [Lay Eggs] hatches [Newtlings] (knockback).||Tank stay away from platform edge when tossed; healer dispel poison; AoE the eggs instantly so they don't hatch."
+    }
+   },
+   "圣光猎手伊库兹": {
+    "mythicplus": {
+     "zhTW": "{rt8}光獵者伊庫茲{rt8}||1. 被連線點名的帶著Boss踩掉場上荊棘/樹根。||2. 其他人躲荊棘；踐踏別被擊退進危險區。",
+     "enUS": "{rt8}Ikuzz the Light Hunter{rt8}||1. The line-marked player drags the boss over the thorns/roots to clear them.||2. Others dodge thorns; don't get stomped into the danger zone."
+    }
+   },
+   "兹欧凯特": {
+    "mythicplus": {
+     "zhTW": "{rt8}齊凱特{rt8}||1. 小怪出來轉火並吃控；場邊光球DPS去吃，別讓Boss吃到。||T：直線頭前噴掉小怪屍體；其他人別站線上。",
+     "enUS": "{rt8}Zikket{rt8}||1. When adds spawn, switch and CC them; DPS grab the edge light orbs—don't let the boss get them.||Tank: frontal line breath clears the add corpses; others stay off the line."
+    }
+   },
+   "光明众花": {
+    "mythicplus": {
+     "zhTW": "{rt8}光綻三體{rt8}||1. 三Boss共享血量，一起A；光芒劍打斷。||2. 花被光線連起時站進花裡擋線，漏掉會炸團。",
+     "enUS": "{rt8}Lightbloom Trinity{rt8}||1. The three bosses share health—AoE them together; interrupt the Light Blade.||2. When the flowers are linked by light beams, stand inside a flower to block the line; missing one explodes the raid."
+    }
+   },
+   "翠绿林地守卫": {
+    "mythicplus": {
+     "zhTW": "{rt8}翠綠林地守衛{rt8}||免疫控制||[地裂打擊]點名坦留水坑；[拔根]AoE重擊+擊退||坦把水坑放隊伍外側；擊退前別站懸崖/根鬚邊。",
+     "enUS": "{rt8}Verdant Grove Guardian{rt8}||Immune to CC.||[Earthrend] marks the tank leaving a puddle; [Uproot] AoE heavy hit + knockback.||Tank drops the puddle outside the group; don't stand near cliffs/roots before the knockback."
+    }
+   },
+   "灌木潜行者": {
+    "mythicplus": {
+     "zhTW": "{rt8}灌木潛行者{rt8}||[荊棘之刃]隨機點名重流血(持續8秒)||集中治療/清流血/個人減傷。",
+     "enUS": "{rt8}Bramble Stalker{rt8}||[Thornblade] marks a random target with heavy bleed (8s).||Focus heal / clear bleed / personal damage reduction."
+    }
+   },
+   "疯长多头蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}瘋長多頭蛇{rt8}||免疫控制||[光顎射線]引導3名隨機目標(串人極痛)；[彈丸之種]直線點名||三人向外散開別把射線掃過隊友；可用消失/影遁脫戰免掉；躲直線。",
+     "enUS": "{rt8}Rampant Hydra{rt8}||Immune to CC.||[Lightjaw Beam] channels 3 random targets (line hurts allies); [Seed Volley] line marks.||Three spread outward so the beam doesn't cross allies; use vanish/shadowmeld to drop combat and avoid it; dodge lines."
+    }
+   },
+   "迷乱尖啸者": {
+    "mythicplus": {
+     "zhTW": "{rt8}迷亂尖嘯者{rt8}||{rt1}[迷亂尖嘯]每次必斷(群體致亂){rt1}||固定分配一個斷，與光箭齊射錯開。",
+     "enUS": "{rt8}Maddening Shrieker{rt8}||{rt1}[Maddening Screech]—interrupt every time (group confuse).{rt1}||Assign a fixed interrupt, offset from Light Arrow Volley."
+    }
+   },
+   "光耀播法者": {
+    "mythicplus": {
+     "zhTW": "{rt8}光耀播法者{rt8}||{rt1}[光箭齊射]每次必斷；殘血會[喚醒樹林]召附近休眠鞭笞者{rt1}||全場頭號斷條目標；血線低時上控+集火別讓它開喚醒。",
+     "enUS": "{rt8}Radiant Caster{rt8}||{rt1}[Light Arrow Volley]—interrupt every time; at low blood it [Awakens the Grove] summoning nearby dormant lashers.{rt1}||Top interrupt priority raid-wide; at low blood CC+focus so it can't awaken the grove."
+    }
+   },
+   "噬光鞭笞者": {
+    "mythicplus": {
+     "zhTW": "{rt8}噬光鞭笞者{rt8}||獲得[光綻授粉]後帶護盾並強化||立刻轉火破盾再回主目標。",
+     "enUS": "{rt8}Light-Devouring Lasher{rt8}||After gaining [Bloom Pollen] it gets a shield and is empowered.||Immediately switch to break the shield, then return to the main target."
+    }
+   }
+  },
+  "诸王之眠": {
+   "祖尔的暗影": {
+    "mythicplus": {
+     "zhTW": "{rt8}祖爾的暗影{rt8}||坦克硬吃[暗影彈幕]（不可斷、Dot不疊）；[黑暗啟示]點名遠離隊友，站入[黑暗水池]免團傷||{rt1}淨化：召喚的祖爾爪牙[暗影束縛]立即驅散/破盾即死{rt1}||12.1黑暗水池增至2個，兩人常駐站池吸收傷害",
+     "enUS": "{rt8}Zul's Shadow{rt8}||Tank eats [Shadow Barrage] (uninterruptible, non-stacking DoT); [Dark Revelation]—move away from allies and stand in a [Dark Pool] to avoid raid damage.||{rt1}Cleanse: the summoned Zul's minions' [Shadow Bind] must be dispelled/bubble broken instantly or it's fatal.{rt1}||In 12.1 there are 2 Dark Pools—two players permanently soak them."
+    }
+   },
+   "始皇达萨": {
+    "mythicplus": {
+     "zhTW": "{rt8}始皇達薩{rt8}||1. 打斷小龍致命咆哮；80%後騎上坐騎繼續打本體。||2. 鍍金毀滅後立刻離開落地点；扇形順劈背對人群。",
+     "enUS": "{rt8}King Dazar{rt8}||1. Interrupt the young dragon's Deadly Roar; after 80% he mounts up—keep DPS on the boss.||2. After Gilded Destruction, leave the landing spot immediately; face the cleave away from the group."
+    }
+   },
+   "部族议会": {
+    "mythicplus": {
+     "zhTW": "{rt8}部族議會{rt8}||1. 三人輪流上場；已死的還會跳回放技能。||2. 分攤集合；打斷毒性新星；優先打爆炸圖騰；飛斧躲開。",
+     "enUS": "{rt8}Council of Tribes{rt8}||1. Three bosses take the field in rotation; even dead ones jump back to cast.||2. Stack for shared damage; interrupt Poison Nova; prioritize the explosive totem; dodge the flying axes."
+    }
+   },
+   "活化守卫": {
+    "mythicplus": {
+     "zhTW": "{rt8}活化守衛{rt8}||坦克拉背對人群，全員繞側/背後輸出躲正面[鎮壓猛擊]錐形暈眩||{rt1}注意：[釋放抑制劑]攻速+75%，讀條時轉火或暈控{rt1}||12.1入口守衛已後移，逐隻拉避免連鎖正面秒人",
+     "enUS": "{rt8}Animated Guardian{rt8}||Tank faces it away from the group; everyone attacks from the side/back to avoid the front [Suppressing Smash] cone stun.||{rt1}Watch: [Release Inhibitor] grants +75% attack speed—switch or stun during the cast.{rt1}||In 12.1 the entrance guards moved back; pull one at a time to avoid chained frontals."
+    }
+   },
+   "黄金风蛇": {
+    "mythicplus": {
+     "zhTW": "{rt8}黃金風蛇{rt8}||1. 兩人吐金盡量疊在一起。||2. 地板變軟泥立刻轉火，別讓軟泥碰到Boss。",
+     "enUS": "{rt8}The Golden Serpent{rt8}||1. The two players spat at with gold should stack together.||2. When the floor turns to ooze, switch to it immediately; don't let the ooze reach the boss."
+    }
+   },
+   "幻影萨满祭司": {
+    "mythicplus": {
+     "zhTW": "{rt8}幻影薩滿祭司{rt8}||優先打斷施法，分散避免連鎖控制，法師勿偷其增益buff||{rt1}必斷：[妖術]（變羊），落地後治療立即驅散{rt1}||近戰留意被控目標，配合祖爾爪牙一起淨化",
+     "enUS": "{rt8}Phantom Shaman{rt8}||Prioritize interrupting casts; spread to avoid chain CC; mages don't steal its buff.||{rt1}Must interrupt: [Hex] (sheep)—dispel the target immediately after it lands.{rt1}||Melee watch controlled targets and cleanse them together with Zul's minions."
+    }
+   },
+   "祖尔的爪牙": {
+    "mythicplus": {
+     "zhTW": "{rt8}祖爾的爪牙{rt8}||[暗影束縛]護盾，淨化/驅散魔法即死，最快解法||{rt1}淨化：[暗影束縛]；落地[絕望深淵]恐懼治療驅散{rt1}||12.1新增[注視]光束鎖定10秒，被點名拉開距離",
+     "enUS": "{rt8}Zul's Minion{rt8}||[Shadow Bind] shield—cleanse/dispel magic kills it instantly, the fastest solution.||{rt1}Cleanse: [Shadow Bind]; on landing [Despairing Abyss] fears—dispel the healer.{rt1}||In 12.1 a new [Gaze] beam locks a target for 10s; the marked player creates distance."
+    }
+   },
+   "木乃伊": {
+    "mythicplus": {
+     "zhTW": "{rt8}木乃伊{rt8}||半完成/完成木乃伊都放[淒苦噴發]自然團疫，速殺減負||{rt1}必斷：[淒苦噴發]（全隊疊病12秒）{rt1}||姆沁巴開錯棺/開棺召出的成品木乃伊優先集火，避免雪球",
+     "enUS": "{rt8}Mummy{rt8}||Both half-done and finished mummies cast [Wretched Eruption] (nature raid sickness); kill fast to reduce burden.||{rt1}Must interrupt: [Wretched Eruption] (12s party disease).{rt1}||Prioritize the finished mummies Mchimba summons from wrong coffins to avoid snowballing."
+    }
+   },
+   "殓尸者姆沁巴": {
+    "mythicplus": {
+     "zhTW": "{rt8}防腐者姆欽巴{rt8}||1. 火圈別放棺材旁；小木乃伊必須打斷。||2. 被關棺猛敲提示；隊友開正確棺材救人。",
+     "enUS": "{rt8}Mchimba the Embalmer{rt8}||1. Don't drop the fire circle near the coffins; the small mummies must be interrupted.||2. When casketed, spam the prompt; allies open the correct coffin to free you."
+    }
+   }
+  }
+ },
+ "raids": {
+  "潮缚石窟": {
+   "尼姆瑞莎·唤波者": {
+    "lfr": {
+     "zhTW": "{rt8}妮姆瑞莎·喚波者{rt8}||世界難度容錯很高：跟著大部隊打，邊緣刷出來的魚人小怪看到就順手清掉。坦克面前的直線水流不要站在射線上。全團掉血的[深淵之雨]期間站好別亂跑，讓治療把血線奶滿。",
+     "enUS": "{rt8}Nimrissa the Wavecaller{rt8}||LFR is forgiving: follow the group and casually clear the murloc adds that spawn at the edges. Don't stand in the tank's line [Water Gust]. During raid-wide [Abyssal Rain] hold position so healers can top you off."
+    },
+    "normal": {
+     "zhTW": "{rt8}妮姆瑞莎·喚波者{rt8}||分配遠程與帶減速的職業專門攔[魅惑氣泡]刷出的魚人，不讓它們走進中間。[冰寒之霜]點名後按提示移動，不要把寒冰球帶進人堆。[深淵之雨]前提前鋪盾，坦克始終把直線技能引向空地。",
+     "enUS": "{rt8}Nimrissa the Wavecaller{rt8}||Assign ranged plus a slows class to intercept the [Charmed Bubble] murlocs before they reach center. After [Frozen Frost] mark, move as prompted and don't bring the frost orb into the group. Pre-shield before [Abyssal Rain]; tanks keep line abilities pointed at open space."
+    },
+    "heroic": {
+     "zhTW": "{rt8}妮姆瑞莎·喚波者{rt8}||各技能約20秒一輪且會互相重疊，[魅惑氣泡]的小怪波與[深淵之雨]同時到來時要先保住團隊血線再清怪。[破潮者衝鋒]的路徑要提前空出來，被撞到還會連帶吃後續傷害。全程盯[無盡潮汐]計時，清怪拖太久會被狂暴追上。",
+     "enUS": "{rt8}Nimrissa the Wavecaller{rt8}||Abilities cycle ~20s and overlap; when [Charmed Bubble] adds and [Abyssal Rain] arrive together, stabilize health before clearing. Pre-clear the path of [Tidebreaker Charge]—getting hit chains into follow-up damage. Watch the [Endless Tide] timer; slow clearing gets caught by the enrage."
+    },
+    "mythic": {
+     "zhTW": "{rt8}妮姆瑞莎·喚波者{rt8}||神話把[水流疾風]換成更凶的[水流噴射]，坦克必須精準控制射線方向並按提示輪換承受。魚人小怪的數量與刷新更密，需要固定兩組人負責左右兩側且不佔用BOSS的輸出窗口。[冰寒之霜]與[深淵之雨]重疊的窗口要預排團減，狂暴前的DPS餘量很小。",
+     "enUS": "{rt8}Nimrissa the Wavecaller{rt8}||Mythic swaps [Water Gust] for the deadlier [Water Jet]; tanks must aim the beam precisely and rotate who takes it on cue. Murloc count and spawn rate rise—fix two teams on left/right that don't eat the boss DPS window. Pre-plan raid DR for the [Frozen Frost] + [Abyssal Rain] overlap; DPS margin before enrage is tiny."
+    }
+   }
+  },
+  "烈毒之渊": {
+   "陵寝哨兵": {
+    "lfr": {
+     "zhTW": "{rt8}陵寢哨兵{rt8}||核心只有一條：兩隻哨兵永遠分開站，別把它們拉到一起，否則它們會有99%減傷。綠色那隻噴出的[劇毒水滴]要主動跑上去踩掉，全部踩完才不會爆炸。身上掛[螺旋毒素]後去找一個同樣中毒的人撞一下，疊到4層就會自動消失。",
+     "enUS": "{rt8}Crypt Sentinels{rt8}||One rule: keep the two sentinels apart—never let them touch or they gain 99% damage reduction. Run onto the [Venom Droplets] the green one spits and soak them all so they don't explode. With [Spiral Toxin], collide with another poisoned player to stack to 4 layers and clear it."
+    },
+    "normal": {
+     "zhTW": "{rt8}陵寢哨兵{rt8}||兩坦分左右各帶一隻，中間空出至少40碼；DPS分成兩隊各打一隻，血量同步壓，別讓[強酸靜滯]白奶回來。全員分工踩[劇毒水滴]併集火[毒液凝塊]，治療盯死[凋零之血]的驅散。[螺旋毒素]事先編好兩人一組的碰撞對，撞到4層即可。",
+     "enUS": "{rt8}Crypt Sentinels{rt8}||Two tanks, one per side, at least 40 yards apart; split DPS into two teams and sync health so [Acid Stasis] doesn't undo your healing. Everyone soaks [Venom Droplets] and focus the [Venom Clot]; healer dispels [Withering Blood] on schedule. Pre-pair [Spiral Toxin] collision partners—four stacks clears it."
+    },
+    "heroic": {
+     "zhTW": "{rt8}陵寢哨兵{rt8}||英雄的[活體毒液]在噴出4秒後會飛回源頭，要提前讓開回程路線不要站在連線上。[螺旋毒素]必須精確4層，多撞或少撞都會留下持續傷害，配對表要固定到人。坦克按[強化猛擊]層數固定輪換，交換場地時不能脫手讓兩隻貼到一起。",
+     "enUS": "{rt8}Crypt Sentinels{rt8}||Heroic [Living Venom] flies back to its source 4s after spawning—clear the return line, don't stand on it. [Spiral Toxin] must hit exactly 4 stacks; over/under-colliding leaves a lingering DoT, so fix pairs to people. Tanks rotate on [Empowered Smash] stacks and never let the pair drift together during swaps."
+    },
+    "mythic": {
+     "zhTW": "{rt8}陵寢哨兵{rt8}||分離容差進一步收緊，兩隻衝到一起放大招時大團要分成兩隊並定期交換場地，交換過程中順手完成換坦。血量必須嚴格同步，否則[強酸靜滯]奶回來的血量會直接吃掉一整輪爆發。任何一次[螺旋毒素]錯撞都會帶著DOT進入下一輪，節奏一旦亂掉很難補回來。",
+     "enUS": "{rt8}Crypt Sentinels{rt8}||Separation tolerance tightens further; when they clash and unleash the big ability, split the raid into two groups and periodically swap sides, handling the tank swap during the move. Health must be strictly synced or [Acid Stasis] healing eats an entire burst window. Any mis-collision carries the DoT into the next cycle—once the rhythm breaks it's hard to recover."
+    }
+   },
+   "乌拉特克": {
+    "lfr": {
+     "zhTW": "{rt8}烏拉特克{rt8}||跟緊人堆，看到地上蔓延的毒液波就繞開，別去踩蛇卵孵出來的小怪堆。有人被薄膜包住時優先打開救人。BOSS露出心臟的階段是集中輸出的時候，把大招都交出來。",
+     "enUS": "{rt8}Ulatak{rt8}||Stay with the group, skirt the spreading venom waves and don't step on the eggs that hatch adds. Free anyone trapped in a membrane first. When the boss exposes its heart, that's the burn window—dump cooldowns."
+    },
+    "normal": {
+     "zhTW": "{rt8}烏拉特克{rt8}||毒液波的走向由團隊控制，指揮安排推向哪一側以減少孵化出的[吞噬者之嗣]。[受縛者之怒]暴露[劇毒之心]時嗜血爆發一次打滿。最後階段場地會被拆掉，提前往安全地面集中，不要留在邊緣等著掉下去。",
+     "enUS": "{rt8}Ulatak{rt8}||The venom wave's path is team-controlled—push it where it hatches fewest [Devourer Spawn]. When [Bound Wrath] exposes the [Venomous Heart], Bloodlust and burn it down. In the final phase the floor is destroyed—group on safe ground early, don't linger at the edge."
+    },
+    "heroic": {
+     "zhTW": "{rt8}烏拉特克{rt8}||階段轉換之間幾乎沒有喘息，[墜落碎石]與環境傷害持續疊加，治療CD要精確卡在兩個放大窗口上。孵化控制要求更嚴，一次錯誤的波路線會同時刷出多隻[吞噬者之嗣]導致人手不夠。P3[幽靈盤繞]必須全團按時堆到衝擊區，散開就是滅團。",
+     "enUS": "{rt8}Ulatak{rt8}||Almost no breather between phases; [Falling Debris] and environmental damage stack, so healer CDs must land precisely on the two amplify windows. Hatch control is stricter—one wrong wave path spawns multiple [Devourer Spawn] and you run out of hands. P3 [Phantom Coil] demands the whole raid stack on the impact zone on time; spreading is a wipe."
+    },
+    "mythic": {
+     "zhTW": "{rt8}烏拉特克{rt8}||史詩新增機制並把軟狂暴變成硬性檢查，[狂怒解放]之前必須結束戰鬥。毒液波路線、蛇卵孵化順序與塌陷區域要寫成完整跑法逐輪執行。近戰與遠程分區輪換，保證[劇毒之心]窗口內不掉輸出，任何一次站位失誤都會連鎖影響到下一階段。",
+     "enUS": "{rt8}Ulatak{rt8}||Mythic adds mechanics and turns the soft enrage into a hard check—finish before [Furious Liberation]. Venom-wave routes, egg-hatch order and collapse zones must be a written rotation executed each round. Melee/ranged rotate zones to keep DPS through the [Venomous Heart] window; any positioning mistake cascades into the next phase."
+    }
+   },
+   "盘卷祭坛": {
+    "lfr": {
+     "zhTW": "{rt8}盤卷祭壇{rt8}||前半段跟著人堆走：[斷頭台]要站進去一起分攤，地上的毒液和飛出來的斧子躲開。瑪拉卡斯出現後會有小怪盯著你追，邊跑邊打不要站着挨。身上出現[墓縛]時去撿地上的[靈魂碎片]就能解掉。",
+     "enUS": "{rt8}Coiled Shrine{rt8}||Follow the group in phase one: stand in [Guillotine] to share it, avoid the floor poison and flying axes. When Malakas appears, mobs chase you—kite and fight, don't stand still. With [Gravebind], grab a [Soul Shard] off the ground to clear it."
+    },
+    "normal": {
+     "zhTW": "{rt8}盤卷祭壇{rt8}||分好[斷頭台]的分攤組，人數不足會把接的人直接打死。打斷[惡毒盤魂者]的[恐懼尖嘯]，[恐懼化身]鎖定誰就由誰負責風箏，其他人不要擋路。最終階段兩個目標血量聯動，提前算好爆發把它們同時打死。",
+     "enUS": "{rt8}Coiled Shrine{rt8}||Assign [Guillotine] soak groups; too few soakers dies instantly. Interrupt the [Vicious Coilbinder]'s [Terror Screech]; whoever [Fear Manifestation] locks kites it, others clear the way. Final phase links the two targets' health—pre-plan burst to kill both together."
+    },
+    "heroic": {
+     "zhTW": "{rt8}盤卷祭壇{rt8}||[凝聚毒液]會在場上不斷累積，分攤與風箏的路線必須同時避開毒液，位移技能要留著用。附身階段的[恐懼行軍]與[靈魂割裂]會和小怪波重疊，打斷表和轉火表要拆成兩組人分別負責。最終階段雙目標同時輸出壓力很大，團減與治療CD留到這裡再交。",
+     "enUS": "{rt8}Coiled Shrine{rt8}||[Condensed Venom] keeps accumulating—soak/kite paths must both avoid it; save mobility. The possessed phase's [Dread March] and [Soul Rending] overlap add waves; split interrupt and kill priorities between two teams. Dual-target final phase is heavy—save raid DR and healer CDs for it."
+    },
+    "mythic": {
+     "zhTW": "{rt8}盤卷祭壇{rt8}||容錯極低：斧線、[斷頭台]落點、[凝聚毒液]與[恐懼化身]的移動路線都要預先規劃成固定跑法。[幽暗炸彈]與[墓縛]需要按人輪換去撿碎片，漏掉一個人就會在下一波直接倒。最終階段必須做到兩個目標幾乎同時死亡，否則存活方的增傷會瞬間打穿治療。",
+     "enUS": "{rt8}Coiled Shrine{rt8}||Near-zero margin: axe lines, [Guillotine] landings, [Condensed Venom] and [Fear Manifestation] paths must be pre-scripted. [Gloom Bomb] and [Gravebind] shards rotate per person—miss one and they drop next wave. Final phase needs near-simultaneous kills or the survivor's damage amp blows through healing."
+    }
+   },
+   "万毒邪祟者瓦什尼克": {
+    "lfr": {
+     "zhTW": "{rt8}萬毒邪祟者瓦什尼克{rt8}||看到從噴泉爬出來的大軟就集火，絕對不要讓它爬到房間中間的坑裡。身上出現[瘟疫泡沫]時跑到人堆外面，等毒液噴完再回來。被[爆炸感染]點名就跑遠，另外兩種感染留在原地讓治療奶就行。",
+     "enUS": "{rt8}Plague Sovereign Vashnik{rt8}||Focus any blob crawling from a fountain and never let it reach the central pit. With [Plague Foam], run out of the group and return after the spray. If marked by [Explosive Infection] run far; the other two infections just need healing in place."
+    },
+    "normal": {
+     "zhTW": "{rt8}萬毒邪祟者瓦什尼克{rt8}||坦克通過帶位固定[痛飲]的噴泉組合，盡量避開難處理的搭配。分好近戰與遠程各攔一條軟怪路線，控制技能對暗影和烈焰軟有效，鮮血軟免控只能硬打。[燃燒劇毒]與其他大軟錯開時間擊殺，避免[腐蝕湧動]和[幽影噴射]疊在一起。",
+     "enUS": "{rt8}Plague Sovereign Vashnik{rt8}||Tanks position to fix the [Quaff] fountain pairings, avoiding the worst combos. Split melee/ranged to intercept each blob lane; CC works on shadow/fire blobs but the blood one is CC-immune and must be hard-focused. Stagger [Burning Venom] kills to avoid [Corrosive Surge] and [Shadow Spray] overlapping."
+    },
+    "heroic": {
+     "zhTW": "{rt8}萬毒邪祟者瓦什尼克{rt8}||英雄增加[惡行催化劑]：萬毒之穴上方凝出毒液寶珠，全團先吃一次高額毒素傷害，隨後飛散的[催化膽汁]必須有人接住，空放會改為全團掉血。噴泉排空更快，[灌注]層數疊上來後軟怪血量與噴射傷害翻倍，清怪節奏必須提速。[滴毒之牙]的物理易傷期間治療要盯死坦克並配合外部減傷。",
+     "enUS": "{rt8}Plague Sovereign Vashnik{rt8}||Heroic adds [Vile Catalyst]: a venom orb forms above the pit—raid takes one big poison hit, then the scattered [Catalytic Bile] must be caught or it becomes raid-wide damage. Fountains drain faster; once [Infusion] stacks, blob health and damage double, so clear faster. During [Venom Fang] physical vulnerability, healers babysit the tank with external DR."
+    },
+    "mythic": {
+     "zhTW": "{rt8}萬毒邪祟者瓦什尼克{rt8}||史詩額外加入原型毒液的配對與站位層，容錯接近於零，任何一隻軟進坑就是重開。三種[適應性感染]會重疊出現，需要預排驅散、吸收盾與外場爆炸位的輪換表。全程按[痛飲]節拍走，爆發窗口卡在[毒性蒸汽]層數還低的前幾輪。",
+     "enUS": "{rt8}Plague Sovereign Vashnik{rt8}||Mythic adds prototype-venom pairing and positioning layers; margin is near zero—any blob in the pit is a restart. The three [Adaptive Infections] overlap, requiring pre-planned dispel, absorb-shield and outer-explosion rotations. Follow the [Quaff] cadence and burst in the early rounds before [Toxic Vapor] stacks climb."
+    }
+   },
+   "双子毒牙": {
+    "lfr": {
+     "zhTW": "{rt8}雙子毒牙{rt8}||身上的[永恆毒液]層數是命門，快到上限時一定要站進伊斯拉茲的[貪婪盛宴]分攤範圍裡消層。地上的綠色黏液和飄著的毒球不要踩、不要碰。看到小蛇[維克蘇爾之嗣]刷出來立刻轉火打掉，它每發唾液都會給你加層數。",
+     "enUS": "{rt8}Twin Venomfangs{rt8}||Your [Eternal Venom] stacks are lethal—when near cap, stand in Israz's [Gluttonous Feast] soak range to drop them. Don't step on green slime or touch drifting venom orbs. Swap to the [Spawn of Vex'thul] the moment it spawns; each spit adds stacks."
+    },
+    "normal": {
+     "zhTW": "{rt8}雙子毒牙{rt8}||兩坦分別貼住兩條蛇，[碎石擊]一定要有人在3碼內接住。安排固定的人去接[腐蝕洪流]噴出的液滴，避免讓全團一起吃層數。雙頭血量同步壓，最後同時擊殺，不要留出[怒湧]窗口。",
+     "enUS": "{rt8}Twin Venomfangs{rt8}||Two tanks each latch one snake; someone must stand within 3 yards to catch [Shard Strike]. Assign fixed players to catch [Corrosive Flow] droplets so the whole raid doesn't take stacks. Sync the two health bars and kill together—no [Surge] window."
+    },
+    "heroic": {
+     "zhTW": "{rt8}雙子毒牙{rt8}||英雄的[貪婪盛宴]會把吞下的毒液變成[血團凝塊]，[起泡混合物]讓它隨層數變大變厚，必須立刻集火，否則[鮮血噴湧]會持續疊加全團增傷。滿能量時維克蘇爾的[湧動]與伊斯拉茲的[洪流]同時到來，需要提前留好團減和治療大技能。[凝固血肉]的血池會壓縮場地，站位要預留撤退空間。",
+     "enUS": "{rt8}Twin Venomfangs{rt8}||Heroic [Gluttonous Feast] turns swallowed venom into [Blood Clot]; [Effervescent Mixture] grows it with stacks—focus it immediately or [Blood Surge] keeps stacking raid-wide damage. At full energy Vex'thul's [Surge] and Israz's [Flow] arrive together—pre-save raid DR and big heals. [Congealed Flesh] blood pools shrink the floor; leave retreat room."
+    },
+    "mythic": {
+     "zhTW": "{rt8}雙子毒牙{rt8}||層數管理精確到人：接液滴、進[貪婪盛宴]、吃[攪動深淵]都要按表輪換，任何一次多吃都可能頂到10層暴斃。[血團凝塊]要按正確順序餵給伊斯拉茲，處理不乾淨就會帶著疊滿的[鮮血噴湧]進下一輪。收尾必須讓兩條蛇同時倒下，誤差控制在幾秒之內。",
+     "enUS": "{rt8}Twin Venomfangs{rt8}||Stack management is per-person: catching droplets, entering [Gluttonous Feast], eating [Churning Abyss] all rotate by roster—one extra stack can hit 10 and kill. Feed [Blood Clots] to Israz in the right order or they carry full [Blood Surge] into the next round. The finish must drop both snakes within seconds of each other."
+    }
+   },
+   "盘魂者内克扎莉": {
+    "lfr": {
+     "zhTW": "{rt8}盤魂者內克扎莉{rt8}||只要記住三件事：中間那口井裡的黑水別站、小怪別放進井裡、被[盤魂]拉著走時原地等打斷或驅散。BOSS掉到一半會撤退，此時集火場上的[賈瓦埃的回響]把她拉回來。最後階段全團掉血變快，交個人減傷跟緊治療。",
+     "enUS": "{rt8}Soulbinder Ny'kazza{rt8}||Just three things: never stand in the black water of the central well, don't let adds reach the well, and when [Soulcoil] pulls you, wait for an interrupt or dispel. At half health the boss retreats—focus the [Echo of Jawae] adds to pull her back. In the final phase raid damage ramps up; use personal DR and stay near the healer."
+    },
+    "normal": {
+     "zhTW": "{rt8}盤魂者內克扎莉{rt8}||安排兩組人輪流用減速與控制攔停[無眠的阿曼尼]，一隻都不要放進[盤魂之井]。[盤魂點燃]的4秒引導前鋪好盾，引導中同時躲[苦痛回響]的擊退小圈；[精華撕裂]結束後順手清掉[潛藏的教徒]。50%集火[賈瓦埃的回響]，[解除盤卷]是軟狂暴，嗜血留到這個階段一次打完。",
+     "enUS": "{rt8}Soulbinder Ny'kazza{rt8}||Assign two groups to rotate slows and CC to halt the [Sleepless Amani]—never let one reach the [Coil Well]. Pre-shield before the 4s [Soulbind Ignition] channel and dodge the [Agonizing Echo] knockback circles during it; after [Essence Rending] clear the [Hiding Cultists]. At 50% burn the [Echo of Jawae]; [Uncoiling] is a soft enrage—save Bloodlust for that phase."
+    },
+    "heroic": {
+     "zhTW": "{rt8}盤魂者內克扎莉{rt8}||英雄額外附加[儀式灼燒]，每層讓[盤魂儀式]傷害再提高15%且持續1分鐘，所以一次漏怪就會讓後面雪崩，控怪鏈必須零失誤。[盤魂點燃]要固定用團減加額外治療CD頂過去，DOT與易傷層數高時不要硬吃。盡量在易傷層數堆起來之前推進階段，避免帶著滿層進[解除盤卷]。",
+     "enUS": "{rt8}Soulbinder Ny'kazza{rt8}||Heroic adds [Ritual Scald]: each stack raises [Coil Ritual] damage by 15% for 1 min, so one missed add snowballs—the CC chain must be flawless. Cover [Soulbind Ignition] with a fixed raid DR plus an extra healer CD; don't hard-soak with high DoT/vulnerability stacks. Push phases before vulnerability stacks build; avoid entering [Uncoiling] at full stacks."
+    },
+    "mythic": {
+     "zhTW": "{rt8}盤魂者內克扎莉{rt8}||階段轉換新增[緊攫深淵]：[溺亡的回響]週期性把全團往井口拉並持續掉血，必須盡快擊殺；進井輸出的人離開時會帶[靈魂疲憊]（受井與[不朽纏繞]傷害+300%），要排輪換名單進出。[祈求]階段必須斷滿所有[潛藏的教徒]的施法，被打斷的施法者會讓打斷人沉默3秒，因此踢斷表要按人排死。整場幾乎零容錯，一次進井或漏斷基本等於重開。",
+     "enUS": "{rt8}Soulbinder Ny'kazza{rt8}||Phase transitions add [Grashing Abyss]: [Drowned Echoes] periodically drag the raid toward the well while draining health—kill them fast. Players who go in to DPS leave with [Soul Fatigue] (+300% damage from the well and [Undying Coil])—rotate a strict in/out roster. During [Supplication] every [Hiding Cultist] cast must be interrupted; the interrupted caster silences the interrupter for 3s, so assign kick order per person. Near-zero margin—one well entry or missed interrupt is a wipe."
+    }
+   },
+   "斯索拉克": {
+    "lfr": {
+     "zhTW": "{rt8}斯索拉克{rt8}||站在BOSS側後方，不要吃正面的錐形攻擊。被綠色毒液點名就跑到人少的地方，爆炸後留下的毒球不要去碰。颳大風把你吹起來時，去撞一個同樣被吹起的隊友就能落地。",
+     "enUS": "{rt8}Ssothalak{rt8}||Stand behind the boss and avoid the frontal cones. When marked by green venom, run to an empty spot; don't touch the poison orb it leaves. When the gale lifts you, collide with another lifted ally to land."
+    },
+    "normal": {
+     "zhTW": "{rt8}斯索拉克{rt8}||[毀傷]要安排足夠人數一起分攤，人太少會直接把接的人打死。[狂怒側風]結束會把你吹飛並掛[湍流陣風]，提前找好互撞的搭檔解除。[掘地固守]的25秒是唯一的+30%易傷窗口，把嗜血和爆發全壓在這裡。",
+     "enUS": "{rt8}Ssothalak{rt8}||[Devastate] needs enough players soaking together or it one-shots the soaker. [Furious Crosswind] ends by launching you with [Turbulent Gust]—pre-find a collision partner to clear it. The 25s [Burrow Stance] is the only +30% damage window; dump Bloodlust and all cooldowns there."
+    },
+    "heroic": {
+     "zhTW": "{rt8}斯索拉克{rt8}||[粘稠囊腫]會在場上越鋪越多，放置位置要提前規劃出通行路線，[呼嘯旋渦]期間沒有落腳點就等於送人頭。坦克[劫掠]疊層後承傷成倍上漲，需要外部減傷配合固定的換坦點。[侵蝕毒液]與[風暴]的中毒減速疊在一起時移動會很吃力，留好位移技能。",
+     "enUS": "{rt8}Ssothalak{rt8}||[Viscous Cysts] pile up—plan placement to keep paths open; during [Shrieking Vortex] with no footing you're a free kill. After [Plunder] stacks the tank takes multiplied damage, needing external DR and fixed swap points. [Corroding Venom] + [Storm] slow stacks make movement painful—save mobility."
+    },
+    "mythic": {
+     "zhTW": "{rt8}斯索拉克{rt8}||史詩加入[毒蛇之怒]：被標記玩家8碼內必須湊夠14人才會觸發[大開殺戒]，人數不夠BOSS就會攢滿怒氣進[怒不可遏]直接滅團。[大開殺戒]留下的[劇毒]在被移除時會爆炸並留下[腐蝕殘渣]（站內+30%承傷），驅散時機與站位必須統一指揮。全程在「湊人分攤」與「分散躲風」之間來回切換，節奏錯一次就補不回來。",
+     "enUS": "{rt8}Ssothalak{rt8}||Mythic adds [Serpent's Wrath]: the marked player needs 14 people within 8 yards to trigger [Kill Frenzy]; short on numbers and the boss fills rage and enters [Uncontrollable] for a wipe. [Venom] left by [Kill Frenzy] explodes on removal and leaves [Corrosive Residue] (+30% intake); dispel timing and positioning need one caller. Constant switching between 'stack to soak' and 'spread to dodge wind'—one missed beat can't be recovered."
+    }
+   },
+   "迷失的探险者": {
+    "lfr": {
+     "zhTW": "{rt8}迷失的探險者{rt8}||三隻龜龜站得越散越好，擠在一起它們就有99%減傷根本打不動。地上會掉箱子、彈跳蘑菇和震盪炸彈，看到就走開，被炸飛後注意落點。撿到[噁心的魚]就往被控制的龜身上砸，能把它救回來。",
+     "enUS": "{rt8}Lost Explorers{rt8}||Spread the three turtles as far apart as possible—together they gain 99% DR and become unkillable. Crates, bounce mushrooms and shock bombs drop on the ground; move away and mind your landing after knockbacks. Grab a [Nasty Fish] and throw it at a mind-controlled turtle to free it."
+    },
+    "normal": {
+     "zhTW": "{rt8}迷失的探險者{rt8}||提前分三組分別去接[巨力重擊]的三個落點做分攤，沒人接會全團重傷。打斷[書卷賢者伊庫]的[寒冰烈焰]，[霜火彈幕]分散站防止兩球合併。三隻血量同步壓，最後留[書卷賢者伊庫]，不要提前打死任何一隻。",
+     "enUS": "{rt8}Lost Explorers{rt8}||Pre-assign three groups to the three [Colossal Smash] landing spots for soaking; unsoaked hits wipe the raid. Interrupt [Scroll Sage Iku]'s [Frostfire]; spread for [Frostfire Barrage] so the orbs don't merge. Sync the three health bars and leave [Scroll Sage Iku] for last—don't kill any early."
+    },
+    "heroic": {
+     "zhTW": "{rt8}迷失的探險者{rt8}||[真菌爆炸]與[衝擊波]一碰就是百萬級傷害，[爆炸驚喜]擊飛後要控制好落點不要落進蘑菇裡。[莫爾扎希]滿能量會狂暴，[噁心的魚]要卡在[黑暗低語]剛上手時就砸掉，並優先砸沒被砸過的目標。擊殺順序失誤觸發[無情加劇]基本等於滅團，斬殺階段要統一指揮。",
+     "enUS": "{rt8}Lost Explorers{rt8}||[Fungal Blast] + [Shockwave] is million-tier damage; after [Explosive Surprise] knockback control your landing away from mushrooms. [Morzahi] enrages at full energy—hit the mind-controlled turtle with a [Nasty Fish] the moment [Dark Whisper] lands, prioritizing un-fished targets. A wrong kill order triggers [Relentless Escalation] (near-wipe); unify the execute phase."
+    },
+    "mythic": {
+     "zhTW": "{rt8}迷失的探險者{rt8}||小怪血量與計時全面收緊，分攤、打斷、砸魚三條鏈必須同時不掉線。三隻血量差要壓到極小，做到近乎同時進入斬殺，不留任何[無情加劇]窗口。近戰堆要同時兼顧[粉碎鐵鍬]的擊退與[邪眼]2碼掃射，站位需隨雕像輪換即時調整。",
+     "enUS": "{rt8}Lost Explorers{rt8}||Add health and timers tighten across the board; the soak/interrupt/fish chains must all stay live. Keep the three health bars within a hair so they hit execute near-simultaneously, leaving no [Relentless Escalation] window. Melee must handle both [Crushing Shovel] knockback and [Evil Eye]'s 2-yard sweep, adjusting positioning as statues rotate."
+    }
+   }
+  }
+ }
+}

@@ -836,17 +836,9 @@ function addon:OpenMainGUI()
     if openFrame and openFrame.frame and openFrame.frame.close then
         openFrame.frame.close:SetText(L["Close"])
     end
-    -- ESC 关闭：开启键盘 + 钩 OnKeyDown，按 ESC 时调用 AceConfigDialog:Close
-    if openFrame and openFrame.frame and not addon._btSettingsEscHooked then
-        addon._btSettingsEscHooked = true
-        openFrame.frame:EnableKeyboard(true)
-        openFrame.frame:SetScript("OnKeyDown", function(self, key)
-            if key == "ESCAPE" then
-                local ACD = LibStub("AceConfigDialog-3.0", true)
-                if ACD then ACD:Close("BossTips") end
-            end
-        end)
-    end
+    -- 注：ESC 关闭由 AceConfig 自身的 CloseSpecialWindows 钩子处理（AceConfigDialog:Open 内已注册），
+    -- 切勿在此对设置框 EnableKeyboard(true) —— 会让设置框捕获键盘且 OnKeyDown 不转发其它按键，
+    -- 导致打开设置后游戏键盘失灵（与先前隐藏 EditBox 抢焦点同一类问题）。
     -- 设置关闭后恢复攻略窗（若原本可见且未被手动隐藏），保持与切换语言前一致
     if openFrame and openFrame.frame and not addon._btSettingsHideHooked then
         addon._btSettingsHideHooked = true

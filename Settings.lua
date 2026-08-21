@@ -13,25 +13,6 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local NGA_URL = "https://bbs.nga.cn/read.php?tid=42002877"
 local CURSE_URL = "https://legacy.curseforge.com/wow/addons/bosstips"
 
--- 复制 URL 到系统剪贴板（WoW 无直接写剪贴板 API，通过隐藏 EditBox 聚焦+全选实现 Ctrl+C 复制）
-local copyFrame = CreateFrame("Frame", nil, UIParent)
-copyFrame:SetSize(1, 1)
-copyFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -10, 10)
-local copyEdit = CreateFrame("EditBox", nil, copyFrame)
-copyEdit:SetMultiLine(false)
-copyEdit:SetWidth(1)
-copyEdit:SetHeight(1)
-copyEdit:SetFontObject("ChatFontNormal")
-copyEdit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
-
-function addon:CopyUrlToClipboard(url, label)
-    label = label or L["Link"]
-    copyEdit:SetText(url)
-    copyEdit:HighlightText()
-    copyEdit:SetFocus()
-    print(string.format("|cff00ff00%s|r %s |cffffcc00Ctrl+C|r %s", tostring(label), L["URL selected, press"], L["to copy"]))
-end
-
 -- ============ 难度显示开关 ============
 -- 设置面板可勾选要展示的难度；未勾选的难度不会出现在攻略窗难度切换列表，
 -- 也不会作为进本自动切换的默认难度。数据与筛选逻辑见 Core.lua：addon.IsDifficultyEnabled 等。
@@ -539,31 +520,17 @@ local function BuildMainOptions()
                 nga_url = {
                     type = "input",
                     name = function() return L["NGA Post"] end,
-                    width = 1.5,
+                    width = "full",
                     get = function() return NGA_URL end,
                     set = function() end,
-                    order = 6,
-                },
-                nga_copy = {
-                    type = "execute",
-                    name = function() return L["Copy Link"] end,
-                    width = 0.5,
-                    func = function() addon:CopyUrlToClipboard(NGA_URL, L["NGA Post"]) end,
                     order = 6,
                 },
                 curse_url = {
                     type = "input",
                     name = function() return L["CurseForge"] end,
-                    width = 1.5,
+                    width = "full",
                     get = function() return CURSE_URL end,
                     set = function() end,
-                    order = 7,
-                },
-                curse_copy = {
-                    type = "execute",
-                    name = function() return L["Copy Link"] end,
-                    width = 0.5,
-                    func = function() addon:CopyUrlToClipboard(CURSE_URL, L["CurseForge"]) end,
                     order = 7,
                 },
                 other_platforms_desc = {

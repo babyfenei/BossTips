@@ -336,10 +336,6 @@ local L_zhCN = {
     ["CurseForge"] = "CurseForge",
     ["NetEase DD"] = "网易有爱（网易DD）",
     ["HeiHe Workshop"] = "黑盒工坊",
-    ["Copy Link"] = "复制链接",
-    ["Link"] = "链接",
-    ["URL selected, press"] = "链接已选中，按",
-    ["to copy"] = "复制",
     ["Other Platforms Hint"] = "网易有爱（网易DD）、黑盒工坊等国内插件平台搜索「BossTips」即可下载本插件。",
     ["Close"] = "关闭",
 }
@@ -676,10 +672,6 @@ local L_zhTW = {
     ["CurseForge"] = "CurseForge",
     ["NetEase DD"] = "網易有愛（網易DD）",
     ["HeiHe Workshop"] = "黑盒工坊",
-    ["Copy Link"] = "複製連結",
-    ["Link"] = "連結",
-    ["URL selected, press"] = "連結已選中，按",
-    ["to copy"] = "複製",
     ["Other Platforms Hint"] = "網易有愛（網易DD）、黑盒工坊等國內插件平台搜尋「BossTips」即可下載本插件。",
     ["Close"] = "關閉",
 }
@@ -1016,10 +1008,6 @@ local L_enUS = {
     ["CurseForge"] = "CurseForge",
     ["NetEase DD"] = "NetEase DD",
     ["HeiHe Workshop"] = "HeiHe Workshop",
-    ["Copy Link"] = "Copy Link",
-    ["Link"] = "Link",
-    ["URL selected, press"] = "URL selected, press",
-    ["to copy"] = "to copy",
     ["Other Platforms Hint"] = "Domestic platforms (NetEase DD / HeiHe Workshop) — search for \"BossTips\" to install.",
     ["Close"] = "Close",
 }

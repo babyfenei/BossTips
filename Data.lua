@@ -582,6 +582,8 @@ local function BuildActiveGuides()
         end
     end
     addon.ActiveGuides = guides
+    -- 把缺失的首领 encounterId 填回内存攻略 meta（不再写入 WTF）；EJ 未就绪时为空操作，无副作用。
+    pcall(addon.AutoFillBigWigsIds)
 end
 
 local function GetBossData() return addon.ActiveGuides end
@@ -705,16 +707,16 @@ function addon.GetLocalizedInstanceName(instName, catType, verId)
     return instName
 end
 
--- 获取某个首领/小怪的 encounterId：自定义副本 > WTF 覆盖层 > 内置数据 > BigWigs 数据
+-- 获取某个首领/小怪的 encounterId：
+--   自定义副本(customDungeons/customBosses, 用户自建内容无攻略文件, 保留 WTF) >
+--   内置数据(攻略文件 meta.encounterIds, 权威源) > BigWigsIdDB/FallbackIdDB(随插件发布, 非 WTF)
+-- 不再依赖 WTF encounterOverrides，重置 SavedVariables 也不会丢失内置 ID。
 local function GetBossEncounterId(instance, boss)
     ensureDBExists()
     local GD = addon.GuideData
     if BossTipsGlobalDB.customDungeons[instance] then
         local b = BossTipsGlobalDB.customDungeons[instance].bosses and BossTipsGlobalDB.customDungeons[instance].bosses[boss]
         if b and b.encounterId and b.encounterId ~= "" then return b.encounterId end
-    end
-    if BossTipsGlobalDB.encounterOverrides[instance] and BossTipsGlobalDB.encounterOverrides[instance][boss] then
-        return BossTipsGlobalDB.encounterOverrides[instance][boss]
     end
     if GD.meta and GD.meta[instance] and GD.meta[instance].encounterIds and GD.meta[instance].encounterIds[boss] then
         return GD.meta[instance].encounterIds[boss]
@@ -879,10 +881,14 @@ end
 addon.GetBigWigsEncounterId = GetBigWigsEncounterId
 addon.GetFallbackEncounterId = GetFallbackEncounterId
 
--- 为当前所有已激活攻略自动填充 encounterId
+-- 为当前所有已激活攻略自动填充缺失的 encounterId。
+-- 写回「内存中的攻略 meta」(addon.GuideData.meta)，而非 WTF SavedVariables；
+-- 这样智能展开/发送不再依赖 SavedVariables，重置 WTF 也不丢 ID。
+-- 真正持久化由把这些 ID 烘焙进攻略文件(commit)完成。
 local function AutoFillBigWigsIds()
     ensureDBExists()
-    BossTipsGlobalDB.encounterOverrides = BossTipsGlobalDB.encounterOverrides or {}
+    local GD = addon.GuideData
+    GD.meta = GD.meta or {}
     local count = 0
     for instance, bosses in pairs(addon.ActiveGuides or {}) do
         for boss in pairs(bosses) do
@@ -890,8 +896,9 @@ local function AutoFillBigWigsIds()
             if not existing then
                 local eid = GetBigWigsEncounterId(instance, boss)
                 if eid then
-                    BossTipsGlobalDB.encounterOverrides[instance] = BossTipsGlobalDB.encounterOverrides[instance] or {}
-                    BossTipsGlobalDB.encounterOverrides[instance][boss] = eid
+                    GD.meta[instance] = GD.meta[instance] or {}
+                    GD.meta[instance].encounterIds = GD.meta[instance].encounterIds or {}
+                    GD.meta[instance].encounterIds[boss] = eid
                     count = count + 1
                 end
             end

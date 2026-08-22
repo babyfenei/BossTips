@@ -294,18 +294,24 @@ end
 -- ==========================================
 -- encounterId 读写
 -- ==========================================
+-- 保存首领 encounterId：内置副本写回「内存攻略 meta」(非 WTF, 持久化由烘焙攻略文件完成)；
+-- 自定义副本(customDungeons/customBosses, 用户自建内容无攻略文件)仍存 WTF。
 local function SaveEncounterId(instName, bossName, eid)
-    BossTipsGlobalDB.encounterOverrides = BossTipsGlobalDB.encounterOverrides or {}
-    if not BossTipsGlobalDB.encounterOverrides[instName] then
-        BossTipsGlobalDB.encounterOverrides[instName] = {}
+    if BossTipsGlobalDB.customDungeons and BossTipsGlobalDB.customDungeons[instName] then
+        local cb = BossTipsGlobalDB.customDungeons[instName]
+        cb.bosses = cb.bosses or {}
+        cb.bosses[bossName] = cb.bosses[bossName] or {}
+        cb.bosses[bossName].encounterId = (eid and eid ~= "") and eid or nil
+        return
     end
+    local GD = addon.GuideData
+    GD.meta = GD.meta or {}
+    GD.meta[instName] = GD.meta[instName] or {}
+    GD.meta[instName].encounterIds = GD.meta[instName].encounterIds or {}
     if eid and eid ~= "" then
-        BossTipsGlobalDB.encounterOverrides[instName][bossName] = eid
+        GD.meta[instName].encounterIds[bossName] = eid
     else
-        BossTipsGlobalDB.encounterOverrides[instName][bossName] = nil
-        if not next(BossTipsGlobalDB.encounterOverrides[instName]) then
-            BossTipsGlobalDB.encounterOverrides[instName] = nil
-        end
+        GD.meta[instName].encounterIds[bossName] = nil
     end
 end
 
@@ -1389,9 +1395,8 @@ function addon:CreateEditorFrame()
                 idEdit:SetCallback("OnEnterPressed", function(_, _, text)
                     if customDungeon then
                         customDungeon.id = strtrim(text)
-                    else
-                        addon.SetDungeonOverride(instName, "id", strtrim(text))
                     end
+                    -- 内置副本的副本ID 存于攻略文件 meta.instanceId，不再写入 WTF dungeonOverrides
                 end)
                 AddRow(scroll, nameEdit, idEdit)
 

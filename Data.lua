@@ -100,6 +100,26 @@ local function ensureDBExists()
     if not BossTipsGlobalDB.disabledCustomRaidVersions then BossTipsGlobalDB.disabledCustomRaidVersions = {} end
     if not BossTipsGlobalDB.encounterOverrides then BossTipsGlobalDB.encounterOverrides = {} end
     if not BossTipsGlobalDB.dungeonOverrides then BossTipsGlobalDB.dungeonOverrides = {} end
+    -- 自定义攻略按语言分存迁移：旧结构 {tips,type,tipsByDifficulty} / 字符串 -> {type,translations={zhCN={tips,tipsByDifficulty}}}
+    if type(BossTipsGlobalDB.guides) == "table" then
+        for inst, bosses in pairs(BossTipsGlobalDB.guides) do
+            if type(bosses) == "table" then
+                for boss, rg in pairs(bosses) do
+                    if type(rg) == "table" and not rg.translations then
+                        BossTipsGlobalDB.guides[inst][boss] = {
+                            type = rg.type or "BOSS",
+                            translations = { zhCN = { tips = rg.tips, tipsByDifficulty = rg.tipsByDifficulty or {} } },
+                        }
+                    elseif type(rg) == "string" then
+                        BossTipsGlobalDB.guides[inst][boss] = {
+                            type = "BOSS",
+                            translations = { zhCN = { tips = rg, tipsByDifficulty = {} } },
+                        }
+                    end
+                end
+            end
+        end
+    end
     -- 数据库兜底完成后，按真正的 lang 重新解析 locale（Locales.lua 加载早于 Data.lua，需刷新）
     if addon.RefreshLocale then addon.RefreshLocale() end
 end
@@ -613,9 +633,25 @@ addon.GetTipsForDifficulty = GetTipsForDifficulty
 -- 按当前语言(addon.LOCALE)读取首领/小怪攻略文本。
 -- 优先从分语言攻略文件(addon.GuideData.translations[locale][type][ver][instance][boss][diff])取译文；
 -- 缺失（未翻译语言/未覆盖首领）则回退 GetTipsForDifficulty（简中源）。
+-- 自定义攻略按语言分存：BossTipsGlobalDB.guides[inst][boss].translations[lang].tipsByDifficulty[diff]
+-- 编辑时选取的语言即定义该覆盖的语言（用户明确要求：自定义在编辑时选啥语言就定为啥语言）。
+local function GetCustomOverrideText(instName, bossName, diff, lang)
+    local g = BossTipsGlobalDB.guides[instName] and BossTipsGlobalDB.guides[instName][bossName]
+    if not g or not g.translations then return nil end
+    local tr = g.translations[lang]
+    if not tr then return nil end
+    local txt = (tr.tipsByDifficulty and tr.tipsByDifficulty[diff]) or tr.tips
+    return (txt and txt ~= "") and txt or nil
+end
+
 local function GetGuideText(entry, diff)
     if not entry then return "" end
     local locale = addon.LOCALE or "zhCN"
+    -- 自定义覆盖（按当前语言分存）优先：编辑器/预览/发送统一来源，杜绝三处分裂与语言残留
+    if entry._src then
+        local cust = GetCustomOverrideText(entry._src.instance, entry._src.boss, diff, locale)
+        if cust then return cust end
+    end
     if locale ~= "zhCN" then
         local trans = addon.GuideData and addon.GuideData.translations and addon.GuideData.translations[locale]
         local src = entry._src
@@ -646,9 +682,29 @@ local function GetGuideText(entry, diff)
             end
         end
     end
+    -- 回退红线：enUS 缺译文绝不回退中文（避免「其他语言残留」），zhTW 缺译可回退中文源（仍为中文）
+    if locale == "enUS" then return "" end
     return GetTipsForDifficulty(entry, diff)
 end
 addon.GetGuideText = GetGuideText
+
+-- 统一取文入口：编辑器文本框、攻略预览窗、发送均调用本函数，保证三处文本 100% 一致。
+-- 返回 (text, isCustom)：isCustom=true 表示当前语言下存在 WTF 自定义覆盖。
+local function GetDisplayText(instName, bossName, diff)
+    local lang = addon.LANG or addon.LOCALE or "zhCN"
+    -- 自定义覆盖（当前语言）优先
+    local cust = GetCustomOverrideText(instName, bossName, diff, lang)
+    if cust then return cust, true end
+    -- 内置译文（跟随当前语言）
+    local entry = addon.GetActiveGuideEntry(instName, bossName)
+    if entry then
+        local lookupDiff = (entry._src and entry._src.type == "mplus") and "mythicplus" or diff
+        local t = addon.GetGuideText(entry, lookupDiff)
+        if t and t ~= "" then return t, false end
+    end
+    return "", false
+end
+addon.GetDisplayText = GetDisplayText
 
 -- 根据当前 locale 获取首领/小怪的显示名（用于编辑器左侧树、攻略窗标题等）
 -- 仅 M+ Current 与有翻译文件的团本返回译文；其余返回原名

@@ -452,17 +452,21 @@ local function SaveBossTips(instName, bossName, text)
     -- 编辑特定难度：确保该条目标为 table 并写入 tipsByDifficulty
     if type(rg) ~= "table" then
         local base = (type(rg) == "string" and rg) or ""
-        rg = { tips = base, type = "BOSS", tipsByDifficulty = {} }
+        rg = { type = "BOSS", translations = { zhCN = { tips = base, tipsByDifficulty = {} } } }
         BossTipsGlobalDB.guides[instName][bossName] = rg
     end
-    rg.tipsByDifficulty = rg.tipsByDifficulty or {}
+    rg.translations = rg.translations or {}
+    -- 编辑时选取的语言即定义该覆盖的语言（用户要求：选啥语言就定为啥语言）
+    local lang = addon.LANG or addon.LOCALE or "zhCN"
+    rg.translations[lang] = rg.translations[lang] or { tipsByDifficulty = {} }
+    rg.translations[lang].tipsByDifficulty = rg.translations[lang].tipsByDifficulty or {}
     -- 大秘境仅存 mythicplus 一档：即使编辑难度落在其它档也写入 mythicplus
     local saveDiff = editDiff
     local e = addon.GetActiveGuideEntry(instName, bossName)
     if e and e._src and e._src.type == "mplus" then saveDiff = "mythicplus" end
-    rg.tipsByDifficulty[saveDiff] = text
+    rg.translations[lang].tipsByDifficulty[saveDiff] = text
     -- 编辑随机(lfr)时同步更新 tips 字段，保持兜底内容一致
-    if saveDiff == "lfr" then rg.tips = text end
+    if saveDiff == "lfr" then rg.translations[lang].tips = text end
     addon.RefreshGuides()
 end
 
@@ -481,33 +485,11 @@ end
 
 local function GetRawGuide(instName, bossName)
     local entry = addon.GetActiveGuideEntry(instName, bossName)
-    local rg = BossTipsGlobalDB.guides[instName] and BossTipsGlobalDB.guides[instName][bossName]
     local currentType = (entry and entry.type) or "BOSS"
-
-    local function extractTips(tbl)
-        if type(tbl) ~= "table" then return nil end
-        if tbl.tipsByDifficulty and tbl.tipsByDifficulty[editDiff] and tbl.tipsByDifficulty[editDiff] ~= "" then
-            return tbl.tipsByDifficulty[editDiff]
-        end
-        if tbl.tips and tbl.tips ~= "" then return tbl.tips end
-        return nil
-    end
-
-    local curTips
-    local wtfTips = rg and extractTips(rg)
-    if wtfTips then
-        -- WTF 自定义攻略：用户自己编辑/导入的内容，保持原样不翻译
-        curTips = wtfTips
-        if type(rg) == "table" and rg.type then currentType = rg.type end
-    elseif entry then
-        -- 内置攻略：走翻译层，按当前 locale + 编辑难度取译文
-        -- 大秘境仅存 mythicplus 一档，强制按该难度取译文
-        local lookupDiff = (entry._src and entry._src.type == "mplus") and "mythicplus" or editDiff
-        curTips = addon.GetGuideText(entry, lookupDiff) or addon.GetTipsForDifficulty(entry, lookupDiff) or ""
-    else
-        curTips = ""
-    end
-    return curTips, currentType
+    -- 统一取文：编辑器文本框与预览窗/发送共用 GetDisplayText，保证三处 100% 一致
+    local curTips, isCustom = addon.GetDisplayText(instName, bossName, editDiff)
+    if isCustom and type(entry) == "table" and entry.type then currentType = entry.type end
+    return curTips, currentType, isCustom
 end
 addon.GetRawGuide = GetRawGuide
 
@@ -531,6 +513,16 @@ function addon:CreateEditorFrame()
     -- 关闭按钮跟随插件语言（AceGUI Frame 的关闭按钮为 frame.frame.close）
     if frame.frame and frame.frame.close then
         frame.frame.close:SetText(L["Close"])
+    end
+
+    -- 注册到 UISpecialFrames，使 ESC 可关闭编辑器。
+    -- 注：此前因修复「键盘捕获」Bug 移除了 EnableKeyboard(true)，AceGUI Frame 默认不再响应 ESC，
+    -- 需显式把本帧加入 ESC 处理队列；OnClose 回调已负责隐藏与刷新。
+    local _ef = frame.frame
+    if _ef and _ef:GetName() then
+        tinsert(UISpecialFrames, _ef:GetName())
+    elseif _ef then
+        tinsert(UISpecialFrames, _ef)
     end
 
     frame:SetCallback("OnClose", function(widget)
@@ -1235,16 +1227,18 @@ function addon:CreateEditorFrame()
                     return
                 end
 
+                -- 语言名：由当前编辑语言(addon.LANG)决定，自定义攻略编辑时选取的语言即保存的语言
+                local langName = (addon.LANG == "zhTW" and L["繁體中文"]) or (addon.LANG == "enUS" and L["English"]) or L["简体中文"]
                 local sourceLabel = ""
                 if binfo.source == "builtin" then
                     sourceLabel = L["BuiltinSuffix"]
                 else
-                    sourceLabel = L["CustomSuffix"]
+                    sourceLabel = L["CustomSuffix"] .. "·" .. langName
                 end
                 local displayName = (addon.GetLocalizedBossName and addon.GetLocalizedBossName(instName, bossName, isRaid, verId)) or bossName
                 AddHeading(scroll, L["Edit Target"] .. displayName .. sourceLabel)
 
-                local curTips, currentType = GetRawGuide(instName, bossName)
+                local curTips, currentType, isCustom = GetRawGuide(instName, bossName)
 
                 -- 目标名称 + 删除按钮
                 local nameRow = AceGUI:Create("SimpleGroup")
@@ -1363,10 +1357,11 @@ function addon:CreateEditorFrame()
                 end)
                 AddFullWidth(scroll, diffDD)
 
-                -- 文本笔记
+                -- 文本笔记：标签明确指出当前编辑的是「内置攻略」还是「WTF 自定义攻略」
                 local diffLabel = GetDiffEditLabel(editDiff)
+                local noteSourceLabel = isCustom and (L["CustomSuffix"] .. "·" .. langName) or L["BuiltinSuffix"]
                 local noteEdit = AceGUI:Create("MultiLineEditBox")
-                noteEdit:SetLabel(L["Text Notes Current"] .. diffLabel .. L["Text Notes Suffix"])
+                noteEdit:SetLabel(L["Text Notes Current"] .. diffLabel .. L["Text Notes Suffix"] .. noteSourceLabel)
                 noteEdit:SetText(curTips)
                 noteEdit:SetNumLines(18)
                 noteEdit:DisableButton(true)

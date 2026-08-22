@@ -1039,8 +1039,42 @@ local function ResolveLocale()
 end
 ResolveLocale()
 
+-- 首次加载：addon.LANG 与解析出的 LOCALE 同步；AUTO 时即客户端语言。
+-- addon.LANG 是「自定义攻略存储/读取」用的统一语言变量，与 UI 文本变量 selected 同源。
+addon.LANG = addon.LOCALE
+
 -- 设置面板切换语言时调用：重新解析语言标识（addon.L 元表引用 selected 上值，自动生效）
 addon.RefreshLocale = ResolveLocale
+
+-- 统一切语言入口：一个变量(addon.LANG)驱动「所有」文本切换，杜绝残留其他语言。
+-- lang ∈ {"AUTO","zhCN","zhTW","enUS"}；AUTO 时按客户端语言解析并落到具体语言，
+-- 自定义攻略按该具体语言分存，编辑器/预览/发送三处读取完全一致。
+function addon.ApplyLanguage(lang)
+    lang = lang or "AUTO"
+    if _G.BossTipsGlobalDB then _G.BossTipsGlobalDB.lang = lang end
+    ResolveLocale() -- 重算 selected / addon.LOCALE
+    -- addon.LANG 统一为具体语言：AUTO 时跟随解析结果，显式语言直接用设定值
+    addon.LANG = (lang == "AUTO") and addon.LOCALE or lang
+    -- 重建攻略表：entry.name 等按新语言取，避免首领名/攻略残留旧语言（BuildActiveGuides 仅重算结构，不改文案）
+    if addon.BuildActiveGuides then addon.BuildActiveGuides() end
+    if addon.BuildGuideOptions then addon.BuildGuideOptions() end
+    -- 若攻略窗正显示，强制按当前副本重新渲染（取新语言文本），避免部分条目残留旧语言
+    if addon.tipsFrame and addon.tipsFrame:IsShown() then
+        if addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
+            addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+        elseif addon.tipsFrame.RefreshIfShown then
+            addon.tipsFrame:RefreshIfShown()
+        end
+    end
+    -- 编辑器开着则刷新树与内容（编辑框按当前语言读取自定义/内置文案）
+    if addon.editorFrame and addon.editorFrame:IsShown() and addon.editorFrame.RefreshTree then
+        addon.editorFrame:RefreshTree()
+    end
+    -- 通知 AceConfig 重绘设置面板（UI 文本随 L 元表即时切换）
+    if LibStub("AceConfigRegistry-3.0", true) then
+        LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
+    end
+end
 
 -- 元表回退策略（必须保证英文模式绝不回退出中文）：
 --   selected[k] 命中 -> 直接返回

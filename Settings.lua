@@ -32,7 +32,7 @@ local function MakeDiffToggle(key, order)
         name = function() return GetDiffToggleLabel(key) end,
         desc = function() return L["Diff Toggle Desc"] end,
         -- 0.65 ≈ 1/3 行宽，5 个复选框按 3+2 两行均衡分布
-        width = 0.65,
+        width = "full",
         order = order,
         get = function()
             local ed = BossTipsGlobalDB.enabledDifficulties
@@ -115,7 +115,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Display Mode"] end,
                             desc = function() return L["Display Mode Desc"] end,
-                            width = 1.5,
+                            width = "full",
                             values = function() return {
                                 ["auto"] = L["Auto Expand"],
                                 ["button"] = L["Button Mode"],
@@ -259,7 +259,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Left Click Channel"] end,
                             desc = function() return L["Left Channel Desc"] end,
-                            width = 1.0,
+                            width = "full",
                             values = function() return {
                                 ["SAY"] = L["Say"],
                                 ["PARTY"] = L["Party"],
@@ -276,7 +276,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Right Click Channel"] end,
                             desc = function() return L["Right Channel Desc"] end,
-                            width = 1.0,
+                            width = "full",
                             values = function() return {
                                 ["SAY"] = L["Say"],
                                 ["PARTY"] = L["Party"],
@@ -313,7 +313,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Language"] end,
                             desc = function() return L["Language Desc"] end,
-                            width = 1.0,
+                            width = "full",
                             values = function()
                                 return {
                                     ["AUTO"] = L["Follow System"],
@@ -324,22 +324,17 @@ local function BuildMainOptions()
                             end,
                             get = function() return BossTipsGlobalDB.lang or "AUTO" end,
                             set = function(_, val)
-                                BossTipsGlobalDB.lang = val
-                                if addon.RefreshLocale then addon.RefreshLocale() end
-                                -- 切换语言后重建攻略表：entry.name 等按新语言取，避免首领名/攻略残留旧语言。
-                                -- 注意 BuildActiveGuides 仅重算结构（引用译文/源文本），不修改任何攻略内容。
-                                if addon.BuildActiveGuides then addon.BuildActiveGuides() end
-                                if addon.BuildGuideOptions then addon.BuildGuideOptions() end
-                                -- 若攻略窗正显示，强制按当前副本重新渲染（取新语言文本），避免部分条目残留旧语言。
-                                if addon.tipsFrame and addon.tipsFrame:IsShown() then
-                                    if addon.currentInstanceName and addon.tipsFrame.ShowInstanceGuide then
-                                        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
-                                    elseif addon.tipsFrame.RefreshIfShown then
-                                        addon.tipsFrame:RefreshIfShown()
+                                -- 统一切语言入口：一个变量驱动全部文本切换，杜绝残留其他语言
+                                if addon.ApplyLanguage then
+                                    addon.ApplyLanguage(val)
+                                else
+                                    BossTipsGlobalDB.lang = val
+                                    if addon.RefreshLocale then addon.RefreshLocale() end
+                                    if addon.BuildActiveGuides then addon.BuildActiveGuides() end
+                                    if addon.BuildGuideOptions then addon.BuildGuideOptions() end
+                                    if LibStub("AceConfigRegistry-3.0", true) then
+                                        LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
                                     end
-                                end
-                                if LibStub("AceConfigRegistry-3.0", true) then
-                                    LibStub("AceConfigRegistry-3.0"):NotifyChange("BossTips")
                                 end
                             end,
                             order = 0,
@@ -348,7 +343,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Expansion Direction"] end,
                             desc = function() return L["Expansion Direction Desc"] end,
-                            width = 0.8,
+                            width = "full",
                             values = function() return {
                                 ["down"] = L["Expand Down"],
                                 ["up"]   = L["Expand Up"],
@@ -370,7 +365,7 @@ local function BuildMainOptions()
                             type = "select",
                             name = function() return L["Theme Style"] end,
                             desc = function() return L["Theme Style Desc"] end,
-                            width = 1.0,
+                            width = "full",
                             values = function() return {
                                 ["ace3"] = L["ACE3 Theme"],
                                 ["default"] = L["Default Theme"],
@@ -385,7 +380,7 @@ local function BuildMainOptions()
                         font = {
                             type = "select",
                             name = function() return L["Font"] end,
-                            width = 1.0,
+                            width = "full",
                             values = function() return {
                                 ["default"] = L["System Default"],
                                 ["damage"] = L["Damage Font"],
@@ -406,7 +401,7 @@ local function BuildMainOptions()
                         collapsedAlpha = {
                             type = "range",
                             name = function() return L["Collapsed Alpha"] end,
-                            width = 1.0,
+                            width = "full",
                             min = 0.1, max = 1.0, step = 0.05,
                             get = function() return BossTipsGlobalDB.collapsedAlpha end,
                             set = function(_, val) BossTipsGlobalDB.collapsedAlpha = val; ApplyAppearanceChange() end,
@@ -415,7 +410,7 @@ local function BuildMainOptions()
                         bgColor = {
                             type = "color",
                             name = function() return L["Background Color & Alpha"] end,
-                            width = 1.0,
+                            width = "full",
                             hasAlpha = true,
                             get = function()
                                 return BossTipsGlobalDB.tipsBgR or 0.05, BossTipsGlobalDB.tipsBgG or 0.05,

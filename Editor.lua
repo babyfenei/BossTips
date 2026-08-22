@@ -1336,19 +1336,15 @@ function addon:CreateEditorFrame()
                     AddFullWidth(scroll, typeDD)
                 end
 
-                -- 编辑难度选择（团本无 M+ 模式；大秘境仅一档 mythicplus；原生 5 人本可按多难度编辑）
+                -- 编辑难度选择：团本无 M+ 模式（仅 lfr/normal/heroic/mythic）；
+                -- 大秘境与原生 5 人本均按数据五难度（lfr/normal/heroic/mythic/mythicplus）编辑。
+                -- M+ 攻略数据本身五难度齐全，编辑器不再锁死为单档 mythicplus，否则「设置/编辑器里看不到其他难度」。
                 local activeEntry = addon.GetActiveGuideEntry(instName, bossName)
-                local isMPlusEdit = activeEntry and activeEntry._src and activeEntry._src.type == "mplus"
-                -- 大秘境只有 mythicplus 一档：下拉仅提供 Mythic+，避免“选其它难度又被弹回 M+”
-                if isMPlusEdit then
-                    editDiff = "mythicplus"
-                elseif isRaid and editDiff == "mythicplus" then
+                if isRaid and editDiff == "mythicplus" then
                     editDiff = "lfr"
                 end
                 local diffEditOrder
-                if isMPlusEdit then
-                    diffEditOrder = { "mythicplus" }
-                elseif isRaid then
+                if isRaid then
                     diffEditOrder = { "lfr", "normal", "heroic", "mythic" }
                 else
                     diffEditOrder = { "lfr", "normal", "heroic", "mythic", "mythicplus" }

@@ -1615,17 +1615,14 @@ local function BuildChatParts(bossName, channelOverride)
 end
 addon.BuildChatParts = BuildChatParts
 
--- 直接发送：点击即发、无延迟；战斗中由 InCombatLockdown 拦截（不发送，不打扰战斗）。
--- 喇叭按钮 OnClick → 此函数（见 Window.lua），脱战点击立即 SendChatMessage。
+-- 直接发送：点击即发、无延迟。SendChatMessage 在战斗中可用（战斗仅限制安全按钮/受保护 API，
+-- 不限制聊天发送），因此不在战斗中拦截，保证副本/团本战斗中也能即时把攻略发到聊天。
+-- 喇叭按钮 OnClick → 此函数（见 Window.lua）。
 local function SendBossTips(bossName, channelOverride)
     local result = BuildChatParts(bossName, channelOverride)
     if not result then return end
     local parts, displayName = result.parts, result.displayName
     local chatType = ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-    if InCombatLockdown() then
-        print(L["|cffff0000BossTips|r Cannot send message in combat."])
-        return
-    end
     for _, p in ipairs(parts) do
         local ok, err = pcall(SendChatMessage, p, chatType)
         if not ok then

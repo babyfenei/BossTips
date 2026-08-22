@@ -488,12 +488,17 @@ UpdateLayout = function()
                         frame.noteText:SetWidth(windowWidth - 40)
                     end
                     frame.noteText:Show()
-                    frame.noteText:SetText(FormatTips(frame.targetData.tips or ""))
+                    local formatted = FormatTips(frame.targetData.tips or "")
+                    frame.noteText:SetText(formatted)
                     local textHeight = frame.noteText:GetStringHeight()
-                    if textHeight == 0 and frame.targetData.tips and frame.targetData.tips ~= "" then
-                        textHeight = fontSize * 2
+                    if (not textHeight or textHeight <= 0) and formatted ~= "" then
+                        -- GetStringHeight 尚未结算（首帧布局未刷新）时回退：按行数估算，
+                        -- 避免长攻略被截断成 2 行（旧逻辑用 fontSize*2 固定高度会裁掉内容）。
+                        local lines = 1
+                        for _ in string.gmatch(formatted, "\n") do lines = lines + 1 end
+                        textHeight = lines * (fontSize + 4) + 4
                     end
-                    textHeight = math.max(textHeight, 16)
+                    textHeight = math.max(textHeight or 0, 16)
                     frame:SetHeight(30 + textHeight + 10)
                 else
                     frame:SetAlpha(db.collapsedAlpha or 0.55)
@@ -653,20 +658,18 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
                 speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
                 frame.speakerBtn = speakerBtn
-                -- 直接发送：点击即发、无延迟；战斗中由 SendBossTips 内部 InCombatLockdown 拦截（不打扰战斗）。
+                -- 直接发送：点击即发、无延迟；SendChatMessage 在战斗中可用，故战斗中也可即时发送攻略（不再拦截 InCombatLockdown）。
                 -- 左键=设定频道(defaultChatChannel)，右键=右键频道(sendChannelRight)。
                 speakerBtn:SetScript("OnClick", function(_, button)
                     local tdata = frame.targetData
                     local tname = tdata and (tdata.bossKey or tdata.name)
                     if tname and tname ~= "" then
-                        if InCombatLockdown() then
-                            print(L["|cffff0000BossTips|r Cannot send message in combat."])
-                        else
-                            local ch = (button == "RightButton")
-                                and (BossTipsGlobalDB.sendChannelRight or "SAY")
-                                or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-                            addon.SendBossTips(tname, ch)
-                        end
+                        -- 注意：SendChatMessage 在战斗中可用（战斗只限制安全按钮/受保护 API，不限制聊天），
+                        -- 因此不拦截 InCombatLockdown，保证副本/团本战斗中也能即时发送攻略。
+                        local ch = (button == "RightButton")
+                            and (BossTipsGlobalDB.sendChannelRight or "SAY")
+                            or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+                        addon.SendBossTips(tname, ch)
                     end
                 end)
 
@@ -682,7 +685,7 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
             end
 
             -- 喇叭按钮的 OnClick 已在创建时绑定为「直接发送」(addon.SendBossTips)，无需每次显示重设。
-            -- 战斗中 SendBossTips 内部 InCombatLockdown 拦截，脱战点击即发、无延迟。
+            -- 点击即发、无延迟；SendChatMessage 在战斗中可用，故不再拦截 InCombatLockdown。
             frame.speakerBtn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(L["Send Guide"])
@@ -728,10 +731,7 @@ local testInstanceName = L["Test Window"]
 -- 注意：不再在模块加载时捕获 TEST_TIPS，改为在 ShowTestWindow / SendTestTipsToChat
 -- 调用时实时取 L["TestWindowSampleTips"]，使切换语言后测试窗能立即显示对应译文。
 local function SendTestTipsToChat(channelOverride)
-    if InCombatLockdown() then
-        print(L["|cffff0000BossTips|r Cannot send message in combat."])
-        return
-    end
+    -- SendChatMessage 在战斗中可用，故不在战斗中拦截（与真实攻略窗行为一致）。
     local chatType = addon.ResolveSendChannel(channelOverride or BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
     local segs = { strsplit("||", L["TestWindowSampleTips"]) }
     for _, seg in ipairs(segs) do
@@ -781,14 +781,10 @@ function addon.ShowTestWindow()
     frame.isExpanded = true
     frame.titleBtn:SetScript("OnClick", function() end)
     frame.speakerBtn:SetScript("OnClick", function(_, button)
-        if InCombatLockdown() then
-            print(L["|cffff0000BossTips|r Cannot send message in combat."])
-        else
-            local ch = (button == "RightButton")
-                and (BossTipsGlobalDB.sendChannelRight or "SAY")
-                or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-            SendTestTipsToChat(ch)
-        end
+        local ch = (button == "RightButton")
+            and (BossTipsGlobalDB.sendChannelRight or "SAY")
+            or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+        SendTestTipsToChat(ch)
     end)
     frame.speakerBtn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")

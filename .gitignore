@@ -19,3 +19,4 @@ Guides_bak_*/
 Guides_bak_pre_transform/
 BossData.lua.backup
 *.backup
+tools/backup_*/

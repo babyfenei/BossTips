@@ -1046,7 +1046,8 @@ addon.RefreshLocale = ResolveLocale
 --   selected[k] 命中 -> 直接返回
 --   enUS 缺失 -> 回退到英文键本身（大多数键即英文；绝不回退 L_zhCN，否则英文模式会显示简中）
 --   zhTW 缺失 -> 回退简中表值（仍为中文，可接受）；仍缺 -> 回退键本身
---   zhCN 缺失 -> 回退键本身（键即中文或英文）
+--   zhCN 缺失 -> 先回退繁中（仍是中文），再回退英文，最后回退键本身；
+--                避免「切换回简中后部分界面仍显示英文」（英文键在 zhCN 缺失时直接回退成英文键文本）。
 addon.L = setmetatable({}, {
     __index = function(t, k)
         local v = selected[k]
@@ -1057,6 +1058,11 @@ addon.L = setmetatable({}, {
             local z = L_zhCN[k]
             return (z ~= nil) and z or k
         else
+            -- zhCN：缺失键先找繁中（中文），再找英文，最后才回退键本身
+            local z = L_zhTW[k]
+            if z ~= nil then return z end
+            local e = L_enUS[k]
+            if e ~= nil then return e end
             return k
         end
     end

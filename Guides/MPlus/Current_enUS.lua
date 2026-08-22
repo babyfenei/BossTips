@@ -9,7 +9,7 @@ addon.GuideData.translations.enUS = addon.GuideData.translations.enUS or {}
 addon.GuideData.translations.enUS.mplus = addon.GuideData.translations.enUS.mplus or {}
 addon.GuideData.translations.enUS.mplus["Current"] = {
     ["塞塔里斯神庙"] = {
-        name = "塞塔里斯神庙",
+        name = "Temple of Sethraliss",
         ["剧毒蝰蛇"] = {
             type = "MOB",
             name = "Venomous Viper",
@@ -96,7 +96,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["夺目谷"] = {
-        name = "夺目谷",
+        name = "The Blinding Vale",
         ["光明众花"] = {
             type = "BOSS",
             name = "Lightbloom Trinity",
@@ -178,7 +178,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["密谋小径"] = {
-        name = "密谋小径",
+        name = "Murder Row",
         ["亵渎魔像"] = {
             type = "MOB",
             name = "Defiled Golem",
@@ -245,7 +245,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["毒牙祭坛"] = {
-        name = "毒牙祭坛",
+        name = "Altar of Fangs",
         ["乌拉泰克的选民"] = {
             type = "MOB",
             name = "Chosen of Ulataq",
@@ -311,7 +311,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["红玉新生法池"] = {
-        name = "红玉新生法池",
+        name = "Ruby Life Pools",
         ["基拉卡与厄克哈特·风脉"] = {
             type = "BOSS",
             name = "Kyrakka and Erkhart Stormvein",
@@ -392,7 +392,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["纳洛拉克的洞穴"] = {
-        name = "纳洛拉克的洞穴",
+        name = "Den of Nalorakk",
         ["决意化身"] = {
             type = "MOB",
             name = "Resolute Avatar",
@@ -453,7 +453,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["虚空之痕竞技场"] = {
-        name = "虚空之痕竞技场",
+        name = "Voidscar Arena",
         ["吞噬暴虐者"] = {
             type = "MOB",
             name = "Devouring Tyrant",
@@ -514,7 +514,7 @@ addon.GuideData.translations.enUS.mplus["Current"] = {
         },
     },
     ["诸王之眠"] = {
-        name = "诸王之眠",
+        name = "King's Rest",
         ["始皇达萨"] = {
             type = "BOSS",
             name = "King Dazar",

@@ -561,7 +561,13 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
         mainWindow:ClearAllPoints()
         mainWindow:SetPoint("TOPLEFT", addon.mainButton, "BOTTOMLEFT", 0, -5)
     end
-    titleText:SetText(instanceName)
+    local BossDataForTitle = addon.GetBossData()
+    local instanceForTitle = BossDataForTitle and BossDataForTitle[instanceName]
+    titleText:SetText(addon.GetLocalizedInstanceName(
+        instanceName,
+        instanceForTitle and instanceForTitle._src and instanceForTitle._src.type,
+        instanceForTitle and instanceForTitle._src and instanceForTitle._src.ver
+    ))
 
     -- 重置在用状态
     for _, f in ipairs(targetFrames) do f.inUse = false end
@@ -647,7 +653,7 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 speakerBtn:SetAttribute("type", "macro")
                 frame.speakerBtn = speakerBtn
                 -- 点击（安全宏执行）后，补发超出宏上限(约1024字)的剩余分段
-                speakerBtn:SetScript("OnPostClick", function(self, button)
+                speakerBtn:SetScript("PostClick", function(self, button)
                     local rem = (button == "RightButton") and self.remainder2 or self.remainder1
                     local ch = (button == "RightButton") and self.remainderChat2 or self.remainderChat1
                     if rem and #rem > 0 then

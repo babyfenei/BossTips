@@ -1615,8 +1615,8 @@ local function BuildChatParts(bossName, channelOverride)
 end
 addon.BuildChatParts = BuildChatParts
 
--- 脱战兜底发送（测试窗口/程序化调用）：直接 SendChatMessage，仅脱战可用；
--- 游戏内主发送走 SecureActionButton 宏（见 Window.lua），战斗中/大秘境均可发、无延迟。
+-- 直接发送：点击即发、无延迟；战斗中由 InCombatLockdown 拦截（不发送，不打扰战斗）。
+-- 喇叭按钮 OnClick → 此函数（见 Window.lua），脱战点击立即 SendChatMessage。
 local function SendBossTips(bossName, channelOverride)
     local result = BuildChatParts(bossName, channelOverride)
     if not result then return end

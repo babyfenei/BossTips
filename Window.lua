@@ -645,25 +645,27 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 btn:GetFontString():SetPoint("LEFT", 5, 0)
                 frame.titleBtn = btn
 
-                local speakerBtn = CreateFrame("Button", nil, frame, "SecureActionButtonTemplate")
+                local speakerBtn = CreateFrame("Button", nil, frame)
                 speakerBtn:SetSize(24, 24)
                 speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
                 speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
-                -- 必须显式注册右键，否则只响应左键；左键=设定频道，右键=右键频道
+                -- 必须显式注册右键，否则 OnClick 只响应左键，右键发送不到 /say
                 speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-                -- 发送走安全宏：点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发、无逐条延迟
-                speakerBtn:SetAttribute("type", "macro")
                 frame.speakerBtn = speakerBtn
-                -- 点击（安全宏执行）后，补发超出宏上限(约1024字)的剩余分段
-                speakerBtn:SetScript("PostClick", function(self, button)
-                    local rem = (button == "RightButton") and self.remainder2 or self.remainder1
-                    local ch = (button == "RightButton") and self.remainderChat2 or self.remainderChat1
-                    if rem and #rem > 0 then
+                -- 直接发送：点击即发、无延迟；战斗中由 SendBossTips 内部 InCombatLockdown 拦截（不打扰战斗）。
+                -- 左键=设定频道(defaultChatChannel)，右键=右键频道(sendChannelRight)。
+                speakerBtn:SetScript("OnClick", function(_, button)
+                    local tdata = frame.targetData
+                    local tname = tdata and (tdata.bossKey or tdata.name)
+                    if tname and tname ~= "" then
                         if InCombatLockdown() then
-                            addon.QueueRemainingSend(rem, ch)
+                            print(L["|cffff0000BossTips|r Cannot send message in combat."])
                         else
-                            for _, p in ipairs(rem) do pcall(SendChatMessage, p, ch) end
+                            local ch = (button == "RightButton")
+                                and (BossTipsGlobalDB.sendChannelRight or "SAY")
+                                or (BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+                            addon.SendBossTips(tname, ch)
                         end
                     end
                 end)
@@ -679,32 +681,8 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 targetFrames[i] = frame
             end
 
-            -- 每次显示都用当前语言/难度重算攻略，拼成多行 /频道 宏文本写入安全按钮：
-            -- 点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发，且一次发完所有分段、无逐条延迟。
-            local bp = addon.BuildChatParts(target.bossKey, nil)
-            local sbtn = frame.speakerBtn
-            -- 防御：清空可能由测试窗(ShowTestWindow)残留的 OnClick，否则会覆盖安全宏的点击处理导致不发消息。
-            sbtn:SetScript("OnClick", nil)
-            if bp then
-                local leftChat = addon.ResolveSendChannel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-                local rightChat = addon.ResolveSendChannel(BossTipsGlobalDB.sendChannelRight or "SAY")
-                local m1, r1 = BuildMacroText(bp.parts, leftChat)
-                local m2, r2 = BuildMacroText(bp.parts, rightChat)
-                sbtn:SetAttribute("type1", "macro")
-                sbtn:SetAttribute("macrotext1", m1)
-                sbtn:SetAttribute("type2", "macro")
-                sbtn:SetAttribute("macrotext2", m2)
-                sbtn.remainder1, sbtn.remainderChat1 = r1, leftChat
-                sbtn.remainder2, sbtn.remainderChat2 = r2, rightChat
-                if BossTipsGlobalDB.debugSend then
-                    print(string.format("|cFF88CCFFBossTips[调试]|r 喇叭宏已写入 左=%s(%d字) 右=%s(%d字) 余左=%d 余右=%d",
-                        tostring(leftChat), #m1, tostring(rightChat), #m2, #r1, #r2))
-                end
-            else
-                sbtn:SetAttribute("macrotext1", "")
-                sbtn:SetAttribute("macrotext2", "")
-                sbtn.remainder1, sbtn.remainder2 = nil, nil
-            end
+            -- 喇叭按钮的 OnClick 已在创建时绑定为「直接发送」(addon.SendBossTips)，无需每次显示重设。
+            -- 战斗中 SendBossTips 内部 InCombatLockdown 拦截，脱战点击即发、无延迟。
             frame.speakerBtn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(L["Send Guide"])

@@ -36,6 +36,10 @@ addon.tipsFrame = mainWindow
 -- 当前窗口的临时状态（不写入 SavedVariables）
 mainWindow.showMobs = BossTipsGlobalDB.showMobs  -- 当前窗口是否显示小怪
 mainWindow.difficulty = BossTipsGlobalDB.defaultDifficulty or "mythic"  -- 当前显示难度（初始化用持久化默认难度，进本时由 CheckInstance 按副本解析）
+-- 展开状态权威表：按「当前副本 + 源 boss key」记录哪些目标处于展开。
+-- 用源 key（简中稳定名）而非本地化显示名做键，切语言/切难度/切小怪后仍能精确恢复展开项，
+-- 避免「展开第 3/4 条后一切换又跳回第 1 条」。
+mainWindow.expandedKeys = mainWindow.expandedKeys or {}
 
 local titleText = mainWindow:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 titleText:SetPoint("TOP", 0, -10)
@@ -697,16 +701,31 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
 
             frame.targetData = target
             frame.inUse = true
-            frame.isExpanded = (selectedBoss and target.name == selectedBoss) or (i == 1 and not selectedBoss)
+            -- 展开状态权威键：副本 + 源 boss key（简中稳定名），切语言/难度/小怪后仍能精确恢复。
+            local expKey = instanceName .. "\001" .. tostring(target.bossKey or target.name)
+            frame.expKey = expKey
+            -- 恢复展开：优先按「持久展开集合」；其次 selectedBoss（外部传入，如智能展开）；
+            -- 默认（首次进副本、无任何展开记录且未指定）展开第一条。
+            local isExpanded = mainWindow.expandedKeys[expKey] == true
+            if selectedBoss and target.name == selectedBoss then isExpanded = true end
+            if not selectedBoss and next(mainWindow.expandedKeys) == nil then
+                isExpanded = (i == 1)
+            end
+            frame.isExpanded = isExpanded
+            mainWindow.expandedKeys[expKey] = isExpanded or nil
 
             frame.titleBtn:SetScript("OnClick", function()
                 if BossTipsGlobalDB.singleExpand then
                     local wasExpanded = frame.isExpanded
-                    for _, f in ipairs(targetFrames) do f.isExpanded = false end
+                    for _, f in ipairs(targetFrames) do
+                        f.isExpanded = false
+                        if f.expKey then mainWindow.expandedKeys[f.expKey] = nil end
+                    end
                     frame.isExpanded = not wasExpanded
                 else
                     frame.isExpanded = not frame.isExpanded
                 end
+                mainWindow.expandedKeys[expKey] = frame.isExpanded or nil
                 UpdateLayout()
             end)
             frame.titleBtn:SetText(GetTitleText(target.name, frame.isExpanded, target.type))

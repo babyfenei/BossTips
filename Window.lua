@@ -90,6 +90,14 @@ regenFrame:SetScript("OnEvent", function(self, event)
             for _, p in ipairs(item.parts) do pcall(SendChatMessage, p, item.chatType) end
         end
         pendingSends = {}
+        -- 战斗中渲染时被跳过的受保护操作（喇叭按钮 Show/Hide/SetPoint/SetAttribute），
+        -- 脱战后全量重刷一次自愈（展开状态由 expandedKeys 持久恢复，视觉不跳变）。
+        if mainWindow.needPostCombatRefresh then
+            mainWindow.needPostCombatRefresh = false
+            if mainWindow:IsShown() and addon.currentInstanceName then
+                mainWindow:ShowInstanceGuide(addon.currentInstanceName)
+            end
+        end
     end
 end)
 
@@ -405,6 +413,35 @@ diffBtn:SetScript("OnClick", function()
     end
 end)
 
+-- ============ 「只看当前BOSS」过滤切换按钮（与设置面板开关共用同一状态） ============
+-- 点击在「只显示当前选中/战斗中的 BOSS」与「显示全部 BOSS」之间切换，
+-- 用于压缩窗口长度；状态持久化在 BossTipsGlobalDB.showCurrentBossOnly，
+-- 设置面板里的同名开关改动后由 addon.RefreshFilterBtnLabel 同步本按钮文字。
+local filterBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
+filterBtn:SetSize(74, 24)
+local function UpdateFilterBtnLabel()
+    -- 标签=点击后的动作（与 mobBtn 的交互约定一致）：过滤中→显示全部；未过滤→只看当前
+    filterBtn:SetText(BossTipsGlobalDB.showCurrentBossOnly and L["Filter Show All"] or L["Filter Current Only"])
+end
+function addon.RefreshFilterBtnLabel() UpdateFilterBtnLabel() end
+filterBtn:SetScript("OnClick", function()
+    BossTipsGlobalDB.showCurrentBossOnly = not BossTipsGlobalDB.showCurrentBossOnly
+    UpdateFilterBtnLabel()
+    local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
+    if AceConfigRegistry then AceConfigRegistry:NotifyChange("BossTips") end
+    if addon.currentInstanceName then
+        -- 保留当前展开目标作为过滤锚点
+        addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName, GetExpandedBossName())
+    end
+end)
+filterBtn:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+    GameTooltip:SetText(L["Show Current Boss Only"])
+    GameTooltip:AddLine(L["Filter Btn Tooltip"], 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+filterBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
 -- ============ 小怪显示切换按钮（仅影响当前窗口） ============
 local mobBtn = CreateFrame("Button", nil, mainWindow, "UIPanelButtonTemplate")
 mobBtn:SetSize(80, 24)
@@ -458,6 +495,7 @@ UpdateLayout = function()
         toggleGuideBtn:Show()
         diffBtn:Hide()
         mobBtn:Hide()
+        filterBtn:Hide()
         mainWindow:SetHeight(math.abs(-40 - 25))
     else
         toggleGuideBtn:SetText(L["Hide Guide"])
@@ -477,16 +515,22 @@ UpdateLayout = function()
                 frame.titleBtn:SetText(GetTitleText(frame.targetData.name, frame.isExpanded, frame.targetData.type))
                 if frame.isExpanded then
                     frame:SetAlpha(1.0)
+                    -- 喇叭按钮是受保护框体：战斗中禁止 Show/Hide/SetPoint，保持原状，
+                    -- 标记脱战后全量补刷（PLAYER_REGEN_ENABLED）。
+                    local inCombatLayout = InCombatLockdown()
+                    if inCombatLayout then mainWindow.needPostCombatRefresh = true end
                     if db.enableChatSend then
-                        frame.speakerBtn:Show()
-                        frame.speakerBtn:ClearAllPoints()
-                        frame.speakerBtn:SetPoint("TOPLEFT", frame.titleBtn, "BOTTOMLEFT", 10, -5)
+                        if not inCombatLayout then
+                            frame.speakerBtn:Show()
+                            frame.speakerBtn:ClearAllPoints()
+                            frame.speakerBtn:SetPoint("TOPLEFT", frame.titleBtn, "BOTTOMLEFT", 10, -5)
+                        end
                         frame.noteText:ClearAllPoints()
                         frame.noteText:SetPoint("TOPLEFT", frame.speakerBtn, "TOPRIGHT", 4, 0)
                         frame.noteText:SetPoint("TOPRIGHT", frame.titleBtn, "BOTTOMRIGHT", -10, -5)
                         frame.noteText:SetWidth(windowWidth - 40 - 20)
                     else
-                        frame.speakerBtn:Hide()
+                        if not inCombatLayout then frame.speakerBtn:Hide() end
                         frame.noteText:ClearAllPoints()
                         frame.noteText:SetPoint("TOPLEFT", frame.titleBtn, "BOTTOMLEFT", 10, -5)
                         frame.noteText:SetPoint("TOPRIGHT", frame.titleBtn, "BOTTOMRIGHT", -10, -5)
@@ -507,7 +551,11 @@ UpdateLayout = function()
                     frame:SetHeight(30 + textHeight + 10)
                 else
                     frame:SetAlpha(db.collapsedAlpha or 0.55)
-                    frame.speakerBtn:Hide()
+                    if not InCombatLockdown() then
+                        frame.speakerBtn:Hide()
+                    else
+                        mainWindow.needPostCombatRefresh = true
+                    end
                     frame.noteText:Hide()
                     frame:SetHeight(30)
                 end
@@ -529,6 +577,12 @@ UpdateLayout = function()
         diffBtn:ClearAllPoints()
         diffBtn:SetPoint("TOPRIGHT", mainWindow, "TOPRIGHT", -10, -10)
         diffBtn:Show()
+
+        -- 「只看当前BOSS」过滤按钮：固定在难度按钮左侧
+        UpdateFilterBtnLabel()
+        filterBtn:ClearAllPoints()
+        filterBtn:SetPoint("TOPRIGHT", diffBtn, "TOPLEFT", -6, 0)
+        filterBtn:Show()
 
         mainWindow:SetHeight(math.abs(currentY) + 25)
     end
@@ -640,6 +694,38 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
             local srcKey = (entry._src and entry._src.boss) or t.bossKey
             sorted[#sorted + 1] = { name = t.name, bossKey = srcKey, tips = tips, order = t.order, type = t.type }
         end
+        -- 「只看当前BOSS」过滤（设置开关 / 窗口右上角按钮共用 BossTipsGlobalDB.showCurrentBossOnly）：
+        -- 锚点优先级：① 显式 selectedBoss（智能展开/按钮重渲染传入，即「当前」BOSS）；
+        -- ② 当前副本已展开的 BOSS（expandedKeys 持久集合）；③ 无任何展开记录时锚定第一条
+        -- （与默认展开第一条的显示行为一致）。小怪(MOB)条目不参与过滤、始终保留（仍受 mobBtn 开关控制）。
+        -- 锚点解析不到任何 BOSS 时回退显示全部，避免出现空窗口。
+        if BossTipsGlobalDB.showCurrentBossOnly then
+            local anchored = {}
+            if selectedBoss then
+                for _, t in ipairs(sorted) do
+                    if t.bossKey == selectedBoss or t.name == selectedBoss then anchored[t] = true end
+                end
+            else
+                for _, t in ipairs(sorted) do
+                    if t.type ~= "MOB" then
+                        local expKey = instanceName .. "\001" .. tostring(t.bossKey or t.name)
+                        if mainWindow.expandedKeys[expKey] then anchored[t] = true end
+                    end
+                end
+                if next(anchored) == nil then
+                    for _, t in ipairs(sorted) do
+                        if t.type ~= "MOB" then anchored[t] = true; break end
+                    end
+                end
+            end
+            if next(anchored) ~= nil then
+                local keep = {}
+                for _, t in ipairs(sorted) do
+                    if anchored[t] or t.type == "MOB" then keep[#keep + 1] = t end
+                end
+                sorted = keep
+            end
+        end
         -- 隐藏多余的旧 frame
         for j = #sorted + 1, #targetFrames do targetFrames[j].inUse = false end
         for i, target in ipairs(sorted) do
@@ -656,16 +742,23 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 frame.titleBtn = btn
 
                 local speakerBtn = CreateFrame("Button", nil, frame, "SecureActionButtonTemplate")
-                speakerBtn:SetSize(24, 24)
                 speakerBtn:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Up")
                 speakerBtn:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-Chat-Down")
                 speakerBtn:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
-                -- 必须显式注册右键，否则只响应左键；左键=设定频道，右键=右键频道
-                speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
                 -- 发送走安全宏：点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发、无 taint。
                 -- 注：直接 pcall(SendChatMessage) 在战斗/副本内会触发 ADDON_ACTION_BLOCKED（taint），
                 -- 故必须用 SecureActionButton 的 type=macro 属性由客户端安全执行，而非脚本直接发送。
-                speakerBtn:SetAttribute("type", "macro")
+                -- 注意：Secure 模板按钮是「受保护框体」，战斗中禁止 SetSize/RegisterForClicks/SetAttribute。
+                -- 战斗中首次创建时跳过配置，脱战后由 needPostCombatRefresh 补刷完成（渲染循环里补配）。
+                if not InCombatLockdown() then
+                    speakerBtn:SetSize(24, 24)
+                    -- 必须显式注册右键，否则只响应左键；左键=设定频道，右键=右键频道
+                    speakerBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+                    speakerBtn:SetAttribute("type", "macro")
+                    frame.speakerConfigured = true
+                else
+                    mainWindow.needPostCombatRefresh = true
+                end
                 frame.speakerBtn = speakerBtn
                 -- 点击（安全宏执行）后，补发超出宏上限(约1024字)的剩余分段；战斗中入队脱战补发。
                 speakerBtn:SetScript("OnPostClick", function(self, button)
@@ -693,23 +786,36 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
 
             -- 每次显示都用当前语言/难度重算攻略，拼成多行 /频道 宏文本写入安全按钮：
             -- 点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发、无 taint、一次发完所有分段。
+            -- 战斗中：受保护框体禁止 SetAttribute/SetSize，跳过宏写入并保留上次（脱战前）配置，
+            -- 同时标记 needPostCombatRefresh，PLAYER_REGEN_ENABLED 时全量补刷。
             local bp = addon.BuildChatParts(target.bossKey or target.name, nil)
             local sbtn = frame.speakerBtn
-            if bp then
-                local leftChat = addon.ResolveSendChannel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
-                local rightChat = addon.ResolveSendChannel(BossTipsGlobalDB.sendChannelRight or "SAY")
-                local m1, r1 = BuildMacroText(bp.parts, leftChat)
-                local m2, r2 = BuildMacroText(bp.parts, rightChat)
-                sbtn:SetAttribute("type1", "macro")
-                sbtn:SetAttribute("macrotext1", m1)
-                sbtn:SetAttribute("type2", "macro")
-                sbtn:SetAttribute("macrotext2", m2)
-                sbtn.remainder1, sbtn.remainderChat1 = r1, leftChat
-                sbtn.remainder2, sbtn.remainderChat2 = r2, rightChat
+            local inCombat = InCombatLockdown()
+            if inCombat then
+                mainWindow.needPostCombatRefresh = true
             else
-                sbtn:SetAttribute("macrotext1", "")
-                sbtn:SetAttribute("macrotext2", "")
-                sbtn.remainder1, sbtn.remainder2 = nil, nil
+                if not frame.speakerConfigured then
+                    sbtn:SetSize(24, 24)
+                    sbtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+                    sbtn:SetAttribute("type", "macro")
+                    frame.speakerConfigured = true
+                end
+                if bp then
+                    local leftChat = addon.ResolveSendChannel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
+                    local rightChat = addon.ResolveSendChannel(BossTipsGlobalDB.sendChannelRight or "SAY")
+                    local m1, r1 = BuildMacroText(bp.parts, leftChat)
+                    local m2, r2 = BuildMacroText(bp.parts, rightChat)
+                    sbtn:SetAttribute("type1", "macro")
+                    sbtn:SetAttribute("macrotext1", m1)
+                    sbtn:SetAttribute("type2", "macro")
+                    sbtn:SetAttribute("macrotext2", m2)
+                    sbtn.remainder1, sbtn.remainderChat1 = r1, leftChat
+                    sbtn.remainder2, sbtn.remainderChat2 = r2, rightChat
+                else
+                    sbtn:SetAttribute("macrotext1", "")
+                    sbtn:SetAttribute("macrotext2", "")
+                    sbtn.remainder1, sbtn.remainder2 = nil, nil
+                end
             end
             frame.speakerBtn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")

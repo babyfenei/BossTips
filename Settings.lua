@@ -192,6 +192,22 @@ local function BuildMainOptions()
                             end,
                             order = 5,
                         },
+                        showCurrentBossOnly = {
+                            type = "toggle",
+                            name = function() return L["Show Current Boss Only"] end,
+                            desc = function() return L["Show Current Boss Only Desc"] end,
+                            width = "full",
+                            get = function() return BossTipsGlobalDB.showCurrentBossOnly end,
+                            set = function(_, val)
+                                BossTipsGlobalDB.showCurrentBossOnly = val
+                                -- 同步攻略窗右上角过滤按钮文字
+                                if addon.RefreshFilterBtnLabel then addon.RefreshFilterBtnLabel() end
+                                if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
+                                    addon.tipsFrame:ShowInstanceGuide(addon.currentInstanceName)
+                                end
+                            end,
+                            order = 6,
+                        },
                     }
                 },
                 difficulty_visibility = {
@@ -812,10 +828,8 @@ end)
 -- 避免 AceConfigDialog:Open 处理大量 inline toggle 导致 script ran too long。
 local origOpen = addon.OpenMainGUI
 function addon:OpenMainGUI()
-    if InCombatLockdown() then
-        print(L["|cffff0000BossTips|r Cannot open settings in combat."])
-        return
-    end
+    -- 不再战斗中拦截：AceConfigDialog 独立窗口是普通框体，战斗中可开（非暴雪官方限制）。
+    -- 设置改动触发的攻略窗重渲染已在 Window.lua 对受保护（Secure）操作做战斗守卫。
     local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
     if not AceConfigDialog then return end
     local openFrame = AceConfigDialog.OpenFrames and AceConfigDialog.OpenFrames["BossTips"]

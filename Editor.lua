@@ -528,7 +528,8 @@ function addon:CreateEditorFrame()
     frame:SetCallback("OnClose", function(widget)
         widget:Hide()
         addon.RefreshGuides()
-        if not InCombatLockdown() and addon.OpenMainGUI then addon:OpenMainGUI() end
+        -- 设置面板（AceConfigDialog 独立窗口）战斗中可开，无需战斗判断
+        if addon.OpenMainGUI then addon:OpenMainGUI() end
     end)
 
     -- 顶部工具栏：标签页切换（地下城/团本）+ 展开/折叠

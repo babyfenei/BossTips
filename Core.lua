@@ -84,10 +84,9 @@ local function CreateMainButton()
             BossTipsGlobalDB.mainButtonPos = { point = p, relativePoint = rp, xOffset = xOfs, yOffset = yOfs }
                 -- 位移很小视为点击（小幅拖动容错）
                 if moved < 10 then
-                    if InCombatLockdown() then
-                        print("|cffff0000BossTips|r 战斗中无法切换攻略窗。")
-                        return
-                    end
+                    -- 攻略窗是普通框体（非受保护），战斗中 Show/Hide 完全合法；
+                    -- 窗内 Secure 喇叭按钮的受保护操作已在 Window.lua 渲染层做战斗守卫，
+                    -- 因此战斗中允许开关攻略窗（方便战斗中查看攻略）。
                     -- 左键：始终切换攻略框体（非副本时显示测试窗口）
                     if addon.tipsFrame:IsShown() then
                         addon.tipsFrame:Hide()
@@ -112,11 +111,8 @@ local function CreateMainButton()
                     end
                 end
             elseif button == "RightButton" then
-                if not InCombatLockdown() then
-                    addon:OpenMainGUI()
-                else
-                    print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
-                end
+                -- 设置面板（AceConfigDialog 独立窗口）战斗中可开，无需战斗判断
+                addon:OpenMainGUI()
             end
     end)
 
@@ -434,9 +430,9 @@ frame:SetScript("OnEvent", function(self, event, arg1, arg2)
             miniBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
             miniBtn:RegisterForDrag("LeftButton")
             miniBtn:SetScript("OnClick", function(_, button)
-                if InCombatLockdown() then
-                    print("|cffff0000BossTips|r 战斗中无法打开面板。")
-                elseif button == "LeftButton" then
+                -- 攻略窗（普通框体）与设置面板（AceConfigDialog 独立窗口）均非暴雪受保护框体，
+                -- 战斗中打开/关闭合法；受保护操作已在 Window.lua 渲染层守卫。
+                if button == "LeftButton" then
                     if addon.tipsFrame and addon.tipsFrame:IsShown() and addon.currentInstanceName then
                         addon.tipsFrame:Hide(); addon.manuallyHidden = true
                     elseif addon.currentInstanceName and HasCurrentMapGuide() then
@@ -510,10 +506,8 @@ end)
 
 -- ============ UI 入口 ============
 function addon:OpenMainGUI()
-    if InCombatLockdown() then
-        print("|cffff0000BossTips|r 战斗中无法打开设置面板。")
-        return
-    end
+    -- AceConfigDialog 独立窗口是普通框体，战斗中可开（非暴雪官方限制）。
+    -- 注：暴雪自己的「ESC→选项→插件」设置页在战斗中确实被官方锁定，那条路径无法绕行。
     local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
     if AceConfigDialog then AceConfigDialog:Open("BossTips") end
 end

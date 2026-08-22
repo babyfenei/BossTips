@@ -64,6 +64,7 @@ local defaultConfig = {
     tipsBgA = 0.82,
     collapsedAlpha = 0.55,
     singleExpand = true,
+    showCurrentBossOnly = false, -- 只看当前BOSS：攻略窗只显示当前选中/战斗中的BOSS（设置开关与窗口过滤按钮共用）
     enableChatSend = true,
     guideWindowWidth = 360,
     showMinimapButton = false,
@@ -1058,6 +1059,7 @@ local CONFIG_KEYS = {
     { key = "collapsedAlpha", t = "number" },
     { key = "singleExpand", t = "bool" },
     { key = "showMobs", t = "bool" },
+    { key = "showCurrentBossOnly", t = "bool" },
     { key = "enableChatSend", t = "bool" },
     { key = "defaultChatChannel", t = "string" },
     { key = "sendChannelRight", t = "string" },

@@ -690,6 +690,9 @@ addon.GetGuideText = GetGuideText
 
 -- 统一取文入口：编辑器文本框、攻略预览窗、发送均调用本函数，保证三处文本 100% 一致。
 -- 返回 (text, isCustom)：isCustom=true 表示当前语言下存在 WTF 自定义覆盖。
+-- 注意：此处直接透传 diff，不再为 M+ 强制 mythicplus。M+ 源数据(lfr/normal/heroic/mythic/mythicplus
+-- 五档齐全)，强制 mythicplus 会把五档差异抹平，导致编辑器切难度无变化。某档译文缺失时，
+-- GetGuideText 内部会自动回退 mythicplus，无需在此提前压平。
 local function GetDisplayText(instName, bossName, diff)
     local lang = addon.LANG or addon.LOCALE or "zhCN"
     -- 自定义覆盖（当前语言）优先
@@ -698,8 +701,7 @@ local function GetDisplayText(instName, bossName, diff)
     -- 内置译文（跟随当前语言）
     local entry = addon.GetActiveGuideEntry(instName, bossName)
     if entry then
-        local lookupDiff = (entry._src and entry._src.type == "mplus") and "mythicplus" or diff
-        local t = addon.GetGuideText(entry, lookupDiff)
+        local t = addon.GetGuideText(entry, diff)
         if t and t ~= "" then return t, false end
     end
     return "", false

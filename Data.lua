@@ -618,8 +618,9 @@ local function GetGuideText(entry, diff)
         local trans = addon.GuideData and addon.GuideData.translations and addon.GuideData.translations[locale]
         local src = entry._src
         if trans and src then
-            -- 大秘境译文仅存 mythicplus 一档：任何难度请求都映射到该键取译文
-            local lookupDiff = (src.type == "mplus") and "mythicplus" or diff
+            -- 大秘境译文按源每难度分别翻译（lfr/normal/heroic/mythic/mythicplus 五档齐全），
+            -- 故按所选难度取对应译文；某难度译文缺失时回退 mythicplus（M+ 翻译主档），避免回退到简中源。
+            local lookupDiff = diff
             local cat = trans[src.type]
             local ver = cat and cat[src.ver]
             local inst = ver and ver[src.instance]
@@ -628,13 +629,16 @@ local function GetGuideText(entry, diff)
                 -- 兼容旧/新两种译文存储结构：
                 --   旧格式 M+（_rebuild 产物）：BOSS/MOB 均只存 mythicplus 单档；
                 --   新格式（_regen_perdiff 产物）：BOSS 存 tipsByDifficulty 嵌套、MOB 存外层 tips。
-                -- 因此 MOB 依次尝试 tips / mythicplus / tipsByDifficulty[lookupDiff]；
-                -- BOSS 依次尝试 tipsByDifficulty[lookupDiff] / 扁平难度键(含 mythicplus) / 外层 tips。
+                -- 因此 MOB 依次尝试 tips / 所选难度 / mythicplus / tipsByDifficulty[lookupDiff]；
+                -- BOSS 依次尝试 tipsByDifficulty[lookupDiff] / tipsByDifficulty["mythicplus"] / 扁平难度键 / 外层 tips。
                 local txt
                 if entry.type == "MOB" then
-                    txt = b.tips or b.mythicplus or (b.tipsByDifficulty and b.tipsByDifficulty[lookupDiff])
+                    txt = b.tips or b[lookupDiff] or b.mythicplus or (b.tipsByDifficulty and b.tipsByDifficulty[lookupDiff])
                 else
-                    txt = (b.tipsByDifficulty and b.tipsByDifficulty[lookupDiff]) or b[lookupDiff] or b.tips
+                    local tbd = b.tipsByDifficulty
+                    txt = (tbd and tbd[lookupDiff])
+                        or (tbd and tbd["mythicplus"])
+                        or b[lookupDiff] or b.tips
                 end
                 if txt and txt ~= "" then return txt end
             end

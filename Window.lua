@@ -59,12 +59,15 @@ local function BuildMacroText(parts, chatType, maxLen)
     local slash = CHAT_SLASH[chatType] or "/say"
     local lines, used, remainder = {}, 0, {}
     for _, p in ipairs(parts) do
-        local line = slash .. " " .. p
+        -- 转义宏条件括号：聊天文本里的 [断-X]/[技-X]/[重-X] 等若处于行首，会被宏解析器当作
+        -- 无效条件子句而将「整行丢弃」（静默不发）。改为 ( ) 后不再是条件，逐行正常发送。
+        local safe = p:gsub("%[", "("):gsub("%]", ")")
+        local line = slash .. " " .. safe
         if used + #line + 1 <= maxLen then
             lines[#lines + 1] = line
             used = used + #line + 1
         else
-            remainder[#remainder + 1] = p
+            remainder[#remainder + 1] = safe
         end
     end
     return table.concat(lines, "\n"), remainder
@@ -680,6 +683,8 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
             -- 点击=硬件事件，宏执行被暴雪授权，大秘境/战斗中均可发，且一次发完所有分段、无逐条延迟。
             local bp = addon.BuildChatParts(target.bossKey, nil)
             local sbtn = frame.speakerBtn
+            -- 防御：清空可能由测试窗(ShowTestWindow)残留的 OnClick，否则会覆盖安全宏的点击处理导致不发消息。
+            sbtn:SetScript("OnClick", nil)
             if bp then
                 local leftChat = addon.ResolveSendChannel(BossTipsGlobalDB.defaultChatChannel or "INSTANCE_CHAT")
                 local rightChat = addon.ResolveSendChannel(BossTipsGlobalDB.sendChannelRight or "SAY")
@@ -691,6 +696,10 @@ function mainWindow:ShowInstanceGuide(instanceName, selectedBoss)
                 sbtn:SetAttribute("macrotext2", m2)
                 sbtn.remainder1, sbtn.remainderChat1 = r1, leftChat
                 sbtn.remainder2, sbtn.remainderChat2 = r2, rightChat
+                if BossTipsGlobalDB.debugSend then
+                    print(string.format("|cFF88CCFFBossTips[调试]|r 喇叭宏已写入 左=%s(%d字) 右=%s(%d字) 余左=%d 余右=%d",
+                        tostring(leftChat), #m1, tostring(rightChat), #m2, #r1, #r2))
+                end
             else
                 sbtn:SetAttribute("macrotext1", "")
                 sbtn:SetAttribute("macrotext2", "")
